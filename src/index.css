@@ -1,0 +1,63 @@
+/*
+全局样式，不要轻易编写全局样式
+*/
+
+html, body, #root {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#nprogress .bar {
+    z-index: 9999;
+}
+
+/*.ant-tooltip,*/
+/*.ant-modal-mask,*/
+/*.ant-modal-wrap,*/
+/*.ant-message,*/
+/*.ant-menu-submenu-popup,*/
+/*.ant-notification {*/
+    /*z-index: 9999 !important;;*/
+/*}*/
+
+/*.ant-modal {*/
+    /*padding-bottom: 84px !important;*/
+/*}*/
+
+/* 只在打印时显示 */
+.just-print {
+    display: none !important;
+}
+
+@media print {
+    body {
+        padding: 0 !important;
+        background: none;
+    }
+
+    /* 打印时不显示 */
+    .no-print {
+        display: none !important;
+    }
+
+    .just-print {
+        display: block !important;
+    }
+
+    .ant-message {
+        display: none !important;
+    }
+
+    .ant-modal-mask {
+        display: none !important;
+    }
+}

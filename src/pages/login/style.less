@@ -1,0 +1,87 @@
+@primary-color: #1890ff;
+
+.root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("./login-bg.jpg");
+    background-size: 100% 100%;
+    animation: root-frames 1s;
+}
+
+.logo {
+    position: absolute;
+    top: 50px;
+    left: 100px;
+    width: 377px;
+    height: 73px;
+    background: url("./logo.png") no-repeat;
+    background-size: 100% 100%;
+}
+
+.note {
+    position: absolute;
+    top: 150px;
+    right: 50px;
+    width: 532px;
+    height: 159px;
+    background: url("./note.png") no-repeat;
+    background-size: 100% 100%;
+}
+
+.menu {
+    position: absolute;
+    top: 16px;
+    right: 160px;
+    display: flex;
+    align-items: center;
+}
+
+.box {
+    padding: 16px 32px;
+    margin-top: 150px;
+    width: 360px;
+    height: 320px;
+    border-radius: 3px;
+    background: #f8f8f8;
+    box-shadow: 0 0 100px rgba(0, 0, 0, .08);
+}
+
+.header {
+    font-size: 18px;
+    text-align: center;
+    padding: 16px;
+    color: #808080;
+}
+
+.submit-btn {
+    width: 100%;
+}
+
+.error-tip {
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    color: red;
+}
+
+.tip {
+    color: #ccc;
+    text-align: center;
+
+    span {
+        margin-right: 8px;
+    }
+}
+
+
+@keyframes root-frames {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
