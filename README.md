@@ -26,4 +26,4 @@
 
 ## License
 
-React Admin is licensed under the [MIT License](https://github.com/marmelab/react-admin/blob/master/LICENSE.md)
+React Admin is licensed under the [Apache License](https://github.com/sxfad/react-admin/blob/master/LICENSE)
