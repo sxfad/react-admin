@@ -26,6 +26,7 @@ $ yarn start
 $ PORT=8080 yarn start
 ```
 注：启动会有点慢，耐心等待一会儿。启动成功后会自动打开浏览器，可能需要刷新一下浏览器才能显示页面。
+windows环境下可以使用 [cross-env](https://www.npmjs.com/package/cross-env)设置命令行变量。
 
 ## 生产构建
 ```bash
