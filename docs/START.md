@@ -21,6 +21,9 @@ $ yarn
 ```bash
 $ cd react-admin
 $ yarn start
+
+# 指定端口
+$ PORT=8080 yarn start
 ```
 注：启动会有点慢，耐心等待一会儿。启动成功后会自动打开浏览器，可能需要刷新一下浏览器才能显示页面。
 

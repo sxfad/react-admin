@@ -15,7 +15,7 @@
     @config({
         path: '/path',
     })
-    export default class Demo extends React.Component {
+    export default class SomePage extends React.Component {
         ...
     }
     ```
