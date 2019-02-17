@@ -29,7 +29,7 @@
         "chokidar": "^2.0.4",
         "classnames": "^2.2.6",
         "clipboard": "^2.0.4",
-        "css-loader": "1.0.0",
+        "css-loader": "^2.1.0",
         "dotenv": "6.0.0",
         "dotenv-expand": "4.2.0",
         "echarts": "^4.2.0-rc.2",

@@ -40,7 +40,8 @@ const useTypeScript = fs.existsSync(paths.appTsConfig);
 const cssRegex = /\.css$/;
 const lessModuleRegex = /\.less$/;
 const lessRegex = /\.less$/;
-const lessModulePaths = require('globby').sync(`${paths.appSrc}/*`, {ignore: [path.resolve(paths.appSrc, 'library'), '**/**.*'], absolute: true});
+let lessModulePaths = require('globby').sync(`${paths.appSrc}/*`, {ignore: [path.resolve(paths.appSrc, 'library'), '**/**.*'], absolute: true});
+lessModulePaths = lessModulePaths.map(path.normalize);
 
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
