@@ -70,7 +70,7 @@ export default class EditableTable extends Component {
             style,
             formRef,
             onRowMoved,
-            ...others,
+            ...others
         } = this.props;
 
         const tableStyle = {marginBottom: '16px', ...style};

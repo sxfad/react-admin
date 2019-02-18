@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Form, Input, Row, Col, Icon, Tooltip, Button, Select, Table} from 'antd';
-import {FormItemLayout} from 'sx-antd';
-import {connect} from '../models';
+import {Form, Row, Col, Button, Table} from 'antd';
+import {FormElement} from '@/library/antd';
+import {connect} from '@/models';
 
 @connect(state => ({database: state.database}))
 @Form.create({
@@ -71,9 +71,11 @@ export default class DatabaseConfig extends Component {
         });
     };
 
+    FormElement = (props) => <FormElement form={this.props.form} labelWidth={80} {...props}/>;
+
     render() {
         const {
-            form: {getFieldDecorator},
+            form,
             database: {
                 tableNames,
                 tableColumns,
@@ -82,155 +84,104 @@ export default class DatabaseConfig extends Component {
                 showConfig,
             },
         } = this.props;
-        const labelSpaceCount = 7;
         const span = 8;
-        const tipWidth = 30;
 
-        const configColStyle = {
+        const configRowStyle = {
             display: showConfig ? 'block' : 'none',
+            borderBottom: '1px solid #d9d9d9',
+            marginBottom: '24px',
         };
+
+        const FormElement = this.FormElement;
 
         return (
             <Form>
-                <Row style={{borderBottom: '1px solid #d9d9d9', marginBottom: '24px'}}>
-                    <Col span={span} style={configColStyle}>
-                        <FormItemLayout
-                            label="host"
-                            labelSpaceCount={labelSpaceCount}
-                            tip={(
-                                <Tooltip
-                                    placement="right"
-                                    title="数据库ip地址"
-                                >
-                                    <Icon type="question-circle-o"/>
-                                </Tooltip>
-                            )}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('host', {
+                <Row style={configRowStyle}>
+                    <Col span={span}>
+                        <FormElement
+                            label="地址"
+                            tip="数据库ip地址"
+                            field="host"
+                            decorator={{
                                 rules: [
-                                    {required: true, message: '请输入host',},
+                                    {required: true, message: '请输入地址',},
                                 ],
-                            })(
-                                <Input placeholder="请输入host"/>
-                            )}
-                        </FormItemLayout>
-                    </Col>
-
-                    <Col span={span} style={configColStyle}>
-                        <FormItemLayout
-                            label="port"
-                            labelSpaceCount={labelSpaceCount}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('port', {
-                                rules: [
-                                    {required: true, message: '请输入port',},
-                                ],
-                            })(
-                                <Input placeholder="请输入port"/>
-                            )}
-                        </FormItemLayout>
-                    </Col>
-
-                    <Col span={span} style={configColStyle}>
-                        <FormItemLayout
-                            label="user"
-                            labelSpaceCount={labelSpaceCount}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('user', {
-                                rules: [
-                                    {required: true, message: '请输入user',},
-                                ],
-                            })(
-                                <Input placeholder="请输入user"/>
-                            )}
-                        </FormItemLayout>
-                    </Col>
-
-                    <Col span={span} style={configColStyle}>
-                        <FormItemLayout
-                            label="password"
-                            labelSpaceCount={labelSpaceCount}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('password', {
-                                rules: [
-                                    {required: true, message: '请输入password',},
-                                ],
-                            })(
-                                <Input placeholder="请输入password"/>
-                            )}
-                        </FormItemLayout>
-                    </Col>
-
-                    <Col span={span} style={configColStyle}>
-                        <FormItemLayout
-                            label="database"
-                            labelSpaceCount={labelSpaceCount}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('database', {
-                                rules: [
-                                    {required: true, message: '请输入database',},
-                                ],
-                            })(
-                                <Input placeholder="请输入database"/>
-                            )}
-                        </FormItemLayout>
+                            }}
+                        />
                     </Col>
 
                     <Col span={span}>
-                        <FormItemLayout
-                            label=""
-                            labelWidth={0}
-                            tipWidth={tipWidth}
-                        >
-                            <a onClick={(e) => {
-                                e.preventDefault();
-                                this.props.action.database
-                                    .setFields({showConfig: !showConfig})
-                            }}>{showConfig ? '隐藏配置' : '显示配置'}</a>
-                        </FormItemLayout>
+                        <FormElement
+                            label="端口"
+                            field="port"
+                            decorator={{
+                                rules: [
+                                    {required: true, message: '请输入端口',},
+                                ],
+                            }}
+                        />
+                    </Col>
+
+                    <Col span={span}>
+                        <FormElement
+                            label="用户名"
+                            field="user"
+                            decorator={{
+                                rules: [
+                                    {required: true, message: '请输入用户名',},
+                                ],
+                            }}
+                        />
+                    </Col>
+
+                    <Col span={span}>
+                        <FormElement
+                            label="密码"
+                            field="password"
+                            decorator={{
+                                rules: [
+                                    {required: true, message: '请输入密码',},
+                                ],
+                            }}
+                        />
+                    </Col>
+
+                    <Col span={span}>
+                        <FormElement
+                            label="数据库"
+                            field="database"
+                            decorator={{
+                                rules: [
+                                    {required: true, message: '请输入数据库',},
+                                ],
+                            }}
+                        />
                     </Col>
                 </Row>
                 <Row>
-                    <Col span={span * 2}>
-                        <FormItemLayout
-                            label="table"
-                            labelSpaceCount={labelSpaceCount}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('table', {
+                    <Col span={8}>
+                        <FormElement
+                            label="数据库表"
+                            form={form}
+                            field="table"
+                            type="select"
+                            options={tableNames.map(value => ({value, label: value}))}
+                            decorator={{
                                 rules: [
-                                    {required: false, message: '请选择table',},
+                                    {required: false, message: '请选择数据库表',},
                                 ],
                                 onChange: (value) => {
                                     this.handleGetTableColumns(value);
                                 },
-                            })(
-                                <Select
-                                    showSearch
-                                    placeholder="请选择table"
-                                >
-                                    {tableNames.map(name => (<Select.Option key={name} value={name}>{name}</Select.Option>))}
-                                </Select>
-                            )}
-                        </FormItemLayout>
+                            }}
+                        />
                     </Col>
-                    <Col span={span}>
-                        <FormItemLayout
-                            label=""
-                            labelWidth={0}
-                            tipWidth={tipWidth}
-                        >
-                            <Button
-                                loading={gettingTableNames}
-                                type="primary"
-                                onClick={this.handleGetTableNames}
-                            >获取数据库表名</Button>
-                        </FormItemLayout>
+                    <Col span={span} style={{paddingLeft: 16, paddingTop: 3}}>
+                        <Button
+                            loading={gettingTableNames}
+                            type="primary"
+                            onClick={this.handleGetTableNames}
+                        >获取数据库表名</Button>
                     </Col>
                 </Row>
 
@@ -240,7 +191,7 @@ export default class DatabaseConfig extends Component {
                     pagination={false}
                     columns={[
                         {title: '字段名', dataIndex: 'camelCaseName', key: 'camelCaseName'},
-                        {title: '中文名', dataIndex: 'chinese', key: 'chinese'},
+                        // {title: '中文名', dataIndex: 'chinese', key: 'chinese'},
                         {title: '类型', dataIndex: 'type', key: 'type'},
                         {title: '长度', dataIndex: 'length', key: 'length'},
                         {title: '是否可空', dataIndex: 'isNullable', key: 'isNullable'},

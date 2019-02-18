@@ -1,22 +1,28 @@
 import React, {Component} from 'react'
 import {Card, Button, Collapse, Checkbox, Modal} from 'antd';
-import PageContent from '../../layouts/page-content';
-import FixBottom from '../../layouts/fix-bottom';
-import BaseInfo from '../../components/BaseInfo';
-import DatabaseConfig from '../../components/DatabaseConfig';
-import ListPage from '../../components/ListPage';
-import EditPage from '../../components/EditPage';
-// import ListEditModel from '../../components/ListEditModel';
-import PreviewCodeModal from '../../components/PreviewCodeModal';
-import {connect} from '../../models';
+import PageContent from '@/layouts/page-content';
+import FixBottom from '@/layouts/fix-bottom';
+import BaseInfo from '../BaseInfo';
+import DatabaseConfig from '../DatabaseConfig';
+import ListPage from '../ListPage';
+import EditPage from '../EditPage';
+import PreviewCodeModal from '../PreviewCodeModal';
+import config from '@/commons/config-hoc';
 import './style.less'
 
 export const PAGE_ROUTE = '/admin-crud';
 
 const Panel = Collapse.Panel;
 
-@connect(state => ({srcDirectories: state.generator.srcDirectories}))
-export default class Home extends Component {
+@config({
+    path: '/admin-crud',
+    title: '页面生成',
+    connect: state => ({
+        srcDirectories: state.generator.srcDirectories,
+        showDatabaseConfig: state.database.showConfig,
+    }),
+})
+export default class AdminCrud extends Component {
     state = {
         activePanelKeys: ['database', 'listPage', 'editPage', 'listEditModel'],
         checkedPanels: {
@@ -215,6 +221,7 @@ export default class Home extends Component {
     };
 
     render() {
+        const {showDatabaseConfig} = this.props;
         const {
             activePanelKeys,
             checkedPanels,
@@ -227,8 +234,7 @@ export default class Home extends Component {
         };
 
         return (
-            <PageContent>
-                <h1>管理系统增删改查页面生成</h1>
+            <PageContent styleName="root">
                 <Card
                     title="基础命名"
                     style={cardStyle}
@@ -240,7 +246,25 @@ export default class Home extends Component {
                 </Card>
 
                 <Collapse activeKey={activePanelKeys} onChange={this.handlePanelChange}>
-                    <Panel header="数据库配置" key="database">
+                    <Panel
+                        header={(
+                            <span>
+                                数据库配置
+                                <a
+                                    style={{marginLeft: 16}}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        this.props.action.database
+                                            .setFields({showConfig: !showDatabaseConfig})
+                                    }}
+                                >
+                                    {showDatabaseConfig ? '隐藏配置' : '显示配置'}
+                                </a>
+                            </span>
+                        )}
+                        key="database"
+                    >
                         <DatabaseConfig
                             validate={validate => this.validateDatabaseConfig = validate}
                         />
@@ -257,14 +281,6 @@ export default class Home extends Component {
                             onPreviewCode={this.handleEditPagePreviewCode}
                         />
                     </Panel>
-                    {/*
-                    <Panel {...this.getPanelProps('列表页&编辑页model', 'listEditModel')}>
-                        <ListEditModel
-                            validate={validate => this.validateListEditModel = validate}
-                            onPreviewCode={this.handleListEditModelPreviewCode}
-                        />
-                    </Panel>
-                    */}
                 </Collapse>
 
                 <PreviewCodeModal

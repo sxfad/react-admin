@@ -1,26 +1,21 @@
 import React, {Component} from 'react';
 import {
     Form,
-    Input,
     Row,
     Col,
-    TreeSelect,
-    Tooltip,
-    Icon,
     Button,
     Popconfirm,
 } from 'antd';
 import uuid from 'uuid/v4';
-import {FormItemLayout, Operator} from 'sx-antd';
-import EditableTable from './EditableTable';
-import FontIconInput from './FontIconInput';
-import {connect} from "../models";
+import {FormElement, Operator, TableEditable} from "@/library/antd";
+import {connect} from "@/models";
+import {typeOptions} from './utils';
 
 @connect(state => ({
     database: state.database,
     baseInfo: state.baseInfo,
     listPage: state.listPage,
-    srcDirectories: state.generator.srcDirectories,
+    pagesDirectories: state.generator.pagesDirectories,
 }))
 @Form.create({
     mapPropsToFields: (props) => {
@@ -80,11 +75,9 @@ export default class ListPage extends Component {
                         }
                     ],
                 },
-                elementProps: {
-                    onPressEnter: (e) => {
-                        const currentTr = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
-                        currentTr.getElementsByTagName('input')[1].focus();
-                    },
+                onPressEnter: (e) => {
+                    const currentTr = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+                    currentTr.getElementsByTagName('input')[1].focus();
                 },
             },
         },
@@ -104,21 +97,19 @@ export default class ListPage extends Component {
                         console.log(e);
                     },
                 },
-                elementProps: {
-                    onPressEnter: (e) => {
-                        const {form: {getFieldValue, setFieldsValue}} = this.props;
-                        const value = getFieldValue('fields');
-                        const currentTr = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
-                        const nextTr = currentTr.nextSibling;
+                onPressEnter: (e) => {
+                    const {form: {getFieldValue, setFieldsValue}} = this.props;
+                    const value = getFieldValue('fields');
+                    const currentTr = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+                    const nextTr = currentTr.nextSibling;
 
-                        if (!nextTr) { // 当前输入框在最后一行，新增一行，并且新增行第一个输入框获取焦点
-                            value.push({id: uuid(), title: '', dataIndex: ''});
-                            setFieldsValue({fields: value});
-                            setTimeout(() => currentTr.nextSibling.getElementsByTagName('input')[0].focus());
-                        } else {
-                            nextTr.getElementsByTagName('input')[0].focus();
-                        }
-                    },
+                    if (!nextTr) { // 当前输入框在最后一行，新增一行，并且新增行第一个输入框获取焦点
+                        value.push({id: uuid(), title: '', dataIndex: ''});
+                        setFieldsValue({fields: value});
+                        setTimeout(() => currentTr.nextSibling.getElementsByTagName('input')[0].focus());
+                    } else {
+                        nextTr.getElementsByTagName('input')[0].focus();
+                    }
                 },
             },
         },
@@ -169,7 +160,6 @@ export default class ListPage extends Component {
                                 field: dataIndex,
                                 type: 'input',
                             });
-                            console.log(items);
                             setFieldsValue({queryItems: items});
                         },
                     },
@@ -239,29 +229,7 @@ export default class ListPage extends Component {
                     ],
                 },
                 getValue: e => e,
-                elementProps: {
-                    options: [
-                        {label: 'input(输入框)', value: 'input'},
-                        {label: 'number(数字输入框)', value: 'number'},
-                        {label: 'textarea(文本框)', value: 'textarea'},
-                        {label: 'password(密码框)', value: 'password'},
-                        {label: 'mobile(手机输入框)', value: 'mobile'},
-                        {label: 'email(邮件输入框)', value: 'email'},
-                        {label: 'select(下拉选择)', value: 'select'},
-                        {label: 'select-tree(下拉树)', value: 'select-tree'},
-                        {label: 'checkbox(多选框)', value: 'checkbox'},
-                        {label: 'checkbox-group(多选框组)', value: 'checkbox-group'},
-                        {label: 'radio(单选)', value: 'radio'},
-                        {label: 'radio-group(单选组)', value: 'radio-group'},
-                        {label: 'switch(切换按钮)', value: 'switch'},
-                        {label: 'date(日期)', value: 'date'},
-                        {label: 'date-time(日期-时间)', value: 'date-time'},
-                        {label: 'date-range(日期区间)', value: 'date-range'},
-                        {label: 'month(月份)', value: 'month'},
-                        {label: 'time(时间)', value: 'time'},
-                        {label: 'cascader(级联)', value: 'cascader'},
-                    ],
-                }
+                options: typeOptions,
             },
         },
         {
@@ -311,14 +279,12 @@ export default class ListPage extends Component {
             props: {
                 type: 'select',
                 placeholder: '请选择类型',
-                elementProps: {
-                    options: [
-                        {value: 'primary', label: '主按钮'},
-                        {value: 'default', label: '次按钮'},
-                        {value: 'dashed', label: '虚线按钮'},
-                        {value: 'danger', label: '危险按钮'},
-                    ],
-                },
+                options: [
+                    {value: 'primary', label: '主按钮'},
+                    {value: 'default', label: '次按钮'},
+                    {value: 'dashed', label: '虚线按钮'},
+                    {value: 'danger', label: '危险按钮'},
+                ],
                 getValue: e => e,
                 decorator: {
                     rules: [
@@ -348,13 +314,12 @@ export default class ListPage extends Component {
             key: 'icon',
             width: '22%',
             props: {
+                type: 'input',
                 decorator: {
                     rules: [
                         {required: false, message: '请选择图标'},
                     ],
                 },
-                component: <FontIconInput/>,
-                getValue: e => e,
             },
         },
         {
@@ -420,15 +385,12 @@ export default class ListPage extends Component {
             props: {
                 type: 'select',
                 placeholder: '请选择类型',
-                elementProps: {
-                    options: [
-                        {value: 'primary', label: '主按钮'},
-                        {value: 'default', label: '次按钮'},
-                        {value: 'dashed', label: '虚线按钮'},
-                        {value: 'danger', label: '危险按钮'},
-                    ],
-                },
-                getValue: e => e,
+                options: [
+                    {value: 'primary', label: '主按钮'},
+                    {value: 'default', label: '次按钮'},
+                    {value: 'dashed', label: '虚线按钮'},
+                    {value: 'danger', label: '危险按钮'},
+                ],
                 decorator: {
                     rules: [
                         {required: true, message: '请选择类型！'},
@@ -457,13 +419,12 @@ export default class ListPage extends Component {
             key: 'icon',
             width: '22%',
             props: {
+                type: 'input',
                 decorator: {
                     rules: [
                         {required: false, message: '请选择图标'},
                     ],
                 },
-                component: <FontIconInput/>,
-                getValue: e => e,
             },
         },
         {
@@ -585,8 +546,17 @@ export default class ListPage extends Component {
         const oldFieldsValue = [...this.props.listPage.fields.value];
 
         tableColumns.forEach(item => {
+            // 忽略id字段
+            if (item.camelCaseName === 'id') return;
+
             if (!oldFieldsValue.find(it => it.dataIndex === item.camelCaseName)) {
-                oldFieldsValue.push({title: item.chinese, dataIndex: item.camelCaseName, id: uuid()});
+                oldFieldsValue.push({
+                    id: uuid(),
+                    title: item.chinese,
+                    dataIndex: item.camelCaseName,
+                    sqlType: item.type,
+                    sqlLength: item.length,
+                });
             }
         });
 
@@ -595,172 +565,165 @@ export default class ListPage extends Component {
         this.props.form.setFieldsValue({fields: newFieldsValue});
     };
 
-    renderTableTitle = () => {
+    renderTableTitle = (field) => {
         const {
             database: {tableColumns},
             listPage: {fields},
         } = this.props;
         const hasDatabaseTableColumns = tableColumns && tableColumns.length;
         const {value} = fields;
+        const noSameField = !value?.length || (value.length === 1 && !value[0].dataIndex && !value[0].title);
 
-        if (!value || !value.length || (value.length === 1 && !value[0].dataIndex && !value[0].title)) {
-            return (
-                <div>
-                    表格字段：
-                    <Button disabled={!hasDatabaseTableColumns} onClick={this.handleSyncDatabaseTableColumns}>同步数据库表字段</Button>
-                </div>
-            );
-        }
         return (
             <div>
                 表格字段：
-                <Popconfirm title="以下表单中同名字段保留，新增不同名字段" onConfirm={this.handleSyncDatabaseTableColumns} okText="确定" cancelText="取消">
-                    <Button disabled={!hasDatabaseTableColumns}>同步数据库表字段</Button>
-                </Popconfirm>
+                {noSameField ? (
+                    <Button disabled={!hasDatabaseTableColumns} onClick={this.handleSyncDatabaseTableColumns}>同步数据库表字段</Button>
+                ) : (
+                    <Popconfirm title="以下表单中同名字段保留，新增不同名字段" onConfirm={this.handleSyncDatabaseTableColumns} okText="确定" cancelText="取消">
+                        <Button disabled={!hasDatabaseTableColumns}>同步数据库表字段</Button>
+                    </Popconfirm>
+                )}
+                <this.ClearTable field={field}/>
+                <Button style={{marginLeft: 8}} type="primary" onClick={this.props.onPreviewCode}>代码预览</Button>
             </div>
         );
     };
 
+    ClearTable = ({field}) => {
+        const fieldValue = this.props.form.getFieldValue(field);
+
+        if (fieldValue?.length) {
+            return (
+                <Popconfirm title="您确认清空吗？" onConfirm={() => this.props.form.setFieldsValue({[field]: []})}>
+                    <Button style={{marginLeft: 8}} type="primary">清空</Button>
+                </Popconfirm>
+            );
+        }
+        return null;
+    };
+
+    FormElement = (props) => <FormElement form={this.props.form} {...props}/>;
+
     render() {
         const {
             form: {getFieldDecorator, getFieldError},
-            srcDirectories,
-            onPreviewCode,
+            pagesDirectories,
         } = this.props;
-        const labelSpaceCount = 12;
-        const span = 8;
-        const tipWidth = 30;
 
+        const FormElement = this.FormElement;
         return (
             <Form>
-                {getFieldDecorator('template')(<Input type="hidden"/>)}
+                <FormElement type="hidden" field="template"/>
                 <Row>
-                    <Col span={span}>
-                        <FormItemLayout
-                            label="生成文件目录/文件名"
-                            labelSpaceCount={labelSpaceCount}
-                            tip={<div style={{float: 'left', margin: '0 8px'}}>/</div>}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('outPutDir', {
-                                rules: [
-                                    {required: true, message: '请选择生成文件的目录',},
-                                ],
-                            })(
-                                <TreeSelect
-                                    style={{width: '100%'}}
-                                    showSearch
-                                    dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
-                                    treeData={srcDirectories}
-                                    placeholder="请选择生成文件的目录"
-                                    treeDefaultExpandAll
-                                    treeNodeLabelProp="shortValue"
-                                />
-                            )}
-                        </FormItemLayout>
+                    <Col span={14}>
+                        <div style={{display: 'flex'}}>
+                            <FormElement
+                                wrapperStyle={{flex: 0}}
+                                label="目录/文件名"
+                                tip="可以继续填写子目录，比如：user/UserList.jsx，将自动创建user目录"
+                                type="select-tree"
+                                field="outPutDir"
+                                decorator={{
+                                    rules: [
+                                        {required: true, message: '请选择生成文件的目录'},
+                                    ],
+                                }}
+                                width={200}
+                                showSearch
+                                dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
+                                options={pagesDirectories}
+                                treeDefaultExpandAll
+                                treeNodeLabelProp="shortValue"
+                            />
+                            <FormElement
+                                wrapperStyle={{flex: 1}}
+                                width="100%"
+                                label="/"
+                                labelWidth={24}
+                                required={false}
+                                colon={false}
+                                field="outPutFile"
+                                placeholder="请输入生成的文件名"
+                                decorator={{
+                                    rules: [
+                                        {required: true, message: '请输入生成的文件名'},
+                                    ],
+                                }}
+                            />
+                        </div>
                     </Col>
-                    <Col span={span}>
-                        <FormItemLayout
-                            labelWidth={0}
-                            tip={(
-                                <Tooltip
-                                    placement="right"
-                                    title="可以继续填写子目录，比如：user/UserList.jsx，将自动创建user目录"
-                                >
-                                    <Icon type="question-circle-o"/>
-                                </Tooltip>
-                            )}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('outPutFile', {
+                    <Col span={5}>
+                        <FormElement
+                            label="ajax"
+                            field="ajaxUrl"
+                            decorator={{
                                 rules: [
-                                    {required: true, message: '请输入生成的文件名',},
+                                    {required: true, message: '请输入ajax请求路径'},
                                 ],
-                            })(
-                                <Input placeholder="请输入生成的文件名"/>
-                            )}
-                        </FormItemLayout>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span={span}>
-                        <FormItemLayout
-                            label="ajax请求路径"
-                            labelSpaceCount={labelSpaceCount}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('ajaxUrl', {
-                                rules: [
-                                    {required: true, message: '请输入ajax请求路径',},
-                                ],
-                            })(
-                                <Input placeholder="请输入ajax请求路径"/>
-                            )}
-                        </FormItemLayout>
+                            }}
+                        />
                     </Col>
 
-                    <Col span={span}>
-                        <FormItemLayout
-                            label="页面路由地址"
-                            labelSpaceCount={labelSpaceCount}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('routePath', {
+                    <Col span={5}>
+                        <FormElement
+                            label="路由"
+                            field="routePath"
+                            decorator={{
                                 rules: [
-                                    {required: true, message: '请输入页面路由地址',},
+                                    {required: true, message: '请输入页面路由地址'},
                                 ],
-                            })(
-                                <Input placeholder="请输入页面路由地址"/>
-                            )}
-                        </FormItemLayout>
+                            }}
+                        />
                     </Col>
                 </Row>
-                {getFieldDecorator('fields')(
-                    <EditableTable
+                {getFieldDecorator('fields', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
+                    <TableEditable
+                        size="small"
                         formRef={form => this.fieldsTableForm = form}
                         hasError={getFieldError('fields')}
-                        title={this.renderTableTitle}
+                        title={() => this.renderTableTitle('fields')}
                         columns={this.fieldsColumns}
                         newRecord={{id: uuid(), title: '', dataIndex: ''}}
                         onRowMoved={dataSource => this.props.form.setFieldsValue({fields: dataSource})}
                     />
                 )}
 
-                {getFieldDecorator('queryItems')(
-                    <EditableTable
+                {getFieldDecorator('queryItems', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
+                    <TableEditable
+                        size="small"
                         formRef={form => this.queryItemsTableForm = form}
                         hasError={getFieldError('queryItems')}
-                        title={() => '查询条件：'}
+                        title={() => <span>查询条件：<this.ClearTable field="queryItems"/></span>}
                         columns={this.queryItemsColumns}
                         newRecord={{id: uuid(), field: '', label: '', type: 'input'}}
                         onRowMoved={dataSource => this.props.form.setFieldsValue({queryItems: dataSource})}
                     />
                 )}
 
-                {getFieldDecorator('toolItems')(
-                    <EditableTable
+                {getFieldDecorator('toolItems', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
+                    <TableEditable
+                        size="small"
                         formRef={form => this.toolItemsTableForm = form}
                         hasError={getFieldError('toolItems')}
-                        title={() => '顶部工具条：'}
+                        title={() => <span>顶部工具条：<this.ClearTable field="toolItems"/></span>}
                         columns={this.toolItemsColumns}
                         newRecord={{id: uuid(), type: '', text: '', icon: void 0}}
                         onRowMoved={dataSource => this.props.form.setFieldsValue({toolItems: dataSource})}
                     />
                 )}
 
-                {getFieldDecorator('bottomToolItems')(
-                    <EditableTable
+                {getFieldDecorator('bottomToolItems', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
+                    <TableEditable
+                        size="small"
                         formRef={form => this.bottomToolItemsTableForm = form}
                         hasError={getFieldError('bottomToolItems')}
-                        title={() => '底部工具条：'}
+                        title={() => <span>底部工具条：<this.ClearTable field="bottomToolItems"/></span>}
                         columns={this.bottomToolItemsColumns}
                         newRecord={{id: uuid(), type: '', text: '', icon: void 0}}
                         onRowMoved={dataSource => this.props.form.setFieldsValue({bottomToolItems: dataSource})}
                     />
                 )}
-                <div style={{marginTop: '16px'}}>
-                    <Button type="primary" onClick={onPreviewCode}>代码预览</Button>
-                </div>
             </Form>
         );
     }

@@ -39,13 +39,15 @@ export default class Ajax extends Component {
     handleSendGet404 = () => {
         this.setState({loading: true});
         this.props.ajax
-            .get('/test-ajax404', null, {successTip: '请求成功！'})
+            .get('/generator-files', null, {baseURL: '', successTip: 'get 请求成功！'})
             .then(res => {
                 console.log(res);
             })
             .finally(() => {
                 this.setState({loading: false});
             });
+
+        this.props.ajax.post('/generator-files', null, {baseURL: '', successTip: 'post 请求成功！'});
     };
 
     render() {

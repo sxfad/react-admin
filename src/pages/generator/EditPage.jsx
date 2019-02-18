@@ -1,25 +1,22 @@
 import React, {Component} from 'react';
 import {
     Form,
-    Input,
     Row,
     Col,
-    TreeSelect,
-    Tooltip,
-    Icon,
     Button,
     Popconfirm,
 } from 'antd';
 import uuid from 'uuid/v4';
-import {FormItemLayout, Operator} from 'sx-antd';
-import EditableTable from './EditableTable';
-import {connect} from "../models";
+import {FormElement, Operator, TableEditable} from '@/library/antd';
+import {connect} from "@/models";
+import {typeOptions, getTypeByMysqlType} from "@/pages/generator/utils";
+
 
 @connect(state => ({
     baseInfo: state.baseInfo,
     editPage: state.editPage,
     listPage: state.listPage,
-    srcDirectories: state.generator.srcDirectories,
+    pagesDirectories: state.generator.pagesDirectories,
 }))
 @Form.create({
     mapPropsToFields: (props) => {
@@ -54,7 +51,7 @@ export default class EditPage extends Component {
             title: '字段名',
             dataIndex: 'dataIndex',
             key: 'dataIndex',
-            width: '40%',
+            width: '30%',
             props: {
                 type: 'input',
                 placeholder: '请输入字段名',
@@ -76,11 +73,9 @@ export default class EditPage extends Component {
                         }
                     ],
                 },
-                elementProps: {
-                    onPressEnter: (e) => {
-                        const currentTr = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
-                        currentTr.getElementsByTagName('input')[1].focus();
-                    },
+                onPressEnter: (e) => {
+                    const currentTr = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+                    currentTr.getElementsByTagName('input')[1].focus();
                 },
             },
         },
@@ -88,7 +83,7 @@ export default class EditPage extends Component {
             title: '中文名',
             dataIndex: 'title',
             key: 'title',
-            width: '40%',
+            width: '30%',
             props: {
                 type: 'input',
                 placeholder: '请输入中文名',
@@ -100,22 +95,38 @@ export default class EditPage extends Component {
                         console.log(e);
                     },
                 },
-                elementProps: {
-                    onPressEnter: (e) => {
-                        const {form: {getFieldValue, setFieldsValue}} = this.props;
-                        const value = getFieldValue('fields');
-                        const currentTr = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
-                        const nextTr = currentTr.nextSibling;
+                onPressEnter: (e) => {
+                    const {form: {getFieldValue, setFieldsValue}} = this.props;
+                    const value = getFieldValue('fields');
+                    const currentTr = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+                    const nextTr = currentTr.nextSibling;
 
-                        if (!nextTr) { // 当前输入框在最后一行，新增一行，并且新增行第一个输入框获取焦点
-                            value.push({id: uuid(), title: '', dataIndex: ''});
-                            setFieldsValue({fields: value});
-                            setTimeout(() => currentTr.nextSibling.getElementsByTagName('input')[0].focus());
-                        } else {
-                            nextTr.getElementsByTagName('input')[0].focus();
-                        }
-                    },
+                    if (!nextTr) { // 当前输入框在最后一行，新增一行，并且新增行第一个输入框获取焦点
+                        value.push({id: uuid(), title: '', dataIndex: ''});
+                        setFieldsValue({fields: value});
+                        setTimeout(() => currentTr.nextSibling.getElementsByTagName('input')[0].focus());
+                    } else {
+                        nextTr.getElementsByTagName('input')[0].focus();
+                    }
                 },
+            },
+        },
+        {
+            title: '类型',
+            dataIndex: 'type',
+            key: 'type',
+            width: '20%',
+            props: {
+                type: 'select',
+                placeholder: '请选择类型',
+                decorator: {
+                    initialValue: 'input',
+                    rules: [
+                        {required: true, message: '请选择类型'},
+                    ],
+                },
+                getValue: e => e,
+                options: typeOptions,
             },
         },
         {
@@ -218,144 +229,155 @@ export default class EditPage extends Component {
         const oldFieldsValue = [...this.props.editPage.fields.value];
 
         listPageFieldsValue.forEach(item => {
+            // 过滤掉一些字段
+            if (
+                item.dataIndex === 'createTime'
+                || item.dataIndex === 'updateTime'
+            ) return;
+
             if (!oldFieldsValue.find(it => it.dataIndex === item.dataIndex)) {
-                oldFieldsValue.push({...item, id: uuid()});
+                oldFieldsValue.push({
+                    id: uuid(),
+                    title: item.title,
+                    dataIndex: item.dataIndex,
+                    type: getTypeByMysqlType(item.sqlType),
+                    length: item.sqlLength,
+                });
             }
         });
 
         const newFieldsValue = oldFieldsValue.filter(item => item.title || item.dataIndex);
 
+        if (!newFieldsValue.find(item => item.dataIndex === 'id')) {
+            newFieldsValue.unshift({title: '主键', dataIndex: 'id', type: 'hidden', id: uuid()});
+        }
+
+        console.log(newFieldsValue);
         this.props.form.setFieldsValue({fields: newFieldsValue});
     };
+
+    renderTableTitle = () => {
+        const {fields: {value}} = this.props.editPage;
+        const {fields: {value: listPageFields}} = this.props.listPage;
+        const hasListPageField = listPageFields && listPageFields.length && !(listPageFields.length === 1 && !listPageFields[0].dataIndex && !listPageFields[0].title);
+
+        const noSameField = !value?.length || (value.length === 1 && !value[0].dataIndex && !value[0].title);
+
+        return (
+            <div>
+                表单字段：
+                {noSameField ? (
+                    <Button disabled={!hasListPageField} onClick={this.handleSyncListPageFields}>同步列表页</Button>
+                ) : (
+                    <Popconfirm title="以下表单中同名字段保留，新增不同名字段" onConfirm={this.handleSyncListPageFields} okText="确定" cancelText="取消">
+                        <Button disabled={!hasListPageField}>同步列表页</Button>
+                    </Popconfirm>
+                )}
+                <this.ClearTable field="fields"/>
+                <Button style={{marginLeft: 8}} type="primary" onClick={this.props.onPreviewCode}>代码预览</Button>
+            </div>
+        );
+    };
+
+    ClearTable = ({field}) => {
+        const fieldValue = this.props.form.getFieldValue(field);
+
+        if (fieldValue?.length) {
+            return (
+                <Popconfirm title="您确认清空吗？" onConfirm={() => this.props.form.setFieldsValue({[field]: []})}>
+                    <Button style={{marginLeft: 8}} type="primary">清空</Button>
+                </Popconfirm>
+            );
+        }
+        return null;
+    };
+
+    FormElement = (props) => <FormElement form={this.props.form} {...props}/>;
 
     render() {
         const {
             form: {getFieldDecorator, getFieldError},
-            srcDirectories,
-            onPreviewCode,
+            pagesDirectories,
         } = this.props;
-        const labelSpaceCount = 12;
-        const span = 8;
-        const tipWidth = 30;
+
+        const FormElement = this.FormElement;
 
         return (
             <Form>
-                {getFieldDecorator('template')(<Input type="hidden"/>)}
+                <FormElement type="hidden" field="template"/>
                 <Row>
-                    <Col span={span}>
-                        <FormItemLayout
-                            label="生成文件目录/文件名"
-                            labelSpaceCount={labelSpaceCount}
-                            tip={<div style={{float: 'left', margin: '0 8px'}}>/</div>}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('outPutDir', {
-                                rules: [
-                                    {required: true, message: '请选择生成文件的目录',},
-                                ],
-                            })(
-                                <TreeSelect
-                                    style={{width: '100%'}}
-                                    showSearch
-                                    dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
-                                    treeData={srcDirectories}
-                                    placeholder="请选择生成文件的目录"
-                                    treeDefaultExpandAll
-                                    treeNodeLabelProp="shortValue"
-                                />
-                            )}
-                        </FormItemLayout>
+                    <Col span={14}>
+                        <div style={{display: 'flex'}}>
+                            <FormElement
+                                wrapperStyle={{flex: 0}}
+                                label="目录/文件名"
+                                tip="可以继续填写子目录，比如：user/UserList.jsx，将自动创建user目录"
+                                type="select-tree"
+                                field="outPutDir"
+                                decorator={{
+                                    rules: [
+                                        {required: true, message: '请选择生成文件的目录'},
+                                    ],
+                                }}
+                                width={200}
+                                showSearch
+                                dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
+                                options={pagesDirectories}
+                                treeDefaultExpandAll
+                                treeNodeLabelProp="shortValue"
+                            />
+                            <FormElement
+                                wrapperStyle={{flex: 1}}
+                                width="100%"
+                                label="/"
+                                labelWidth={24}
+                                required={false}
+                                colon={false}
+                                field="outPutFile"
+                                placeholder="请输入生成的文件名"
+                                decorator={{
+                                    rules: [
+                                        {required: true, message: '请输入生成的文件名'},
+                                    ],
+                                }}
+                            />
+                        </div>
                     </Col>
-                    <Col span={span}>
-                        <FormItemLayout
-                            labelWidth={0}
-                            tip={(
-                                <Tooltip
-                                    placement="right"
-                                    title="可以继续填写子目录，比如：user/UserList.jsx，将自动创建user目录"
-                                >
-                                    <Icon type="question-circle-o"/>
-                                </Tooltip>
-                            )}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('outPutFile', {
+                    <Col span={5}>
+                        <FormElement
+                            label="ajax"
+                            field="ajaxUrl"
+                            decorator={{
                                 rules: [
-                                    {required: true, message: '请输入生成的文件名',},
+                                    {required: true, message: '请输入ajax请求路径'},
                                 ],
-                            })(
-                                <Input placeholder="请输入生成的文件名"/>
-                            )}
-                        </FormItemLayout>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span={span}>
-                        <FormItemLayout
-                            label="ajax请求路径"
-                            labelSpaceCount={labelSpaceCount}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('ajaxUrl', {
-                                rules: [
-                                    {required: true, message: '请输入ajax请求路径',},
-                                ],
-                            })(
-                                <Input placeholder="请输入ajax请求路径"/>
-                            )}
-                        </FormItemLayout>
+                            }}
+                        />
                     </Col>
 
-                    <Col span={span}>
-                        <FormItemLayout
-                            label="页面路由地址"
-                            labelSpaceCount={labelSpaceCount}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('routePath', {
+                    <Col span={5}>
+                        <FormElement
+                            label="路由"
+                            field="routePath"
+                            decorator={{
                                 rules: [
-                                    {required: true, message: '请输入页面路由地址',},
+                                    {required: true, message: '请输入页面路由地址'},
                                 ],
-                            })(
-                                <Input placeholder="请输入页面路由地址"/>
-                            )}
-                        </FormItemLayout>
+                            }}
+                        />
                     </Col>
                 </Row>
-                {getFieldDecorator('fields')(
-                    <EditableTable
+                {getFieldDecorator('fields', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
+                    <TableEditable
+                        size="small"
                         formRef={form => this.fieldsTableForm = form}
                         hasError={getFieldError('fields')}
-                        title={() => {
-                            const {fields: {value}} = this.props.editPage;
-                            const {fields: {value: listPageFields}} = this.props.listPage;
-                            const hasListPageField = listPageFields && listPageFields.length && !(listPageFields.length === 1 && !listPageFields[0].dataIndex && !listPageFields[0].title);
-
-                            if (!value || !value.length || (value.length === 1 && !value[0].dataIndex && !value[0].title)) {
-                                return (
-                                    <div>
-                                        表单字段：
-                                        <Button disabled={!hasListPageField} onClick={this.handleSyncListPageFields}>同步列表页</Button>
-                                    </div>
-                                );
-                            }
-                            return (
-                                <div>
-                                    表单字段：
-                                    <Popconfirm title="以下表单中同名字段保留，新增不同名字段" onConfirm={this.handleSyncListPageFields} okText="确定" cancelText="取消">
-                                        <Button disabled={!hasListPageField}>同步列表页</Button>
-                                    </Popconfirm>
-                                </div>
-                            );
-                        }}
+                        title={this.renderTableTitle}
                         columns={this.fieldsColumns}
                         newRecord={{id: uuid(), title: '', dataIndex: ''}}
                         onRowMoved={dataSource => this.props.form.setFieldsValue({fields: dataSource})}
                     />
                 )}
-                <div style={{marginTop: '16px'}}>
-                    <Button type="primary" onClick={onPreviewCode}>代码预览</Button>
-                </div>
             </Form>
         );
     }

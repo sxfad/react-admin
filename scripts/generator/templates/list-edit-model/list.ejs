@@ -1,0 +1,126 @@
+import React, {Component} from 'react';
+import {Operator, ListPage<%if(toolItems && toolItems.length){%>, ToolItem<%}%>} from 'sx-antd';<% if(permissionPrefix){%>
+import {hasPermission} from '<%= fileLevel%>commons';<%}%><%if(bottomToolItems && bottomToolItems.length){%>
+import FixBottom from '<%= fileLevel%>layouts/fix-bottom';<%}%>
+import PageContent from '<%= fileLevel%>layouts/page-content';
+import {connect} from '<%= fileLevel%>models';
+
+export const PAGE_ROUTE = '<%= routePath %>';
+
+@connect(state => ({
+    dataSource: state.<%= lowercaseName %>.dataSource,
+    total: state.<%= lowercaseName %>.total,
+    loading: state.<%= lowercaseName %>.loading,
+}))
+export default class <%= capitalName %>List extends Component {
+<%if(queryItems && queryItems.length){%>
+
+    // TODO 查询条件
+    queryItems = [
+        [<% for (let i = 0;i<queryItems.length;i++){%>
+            {
+                type: '<%= queryItems[i].type%>',
+                field: '<%= queryItems[i].field%>',
+                label: '<%= queryItems[i].label%>',
+                labelSpaceCount: 4,
+                width: 200,
+                placeholder: '请输入<%= queryItems[i].label%>',
+            },<%}%>
+        ],
+    ];<%}%><%if(toolItems && toolItems.length){%>
+
+    // TODO 顶部工具条
+    toolItems = [<% for (let i = 0;i<toolItems.length;i++){%>
+        {
+            type: '<%= toolItems[i].type%>',
+            text: '<%= toolItems[i].text%>',
+            icon: '<%= toolItems[i].icon%>',<%if(permissionPrefix && toolItems[i].permission){%>
+            visible: hasPermission('<%= permissionPrefix %>_<%= toolItems[i].permission%>'),<%}%>
+            onClick: () => {
+                // TODO
+            },
+        },<%}%>
+    ];<%}%><%if(bottomToolItems && bottomToolItems.length){%>
+
+    // TODO 底部工具条
+    bottomToolItems = [<% for (let i = 0;i<bottomToolItems.length;i++){%>
+        {
+            type: '<%= bottomToolItems[i].type%>',
+            text: '<%= bottomToolItems[i].text%>',
+            icon: '<%= bottomToolItems[i].icon%>',<%if(permissionPrefix && bottomToolItems[i].permission){%>
+            visible: hasPermission('<%= permissionPrefix %>_<%= bottomToolItems[i].permission%>'),<%}%>
+            onClick: () => {
+                // TODO
+            },
+        },<%}%>
+    ];<%}%>
+
+    columns = [<% for (let i = 0;i<fields.length;i++){%>
+        {title: '<%= fields[i].title%>', dataIndex: '<%= fields[i].dataIndex%>'},<%}%>
+        {
+            title: '操作',
+            key: 'operator',
+            render: (text, record) => {
+                const {id, <%= fields[0].dataIndex%>} = record;
+                const successTip = `删除“${<%= fields[0].dataIndex%>}”成功！`;
+                const items = [
+                    {
+                        label: '修改',<% if(permissionPrefix){%>
+                        visible: hasPermission('<%= permissionPrefix %>_UPDATE'),<%}%>
+                        onClick: () => {
+                            this.props.history.push(`<%= editPageRoutePath.replace(':id', '${id}') %>`);
+                        },
+                    },
+                    {
+                        label: '删除',
+                        color: 'red',<% if(permissionPrefix){%>
+                        visible: hasPermission('<%= permissionPrefix %>_DELETE'),<%}%>
+                        confirm: {
+                            title: `您确定要删除“${<%= fields[0].dataIndex%>}”？`,
+                            onConfirm: () => {
+                                this.props.action.<%= lowercaseName %>.deleteById({params: {id}, successTip});
+                            },
+                        },
+                    },
+                ];
+
+                return (<Operator items={items}/>);
+            },
+        },
+    ];
+
+    handleSearch = (params) => {
+        this.props.action.<%= lowercaseName %>.getByPage({params});
+    };
+
+    render() {
+        const {
+            total,
+            dataSource,
+            loading,
+        } = this.props;
+
+        return (
+            <PageContent>
+                <ListPage
+                    showSearchButton
+                    showResetButton={false}<%if(queryItems && queryItems.length){%>
+                    queryItems={this.queryItems}<%}%><%if(toolItems && toolItems.length){%>
+                    toolItems={this.toolItems}<%}%>
+                    onSearch={this.handleSearch}
+                    total={total}
+                    tableProps={{
+                        loading,
+                        columns: this.columns,
+                        dataSource,
+                        // TODO 这个rowKey未必正确
+                        rowKey: 'id',
+                    }}
+                /><%if(bottomToolItems && bottomToolItems.length){%>
+                <FixBottom right>
+                    <ToolItem items={this.bottomToolItems}/>
+                </FixBottom><%}%>
+            </PageContent>
+        );
+    }
+}

@@ -183,7 +183,6 @@ export default class FieldsTable extends Component {
         return (
             <Table
                 className={classNames}
-                bordered
                 pagination={false}
                 {...others}
                 columns={columns}

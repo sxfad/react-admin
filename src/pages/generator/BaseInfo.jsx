@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {Form, Input, Row, Col, Icon, Tooltip} from 'antd';
-import {FormItemLayout} from 'sx-antd';
+import {Form, Row, Col, Popconfirm} from 'antd';
+import {FormElement} from '@/library/antd';
 import pluralize from 'pluralize';
-import {connect} from '../models';
-import {firstLowerCase, firstUpperCase, allUpperCase} from '../commons/utils';
+import {connect} from '@/models';
+import {firstLowerCase, firstUpperCase, allUpperCase} from './utils';
 
 
 @connect(state => ({baseInfo: state.baseInfo}))
@@ -81,144 +81,106 @@ export default class BaseInfo extends Component {
             .setFields({showMore: !showMore});
     };
 
+    FormElement = (props) => <FormElement form={this.props.form} labelWidth={150} {...props}/>;
+
     render() {
-        const {form: {getFieldDecorator}, baseInfo: {showMore}} = this.props;
-        const labelSpaceCount = 9;
+        const {baseInfo: {showMore}} = this.props;
         const span = 8;
-        const tipWidth = 30;
+        const FormElement = this.FormElement;
 
         return (
             <Form>
                 <Row>
                     <Col span={span}>
-                        <FormItemLayout
+                        <FormElement
                             label="模块英文名"
-                            labelSpaceCount={labelSpaceCount}
-                            tip={(
-                                <Tooltip
-                                    placement="right"
-                                    title="以'-'分割，全英文小写命名，比如：user-center"
-                                >
-                                    <Icon type="question-circle-o"/>
-                                </Tooltip>
-                            )}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('name', {
+                            tip="以'-'分割，全英文小写命名，比如：user-center"
+                            field="name"
+                            decorator={{
                                 rules: [
                                     {required: true, message: '请输入模块名',},
                                 ],
                                 onChange: this.handleChange,
-                            })(
-                                <Input placeholder="请输入模块名"/>
-                            )}
-                        </FormItemLayout>
+                            }}
+                        />
                     </Col>
 
                     <Col span={span}>
-                        <FormItemLayout
+                        <FormElement
                             label="模块中文名"
-                            labelSpaceCount={labelSpaceCount}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('chineseName', {
+                            field="chineseName"
+                            decorator={{
                                 rules: [
                                     {required: true, message: '请输入中文名',},
                                 ],
-                            })(
-                                <Input placeholder="请输入中文名"/>
-                            )}
-                        </FormItemLayout>
+                            }}
+                        />
                     </Col>
 
                     <Col span={span}>
-                        <FormItemLayout
-                            label=""
-                            labelSpaceCount={0}
-                            tipWidth={tipWidth}
-                        >
-                            <a onClick={this.handleShowMore}>{showMore ? '隐藏更多' : '显示更多'}</a>
-                        </FormItemLayout>
+                        <FormElement form={null}>
+                            <a style={{marginLeft: 16}} onClick={this.handleShowMore}>{showMore ? '隐藏更多' : '显示更多'}</a>
+                            <Popconfirm title="您确认清空吗？" onConfirm={() => this.props.form.resetFields()}>
+                                <a style={{marginLeft: 16}}>清空</a>
+                            </Popconfirm>
+                        </FormElement>
                     </Col>
                 </Row>
                 <Row style={{display: showMore ? 'block' : 'none'}}>
                     <Col span={span}>
-                        <FormItemLayout
+                        <FormElement
                             label="全部大写命名"
-                            labelSpaceCount={labelSpaceCount}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('allCapitalName', {
+                            field="allCapitalName"
+                            decorator={{
                                 rules: [
                                     {required: true, message: '请输入全部大写命名',},
                                 ],
-                            })(
-                                <Input placeholder="请输入全部大写命名"/>
-                            )}
-                        </FormItemLayout>
+                            }}
+                        />
                     </Col>
 
                     <Col span={span}>
-                        <FormItemLayout
+                        <FormElement
                             label="驼峰命名"
-                            labelSpaceCount={labelSpaceCount}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('lowercaseName', {
+                            field="lowercaseName"
+                            decorator={{
                                 rules: [
                                     {required: true, message: '请输入驼峰命名',},
                                 ],
-                            })(
-                                <Input placeholder="请输入驼峰命名"/>
-                            )}
-                        </FormItemLayout>
+                            }}
+                        />
                     </Col>
 
-
                     <Col span={span}>
-                        <FormItemLayout
+                        <FormElement
                             label="复数命名"
-                            labelSpaceCount={labelSpaceCount}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('pluralityName', {
+                            field="pluralityName"
+                            decorator={{
                                 rules: [
                                     {required: true, message: '请输入复数命名',},
                                 ],
-                            })(
-                                <Input placeholder="请输入复数命名"/>
-                            )}
-                        </FormItemLayout>
+                            }}
+                        />
                     </Col>
 
                     <Col span={span}>
-                        <FormItemLayout
+                        <FormElement
                             label="权限前缀"
-                            labelSpaceCount={labelSpaceCount}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('permissionPrefix')(
-                                <Input placeholder="请输入权限前缀"/>
-                            )}
-                        </FormItemLayout>
+                            field="permissionPrefix"
+                        />
                     </Col>
 
                     <Col span={span}>
-                        <FormItemLayout
+                        <FormElement
                             label="大写-驼峰命名"
-                            labelSpaceCount={labelSpaceCount}
-                            tipWidth={tipWidth}
-                        >
-                            {getFieldDecorator('capitalName', {
+                            field="capitalName"
+                            decorator={{
                                 rules: [
                                     {required: true, message: '请输入首字母大写驼峰命名',},
                                 ],
-                            })(
-                                <Input placeholder="请输入首字母大写驼峰命名"/>
-                            )}
-                        </FormItemLayout>
+                            }}
+                        />
                     </Col>
-
                 </Row>
             </Form>
         );

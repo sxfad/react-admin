@@ -10,7 +10,7 @@ import {
     Button,
 } from 'antd';
 import {FormItemLayout} from 'sx-antd';
-import {connect} from '../models';
+import {connect} from '@/models';
 
 @connect(state => ({
     baseInfo: state.baseInfo,

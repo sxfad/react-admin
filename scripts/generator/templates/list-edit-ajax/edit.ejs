@@ -1,0 +1,110 @@
+import React, {Component} from 'react';
+import {Form, Input, Button} from 'antd';
+import {FormItemLayout} from 'sx-antd';
+import PageContent from '<%= fileLevel%>layouts/page-content';
+import {ajaxHoc} from '<%= fileLevel%>commons/ajax';
+
+export const PAGE_ROUTE = '<%= routePath %>';
+
+@ajaxHoc()
+@Form.create()
+export default class <%= capitalName %>Edit extends Component {
+    state = {
+        loading: false,
+        data: {},
+        isAdd: true,
+    };
+
+    componentWillMount() {
+        const {id} = this.props.match.params;
+
+        if (id === ':id') {
+            this.setState({isAdd: true});
+        } else {
+            this.setState({isAdd: false, loading: true});
+            this.props.ajax
+                .get(`<%= ajaxUrl %>/${id}`)
+                .then(res => {
+                    if (res) {
+                        this.setState({data: res});
+                    }
+                })
+                .finally(() => this.setState({loading: false}));
+        }
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        const {isAdd, loading} = this.state;
+        const {form, history} = this.props;
+
+        if (loading) return;
+
+        form.validateFieldsAndScroll((err, values) => {
+            if (!err) {
+                const submitAjax = isAdd ? this.props.ajax.post : this.props.ajax.put;
+                const successTip = isAdd ? '添加成功' : '修改成功';
+
+                this.setState({loading: true});
+                submitAjax('<%= ajaxUrl %>', values, {successTip})
+                    .then(() => history.push('<%= listPageRoutePath %>'))
+                    .catch(() => this.setState({loading: false}));
+            }
+        });
+    };
+
+    handleReset = () => {
+        this.props.form.resetFields();
+    };
+
+    render() {
+        const {form: {getFieldDecorator}} = this.props;
+        const {isAdd, loading, data} = this.state;
+        const title = isAdd ? '添加<%= chineseName %>' : '修改<%= chineseName %>';
+
+        const labelSpaceCount = 4;
+
+        return (
+            <PageContent>
+                <h1 style={{textAlign: 'center'}}>{title}</h1>
+                <Form onSubmit={this.handleSubmit}>
+                    {!isAdd ? getFieldDecorator('id', {initialValue: data.id})(<Input type="hidden"/>) : null}
+<% for (let i = 0;i<fields.length;i++){%>
+                    <FormItemLayout
+                        label="<%= fields[i].title%>"
+                        labelSpaceCount={labelSpaceCount}
+                        width={300}
+                    >
+                        {getFieldDecorator('<%= fields[i].dataIndex%>', {
+                            initialValue: data.<%= fields[i].dataIndex%>,
+                            rules: [
+                                {required: true, message: '请输入<%= fields[i].title%>！'},
+                            ],
+                        })(
+                            <Input placeholder="请输入<%= fields[i].title%>"/>
+                        )}
+                    </FormItemLayout>
+<%}%>
+                    <FormItemLayout
+                        labelSpaceCount={labelSpaceCount}
+                    >
+                        <Button
+                            style={{marginRight: 8}}
+                            loading={loading}
+                            type="primary"
+                            onClick={this.handleSubmit}
+                        >
+                            提交
+                        </Button>
+                        <Button
+                            type="ghost"
+                            onClick={this.handleReset}
+                        >
+                            重置
+                        </Button>
+                    </FormItemLayout>
+                </Form>
+            </PageContent>
+        );
+    }
+}

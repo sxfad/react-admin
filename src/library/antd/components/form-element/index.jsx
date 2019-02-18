@@ -17,7 +17,7 @@ import './index.less';
 const {TextArea, Password} = Input;
 const FormItem = Form.Item;
 
-// input hidden number textarea password mobile email select select-tree checkbox radio switch date time date-time cascader
+// input hidden number textarea password mobile email select select-tree checkbox checkbox-group radio radio-group switch date time date-time date-range cascader
 
 /**
  * 类似 input 元素
@@ -94,9 +94,14 @@ function getElement(item) {
 export default class FormElement extends Component {
     componentDidMount() {
         const {labelWidth} = this.props;
-        if (labelWidth !== void 0) {
-            const label = this.container.querySelector('.ant-form-item-label');
-            if (label) label.style.flexBasis = typeof labelWidth === 'string' ? labelWidth : `${labelWidth}px`;
+        const label = this.container.querySelector('.ant-form-item-label');
+
+        if (label) {
+            if (labelWidth !== void 0) {
+                label.style.flexBasis = typeof labelWidth === 'string' ? labelWidth : `${labelWidth}px`;
+            } else {
+                label.style.paddingLeft = '16px';
+            }
         }
     }
 
@@ -110,6 +115,7 @@ export default class FormElement extends Component {
             tip,
             field,
             decorator,
+            wrapperStyle = {},
 
             // Form.Item属性
             colon,
@@ -150,7 +156,7 @@ export default class FormElement extends Component {
             formLabel = (
                 <span>
                     <Tooltip
-                        placement="left"
+                        placement="bottom"
                         title={tip}
                     >
                         <Icon type="question-circle-o" style={{marginRight: '4px'}}/>
@@ -162,7 +168,7 @@ export default class FormElement extends Component {
 
         return (
             <div
-                style={{display: type === 'hidden' ? 'none' : 'block'}}
+                style={{display: type === 'hidden' ? 'none' : 'block', ...wrapperStyle}}
                 className="form-element-flex-root"
                 ref={node => this.container = node}
             >
