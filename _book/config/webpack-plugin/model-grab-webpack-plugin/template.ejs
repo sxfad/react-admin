@@ -1,5 +1,0 @@
-// 此文件为生成文件，不要直接编辑
-<% for(let i = 0; i< result.length; i++){ %>import _<%= result[i].modelName %> from '<%= result[i].path%>';
-<%}%>
-<% for(let i = 0; i< result.length; i++){ %>export const <%= result[i].modelName %> = _<%= result[i].modelName %>;
-<%}%>
