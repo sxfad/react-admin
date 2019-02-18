@@ -217,15 +217,17 @@ export default class index extends Component {
         });
     };
 
+    FormElement = (props) => <FormElement form={this.props.form} labelWidth={70} {...props}/>;
+
     render() {
         const {
             menus,
             visible,
             loading,
         } = this.state;
-
         const {form} = this.props;
-        const labelWidth = 70;
+
+        const FormElement = this.FormElement;
 
         return (
             <PageContent styleName="root">
@@ -244,17 +246,13 @@ export default class index extends Component {
                     onCancel={() => this.setState({visible: false})}
                 >
                     <Form onSubmit={this.handleSubmit}>
-                        <FormElement form={form} type="hidden" field="key"/>
-                        <FormElement form={form} type="hidden" field="parentKey"/>
+                        <FormElement type="hidden" field="key"/>
+                        <FormElement type="hidden" field="parentKey"/>
                         <Row>
                             <Col span={12}>
                                 <FormElement
-                                    form={form}
                                     label="名称"
-                                    labelWidth={labelWidth}
-                                    type="input"
                                     field="text"
-                                    placeholder="请输入名称"
                                     decorator={{
                                         rules: [
                                             {required: true, message: '请输入名称！'},
@@ -264,28 +262,21 @@ export default class index extends Component {
                             </Col>
                             <Col span={12}>
                                 <FormElement
-                                    form={form}
                                     label="图标"
-                                    labelWidth={labelWidth}
-                                    type="input"
                                     field="icon"
-                                    placeholder="请输入图标"
                                 />
                             </Col>
                         </Row>
                         <Row>
                             <Col span={12}>
                                 <FormElement
-                                    form={form}
                                     label="类型"
-                                    labelWidth={labelWidth}
                                     type="select"
                                     options={[
                                         {value: '1', label: '菜单'},
                                         {value: '2', label: '功能'},
                                     ]}
                                     field="type"
-                                    placeholder="请选择类型"
                                     decorator={{initialValue: '1'}}
                                     getPopupContainer={() => document.querySelector('.ant-modal-wrap')}
                                 />
@@ -293,34 +284,23 @@ export default class index extends Component {
                             <Col span={12}>
                                 <FormElement
                                     disabled={form.getFieldValue('type') !== '2'}
-                                    form={form}
                                     label="编码"
-                                    labelWidth={labelWidth}
-                                    type="input"
                                     field="code"
-                                    placeholder="请输入功能编码"
                                 />
                             </Col>
                         </Row>
                         <Row>
                             <Col span={12}>
                                 <FormElement
-                                    form={form}
                                     label="国际化"
-                                    labelWidth={labelWidth}
-                                    type="input"
                                     field="local"
-                                    placeholder="请输入国际化"
                                 />
                             </Col>
                             <Col span={12}>
                                 <FormElement
-                                    form={form}
                                     label="排序"
-                                    labelWidth={labelWidth}
                                     type="number"
                                     field="order"
-                                    placeholder="请输入排序"
                                     min={0}
                                     step={1}
                                 />
@@ -328,34 +308,22 @@ export default class index extends Component {
                         </Row>
                         <FormElement
                             disabled={form.getFieldValue('type') === '2'}
-                            form={form}
                             label="path"
-                            labelWidth={labelWidth}
-                            type="input"
                             field="path"
-                            placeholder="请输入path"
                         />
                         <Row>
                             <Col span={15}>
                                 <FormElement
                                     disabled={form.getFieldValue('type') === '2'}
-                                    form={form}
                                     label="url"
-                                    labelWidth={labelWidth}
-                                    type="input"
                                     field="url"
-                                    placeholder="请输入url"
                                 />
                             </Col>
                             <Col span={9}>
                                 <FormElement
                                     disabled={form.getFieldValue('type') === '2'}
-                                    form={form}
                                     label="target"
-                                    labelWidth={labelWidth}
-                                    type="input"
                                     field="target"
-                                    placeholder="请输入target"
                                 />
                             </Col>
                         </Row>

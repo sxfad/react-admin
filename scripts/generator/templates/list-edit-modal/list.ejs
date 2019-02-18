@@ -1,0 +1,166 @@
+import React, {Component} from 'react';
+import {Operator, ListPage} from 'zk-tookit/antd';
+import {hasPermission} from '../../commons';
+import EditModal from './Edit';
+import service from '../../../services/service-hoc';
+
+export const PAGE_ROUTE = '/<%= pluralityName %>';
+
+@service()
+export default class <%= capitalName %>List extends Component {
+    state = {
+        total: 0,
+        dataSource: [],
+        modalVisible: false,
+        params: {},
+        modalData: {},
+    };
+
+    queryItems = [
+        [
+            {
+                type: 'input',
+                field: 'name',
+                label: '名称',
+                labelSpaceCount: 4,
+                width: 200,
+                placeholder: '请输入名称',
+            },
+        ],
+    ];
+
+    toolItems = [
+        {
+            type: 'primary',
+            text: '添加',
+            icon: 'fa-plus',
+            visible: hasPermission('<%= functionPrefix %>_ADD'),
+            onClick: () => {
+                this.setState({
+                    modalVisible: true,
+                    modalData: {},
+                });
+            },
+        },
+    ];
+
+    columns = [<% for (let i = 0;i<fields.length;i++){%>
+        {title: '<%= fields[i].title%>', dataIndex: '<%= fields[i].dataIndex%>'},<%}%>
+        {
+            title: '操作',
+            key: 'operator',
+            render: (text, record) => {
+                const {id, name} = record;
+                const successTip = `删除“${name}”成功！`;
+                const items = [
+                    {
+                        label: '编辑',
+                        visible: hasPermission('<%= functionPrefix %>_UPDATE'),
+                        onClick: () => {
+                            this.setState({
+                                modalVisible: true,
+                                modalData: record,
+                            });
+                        },
+                    },
+                    {
+                        label: '删除',
+                        color: 'red',
+                        visible: hasPermission('<%= functionPrefix %>_DELETE'),
+                        confirm: {
+                            title: `您确定要删除“${name}”？`,
+                            onConfirm: () => {
+                                const {<%= lowercaseName %>Service} = this.props.$service;
+                                <%= lowercaseName %>Service.deleteById(id, {successTip})
+                                    .then(() => {
+                                        const dataSource = this.state.dataSource.filter(item => item.id !== id);
+                                        this.setState({dataSource});
+                                    });
+                            },
+                        },
+                    },
+                ];
+
+                return (<Operator items={items}/>);
+            },
+        },
+    ];
+
+    handleSearch = (params) => {
+        if (params) {
+            this.setState({params});
+        } else {
+            params = this.state.params;
+        }
+
+    // TODO 修改查询url
+        const {<%= lowercaseName %>Service} = this.props.$service;
+        return <%= lowercaseName %>Service.getByPage(params)
+            .then(res => {
+                this.setState({
+                    total: res.total,
+                    dataSource: res.list,
+                });
+            });
+    };
+
+    handleCancel = () => {
+        this.setState({
+            modalVisible: false,
+        });
+    };
+
+    handleModalSubmit = (values) => {
+        const isAdd = !values.id; // TODO: 判断是否是添加
+        const {<%= lowercaseName %>Service} = this.props.$service;
+
+        const successTip = isAdd ? '添加成功' : '修改成功';
+        const submitAjax = isAdd ?
+            <%= lowercaseName %>Service.add(values, {successTip})
+            : <%= lowercaseName %>Service.update(values, {successTip});
+
+        this.setState({loading: true});
+
+        submitAjax.then(() => {
+            this.handleCancel();
+            const params = {...this.state.params};
+            params.pageNum = 1;
+            this.handleSearch(params);
+        }).finally(() => {
+            this.setState({loading: false});
+        });
+    };
+
+    render() {
+        const {
+            total,
+            dataSource,
+            modalVisible,
+            modalData,
+        } = this.state;
+        // TODO 修改 modalData.id record.id
+        const isUpdate = !!(modalData && modalData.id);
+        return (
+            <div>
+                <ListPage
+                    queryItems={this.queryItems}
+                    showSearchButton
+                    showResetButton={false}
+                    toolItems={this.toolItems}
+                    columns={this.columns}
+                    onSearch={this.handleSearch}
+                    dataSource={dataSource}
+                    rowKey={record => record.id}
+                    total={total}
+                />
+                <EditModal
+                    isUpdate={isUpdate}
+                    visible={modalVisible}
+                    data={modalData}
+                    onCancel={this.handleCancel}
+                    onOk={this.handleModalSubmit}
+                />
+            </div>
+        );
+    }
+}

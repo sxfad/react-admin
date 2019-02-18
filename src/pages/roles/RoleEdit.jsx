@@ -233,10 +233,12 @@ export default class RoleEdit extends Component {
         })
     };
 
+    FormElement = (props) => <FormElement form={this.props.form} labelWidth={100} {...props}/>;
+
     render() {
-        const {visible, form} = this.props;
+        const {visible} = this.props;
         const {loading, data, menuTreeData, selectedRowKeys} = this.state;
-        const labelWidth = 100;
+        const FormElement = this.FormElement;
         return (
             <Modal
                 destroyOnClose
@@ -249,16 +251,12 @@ export default class RoleEdit extends Component {
             >
                 <Spin spinning={loading}>
                     <Form>
-                        {data.id ? (<FormElement form={form} type="hidden" field="id" decorator={{initialValue: data.id}}/>) : null}
+                        {data.id ? (<FormElement type="hidden" field="id" decorator={{initialValue: data.id}}/>) : null}
                         <Row>
                             <Col span={10}>
                                 <FormElement
-                                    form={form}
                                     label="角色名称"
-                                    labelWidth={labelWidth}
-                                    type="input"
                                     field="name"
-                                    placeholder="请输入角色名称"
                                     decorator={{
                                         initialValue: data.name,
                                         rules: [
@@ -269,12 +267,9 @@ export default class RoleEdit extends Component {
                             </Col>
                             <Col span={14}>
                                 <FormElement
-                                    form={form}
                                     label="角色描述"
-                                    labelWidth={labelWidth}
                                     type="textarea"
                                     field="description"
-                                    placeholder="请输入角色描述"
                                     rows={1}
                                     decorator={{
                                         initialValue: data.description,

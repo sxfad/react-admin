@@ -13,19 +13,18 @@ export default class extends Component {
         });
     };
 
+    FormElement = (props) => <FormElement form={this.props.form} labelWidth={100} {...props}/>;
+
     render() {
-        const {form} = this.props;
-        const labelWidth = 100;
+        const FormElement = this.FormElement;
 
         return (
             <div>
                 <Form onSubmit={this.handleSubmit}>
                     <FormElement
-                        form={form}
                         type="number"
                         field="number"
                         label="数字"
-                        labelWidth={labelWidth}
                         placeholder="请输入数字"
                         decorator={{
                             rules: [
@@ -37,11 +36,8 @@ export default class extends Component {
                     </FormElement>
 
                     <FormElement
-                        form={form}
-                        type="input"
                         field="input"
                         label="输入框"
-                        labelWidth={labelWidth}
                         placeholder="请输入"
                         decorator={{
                             rules: [
@@ -51,11 +47,9 @@ export default class extends Component {
                     />
 
                     <FormElement
-                        form={form}
                         type="select"
                         field="select"
                         label="下拉框"
-                        labelWidth={labelWidth}
                         placeholder="请选择"
                         options={[
                             {label: '选项一', value: '1'},
@@ -66,11 +60,9 @@ export default class extends Component {
                         ]}
                     />
                     <FormElement
-                        form={form}
                         type="date"
                         field="date"
                         label="日期"
-                        labelWidth={labelWidth}
                         placeholder="请选择日期"
                         width={200}
                     />

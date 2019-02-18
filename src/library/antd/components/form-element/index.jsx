@@ -10,21 +10,21 @@ import {
     Switch,
     DatePicker,
     TimePicker,
-    Cascader,
+    Cascader, Icon, Tooltip,
 } from 'antd';
 import './index.less';
 
 const {TextArea, Password} = Input;
 const FormItem = Form.Item;
 
-// input hidden number textarea password mobile email select select-tree checkbox radio switch date time date-time cascader
+// input hidden number textarea password mobile email select select-tree checkbox checkbox-group radio radio-group switch date time date-time date-range cascader
 
 /**
  * 类似 input 元素
  * @param type
  * @returns {boolean}
  */
-function isInputLikeElement(type) {
+export function isInputLikeElement(type) {
     return [
         'input',
         'hidden',
@@ -94,36 +94,45 @@ function getElement(item) {
 export default class FormElement extends Component {
     componentDidMount() {
         const {labelWidth} = this.props;
-        if (labelWidth !== void 0) {
-            const label = this.container.querySelector('.ant-form-item-label');
-            if (label) label.style.flexBasis = typeof labelWidth === 'string' ? labelWidth : `${labelWidth}px`;
+        const label = this.container.querySelector('.ant-form-item-label');
+
+        if (label) {
+            if (labelWidth !== void 0) {
+                label.style.flexBasis = typeof labelWidth === 'string' ? labelWidth : `${labelWidth}px`;
+            } else {
+                label.style.paddingLeft = '16px';
+            }
         }
     }
 
     render() {
         const {
+            // 自定义属性
             form,
+            type = 'input',
+            labelWidth,
+            width, // 元素宽度，默认 100%
+            tip,
+            field,
+            decorator,
+            wrapperStyle = {},
+
+            // Form.Item属性
             colon,
             extra,
             hasFeedback,
             help,
             label,
-            labelWidth,
-            width,
             labelCol,
             required,
             validateStatus,
             wrapperCol,
 
-            field,
-            decorator,
-
             children,
-            type,
             ...others
         } = this.props;
 
-        const {getFieldDecorator} = form;
+        const {getFieldDecorator} = form || {};
 
         let elementStyle = {width: '100%'};
         if (width !== void 0) {
@@ -142,9 +151,24 @@ export default class FormElement extends Component {
             }
         }
 
+        let formLabel = label;
+        if (tip) {
+            formLabel = (
+                <span>
+                    <Tooltip
+                        placement="bottom"
+                        title={tip}
+                    >
+                        <Icon type="question-circle-o" style={{marginRight: '4px'}}/>
+                    </Tooltip>
+                    {label}
+                </span>
+            );
+        }
+
         return (
             <div
-                style={{display: type === 'hidden' ? 'none' : 'block'}}
+                style={{display: type === 'hidden' ? 'none' : 'block', ...wrapperStyle}}
                 className="form-element-flex-root"
                 ref={node => this.container = node}
             >
@@ -153,15 +177,15 @@ export default class FormElement extends Component {
                     extra={extra}
                     hasFeedback={hasFeedback}
                     help={help}
-                    label={label}
+                    label={formLabel}
                     labelCol={labelCol}
                     required={required}
                     validateStatus={validateStatus}
                     wrapperCol={wrapperCol}
                 >
-                    {getFieldDecorator(field, decorator)(
+                    {form ? getFieldDecorator(field, decorator)(
                         getElement({type, ...others, style: elementStyle})
-                    )}
+                    ) : null}
                     {children}
                 </FormItem>
             </div>
