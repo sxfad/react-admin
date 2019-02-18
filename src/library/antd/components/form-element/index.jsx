@@ -10,7 +10,7 @@ import {
     Switch,
     DatePicker,
     TimePicker,
-    Cascader,
+    Cascader, Icon, Tooltip,
 } from 'antd';
 import './index.less';
 
@@ -24,7 +24,7 @@ const FormItem = Form.Item;
  * @param type
  * @returns {boolean}
  */
-function isInputLikeElement(type) {
+export function isInputLikeElement(type) {
     return [
         'input',
         'hidden',
@@ -102,28 +102,31 @@ export default class FormElement extends Component {
 
     render() {
         const {
+            // 自定义属性
             form,
+            type = 'input',
+            labelWidth,
+            width, // 元素宽度，默认 100%
+            tip,
+            field,
+            decorator,
+
+            // Form.Item属性
             colon,
             extra,
             hasFeedback,
             help,
             label,
-            labelWidth,
-            width,
             labelCol,
             required,
             validateStatus,
             wrapperCol,
 
-            field,
-            decorator,
-
             children,
-            type,
             ...others
         } = this.props;
 
-        const {getFieldDecorator} = form;
+        const {getFieldDecorator} = form || {};
 
         let elementStyle = {width: '100%'};
         if (width !== void 0) {
@@ -142,6 +145,21 @@ export default class FormElement extends Component {
             }
         }
 
+        let formLabel = label;
+        if (tip) {
+            formLabel = (
+                <span>
+                    <Tooltip
+                        placement="left"
+                        title={tip}
+                    >
+                        <Icon type="question-circle-o" style={{marginRight: '4px'}}/>
+                    </Tooltip>
+                    {label}
+                </span>
+            );
+        }
+
         return (
             <div
                 style={{display: type === 'hidden' ? 'none' : 'block'}}
@@ -153,15 +171,15 @@ export default class FormElement extends Component {
                     extra={extra}
                     hasFeedback={hasFeedback}
                     help={help}
-                    label={label}
+                    label={formLabel}
                     labelCol={labelCol}
                     required={required}
                     validateStatus={validateStatus}
                     wrapperCol={wrapperCol}
                 >
-                    {getFieldDecorator(field, decorator)(
+                    {form ? getFieldDecorator(field, decorator)(
                         getElement({type, ...others, style: elementStyle})
-                    )}
+                    ) : null}
                     {children}
                 </FormItem>
             </div>

@@ -100,28 +100,23 @@ export default class UserEdit extends Component {
         this.props.form.resetFields();
     };
 
+    FormElement = (props) => <FormElement form={this.props.form} labelWidth={100} {...props}/>;
+
     render() {
         console.log('render UserEdit.jsx');
-        const {
-            query,
-            form,
-        } = this.props;
+        const {query} = this.props;
 
         const {loading, data} = this.state;
 
-        const labelWidth = 100;
+        const FormElement = this.FormElement;
 
         return (
             <PageContent loading={loading} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 <h2>{data.id ? `编辑用户-${query.name}` : '添加用户'}</h2>
                 <Form style={{width: 300}} onSubmit={this.handleSubmit}>
-                    {data.id ? <FormElement form={form} type="hidden" field="id" decorator={{initialValue: data.id}}/> : null}
+                    {data.id ? <FormElement type="hidden" field="id" decorator={{initialValue: data.id}}/> : null}
                     <FormElement
-                        form={form}
                         label="姓名"
-                        labelWidth={labelWidth}
-                        placeholder="请输入姓名"
-                        type="input"
                         field="name"
                         decorator={{
                             initialValue: data.name,
@@ -131,14 +126,10 @@ export default class UserEdit extends Component {
                         }}
                     />
                     <FormElement
-                        form={form}
                         label="年龄"
-                        type="input"
                         field="number"
                         min={0}
                         step={1}
-                        labelWidth={labelWidth}
-                        placeholder="请输入年龄"
                         decorator={{
                             initialValue: data.age,
                             rules: [
@@ -146,7 +137,7 @@ export default class UserEdit extends Component {
                             ],
                         }}
                     />
-                    <div style={{paddingLeft: labelWidth}}>
+                    <div style={{paddingLeft: 100}}>
                         <Button type="primary" htmlType="submit">提交</Button>
                         <Button style={{marginLeft: 8}} onClick={this.handleReset}>重置</Button>
                     </div>
