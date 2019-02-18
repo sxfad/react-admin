@@ -11,7 +11,7 @@
 
 <table>
     <tr>
-        <td><img src="https://user-images.githubusercontent.com/11864780/52922970-f19cb700-335f-11e9-9ead-db0b62e32588.png" alt="登录"/></td>
+        <td><img src="docs/imgs/login.jpg" alt="登录"/></td>
         <td><img src="https://user-images.githubusercontent.com/11864780/52922966-ee093000-335f-11e9-9d84-ca2222a9d616.png" alt="首页"/></td>
     </tr>
     <tr>
