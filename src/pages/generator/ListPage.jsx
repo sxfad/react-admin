@@ -5,6 +5,7 @@ import {
     Col,
     Button,
     Popconfirm,
+    Tabs,
 } from 'antd';
 import uuid from 'uuid/v4';
 import {FormElement, Operator, TableEditable} from "@/library/antd";
@@ -576,7 +577,6 @@ export default class ListPage extends Component {
 
         return (
             <div>
-                表格字段：
                 {noSameField ? (
                     <Button disabled={!hasDatabaseTableColumns} onClick={this.handleSyncDatabaseTableColumns}>同步数据库表字段</Button>
                 ) : (
@@ -590,17 +590,21 @@ export default class ListPage extends Component {
         );
     };
 
-    ClearTable = ({field}) => {
+    ClearTable = ({field, type = 'danger'}) => {
         const fieldValue = this.props.form.getFieldValue(field);
+        const isEmpty = !fieldValue?.length || (fieldValue.length === 1 && !fieldValue[0].title);
 
-        if (fieldValue?.length) {
-            return (
-                <Popconfirm title="您确认清空吗？" onConfirm={() => this.props.form.setFieldsValue({[field]: []})}>
-                    <Button style={{marginLeft: 8}} type="primary">清空</Button>
-                </Popconfirm>
-            );
-        }
-        return null;
+        if (isEmpty) return null;
+
+        return (
+            <Popconfirm title="您确认清空吗？" onConfirm={() => this.props.form.setFieldsValue({[field]: []})}>
+                {type === 'link' ? (
+                    <a style={{marginLeft: 8, color: 'red'}}>清空</a>
+                ) : (
+                    <Button style={{marginLeft: 8}} type={type}>清空</Button>
+                )}
+            </Popconfirm>
+        );
     };
 
     FormElement = (props) => <FormElement form={this.props.form} {...props}/>;
@@ -689,41 +693,44 @@ export default class ListPage extends Component {
                     />
                 )}
 
-                {getFieldDecorator('queryItems', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
-                    <TableEditable
-                        size="small"
-                        formRef={form => this.queryItemsTableForm = form}
-                        hasError={getFieldError('queryItems')}
-                        title={() => <span>查询条件：<this.ClearTable field="queryItems"/></span>}
-                        columns={this.queryItemsColumns}
-                        newRecord={{id: uuid(), field: '', label: '', type: 'input'}}
-                        onRowMoved={dataSource => this.props.form.setFieldsValue({queryItems: dataSource})}
-                    />
-                )}
-
-                {getFieldDecorator('toolItems', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
-                    <TableEditable
-                        size="small"
-                        formRef={form => this.toolItemsTableForm = form}
-                        hasError={getFieldError('toolItems')}
-                        title={() => <span>顶部工具条：<this.ClearTable field="toolItems"/></span>}
-                        columns={this.toolItemsColumns}
-                        newRecord={{id: uuid(), type: '', text: '', icon: void 0}}
-                        onRowMoved={dataSource => this.props.form.setFieldsValue({toolItems: dataSource})}
-                    />
-                )}
-
-                {getFieldDecorator('bottomToolItems', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
-                    <TableEditable
-                        size="small"
-                        formRef={form => this.bottomToolItemsTableForm = form}
-                        hasError={getFieldError('bottomToolItems')}
-                        title={() => <span>底部工具条：<this.ClearTable field="bottomToolItems"/></span>}
-                        columns={this.bottomToolItemsColumns}
-                        newRecord={{id: uuid(), type: '', text: '', icon: void 0}}
-                        onRowMoved={dataSource => this.props.form.setFieldsValue({bottomToolItems: dataSource})}
-                    />
-                )}
+                <Tabs>
+                    <Tabs.TabPane tab={<span>查询条件<this.ClearTable field="queryItems" type="link"/></span>} key="queryItems">
+                        {getFieldDecorator('queryItems', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
+                            <TableEditable
+                                size="small"
+                                formRef={form => this.queryItemsTableForm = form}
+                                hasError={getFieldError('queryItems')}
+                                columns={this.queryItemsColumns}
+                                newRecord={{id: uuid(), field: '', label: '', type: 'input'}}
+                                onRowMoved={dataSource => this.props.form.setFieldsValue({queryItems: dataSource})}
+                            />
+                        )}
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab={<span>顶部工具条<this.ClearTable field="toolItems" type="link"/></span>} key="toolItems">
+                        {getFieldDecorator('toolItems', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
+                            <TableEditable
+                                size="small"
+                                formRef={form => this.toolItemsTableForm = form}
+                                hasError={getFieldError('toolItems')}
+                                columns={this.toolItemsColumns}
+                                newRecord={{id: uuid(), type: '', text: '', icon: void 0}}
+                                onRowMoved={dataSource => this.props.form.setFieldsValue({toolItems: dataSource})}
+                            />
+                        )}
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab={<span>底部工具条<this.ClearTable field="bottomToolItems" type="link"/></span>} key="bottomToolItems">
+                        {getFieldDecorator('bottomToolItems', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
+                            <TableEditable
+                                size="small"
+                                formRef={form => this.bottomToolItemsTableForm = form}
+                                hasError={getFieldError('bottomToolItems')}
+                                columns={this.bottomToolItemsColumns}
+                                newRecord={{id: uuid(), type: '', text: '', icon: void 0}}
+                                onRowMoved={dataSource => this.props.form.setFieldsValue({bottomToolItems: dataSource})}
+                            />
+                        )}
+                    </Tabs.TabPane>
+                </Tabs>
             </Form>
         );
     }

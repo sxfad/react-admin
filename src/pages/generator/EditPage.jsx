@@ -265,7 +265,6 @@ export default class EditPage extends Component {
 
         return (
             <div>
-                表单字段：
                 {noSameField ? (
                     <Button disabled={!hasListPageField} onClick={this.handleSyncListPageFields}>同步列表页</Button>
                 ) : (
@@ -279,17 +278,21 @@ export default class EditPage extends Component {
         );
     };
 
-    ClearTable = ({field}) => {
+    ClearTable = ({field, type = 'danger'}) => {
         const fieldValue = this.props.form.getFieldValue(field);
+        const isEmpty = !fieldValue?.length || (fieldValue.length === 1 && !fieldValue[0].title);
 
-        if (fieldValue?.length) {
-            return (
-                <Popconfirm title="您确认清空吗？" onConfirm={() => this.props.form.setFieldsValue({[field]: []})}>
-                    <Button style={{marginLeft: 8}} type="primary">清空</Button>
-                </Popconfirm>
-            );
-        }
-        return null;
+        if (isEmpty) return null;
+
+        return (
+            <Popconfirm title="您确认清空吗？" onConfirm={() => this.props.form.setFieldsValue({[field]: []})}>
+                {type === 'link' ? (
+                    <a style={{marginLeft: 8, color: 'red'}}>清空</a>
+                ) : (
+                    <Button style={{marginLeft: 8}} type={type}>清空</Button>
+                )}
+            </Popconfirm>
+        );
     };
 
     FormElement = (props) => <FormElement form={this.props.form} {...props}/>;
