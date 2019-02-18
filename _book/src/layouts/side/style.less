@@ -1,0 +1,42 @@
+@headerHeight: 64px;
+@transitionDuration: 300ms;
+@layout-header-background : #001529;
+
+.side {
+    position: fixed;
+    z-index: 999;
+    top: @headerHeight;
+    left: 0;
+    bottom: 0;
+    width: 200px;
+    box-shadow: 2px 0 6px lighten(@layout-header-background, 10%);
+    background: @layout-header-background;
+    transition: all @transitionDuration;
+
+    .outer {
+        position: absolute;
+        width: 100%;
+        top: 0;
+        bottom: 0;
+        overflow: hidden;
+        transition: all @transitionDuration;
+    }
+
+    .inner {
+        position: relative;
+        height: 100%;
+        overflow-x: visible;
+        overflow-y: scroll;
+        transition: all @transitionDuration;
+    }
+
+    .drag-bar {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 10px;
+        height: 100%;
+        cursor: col-resize;
+        z-index: 1;
+    }
+}

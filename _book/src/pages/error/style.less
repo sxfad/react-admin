@@ -1,0 +1,45 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99999;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    position: absolute;
+    bottom: 50px;
+
+    .header {
+        text-align: center;
+
+        h1 {
+            margin: 0;
+            font-size: 88px;
+        }
+    }
+
+    .intro {
+        margin-top: 16px;
+        text-align: center;
+    }
+}
+
+
+.error404 {
+    background: url("./404.jpg") no-repeat center #fff;
+    background-size: contain;
+}
+
+.error401 {
+    background: url("./401.jpg") no-repeat center #fff;
+    background-size: contain;
+}

@@ -1,0 +1,26 @@
+import React from 'react';
+import DemoPage from '@/library/antd/demo-page';<%for(let i = 0; i< demos.length; i++){%>
+import * as <%= demos[i].name%> from '@/library/antd/components/<%= componentName%>/demo/<%= demos[i].name%>';<%}%>
+import config from '@/commons/config-hoc';
+
+const demos = [<%for(let i = 0; i< demos.length; i++){%>
+    {
+        component: <%= demos[i].name%>.default,
+        title: <%= demos[i].name%>.title,
+        markdown: <%= demos[i].name%>.markdown,
+        code: `
+<%- demos[i].code%>
+        `,
+    },
+<%}%>];
+const readme = `<%- readmeTop %>`;
+const api = `<%- readmeBottom %>`;
+
+@config({
+    path: '/example/antd/<%= componentName%>',
+})
+export default class extends React.Component {
+    render() {
+        return <DemoPage demos={demos} readme={readme} api={api}/>;
+    }
+};

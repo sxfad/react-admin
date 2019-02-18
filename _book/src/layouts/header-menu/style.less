@@ -1,0 +1,21 @@
+@headerHeight: 64px;
+
+.header-menu {
+    display: block;
+    height: 100%;
+
+    :global(.ant-menu-root) {
+        border: 0;
+        height: @headerHeight;
+        line-height: @headerHeight - 2;
+    }
+
+    :global(.font-icon) {
+        margin-right: 8px;
+    }
+}
+
+// 这里用了个全局样式
+:global(.ant-menu-submenu-popup .font-icon) {
+    margin-right: 8px;
+}

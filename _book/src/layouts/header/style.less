@@ -1,0 +1,106 @@
+@headerHeight: 64px;
+@transitionDuration: 300ms;
+@layout-header-background: #001529;
+@primary-color: #1890ff;
+
+.header {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: @headerHeight;
+    padding-right: 16px;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+
+    .logo {
+        display: inline-flex;
+        align-items: center;
+        flex-grow: 0;
+        flex-shrink: 0;
+        height: @headerHeight;
+        position: relative;
+        overflow: hidden;
+        background: @layout-header-background;
+        box-shadow: 2px 0 6px lighten(@layout-header-background, 10%);
+
+        h1 {
+            color: #fff;
+        }
+    }
+
+    .trigger {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 0;
+        flex-shrink: 0;
+        height: 100%;
+        font-size: 20px;
+        cursor: pointer;
+        transition: all .3s;
+        padding: 0 24px;
+
+        &:hover {
+            background: @primary-color;
+        }
+    }
+
+    .center {
+        flex-shrink: 1;
+        flex-grow: 1;
+        overflow: auto;
+    }
+
+    .right {
+        display: flex;
+        align-items: stretch;
+        flex-grow: 0;
+        flex-shrink: 0;
+        height: 100%;
+
+        .action {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 0 6px;
+            transition: all @transitionDuration;
+            height: 100%;
+
+            > i {
+                font-size: 16px;
+                vertical-align: middle;
+            }
+
+            //&:global(.ant-popover-open),
+            //&:hover {
+            //    background: lighten(@primary-color, 40%);
+            //}
+        }
+
+    }
+
+    &[data-theme=dark] {
+        background: @layout-header-background;
+        box-shadow: 2px 0 6px lighten(@layout-header-background, 10%);
+
+        .logo {
+            background: @layout-header-background;
+            box-shadow: none;
+        }
+
+        .right {
+            color: #fff;
+        }
+
+        .action {
+            &:global(.ant-popover-open),
+            &:hover {
+                background: lighten(@layout-header-background, 10%) !important;
+            }
+        }
+    }
+}
