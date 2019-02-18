@@ -15,6 +15,7 @@
 
 body > .draggable-tabs-bar-horizontal-item {
     z-index: 9999;
+    transition: 0ms;
 }
 
 .draggable-tabs-bar-horizontal-item {
@@ -34,7 +35,6 @@ body > .draggable-tabs-bar-horizontal-item {
 .draggable-tabs-bar-horizontal-item:hover .draggable-tabs-bar-wrapper {
     background: #fff;
     color: #1890ff;
-    transition: 300ms;
 }
 
 .draggable-tabs-bar-horizontal-item.active .close-wrapper:after,
@@ -66,6 +66,7 @@ body > .draggable-tabs-bar-horizontal-item {
     border-top-right-radius: 5px;
     background-color: #fafafa;
     color: #333;
+    transition: 300ms;
 }
 
 .draggable-tabs-bar-horizontal-item .item-inner {
@@ -95,9 +96,10 @@ body > .draggable-tabs-bar-horizontal-item {
     display: block;
     position: absolute;
     top: 0;
-    left: -5px;
+    left: -3px;
     height: 100%;
     width: 0;
     background: #fafafa;
     box-shadow: 0 0 10px 10px #fafafa;
+    transition: 300ms;
 }
