@@ -16,7 +16,7 @@ const Panel = Collapse.Panel;
 
 @config({
     path: '/admin-crud',
-    title: '页面生成',
+    title: {local: 'codeGenerator', text: '代码生成', icon: 'code'},
     connect: state => ({
         srcDirectories: state.generator.srcDirectories,
         showDatabaseConfig: state.database.showConfig,

@@ -12,6 +12,7 @@ export default {
     },
     menu: {
         menus: 'Menu & Permission',
+        codeGenerator: 'Code Generator',
         home: 'Home',
         document: 'Document',
         page404: '404 Not Found',

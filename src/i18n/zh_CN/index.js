@@ -12,6 +12,7 @@ export default {
     },
     menu: {
         menus: '菜单&权限',
+        codeGenerator: '代码生成',
         home: '首页',
         document: '文档',
         page404: '404页面不存在',
