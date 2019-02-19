@@ -51,7 +51,7 @@ export default class Side extends Component {
             if (selectedMenu && prevSelectedMenu && selectedMenu.key === prevSelectedMenu.key) {
                 return;
             }
-            const selectedMenuNode = this.inner.querySelector('.ant-menu-item-selected');
+            const selectedMenuNode = this.inner?.querySelector('.ant-menu-item-selected');
             if (!selectedMenuNode) return;
 
             const innerHeight = this.inner.clientHeight;

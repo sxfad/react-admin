@@ -134,9 +134,9 @@ export default class extends Component {
         // this.tableForm可以用来做校验，编辑过得数据已经同步到 this.state.value中
         this.tableForm.validateFieldsAndScroll((err, values) => {
             if (err) return;
-            // values为editable-table form使用的数据
+            // values为编辑过得数据，会带有后缀
             console.log(values);
-            // this.state.dataSource 才是真实编辑过得数据
+            // this.state.dataSource 是之前未保存的数据
             console.log(this.state.dataSource);
         });
     };

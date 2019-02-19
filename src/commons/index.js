@@ -9,6 +9,15 @@ const localStorage = window.localStorage;
 const sessionStorage = window.sessionStorage;
 
 /**
+ * 判断是否有权限
+ * @param code
+ */
+export function hasPermission(code) {
+    const loginUser = getLoginUser();
+    return loginUser?.permissions?.includes(code);
+}
+
+/**
  * 设置当前用户信息
  */
 export function setLoginUser(currentUser = {}) {

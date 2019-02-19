@@ -1,31 +1,20 @@
 import React, {Component} from 'react';
-import {Table} from 'antd';<%if(bottomToolItems && bottomToolItems.length){%>
-import FixBottom from '@/layouts/fix-bottom';<%}%>
-import {<%if(queryItems && queryItems.length){%>
-    QueryBar,
-    QueryItem,<%}%><%if(bottomToolItems && bottomToolItems.length){%>
-    ToolItem,<%}%>
-    Pagination,
-    Operator,<%if(toolItems && toolItems.length){%>
-    ToolBar,<%}%>
-} from "@/library/antd";
-import PageContent from '@/layouts/page-content';
-import config from '@/commons/config-hoc';<% if(permissionPrefix){%>
-import {hasPermission} from '@/commons';<%}%>
+import {Operator, ListPage<%if(toolItems && toolItems.length){%>, ToolItem<%}%>} from 'sx-antd';<% if(permissionPrefix){%>
+import {hasPermission} from '<%= fileLevel%>commons';<%}%><%if(bottomToolItems && bottomToolItems.length){%>
+import FixBottom from '<%= fileLevel%>layouts/fix-bottom';<%}%>
+import PageContent from '<%= fileLevel%>layouts/page-content';
+import {ajaxHoc} from '<%= fileLevel%>commons/ajax';
 
-@config({
-    path: '<%= routePath %>',
-    ajax: true,
-})
+export const PAGE_ROUTE = '<%= routePath %>';
+
+@ajaxHoc()
 export default class <%= capitalName %>List extends Component {
+<%if(queryItems && queryItems.length){%>
     state = {
         loading: false,
         dataSource: [],
         total: 0,
-        pageSize: 10,
-        pageNum: 1,
-        params: {},
-    };<%if(queryItems && queryItems.length){%>
+    };
 
     // TODO 查询条件
     queryItems = [
@@ -34,6 +23,9 @@ export default class <%= capitalName %>List extends Component {
                 type: '<%= queryItems[i].type%>',
                 field: '<%= queryItems[i].field%>',
                 label: '<%= queryItems[i].label%>',
+                labelSpaceCount: 4,
+                width: 200,
+                placeholder: '请输入<%= queryItems[i].label%>',
             },<%}%>
         ],
     ];<%}%><%if(toolItems && toolItems.length){%>
@@ -101,16 +93,10 @@ export default class <%= capitalName %>List extends Component {
         },
     ];
 
-    componentDidMount() {
-        this.handleSearch();
-    }
-
-    handleSearch = () => {
-        const {params, pageNum, pageSize} = this.state;
-
+    handleSearch = (params) => {
         this.setState({loading: true});
         this.props.ajax
-            .get('<%= ajaxUrl %>', {...params, pageNum, pageSize})
+            .get('<%= ajaxUrl %>', params)
             .then(res => {
                 if (res) {
                     const {list: dataSource, total} = res;
@@ -125,39 +111,29 @@ export default class <%= capitalName %>List extends Component {
 
     render() {
         const {
-            loading,
-            dataSource,
             total,
-            pageNum,
-            pageSize,
+            dataSource,
+            loading,
         } = this.state;
 
         return (
-            <PageContent loading={loading}><%if(queryItems && queryItems.length){%>
-                <QueryBar>
-                    <QueryItem
-                        loadOptions={this.fetchOptions}
-                        items={this.queryItems}
-                        onSubmit={params => this.setState({params}, this.handleSearch)}
-                    />
-                </QueryBar><%}%><%if(toolItems && toolItems.length){%>
-                <ToolBar
-                    items={this.toolItems}
-                /><%}%>
-                <Table
-                    columns={this.columns}
-                    dataSource={dataSource}
-                    rowKey="id"
-                    pagination={false}
-                />
-                <Pagination
+            <PageContent>
+                <ListPage
+                    showSearchButton
+                    showResetButton={false}<%if(queryItems && queryItems.length){%>
+                    queryItems={this.queryItems}<%}%><%if(toolItems && toolItems.length){%>
+                    toolItems={this.toolItems}<%}%>
+                    onSearch={this.handleSearch}
                     total={total}
-                    pageNum={pageNum}
-                    pageSize={pageSize}
-                    onPageNumChange={pageNum => this.setState({pageNum}, this.handleSearch)}
-                    onPageSizeChange={pageSize => this.setState({pageSize, pageNum: 1}, this.handleSearch)}
+                    tableProps={{
+                        loading,
+                        columns: this.columns,
+                        dataSource,
+                        // TODO 这个rowKey未必正确
+                        rowKey: 'id',
+                    }}
                 /><%if(bottomToolItems && bottomToolItems.length){%>
-                <FixBottom>
+                <FixBottom right>
                     <ToolItem items={this.bottomToolItems}/>
                 </FixBottom><%}%>
             </PageContent>

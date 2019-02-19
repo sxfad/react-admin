@@ -30,6 +30,7 @@ export default {
         google: 'Google',
 
         component: 'Component',
+        tableRowDraggable: 'Table Row Draggable',
         asyncSelect: 'Async Select',
         formElement: 'Form Element',
         formItemLayout: 'Form Item Layout',

@@ -24,19 +24,18 @@ export default class extends Component {
         });
     };
 
+    FormElement = (props) => <FormElement form={this.props.form} labelWidth={100} {...props}/>;
+
     render() {
-        const {form} = this.props;
-        const labelWidth = 100;
+        const FormElement = this.FormElement;
 
         return (
             <div>
                 <Form onSubmit={this.handleSubmit}>
                     <FormElement
-                        form={form}
                         type="number"
                         field="number"
                         label="数字"
-                        labelWidth={labelWidth}
                         placeholder="请输入数字"
                         decorator={{
                             rules: [
@@ -48,11 +47,8 @@ export default class extends Component {
                     </FormElement>
 
                     <FormElement
-                        form={form}
-                        type="input"
                         field="input"
                         label="输入框"
-                        labelWidth={labelWidth}
                         placeholder="请输入"
                         decorator={{
                             rules: [
@@ -62,11 +58,9 @@ export default class extends Component {
                     />
 
                     <FormElement
-                        form={form}
                         type="select"
                         field="select"
                         label="下拉框"
-                        labelWidth={labelWidth}
                         placeholder="请选择"
                         options={[
                             {label: '选项一', value: '1'},
@@ -77,11 +71,9 @@ export default class extends Component {
                         ]}
                     />
                     <FormElement
-                        form={form}
                         type="date"
                         field="date"
                         label="日期"
-                        labelWidth={labelWidth}
                         placeholder="请选择日期"
                         width={200}
                     />
@@ -111,6 +103,11 @@ const api = `## API
 参数|说明|类型|默认值
 ---|---|---|---
 type | 元素类型，可用类型有：input,hidden,number,textarea,password,mobile,email,select,select-tree,checkbox,checkbox-group,radio,radio-group,switch,date,date-range,month,time,cascader | string | 'input'
+tip | 提示信息，会再label前添加问号图标 | string | -
+form | from对象 | object | -
+field | 表单元素字段，即form.getFieldDecorator第一个参数 | string | -  
+decorator | Ant Design form.getFieldDecorator所需的第二个参数 | object | -
+labelWidth | label宽度 | number 或 string | -
 component | 自定义元素，如果配合Form使用，此组件请提供value onChange属性 | ReactNode 或 function | - 
 其他 | 其他属性为Ant Design Form.Item 和表单元素提供的属性 | - | - 
 `;

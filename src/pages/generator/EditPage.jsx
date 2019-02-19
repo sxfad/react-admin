@@ -7,10 +7,11 @@ import {
     Popconfirm,
 } from 'antd';
 import uuid from 'uuid/v4';
-import {FormElement, Operator, TableEditable} from '@/library/antd';
+import {FormElement, Operator, rowDraggable, TableEditable} from '@/library/antd';
 import {connect} from "@/models";
 import {typeOptions, getTypeByMysqlType} from "@/pages/generator/utils";
 
+const Table = rowDraggable(TableEditable);
 
 @connect(state => ({
     baseInfo: state.baseInfo,
@@ -211,7 +212,7 @@ export default class EditPage extends Component {
             form,
             this.fieldsTableForm,
         ].map(item => new Promise((resolve, reject) => {
-            item.validateFieldsAndScroll((err, values) => {
+            item && item.validateFieldsAndScroll((err, values) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -295,11 +296,20 @@ export default class EditPage extends Component {
         );
     };
 
+    handleSortEnd = ({oldIndex, newIndex, field}) => {
+        const {setFieldsValue, getFieldValue} = this.props.form;
+        const dataSource = [...getFieldValue(field)];
+
+        dataSource.splice(newIndex, 0, dataSource.splice(oldIndex, 1)[0]);
+
+        setFieldsValue({[field]: dataSource})
+    };
+
     FormElement = (props) => <FormElement form={this.props.form} {...props}/>;
 
     render() {
         const {
-            form: {getFieldDecorator, getFieldError},
+            form: {getFieldDecorator},
             pagesDirectories,
         } = this.props;
 
@@ -371,14 +381,13 @@ export default class EditPage extends Component {
                     </Col>
                 </Row>
                 {getFieldDecorator('fields', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
-                    <TableEditable
+                    <Table
                         size="small"
                         formRef={form => this.fieldsTableForm = form}
-                        hasError={getFieldError('fields')}
                         title={this.renderTableTitle}
                         columns={this.fieldsColumns}
-                        newRecord={{id: uuid(), title: '', dataIndex: ''}}
-                        onRowMoved={dataSource => this.props.form.setFieldsValue({fields: dataSource})}
+                        helperClass="generator-helper-element"
+                        onSortEnd={({oldIndex, newIndex}) => this.handleSortEnd({oldIndex, newIndex, field: 'fields'})}
                     />
                 )}
             </Form>

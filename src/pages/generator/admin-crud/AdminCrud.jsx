@@ -73,7 +73,7 @@ export default class AdminCrud extends Component {
 
                 this.doSubmit(params, baseInfo);
 
-            }).catch(console.log);
+            }).catch(console.error);
     };
 
     doSubmit = (params, baseInfo) => {
@@ -185,7 +185,7 @@ export default class AdminCrud extends Component {
                     params,
                     onResolve: this.previewCode
                 });
-        }).catch(console.log);
+        }).catch(console.error);
     };
 
     handleEditPagePreviewCode = () => {
@@ -199,7 +199,7 @@ export default class AdminCrud extends Component {
                     params,
                     onResolve: this.previewCode
                 });
-        }).catch(console.log);
+        }).catch(console.error);
     };
 
     handleListEditModelPreviewCode = () => {
@@ -213,7 +213,7 @@ export default class AdminCrud extends Component {
                     params,
                     onResolve: this.previewCode
                 });
-        }).catch(console.log);
+        }).catch(console.error);
     };
 
     previewCode = (content) => {

@@ -8,9 +8,11 @@ import {
     Tabs,
 } from 'antd';
 import uuid from 'uuid/v4';
-import {FormElement, Operator, TableEditable} from "@/library/antd";
+import {FormElement, Operator, TableEditable, rowDraggable} from "@/library/antd";
 import {connect} from "@/models";
 import {typeOptions} from './utils';
+
+const Table = rowDraggable(TableEditable);
 
 @connect(state => ({
     database: state.database,
@@ -607,11 +609,20 @@ export default class ListPage extends Component {
         );
     };
 
+    handleSortEnd = ({oldIndex, newIndex, field}) => {
+        const {setFieldsValue, getFieldValue} = this.props.form;
+        const dataSource = [...getFieldValue(field)];
+
+        dataSource.splice(newIndex, 0, dataSource.splice(oldIndex, 1)[0]);
+
+        setFieldsValue({[field]: dataSource})
+    };
+
     FormElement = (props) => <FormElement form={this.props.form} {...props}/>;
 
     render() {
         const {
-            form: {getFieldDecorator, getFieldError},
+            form: {getFieldDecorator},
             pagesDirectories,
         } = this.props;
 
@@ -682,51 +693,47 @@ export default class ListPage extends Component {
                     </Col>
                 </Row>
                 {getFieldDecorator('fields', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
-                    <TableEditable
+                    <Table
                         size="small"
                         formRef={form => this.fieldsTableForm = form}
-                        hasError={getFieldError('fields')}
                         title={() => this.renderTableTitle('fields')}
                         columns={this.fieldsColumns}
-                        newRecord={{id: uuid(), title: '', dataIndex: ''}}
-                        onRowMoved={dataSource => this.props.form.setFieldsValue({fields: dataSource})}
+                        helperClass="generator-helper-element"
+                        onSortEnd={({oldIndex, newIndex}) => this.handleSortEnd({oldIndex, newIndex, field: 'fields'})}
                     />
                 )}
 
                 <Tabs>
-                    <Tabs.TabPane tab={<span>查询条件<this.ClearTable field="queryItems" type="link"/></span>} key="queryItems">
+                    <Tabs.TabPane forceRender tab={<span>查询条件<this.ClearTable field="queryItems" type="link"/></span>} key="queryItems">
                         {getFieldDecorator('queryItems', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
-                            <TableEditable
+                            <Table
                                 size="small"
                                 formRef={form => this.queryItemsTableForm = form}
-                                hasError={getFieldError('queryItems')}
                                 columns={this.queryItemsColumns}
-                                newRecord={{id: uuid(), field: '', label: '', type: 'input'}}
-                                onRowMoved={dataSource => this.props.form.setFieldsValue({queryItems: dataSource})}
+                                helperClass="generator-helper-element"
+                                onSortEnd={({oldIndex, newIndex}) => this.handleSortEnd({oldIndex, newIndex, field: 'queryItems'})}
                             />
                         )}
                     </Tabs.TabPane>
-                    <Tabs.TabPane tab={<span>顶部工具条<this.ClearTable field="toolItems" type="link"/></span>} key="toolItems">
+                    <Tabs.TabPane forceRender tab={<span>顶部工具条<this.ClearTable field="toolItems" type="link"/></span>} key="toolItems">
                         {getFieldDecorator('toolItems', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
-                            <TableEditable
+                            <Table
                                 size="small"
                                 formRef={form => this.toolItemsTableForm = form}
-                                hasError={getFieldError('toolItems')}
                                 columns={this.toolItemsColumns}
-                                newRecord={{id: uuid(), type: '', text: '', icon: void 0}}
-                                onRowMoved={dataSource => this.props.form.setFieldsValue({toolItems: dataSource})}
+                                helperClass="generator-helper-element"
+                                onSortEnd={({oldIndex, newIndex}) => this.handleSortEnd({oldIndex, newIndex, field: 'toolItems'})}
                             />
                         )}
                     </Tabs.TabPane>
-                    <Tabs.TabPane tab={<span>底部工具条<this.ClearTable field="bottomToolItems" type="link"/></span>} key="bottomToolItems">
+                    <Tabs.TabPane forceRender tab={<span>底部工具条<this.ClearTable field="bottomToolItems" type="link"/></span>} key="bottomToolItems">
                         {getFieldDecorator('bottomToolItems', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
-                            <TableEditable
+                            <Table
                                 size="small"
                                 formRef={form => this.bottomToolItemsTableForm = form}
-                                hasError={getFieldError('bottomToolItems')}
                                 columns={this.bottomToolItemsColumns}
-                                newRecord={{id: uuid(), type: '', text: '', icon: void 0}}
-                                onRowMoved={dataSource => this.props.form.setFieldsValue({bottomToolItems: dataSource})}
+                                helperClass="generator-helper-element"
+                                onSortEnd={({oldIndex, newIndex}) => this.handleSortEnd({oldIndex, newIndex, field: 'bottomToolItems'})}
                             />
                         )}
                     </Tabs.TabPane>

@@ -116,6 +116,7 @@ moreText | 更多文本 | any | \`<span>更多<Icon type="down"/></span>\`
 参数|说明|类型|默认值
 ---|---|---|---
 label | 显示的文本 | any | -
+icon | 显示的图标，Ant Design 官网支持的图标。label将作为Tooltip的title | string | -
 visible | 是否可见 | bool | true
 disabled | 是否禁用 | bool | false
 color | label颜色 | string | -

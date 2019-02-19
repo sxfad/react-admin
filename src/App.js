@@ -2,7 +2,7 @@ import React from 'react';
 import AppRouter from './router/AppRouter';
 import {connect} from './models';
 import Local from './i18n/Local';
-import {getMenuTreeDataAndPermissions, getLoginUser} from './commons'
+import {getMenuTreeDataAndPermissions, getLoginUser, setLoginUser} from './commons'
 
 @connect()
 export default class App extends React.Component {
@@ -21,6 +21,9 @@ export default class App extends React.Component {
             onResolve: (res) => {
                 let menus = res || [];
                 const {permissions} = getMenuTreeDataAndPermissions(menus);
+
+                loginUser.permissions = permissions;
+                setLoginUser(loginUser);
 
                 // 设置当前登录的用户到model中
                 system.setLoginUser(loginUser);
