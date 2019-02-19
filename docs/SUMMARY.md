@@ -14,4 +14,5 @@
 * [权限控制](PERMISSION.md)
 * [Nginx配置](NGINX.md)
 * [开发代理](PROXY.md)
+* [代码生成工具](GENERATOR.md)
 * [其他](OTHER.md)

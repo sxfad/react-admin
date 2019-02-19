@@ -245,6 +245,7 @@ export default class EditPage extends Component {
                     type: getTypeByMysqlType(item.sqlType),
                     length: item.sqlLength,
                     isNullable: item.isNullable,
+                    isRequired: !item.isNullable,
                 });
             }
         });

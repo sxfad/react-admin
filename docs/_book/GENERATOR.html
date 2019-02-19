@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>菜单配置 · GitBook</title>
+        <title>代码生成工具 · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="PAGE.html" />
+    <link rel="next" href="OTHER.html" />
     
     
-    <link rel="prev" href="START.html" />
+    <link rel="prev" href="PROXY.html" />
     
 
     </head>
@@ -115,7 +115,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.3" data-path="MENU.html">
+        <li class="chapter " data-level="1.3" data-path="MENU.html">
             
                 <a href="MENU.html">
             
@@ -271,7 +271,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.15" data-path="GENERATOR.html">
+        <li class="chapter active" data-level="1.15" data-path="GENERATOR.html">
             
                 <a href="GENERATOR.html">
             
@@ -327,7 +327,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >菜单配置</a>
+        <a href="." >代码生成工具</a>
     </h1>
 </div>
 
@@ -342,87 +342,20 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="&#x83DC;&#x5355;&#x914D;&#x7F6E;">&#x83DC;&#x5355;&#x914D;&#x7F6E;</h1>
-<p>&#x5728;<code>/src/menus.js</code>&#x6587;&#x4EF6;&#x4E2D;&#x914D;&#x7F6E;&#x83DC;&#x5355;&#x6570;&#x636E;&#xFF0C;&#x524D;&#x7AEF;&#x786C;&#x7F16;&#x7801;&#x6216;&#x5F02;&#x6B65;&#x52A0;&#x8F7D;&#x83DC;&#x5355;&#x6570;&#x636E;&#x3002;</p>
-<h2 id="&#x83DC;&#x5355;&#x7279;&#x6027;">&#x83DC;&#x5355;&#x7279;&#x6027;</h2>
-<p>&#x4E3A;&#x4E86;&#x7B80;&#x5316;&#x5F00;&#x53D1;&#xFF0C;&#x8BA9;&#x5F00;&#x53D1;&#x7740;&#x4E13;&#x6CE8;&#x4E8E;&#x4E1A;&#x52A1;&#x903B;&#x8F91;&#xFF0C;&#x7CFB;&#x7EDF;&#x5BF9;&#x83DC;&#x5355;&#x8FDB;&#x884C;&#x4E86;&#x4E00;&#x4E9B;&#x5C01;&#x88C5;&#x3002;</p>
+                                <h1 id="&#x4EE3;&#x7801;&#x751F;&#x6210;&#x5DE5;&#x5177;">&#x4EE3;&#x7801;&#x751F;&#x6210;&#x5DE5;&#x5177;</h1>
+<p>&#x7BA1;&#x7406;&#x7CFB;&#x7EDF;&#x5927;&#x91CF;&#x4EE3;&#x7801;&#x662F;CRUD&#xFF0C;&#x901A;&#x8FC7;&#x5DE5;&#x5177;&#x53EF;&#x4EE5;&#x5FEB;&#x901F;&#x751F;&#x6210;&#x6A21;&#x7248;&#x4EE3;&#x7801;&#xFF0C;&#x5728;&#x6B64;&#x57FA;&#x7840;&#x4E0A;&#x518D;&#x505A;&#x4FEE;&#x6539;&#xFF0C;&#x53EF;&#x4EE5;&#x6781;&#x5927;&#x7A0B;&#x5EA6;&#x63D0;&#x9AD8;&#x5F00;&#x53D1;&#x6548;&#x7387;&#x3002;</p>
+<h2 id="&#x7279;&#x6027;">&#x7279;&#x6027;</h2>
 <ul>
-<li>&#x83DC;&#x5355;&#x652F;&#x6301;&#x5934;&#x90E8;&#x3001;&#x5DE6;&#x4FA7;&#x3001;&#x5934;&#x90E8;+&#x5DE6;&#x4FA7;<strong>&#x4E09;&#x79CD;&#x5E03;&#x5C40;&#x65B9;&#x5F0F;</strong>&#xFF0C;&#x8BE6;&#x89C1;<a href="LAYOUT.html">&#x5BFC;&#x822A;&#x5E03;&#x5C40;</a>&#xFF1B;</li>
-<li>&#x7CFB;&#x7EDF;&#x4F1A;&#x57FA;&#x4E8E;&#x8DEF;&#x7531;path<strong>&#x81EA;&#x52A8;&#x9009;&#x4E2D;</strong>&#x5BF9;&#x5E94;&#x7684;&#x83DC;&#x5355;&#xFF1B;</li>
-<li>&#x65E0;&#x83DC;&#x5355;&#x5BF9;&#x5E94;&#x7684;&#x4E8C;&#x7EA7;&#x9875;&#x9762;&#x4E5F;&#x53EF;&#x4EE5;<strong>&#x9009;&#x4E2D;&#x76F8;&#x5E94;&#x7236;&#x7EA7;</strong>&#x83DC;&#x5355;&#xFF0C;&#x8BE6;&#x89C1;<a href="ROUTE.html">&#x7CFB;&#x7EDF;&#x8DEF;&#x7531;</a>&#xFF1B;</li>
-<li>&#x5DE6;&#x4FA7;&#x83DC;&#x5355;&#x4F1A;<strong>&#x81EA;&#x52A8;&#x6EDA;&#x52A8;</strong>&#x5230;&#x53EF;&#x89C6;&#x8303;&#x56F4;&#x5185;&#xFF1B;</li>
-<li>&#x5DE6;&#x4FA7;&#x83DC;&#x5355;&#x652F;&#x6301;<strong>&#x5C55;&#x5F00;&#x6536;&#x8D77;</strong>&#x3001;<strong>&#x62D6;&#x62FD;&#x6539;&#x53D8;&#x5BBD;&#x5EA6;</strong></li>
-<li>&#x9875;&#x9762;&#x6807;&#x9898;&#x3001;tab&#x6807;&#x7B7E;&#x9875;&#x6807;&#x9898;&#x3001;&#x9762;&#x5305;&#x5C51;&#x57FA;&#x4E8E;&#x83DC;&#x5355;&#x72B6;&#x6001;<strong>&#x81EA;&#x52A8;&#x751F;&#x6210;</strong>&#xFF0C;&#x4F46;&#x4E5F;&#x63D0;&#x4F9B;&#x4E86;&#x5BF9;&#x5E94;&#x7684;&#x4FEE;&#x6539;&#x65B9;&#x5F0F;&#xFF0C;&#x8BE6;&#x89C1;<a href="PAGE.html">&#x9875;&#x9762;&#x5F00;&#x53D1;</a>&#xFF1B;</li>
-<li>&#x901A;&#x8FC7;&#x83DC;&#x5355;&#x914D;&#x7F6E;&#xFF0C;&#x652F;&#x6301;&#x5185;&#x5D4C;<strong>iframe</strong>&#x6253;&#x5F00;&#x9875;&#x9762;&#x3001;<strong>a&#x6807;&#x7B7E;</strong>&#x65B9;&#x5F0F;&#x6253;&#x5F00;&#x9875;&#x9762;&#xFF1B;</li>
+<li>&#x53EF;&#x751F;&#x6210;CRUD&#x57FA;&#x7840;&#x4EE3;&#x7801;</li>
+<li>&#x591A;&#x79CD;&#x547D;&#x540D;&#x81EA;&#x52A8;&#x751F;&#x6210;</li>
+<li>&#x6293;&#x53D6;&#x6570;&#x636E;&#x5E93;&#x8868;&#x4FE1;&#x606F;&#x4F5C;&#x4E3A;&#x57FA;&#x7840;&#x4FE1;&#x606F;</li>
+<li>&#x914D;&#x7F6E;&#x8868;&#x683C;&#x53EF;&#x4EE5;&#x62D6;&#x62FD;&#x6392;&#x5E8F;</li>
+<li>&#x53EF;&#x4EE3;&#x7801;&#x9884;&#x89C8;</li>
+<li>&#x81EA;&#x52A8;&#x9884;&#x751F;&#x6210;&#x76EE;&#x5F55;</li>
+<li>&#x8868;&#x5355;&#x7C7B;&#x578B;&#x57FA;&#x4E8E;&#x6570;&#x636E;&#x5E93;&#x7C7B;&#x578B;&#x5224;&#x65AD;</li>
 </ul>
-<h2 id="&#x83DC;&#x5355;&#x5B57;&#x6BB5;&#x8BF4;&#x660E;">&#x83DC;&#x5355;&#x5B57;&#x6BB5;&#x8BF4;&#x660E;</h2>
-<p>&#x5F00;&#x53D1;&#x4EBA;&#x5458;&#x53EF;&#x4EE5;&#x6839;&#x636E;&#x81EA;&#x5DF1;&#x7684;&#x9700;&#x8981;&#xFF0C;&#x914D;&#x7F6E;&#x6240;&#x9700;&#x5B57;&#x6BB5;&#x3002;</p>
-<table>
-<thead>
-<tr>
-<th>&#x5B57;&#x6BB5;</th>
-<th>&#x5FC5;&#x987B;</th>
-<th>&#x8BF4;&#x660E;</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>key</td>
-<td>&#x662F;</td>
-<td>&#x9700;&#x8981;&#x552F;&#x4E00;</td>
-</tr>
-<tr>
-<td>parentKey</td>
-<td>&#x5426;</td>
-<td>&#x7528;&#x4E8E;&#x5173;&#x8054;&#x7236;&#x7EA7;</td>
-</tr>
-<tr>
-<td>path</td>
-<td>&#x662F;</td>
-<td>&#x83DC;&#x5355;&#x5BF9;&#x5E94;&#x7684;&#x8DEF;&#x7531;&#x5730;&#x5740;</td>
-</tr>
-<tr>
-<td>text</td>
-<td>&#x662F;</td>
-<td>&#x5982;&#x679C;local&#x5BF9;&#x5E94;&#x7684;&#x6587;&#x6848;&#x6709;&#x6548;&#xFF0C;&#x5C06;&#x8986;&#x76D6;text&#xFF0C;&#x5426;&#x5219;&#x83DC;&#x5355;&#x9ED8;&#x8BA4;&#x4F7F;&#x7528;text&#x4F5C;&#x4E3A;&#x5C55;&#x793A;&#x5185;&#x5BB9;</td>
-</tr>
-<tr>
-<td>icon</td>
-<td>&#x5426;</td>
-<td>&#x83DC;&#x5355;&#x56FE;&#x6807;&#x914D;&#x7F6E;</td>
-</tr>
-<tr>
-<td>url</td>
-<td>&#x5426;</td>
-<td>&#x83DC;&#x5355;&#x5BF9;&#x5E94;&#x4F1A;&#x6253;&#x5F00;url&#x5BF9;&#x5E94;&#x7684;iframe&#x9875;&#x9762;&#xFF0C;&#x5982;&#x679C;&#x914D;&#x7F6E;&#x4E86;url&#xFF0C;path&#x5C06;&#x65E0;&#x6548;</td>
-</tr>
-<tr>
-<td>target</td>
-<td>&#x5426;</td>
-<td>&#x914D;&#x5408;url&#x4F7F;&#x7528;&#xFF0C;&#x83DC;&#x5355;&#x5C06;&#x4E3A;a&#x6807;&#x7B7E; <code>&lt;a href={url} target={target}&gt;{text}&lt;/a&gt;</code></td>
-</tr>
-<tr>
-<td>local</td>
-<td>&#x5426;</td>
-<td>&#x56FD;&#x9645;&#x5316;&#x914D;&#x7F6E;&#xFF0C;&#x7CFB;&#x7EDF;&#x5728;i18n.menu&#x4E2D;&#x83B7;&#x53D6;&#x5BF9;&#x5E94;&#x7684;&#x6587;&#x6848;</td>
-</tr>
-<tr>
-<td>order</td>
-<td>&#x5426;</td>
-<td>&#x83DC;&#x5355;&#x6392;&#x5E8F;&#xFF0C;&#x6570;&#x503C;&#x8D8A;&#x5927;&#x8D8A;&#x9760;&#x524D;&#x663E;&#x793A;</td>
-</tr>
-<tr>
-<td>type</td>
-<td>&#x5426;</td>
-<td>&#x5982;&#x679C;&#x83DC;&#x5355;&#x6570;&#x636E;&#x4E2D;&#x643A;&#x5E26;&#x529F;&#x80FD;&#x6743;&#x9650;&#x914D;&#x7F6E;&#xFF0C;type===&apos;1&apos; &#x4E3A;&#x83DC;&#x5355;&#xFF0C;type===&apos;2&apos;&#x4E3A;&#x529F;&#x80FD;</td>
-</tr>
-<tr>
-<td>code</td>
-<td>&#x5426;</td>
-<td>&#x529F;&#x80FD;&#x7801;&#xFF0C;&#x5982;&#x679C;&#x662F;type===&apos;2&apos;&#xFF0C;&#x4F1A;&#x7528;&#x5230;&#x6B64;&#x5B57;&#x6BB5;</td>
-</tr>
-</tbody>
-</table>
+<h2 id="&#x4F7F;&#x7528;&#x65B9;&#x6CD5;">&#x4F7F;&#x7528;&#x65B9;&#x6CD5;</h2>
+<p>&#x7CFB;&#x7EDF;&#x5F00;&#x53D1;&#x6A21;&#x5F0F;&#x4E0B;&#x56DE;&#x542F;&#x52A8;&#x751F;&#x6210;&#x5DE5;&#x5177;&#x670D;&#x52A1;&#xFF0C;&#x5165;&#x53E3;&#x5728;&#x53F3;&#x4E0A;&#x89D2;&#x7528;&#x6237;&#x4E0B;&#x62C9;&#x83DC;&#x5355;&#x5185;&#x3002;</p>
 
                                 
                                 </section>
@@ -450,12 +383,12 @@
 
             
                 
-                <a href="START.html" class="navigation navigation-prev " aria-label="Previous page: 快速开始">
+                <a href="PROXY.html" class="navigation navigation-prev " aria-label="Previous page: 开发代理">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="PAGE.html" class="navigation navigation-next " aria-label="Next page: 页面开发">
+                <a href="OTHER.html" class="navigation navigation-next " aria-label="Next page: 其他">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -466,7 +399,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"菜单配置","level":"1.3","depth":1,"next":{"title":"页面开发","level":"1.4","depth":1,"path":"PAGE.md","ref":"PAGE.md","articles":[]},"previous":{"title":"快速开始","level":"1.2","depth":1,"path":"START.md","ref":"START.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"MENU.md","mtime":"2019-02-18T01:22:17.197Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-19T07:41:31.385Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"代码生成工具","level":"1.15","depth":1,"next":{"title":"其他","level":"1.16","depth":1,"path":"OTHER.md","ref":"OTHER.md","articles":[]},"previous":{"title":"开发代理","level":"1.14","depth":1,"path":"PROXY.md","ref":"PROXY.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"GENERATOR.md","mtime":"2019-02-19T07:47:08.435Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-19T07:41:31.385Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

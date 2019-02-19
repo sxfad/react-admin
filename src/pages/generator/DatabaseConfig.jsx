@@ -194,7 +194,7 @@ export default class DatabaseConfig extends Component {
                         // {title: '中文名', dataIndex: 'chinese', key: 'chinese'},
                         {title: '类型', dataIndex: 'type', key: 'type'},
                         {title: '长度', dataIndex: 'length', key: 'length'},
-                        {title: '是否可空', dataIndex: 'isNullable', key: 'isNullable'},
+                        {title: '是否可空', dataIndex: 'isNullable', key: 'isNullable', render: value => value ? '是' : '否'},
                         {title: '注释', dataIndex: 'comment', key: 'comment'},
                     ]}
                     rowKey="camelCaseName"
