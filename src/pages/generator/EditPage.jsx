@@ -194,7 +194,7 @@ export default class EditPage extends Component {
 
         if (name !== oldName) {
             const ajaxUrl = `/${name}`;
-            const routePath = `/${name}/+edit/:id`;
+            const routePath = `/${name}/_/edit/:id`;
             const outPutFile = `${name}/${capitalName}Edit.jsx`;
 
             setFieldsValue({
