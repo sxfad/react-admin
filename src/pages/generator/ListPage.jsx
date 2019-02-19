@@ -559,6 +559,7 @@ export default class ListPage extends Component {
                     dataIndex: item.camelCaseName,
                     sqlType: item.type,
                     sqlLength: item.length,
+                    isNullable: item.isNullable,
                 });
             }
         });

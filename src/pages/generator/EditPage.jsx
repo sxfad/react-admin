@@ -244,15 +244,12 @@ export default class EditPage extends Component {
                     dataIndex: item.dataIndex,
                     type: getTypeByMysqlType(item.sqlType),
                     length: item.sqlLength,
+                    isNullable: item.isNullable,
                 });
             }
         });
 
         const newFieldsValue = oldFieldsValue.filter(item => item.title || item.dataIndex);
-
-        if (!newFieldsValue.find(item => item.dataIndex === 'id')) {
-            newFieldsValue.unshift({title: '主键', dataIndex: 'id', type: 'hidden', id: uuid()});
-        }
 
         console.log(newFieldsValue);
         this.props.form.setFieldsValue({fields: newFieldsValue});

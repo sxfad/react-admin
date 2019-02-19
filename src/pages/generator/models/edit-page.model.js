@@ -16,7 +16,7 @@ export default {
         outPutDir: true,
         outPutFile: true,
         template: true,
-        fields: {value: [{id: true, title: true, dataIndex: true, camelCaseName: true, type: true, sqlType: true, length: true, isNullable: true, comment: true,}]},
+        fields: {value: [{id: true, title: true, dataIndex: true, camelCaseName: true, type: true, sqlType: true, sqlLength: true, length: true, isNullable: true, comment: true,}]},
     },
 
     setFields: (fields) => ({...fields}),

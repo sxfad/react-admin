@@ -105,7 +105,8 @@ export default class <%= capitalName %>Edit extends Component {
                             decorator={{
                                 initialValue: data.<%= fields[i].dataIndex%>,
                                 rules: [
-                                    {required: true, message: '请输入<%= fields[i].title%>！'},
+                                    {required: true, message: '<%= fields[i].title%>不能为空！'},
+                                    {max: <%= fields[i].length%>, message: '最多<%= fields[i].length%>个字符！'},
                                 ],
                             }}
                         />

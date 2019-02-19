@@ -7,6 +7,7 @@ import FormElement from '../form-element';
 import classnames from 'classnames';
 import './index.less';
 
+
 @Form.create()
 export default class FieldsTable extends Component {
     static propTypes = {
@@ -29,6 +30,27 @@ export default class FieldsTable extends Component {
     };
 
     state = {};
+
+    static getValues(values) {
+        const tempValues = {};
+
+        Object.keys(values).forEach(key => {
+            const value = values[key];
+            const realKey = key.split('-')[0];
+            const index = key.indexOf('-');
+            if (index > -1) {
+                const id = key.substring(index);
+                if (tempValues[id]) {
+                    tempValues[id][realKey] = value;
+                } else {
+                    tempValues[id] = {[realKey]: value};
+                }
+            }
+        });
+        const realValues = Object.keys(tempValues).map(key => tempValues[key]);
+
+        return realValues?.length ? realValues : values;
+    };
 
     componentWillMount() {
         const {formRef, form} = this.props;
@@ -116,6 +138,7 @@ export default class FieldsTable extends Component {
 
         const decorator = {};
 
+        // 会卡
         decorator.onChange = (e) => {
             const {getValue = (e) => e.target ? e.target.value : e} = props;
             const val = getValue(e);
@@ -128,7 +151,6 @@ export default class FieldsTable extends Component {
 
             if (!currentRecord.__changed) currentRecord.__changed = new Set();
             currentRecord.__changed.add(dataIndex);
-
             onChange(this.props.dataSource, nextDataSource);
         };
 
