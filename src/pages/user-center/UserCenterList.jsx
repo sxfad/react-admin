@@ -1,16 +1,15 @@
 import React, {Component} from 'react';
 import {Table} from 'antd';
-import FixBottom from '@/layouts/fix-bottom';
 import {
     QueryBar,
     QueryItem,
-    ToolItem,
     Pagination,
     Operator,
     ToolBar,
 } from "@/library/antd";
 import PageContent from '@/layouts/page-content';
 import config from '@/commons/config-hoc';
+import UserCenterEdit from './UserCenterEdit';
 
 @config({
     path: '/user-center',
@@ -24,6 +23,8 @@ export default class UserCenterList extends Component {
         pageSize: 10,
         pageNum: 1,
         params: {},
+        id: void 0,
+        visible: false,
     };
 
     // TODO 查询条件
@@ -31,13 +32,18 @@ export default class UserCenterList extends Component {
         [
             {
                 type: 'input',
+                field: 'inMno',
+                label: '用户商编',
+            },
+            {
+                type: 'input',
                 field: 'userNo',
                 label: '用户号',
             },
             {
-                type: 'input',
-                field: 'inMno',
-                label: '用户商编',
+                type: 'date-time',
+                field: 'updateTime',
+                label: '最后修改时间',
             },
         ],
     ];
@@ -45,32 +51,10 @@ export default class UserCenterList extends Component {
     // TODO 顶部工具条
     toolItems = [
         {
-            type: '',
-            text: '',
-            icon: '',
-            onClick: () => {
-                // TODO
-            },
-        },
-        {
-            type: '',
-            text: '',
-            icon: '',
-            onClick: () => {
-                // TODO
-            },
-        },
-    ];
-
-    // TODO 底部工具条
-    bottomToolItems = [
-        {
-            type: '',
-            text: '',
-            icon: '',
-            onClick: () => {
-                // TODO
-            },
+            type: 'primary',
+            text: '添加',
+            icon: 'plus',
+            onClick: () => this.handleAdd(),
         },
     ];
 
@@ -92,7 +76,7 @@ export default class UserCenterList extends Component {
                     {
                         label: '修改',
                         onClick: () => {
-                            this.props.history.push(`/user-center/+edit`);
+                            this.handleEdit(id);
                         },
                     },
                     {
@@ -101,10 +85,11 @@ export default class UserCenterList extends Component {
                         confirm: {
                             title: `您确定要删除“${customerNo}”？`,
                             onConfirm: () => {
-                                this.props.ajax.del(`/user-center/${id}`, null, {successTip}).then(() => {
-                                    const dataSource = this.state.dataSource.filter(item => item.id !== id);
-                                    this.setState({dataSource});
-                                });
+                                this.setState({loading: true});
+                                this.props.ajax
+                                    .del(`/user-center/${id}`, null, {successTip})
+                                    .then(() => this.handleSearch())
+                                    .finally(() => this.setState({loading: false}));
                             },
                         },
                     },
@@ -137,6 +122,14 @@ export default class UserCenterList extends Component {
             .finally(() => this.setState({loading: false}));
     };
 
+    handleAdd = () => {
+        this.setState({id: void 0, visible: true});
+    };
+
+    handleEdit = (id) => {
+        this.setState({id, visible: true});
+    };
+
     render() {
         const {
             loading,
@@ -144,29 +137,29 @@ export default class UserCenterList extends Component {
             total,
             pageNum,
             pageSize,
+            visible,
+            id,
         } = this.state;
 
         return (
             <PageContent loading={loading}>
-                <QueryBar
-                    showCollapsed
-                    onCollapsedChange={collapsed => this.setState({collapsed})}
-                >
+                <QueryBar>
                     <QueryItem
                         loadOptions={this.fetchOptions}
                         items={this.queryItems}
                         onSubmit={params => this.setState({params}, this.handleSearch)}
                     />
                 </QueryBar>
-                <ToolBar
-                    items={this.toolItems}
-                />
+
+                <ToolBar items={this.toolItems}/>
+
                 <Table
                     columns={this.columns}
                     dataSource={dataSource}
                     rowKey="id"
                     pagination={false}
                 />
+
                 <Pagination
                     total={total}
                     pageNum={pageNum}
@@ -174,9 +167,13 @@ export default class UserCenterList extends Component {
                     onPageNumChange={pageNum => this.setState({pageNum}, this.handleSearch)}
                     onPageSizeChange={pageSize => this.setState({pageSize, pageNum: 1}, this.handleSearch)}
                 />
-                <FixBottom>
-                    <ToolItem items={this.bottomToolItems}/>
-                </FixBottom>
+
+                <UserCenterEdit
+                    id={id}
+                    visible={visible}
+                    onOk={() => this.setState({visible: false})}
+                    onCancel={() => this.setState({visible: false})}
+                />
             </PageContent>
         );
     }

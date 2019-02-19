@@ -10,7 +10,7 @@ import {
 import uuid from 'uuid/v4';
 import {FormElement, Operator, TableEditable, rowDraggable} from "@/library/antd";
 import {connect} from "@/models";
-import {typeOptions} from './utils';
+import {typeOptions, getTypeByMysqlType} from "@/pages/generator/utils";
 
 const Table = rowDraggable(TableEditable);
 
@@ -121,7 +121,7 @@ export default class ListPage extends Component {
             width: '20%',
             dataIndex: 'operator',
             render: (text, record) => {
-                const {id, title, dataIndex} = record;
+                const {id, title, dataIndex, sqlType} = record;
                 const {form: {getFieldValue, setFieldsValue}} = this.props;
                 const value = getFieldValue('fields');
 
@@ -161,7 +161,7 @@ export default class ListPage extends Component {
                                 id: uuid(),
                                 label: title,
                                 field: dataIndex,
-                                type: 'input',
+                                type: getTypeByMysqlType(sqlType),
                             });
                             setFieldsValue({queryItems: items});
                         },
@@ -692,7 +692,7 @@ export default class ListPage extends Component {
                         />
                     </Col>
                 </Row>
-                {getFieldDecorator('fields', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
+                {getFieldDecorator('fields', {getValueFromEvent: (dataSource, nextDataSource) => nextDataSource || dataSource, valuePropName: 'dataSource'})(
                     <Table
                         size="small"
                         formRef={form => this.fieldsTableForm = form}
@@ -705,35 +705,38 @@ export default class ListPage extends Component {
 
                 <Tabs>
                     <Tabs.TabPane forceRender tab={<span>查询条件<this.ClearTable field="queryItems" type="link"/></span>} key="queryItems">
-                        {getFieldDecorator('queryItems', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
+                        {getFieldDecorator('queryItems', {getValueFromEvent: (dataSource, nextDataSource) => nextDataSource || dataSource, valuePropName: 'dataSource'})(
                             <Table
                                 size="small"
                                 formRef={form => this.queryItemsTableForm = form}
                                 columns={this.queryItemsColumns}
                                 helperClass="generator-helper-element"
                                 onSortEnd={({oldIndex, newIndex}) => this.handleSortEnd({oldIndex, newIndex, field: 'queryItems'})}
+                                newRecord={{type: 'input'}}
                             />
                         )}
                     </Tabs.TabPane>
                     <Tabs.TabPane forceRender tab={<span>顶部工具条<this.ClearTable field="toolItems" type="link"/></span>} key="toolItems">
-                        {getFieldDecorator('toolItems', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
+                        {getFieldDecorator('toolItems', {getValueFromEvent: (dataSource, nextDataSource) => nextDataSource || dataSource, valuePropName: 'dataSource'})(
                             <Table
                                 size="small"
                                 formRef={form => this.toolItemsTableForm = form}
                                 columns={this.toolItemsColumns}
                                 helperClass="generator-helper-element"
                                 onSortEnd={({oldIndex, newIndex}) => this.handleSortEnd({oldIndex, newIndex, field: 'toolItems'})}
+                                newRecord={{type: 'primary'}}
                             />
                         )}
                     </Tabs.TabPane>
                     <Tabs.TabPane forceRender tab={<span>底部工具条<this.ClearTable field="bottomToolItems" type="link"/></span>} key="bottomToolItems">
-                        {getFieldDecorator('bottomToolItems', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
+                        {getFieldDecorator('bottomToolItems', {getValueFromEvent: (dataSource, nextDataSource) => nextDataSource || dataSource, valuePropName: 'dataSource'})(
                             <Table
                                 size="small"
                                 formRef={form => this.bottomToolItemsTableForm = form}
                                 columns={this.bottomToolItemsColumns}
                                 helperClass="generator-helper-element"
                                 onSortEnd={({oldIndex, newIndex}) => this.handleSortEnd({oldIndex, newIndex, field: 'bottomToolItems'})}
+                                newRecord={{type: 'primary'}}
                             />
                         )}
                     </Tabs.TabPane>

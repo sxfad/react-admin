@@ -81,6 +81,8 @@ function getElement(item) {
 
     if (type === 'date') return <DatePicker {...props}/>;
 
+    if (type === 'date-time') return <DatePicker showTime {...props}/>;
+
     if (type === 'date-range') return <DatePicker.RangePicker {...props}/>;
 
     if (type === 'month') return <DatePicker.MonthPicker {...props}/>;

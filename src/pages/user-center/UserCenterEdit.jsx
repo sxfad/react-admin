@@ -7,7 +7,7 @@ import {FormElement} from '@/library/antd';
     ajax: true,
 })
 @Form.create()
-export default class <%= capitalName %>Edit extends Component {
+export default class UserCenterEdit extends Component {
     state = {
         loading: false,
         data: {},
@@ -36,7 +36,7 @@ export default class <%= capitalName %>Edit extends Component {
         // TODO 根据id 发送ajax请求获取数据
         this.setState({loading: true});
         this.props.ajax
-            .get(`<%= ajaxUrl %>/${id}`)
+            .get(`/user-center/${id}`)
             .then(res => {
                 this.setState({data: res});
             })
@@ -82,7 +82,7 @@ export default class <%= capitalName %>Edit extends Component {
     render() {
         const {visible} = this.props;
         const {loading, data} = this.state;
-        const title = data.id ? '修改<%= chineseName %>' : '添加<%= chineseName %>';
+        const title = data.id ? '修改用户' : '添加用户';
         const FormElement = this.FormElement;
 
         return (
@@ -97,19 +97,67 @@ export default class <%= capitalName %>Edit extends Component {
                 <Spin spinning={loading}>
                     <Form>
                         {data.id ? (<FormElement type="hidden" field="id" decorator={{initialValue: data.id}}/>) : null}
-    <% for (let i = 0;i<fields.length;i++){%>
+    
                         <FormElement
-                            label="<%= fields[i].title%>"
-                            type="<%= fields[i].type%>"
-                            field="<%= fields[i].dataIndex%>"
+                            label="客户号"
+                            type="input"
+                            field="customerNo"
                             decorator={{
-                                initialValue: data.<%= fields[i].dataIndex%>,
+                                initialValue: data.customerNo,
                                 rules: [
-                                    {required: true, message: '请输入<%= fields[i].title%>！'},
+                                    {required: true, message: '请输入客户号！'},
                                 ],
                             }}
                         />
-    <%}%>
+    
+                        <FormElement
+                            label="用户号"
+                            type="input"
+                            field="userNo"
+                            decorator={{
+                                initialValue: data.userNo,
+                                rules: [
+                                    {required: true, message: '请输入用户号！'},
+                                ],
+                            }}
+                        />
+    
+                        <FormElement
+                            label="用户商编"
+                            type="input"
+                            field="inMno"
+                            decorator={{
+                                initialValue: data.inMno,
+                                rules: [
+                                    {required: true, message: '请输入用户商编！'},
+                                ],
+                            }}
+                        />
+    
+                        <FormElement
+                            label="产品编码"
+                            type="input"
+                            field="productCode"
+                            decorator={{
+                                initialValue: data.productCode,
+                                rules: [
+                                    {required: true, message: '请输入产品编码！'},
+                                ],
+                            }}
+                        />
+    
+                        <FormElement
+                            label="状态(00"
+                            type="switch"
+                            field="state"
+                            decorator={{
+                                initialValue: data.state,
+                                rules: [
+                                    {required: true, message: '请输入状态(00！'},
+                                ],
+                            }}
+                        />
+    
                     </Form>
                 </Spin>
             </Modal>

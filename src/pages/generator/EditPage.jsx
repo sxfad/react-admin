@@ -232,7 +232,8 @@ export default class EditPage extends Component {
         listPageFieldsValue.forEach(item => {
             // 过滤掉一些字段
             if (
-                item.dataIndex === 'createTime'
+                item.dataIndex === 'id'
+                || item.dataIndex === 'createTime'
                 || item.dataIndex === 'updateTime'
             ) return;
 
@@ -380,7 +381,7 @@ export default class EditPage extends Component {
                         />
                     </Col>
                 </Row>
-                {getFieldDecorator('fields', {getValueFromEvent: e => e, valuePropName: 'dataSource'})(
+                {getFieldDecorator('fields', {getValueFromEvent: (dataSource, nextDataSource) => nextDataSource || dataSource, valuePropName: 'dataSource'})(
                     <Table
                         size="small"
                         formRef={form => this.fieldsTableForm = form}
@@ -388,6 +389,7 @@ export default class EditPage extends Component {
                         columns={this.fieldsColumns}
                         helperClass="generator-helper-element"
                         onSortEnd={({oldIndex, newIndex}) => this.handleSortEnd({oldIndex, newIndex, field: 'fields'})}
+                        newRecord={{type: 'input'}}
                     />
                 )}
             </Form>

@@ -13,7 +13,17 @@ export default {
         loading: false,
     },
 
-    syncStorage: false,
+    syncStorage: {
+        ajaxUrl: true,
+        routePath: true,
+        outPutDir: true,
+        outPutFile: true,
+        template: true,
+        fields: {value: [{id: true, title: true, dataIndex: true, camelCaseName: true, sqlType: true, length: true, isNullable: true, comment: true,}]},
+        queryItems: {value: [{id: true, field: true, label: true, type: true, camelCaseName: true, sqlType: true, length: true, isNullable: true, comment: true,}]},
+        toolItems: {value: [{id: true, type: true, text: true, icon: true, permission: true}]},
+        bottomToolItems: {value: [{id: true, type: true, text: true, icon: true, permission: true}]},
+    },
 
     setFields: (fields) => ({...fields}),
 }

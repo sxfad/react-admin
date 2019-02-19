@@ -123,19 +123,19 @@ export default class FieldsTable extends Component {
     };
 
     handleAddNewRow = () => {
-        const {dataSource, onChange, columns, rowKey} = this.props;
-        const newRecord = {__add: true};
+        const {dataSource, onChange, columns, rowKey, newRecord} = this.props;
+        const record = {__add: true, ...newRecord};
 
         if (columns && columns.length) {
             columns.forEach(({dataIndex}) => {
                 if (dataIndex) {
-                    newRecord[dataIndex] = void 0;
+                    record[dataIndex] = void 0;
                 }
             })
         }
-        newRecord[rowKey] = uuid();
+        record[rowKey] = uuid();
 
-        onChange([...dataSource, {...newRecord}]);
+        onChange([...dataSource, {...record}]);
     };
 
     render() {

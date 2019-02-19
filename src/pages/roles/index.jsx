@@ -8,7 +8,7 @@ import RoleEdit from './RoleEdit';
 @config({
     path: '/roles',
 })
-export default class UserCenter extends Component {
+export default class RoleList extends Component {
     state = {
         roleId: void 0,
         visible: false,
