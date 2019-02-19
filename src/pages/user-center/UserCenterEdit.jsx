@@ -105,43 +105,21 @@ export default class UserCenterEdit extends Component {
                             decorator={{
                                 initialValue: data.customerNo,
                                 rules: [
-                                    {required: true, message: '请输入客户号！'},
+                                    {required: true, message: '客户号不能为空！'},
+                                    {max: 32, message: '最多32个字符！'},
                                 ],
                             }}
                         />
     
                         <FormElement
-                            label="用户号"
+                            label="客户名称"
                             type="input"
-                            field="userNo"
+                            field="name"
                             decorator={{
-                                initialValue: data.userNo,
+                                initialValue: data.name,
                                 rules: [
-                                    {required: true, message: '请输入用户号！'},
-                                ],
-                            }}
-                        />
-    
-                        <FormElement
-                            label="用户商编"
-                            type="input"
-                            field="inMno"
-                            decorator={{
-                                initialValue: data.inMno,
-                                rules: [
-                                    {required: true, message: '请输入用户商编！'},
-                                ],
-                            }}
-                        />
-    
-                        <FormElement
-                            label="产品编码"
-                            type="input"
-                            field="productCode"
-                            decorator={{
-                                initialValue: data.productCode,
-                                rules: [
-                                    {required: true, message: '请输入产品编码！'},
+                                    {required: false, message: '客户名称不能为空！'},
+                                    {max: 45, message: '最多45个字符！'},
                                 ],
                             }}
                         />
@@ -153,7 +131,34 @@ export default class UserCenterEdit extends Component {
                             decorator={{
                                 initialValue: data.state,
                                 rules: [
-                                    {required: true, message: '请输入状态(00！'},
+                                    {required: false, message: '状态(00不能为空！'},
+                                    {max: 2, message: '最多2个字符！'},
+                                ],
+                            }}
+                        />
+    
+                        <FormElement
+                            label="出款开关("
+                            type="switch"
+                            field="wdcFlg"
+                            decorator={{
+                                initialValue: data.wdcFlg,
+                                rules: [
+                                    {required: false, message: '出款开关(不能为空！'},
+                                    {max: 1, message: '最多1个字符！'},
+                                ],
+                            }}
+                        />
+    
+                        <FormElement
+                            label="入款开关("
+                            type="switch"
+                            field="payFlg"
+                            decorator={{
+                                initialValue: data.payFlg,
+                                rules: [
+                                    {required: false, message: '入款开关(不能为空！'},
+                                    {max: 1, message: '最多1个字符！'},
                                 ],
                             }}
                         />

@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {Table} from 'antd';
+import FixBottom from '@/layouts/fix-bottom';
 import {
     QueryBar,
     QueryItem,
+    ToolItem,
     Pagination,
     Operator,
     ToolBar,
@@ -54,16 +56,30 @@ export default class UserCenterList extends Component {
             type: 'primary',
             text: '添加',
             icon: 'plus',
-            onClick: () => this.handleAdd(),
+            onClick: () => {
+                // TODO
+            },
+        },
+    ];
+
+    // TODO 底部工具条
+    bottomToolItems = [
+        {
+            type: 'primary',
+            text: '导出',
+            icon: 'export',
+            onClick: () => {
+                // TODO
+            },
         },
     ];
 
     columns = [
         {title: '客户号', dataIndex: 'customerNo'},
-        {title: '用户号', dataIndex: 'userNo'},
-        {title: '用户商编', dataIndex: 'inMno'},
-        {title: '产品编码', dataIndex: 'productCode'},
+        {title: '客户名称', dataIndex: 'name'},
         {title: '状态(00', dataIndex: 'state'},
+        {title: '出款开关(', dataIndex: 'wdcFlg'},
+        {title: '入款开关(', dataIndex: 'payFlg'},
         {title: '创建时间', dataIndex: 'createTime'},
         {title: '最后修改时间', dataIndex: 'updateTime'},
         {
@@ -150,9 +166,9 @@ export default class UserCenterList extends Component {
                         onSubmit={params => this.setState({params}, this.handleSearch)}
                     />
                 </QueryBar>
-
+                
                 <ToolBar items={this.toolItems}/>
-
+                    
                 <Table
                     columns={this.columns}
                     dataSource={dataSource}
@@ -167,6 +183,9 @@ export default class UserCenterList extends Component {
                     onPageNumChange={pageNum => this.setState({pageNum}, this.handleSearch)}
                     onPageSizeChange={pageSize => this.setState({pageSize, pageNum: 1}, this.handleSearch)}
                 />
+                <FixBottom>
+                    <ToolItem items={this.bottomToolItems}/>
+                </FixBottom>
 
                 <UserCenterEdit
                     id={id}
