@@ -39,3 +39,4 @@ yarn-error.log*
 /src/models/all-models.js
 /suixingpay-fe/
 /server/
+/docs/_book
