@@ -12,18 +12,20 @@ export default class App extends React.Component {
         this.props.action.getStateFromStorage();
 
         const {system, menu} = this.props.action;
-        const loginUser = getLoginUser() || {};
+        const loginUser = getLoginUser();
 
         // 获取系统菜单 和 随菜单携带过来的权限
         this.state.loading = true;
         menu.getMenus({
-            params: {userId: loginUser.id},
+            params: {userId: loginUser?.id},
             onResolve: (res) => {
                 let menus = res || [];
                 const {permissions} = getMenuTreeDataAndPermissions(menus);
 
-                loginUser.permissions = permissions;
-                setLoginUser(loginUser);
+                if (loginUser) {
+                    loginUser.permissions = permissions;
+                    setLoginUser(loginUser);
+                }
 
                 // 设置当前登录的用户到model中
                 system.setLoginUser(loginUser);

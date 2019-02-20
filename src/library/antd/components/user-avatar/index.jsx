@@ -14,7 +14,7 @@ export default class UserAvatar extends Component {
     };
 
     render() {
-        const {name, src, ...others} = this.props;
+        const {name = 'unknown', src, ...others} = this.props;
 
         if (src) return <Avatar {...others} src={src}/>;
 

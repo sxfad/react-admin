@@ -3,51 +3,59 @@ const fs = require('fs');
 const GrabFiles = require('../utils/grab-files');
 const ejs = require('ejs');
 
-function Index(options) {
-    // 处理默认值
-    const {
-        hyphen = false,
-        codeSplitting = true,
-        paths,
-        pagePath,
-        ignored,
-        output,
-        watch,
-        template,
-        displayLog = false,
-    } = options;
 
-    this.options = {
-        hyphen,
-        codeSplitting,
-        paths,
-        pagePath,
-        ignored,
-        output,
-        watch,
-        template,
-        displayLog,
-    };
+const pluginName = 'ConfigGrabWebpackPlugin';
 
-    if (!template) {
-        this.options.template = codeSplitting ?
-            path.resolve(__dirname, './template-code-splitting.ejs')
-            :
-            path.resolve(__dirname, './template.ejs');
+class Plugin {
+    constructor(options) {
+        // 处理默认值
+        const {
+            hyphen = false,
+            codeSplitting = true,
+            paths,
+            pagePath,
+            ignored,
+            output,
+            watch,
+            template,
+            displayLog = false,
+        } = options;
+
+        this.options = {
+            hyphen,
+            codeSplitting,
+            paths,
+            pagePath,
+            ignored,
+            output,
+            watch,
+            template,
+            displayLog,
+        };
+
+        if (!template) {
+            this.options.template = codeSplitting ?
+                path.resolve(__dirname, './template-code-splitting.ejs')
+                :
+                path.resolve(__dirname, './template.ejs');
+        }
+    }
+
+    apply(compiler) {
+        const options = this.options;
+
+        compiler.hooks.beforeRun.tapAsync(pluginName, (compilation, callback) => {
+                doGrab(options);
+
+                callback();
+            }
+        );
+    }
+
+    modelGrab() {
+        doGrab(this.options);
     }
 }
-
-Index.prototype.apply = function (compiler) {
-    const options = this.options;
-
-    compiler.plugin('entry-option', function (/* params */) {
-        doGrab(options);
-    });
-};
-
-Index.prototype.routeConfigGrab = function () {
-    doGrab(this.options);
-};
 
 function doGrab(options) {
     const {paths, ignored, watch, displayLog} = options;
@@ -182,4 +190,4 @@ function getConfigFromContent(content) {
     return result;
 }
 
-module.exports = Index;
+module.exports = Plugin;

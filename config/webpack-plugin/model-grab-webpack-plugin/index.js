@@ -3,38 +3,45 @@ const fs = require('fs');
 const GrabFiles = require('../utils/grab-files');
 const ejs = require('ejs');
 
-function Index(options) {
-    // 处理默认值
-    const {
-        paths,
-        ignored,
-        output,
-        watch,
-        template = path.resolve(__dirname, './template.ejs'),
-        displayLog = false,
-    } = options;
+const pluginName = 'ModelGrabWebpackPlugin';
 
-    this.options = {
-        paths,
-        ignored,
-        output,
-        watch,
-        template,
-        displayLog,
-    };
+class Plugin {
+    constructor(options) {
+        // 处理默认值
+        const {
+            paths,
+            ignored,
+            output,
+            watch,
+            template = path.resolve(__dirname, './template.ejs'),
+            displayLog = false,
+        } = options;
+
+        this.options = {
+            paths,
+            ignored,
+            output,
+            watch,
+            template,
+            displayLog,
+        };
+    }
+
+    apply(compiler) {
+        const options = this.options;
+
+        compiler.hooks.beforeRun.tapAsync(pluginName, (compilation, callback) => {
+                doGrab(options);
+
+                callback();
+            }
+        );
+    }
+
+    modelGrab() {
+        doGrab(this.options);
+    }
 }
-
-Index.prototype.apply = function (compiler) {
-    const options = this.options;
-
-    compiler.plugin('entry-option', function (/* params */) {
-        doGrab(options);
-    });
-};
-
-Index.prototype.modelGrab = function () {
-    doGrab(this.options);
-};
 
 function doGrab(options) {
     const {paths, ignored, watch, displayLog} = options;
@@ -126,4 +133,4 @@ function getModelName(pathName) {
     return firstLowerCase(fileName.replace('.model', ''));
 }
 
-module.exports = Index;
+module.exports = Plugin;
