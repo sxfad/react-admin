@@ -31,7 +31,7 @@ $ HTTPS=true yarn start
 # 不清除终端log，如果要调试构建脚本时，比较实用
 $ FORCE_COLOR=true yarn start | cat
 ```
-注：启动会有点慢，耐心等待一会儿。启动成功后会自动打开浏览器，可能需要刷新一下浏览器才能显示页面。
+注：启动会有点慢，耐心等待一会儿，启动成功后会自动打开浏览器。
 windows环境下可以使用 [cross-env](https://www.npmjs.com/package/cross-env)设置命令行变量。
 
 ## 生产构建
