@@ -38,5 +38,20 @@
   To begin the development, run `npm start` or `yarn start`.
   To create a production bundle, use `npm run build` or `yarn build`.
 -->
+<script>
+    // dev 模式
+    if ('%NODE_ENV%' === 'development') {
+        // 解决首次启动，打开浏览器白屏问题
+        let si = 0;
+        setInterval(() => {
+            const root = document.getElementById('root');
+
+            if (root && !root.innerHTML) {
+                window.location.reload();
+                clearInterval(si);
+            }
+        }, 1000)
+    }
+</script>
 </body>
 </html>
