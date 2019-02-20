@@ -30,10 +30,8 @@ class Plugin {
     apply(compiler) {
         const options = this.options;
 
-        compiler.hooks.beforeRun.tapAsync(pluginName, (compilation, callback) => {
+        compiler.hooks.entryOption.tap(pluginName, () => {
                 doGrab(options);
-
-                callback();
             }
         );
     }

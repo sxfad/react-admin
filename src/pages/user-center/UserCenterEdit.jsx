@@ -49,7 +49,7 @@ export default class UserCenterEdit extends Component {
         const {onOk, form: {validateFieldsAndScroll}} = this.props;
 
         validateFieldsAndScroll((err, values) => {
-            if (err) return ;
+            if (err) return;
 
             const params = {...values};
             const {id} = values;
@@ -97,7 +97,7 @@ export default class UserCenterEdit extends Component {
                 <Spin spinning={loading}>
                     <Form>
                         {data.id ? (<FormElement type="hidden" field="id" decorator={{initialValue: data.id}}/>) : null}
-    
+
                         <FormElement
                             label="客户号"
                             type="input"
@@ -110,7 +110,7 @@ export default class UserCenterEdit extends Component {
                                 ],
                             }}
                         />
-    
+
                         <FormElement
                             label="客户名称"
                             type="input"
@@ -123,7 +123,7 @@ export default class UserCenterEdit extends Component {
                                 ],
                             }}
                         />
-    
+
                         <FormElement
                             label="状态(00"
                             type="switch"
@@ -136,7 +136,7 @@ export default class UserCenterEdit extends Component {
                                 ],
                             }}
                         />
-    
+
                         <FormElement
                             label="出款开关("
                             type="switch"
@@ -149,7 +149,7 @@ export default class UserCenterEdit extends Component {
                                 ],
                             }}
                         />
-    
+
                         <FormElement
                             label="入款开关("
                             type="switch"
@@ -162,7 +162,7 @@ export default class UserCenterEdit extends Component {
                                 ],
                             }}
                         />
-    
+
                     </Form>
                 </Spin>
             </Modal>
