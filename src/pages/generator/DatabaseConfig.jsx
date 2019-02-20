@@ -52,10 +52,20 @@ export default class DatabaseConfig extends Component {
 
     handleGetTableNames = () => {
         this.validate().then(values => {
-            this.props.action.database.getTableNames({
+            const {action: {database}, form: {getFieldValue, setFieldsValue}} = this.props;
+
+            database.getTableNames({
                 params: values,
                 successTip: '获取数据库表成功',
                 errorTip: '获取数据库表失败',
+                onResolve: (data) => {
+                    if (data?.length && !getFieldValue('table')) {
+                        const value = data[0];
+
+                        setFieldsValue({table: value});
+                        this.handleGetTableColumns(value);
+                    }
+                }
             });
         });
     };
@@ -165,6 +175,7 @@ export default class DatabaseConfig extends Component {
                             form={form}
                             field="table"
                             type="select"
+                            allowClear
                             options={tableNames.map(value => ({value, label: value}))}
                             decorator={{
                                 rules: [

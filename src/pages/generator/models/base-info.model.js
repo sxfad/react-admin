@@ -11,5 +11,6 @@ export default {
     },
 
     syncStorage: true,
+
     setFields: (fields) => ({...fields}),
 }

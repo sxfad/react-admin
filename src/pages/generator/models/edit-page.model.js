@@ -10,28 +10,7 @@ export default {
         loading: false,
     },
 
-    syncStorage: {
-        ajaxUrl: true,
-        routePath: true,
-        outPutDir: true,
-        outPutFile: true,
-        template: true,
-        fields: {
-            value: [{
-                id: true,
-                title: true,
-                dataIndex: true,
-                camelCaseName: true,
-                type: true,
-                sqlType: true,
-                sqlLength: true,
-                length: true,
-                isNullable: true,
-                isRequired: true,
-                comment: true,
-            }]
-        },
-    },
+    syncStorage: true,
 
     setFields: (fields) => ({...fields}),
 }

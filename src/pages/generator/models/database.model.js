@@ -17,6 +17,7 @@ export default {
 
         showConfig: true,
     },
+
     syncStorage: true,
 
     setFields: (fields) => ({...fields}),

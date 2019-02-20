@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Icon} from 'antd';
+import {Button} from 'antd';
 import uuid from 'uuid/v4';
 import {TableEditable, Operator} from '../../../index';
 
