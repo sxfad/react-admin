@@ -693,7 +693,7 @@ export default class ListPage extends Component {
                         />
                     </Col>
                 </Row>
-                {getFieldDecorator('fields', {getValueFromEvent: (dataSource, nextDataSource) => nextDataSource || dataSource, valuePropName: 'dataSource'})(
+                {getFieldDecorator('fields', {getValueFromEvent: (nextDataSource) => nextDataSource, valuePropName: 'dataSource'})(
                     <Table
                         size="small"
                         formRef={form => this.fieldsTableForm = form}
@@ -706,7 +706,7 @@ export default class ListPage extends Component {
 
                 <Tabs>
                     <Tabs.TabPane forceRender tab={<span>查询条件<this.ClearTable field="queryItems" type="link"/></span>} key="queryItems">
-                        {getFieldDecorator('queryItems', {getValueFromEvent: (dataSource, nextDataSource) => nextDataSource || dataSource, valuePropName: 'dataSource'})(
+                        {getFieldDecorator('queryItems', {getValueFromEvent: (nextDataSource) => nextDataSource, valuePropName: 'dataSource'})(
                             <Table
                                 size="small"
                                 formRef={form => this.queryItemsTableForm = form}
@@ -718,7 +718,7 @@ export default class ListPage extends Component {
                         )}
                     </Tabs.TabPane>
                     <Tabs.TabPane forceRender tab={<span>顶部工具条<this.ClearTable field="toolItems" type="link"/></span>} key="toolItems">
-                        {getFieldDecorator('toolItems', {getValueFromEvent: (dataSource, nextDataSource) => nextDataSource || dataSource, valuePropName: 'dataSource'})(
+                        {getFieldDecorator('toolItems', {getValueFromEvent: (nextDataSource) => nextDataSource, valuePropName: 'dataSource'})(
                             <Table
                                 size="small"
                                 formRef={form => this.toolItemsTableForm = form}
@@ -730,7 +730,7 @@ export default class ListPage extends Component {
                         )}
                     </Tabs.TabPane>
                     <Tabs.TabPane forceRender tab={<span>底部工具条<this.ClearTable field="bottomToolItems" type="link"/></span>} key="bottomToolItems">
-                        {getFieldDecorator('bottomToolItems', {getValueFromEvent: (dataSource, nextDataSource) => nextDataSource || dataSource, valuePropName: 'dataSource'})(
+                        {getFieldDecorator('bottomToolItems', {getValueFromEvent: (nextDataSource) => nextDataSource, valuePropName: 'dataSource'})(
                             <Table
                                 size="small"
                                 formRef={form => this.bottomToolItemsTableForm = form}

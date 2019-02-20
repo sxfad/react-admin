@@ -195,7 +195,7 @@ export default class FieldsTable extends Component {
 
                     // 触发父级的onChange
                     onChange(nextDataSource);
-                }, 500);
+                }, 300);
             }
         };
 
