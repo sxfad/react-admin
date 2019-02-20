@@ -7,6 +7,29 @@ import FormElement from '../form-element';
 import classnames from 'classnames';
 import './index.less';
 
+const SEPARATOR = '-';
+
+function getValues(values, rowKey) {
+    const tempValues = {};
+
+    Object.keys(values).forEach(key => {
+        const realValue = values[key];
+        const realKey = key.split(SEPARATOR)[0];
+
+        const index = key.indexOf(SEPARATOR);
+        if (index > -1) {
+            const id = key.substring(index + 1);
+
+            if (tempValues[id]) {
+                tempValues[id][realKey] = realValue;
+            } else {
+                tempValues[id] = {[realKey]: realValue, [rowKey]: id};
+            }
+        }
+    });
+    const realValues = Object.keys(tempValues).map(id => tempValues[id]);
+    return realValues?.length ? realValues : values;
+}
 
 @Form.create()
 export default class FieldsTable extends Component {
@@ -31,31 +54,29 @@ export default class FieldsTable extends Component {
 
     state = {};
 
-    static getValues(values) {
-        const tempValues = {};
-
-        Object.keys(values).forEach(key => {
-            const value = values[key];
-            const realKey = key.split('-')[0];
-            const index = key.indexOf('-');
-            if (index > -1) {
-                const id = key.substring(index);
-                if (tempValues[id]) {
-                    tempValues[id][realKey] = value;
-                } else {
-                    tempValues[id] = {[realKey]: value};
-                }
-            }
-        });
-        const realValues = Object.keys(tempValues).map(key => tempValues[key]);
-
-        return realValues?.length ? realValues : values;
-    };
+    static getValues = getValues;
 
     componentWillMount() {
-        const {formRef, form} = this.props;
+        const {formRef, form, submitRef} = this.props;
         if (formRef) formRef(form);
+
+        if (submitRef) submitRef(this.handleSubmit);
     }
+
+    handleSubmit = (callback) => {
+        this.props.form.validateFieldsAndScroll((err, values) => {
+            if (err) return callback(err, values);
+            const {rowKey} = this.props;
+            const nextValues = getValues(values, rowKey);
+            const nextDataSource = this.props.dataSource.map(item => {
+                const id = item[rowKey];
+                const nextItem = nextValues.find(it => it[rowKey] === id);
+                return nextItem ? {...item, ...nextItem} : {...item};
+            });
+
+            callback(err, nextDataSource);
+        });
+    };
 
     renderColumns = (text, record, column) => {
         let {dataIndex, props} = column;
@@ -65,20 +86,26 @@ export default class FieldsTable extends Component {
 
         if (editable === false || showEdit === false) return text;
 
-        if (editable && editable.length && editable.indexOf(dataIndex) === -1) return text;
+        if (editable?.length && !editable.includes(dataIndex)) return text;
 
         if (props.dataIndex) dataIndex = props.dataIndex;
 
         const {onChange, form, rowKey} = this.props;
         const id = record[rowKey];
 
-        props.field = `${dataIndex}-${id}`;
+        props.field = `${dataIndex}${SEPARATOR}${id}`;
         props.colon = false;
         props.label = props.label === void 0 ? ' ' : props.label;
         props.labelWidth = props.labelWidth === void 0 ? 20 : props.labelWidth;
-        if (!record.__form_fields) record.__form_fields = new Set();
-        record.__form_fields.add(props.field);
 
+        // 记录表单字段
+        if (record.__formFields) {
+            if (!record.__formFields.includes(props.field)) record.__formFields.push(props.field);
+        } else {
+            record.__formFields = [props.field]
+        }
+
+        // 校验函数
         if (!record.__validate) {
             record.__validate = (fields, callback) => {
                 if (!callback) {
@@ -86,75 +113,91 @@ export default class FieldsTable extends Component {
                     fields = void 0;
                 }
 
-                let validateFields = Array.from(record.__form_fields);
-                if (fields) {
-                    validateFields = fields.map(item => `${item}-${id}`)
-                }
-
-
-                const {form} = this.props;
+                let validateFields = fields?.length ? fields.map(item => `${item}${SEPARATOR}${id}`) : record.__formFields;
 
                 form.validateFieldsAndScroll(validateFields, (err, values) => {
-                    const realValues = {};
-
-                    Object.keys(values).forEach(key => {
-                        const realKey = key.split('-')[0];
-                        realValues[realKey] = values[key];
-                    });
+                    const realValues = getValues(values, rowKey)[0];
 
                     callback(err, realValues);
                 });
             };
         }
 
-        if (!record.save) {
-            record.save = () => {
+        // 保存方法
+        if (!record.__save) {
+            record.__save = (fields, callback) => {
+                if (!callback) {
+                    callback = fields;
+                    fields = void 0;
+                }
+
                 // 单独校验此行
-                record.__validate((err, values) => {
+                record.__validate(fields, (err, values) => {
                     if (err) return;
-                    // values 编辑过的新数据
-                    // console.log(values);
-                    // record 原始未编辑过得数据
-                    // console.log(record);
-                    const savedRecord = {...record, ...values, showEdit: false};
-                    const dataSource = [...this.props.dataSource];
-                    const index = dataSource.findIndex(item => item.id === savedRecord.id);
 
-                    dataSource.splice(index, 1, savedRecord);
+                    const nextRecord = {...record, ...values, showEdit: false};
+                    const nextDataSource = this.props.dataSource.map(item => ({...item}));
+                    const index = nextDataSource.findIndex(item => item[rowKey] === nextRecord[rowKey]);
 
-                    onChange(dataSource);
+                    // 替换数据
+                    nextDataSource.splice(index, 1, nextRecord);
+
+                    // 要保存的数据，处理过的最新dataSource
+                    callback(nextDataSource, nextRecord);
                 });
             }
         }
-        if (!record.cancel) {
-            record.cancel = () => {
-                const dataSource = [...this.props.dataSource];
-                const r = dataSource.find(item => item.id === record.id);
+
+        // 取消方法
+        if (!record.__cancel) {
+            record.__cancel = (fields, callback) => {
+                if (!callback) {
+                    callback = fields;
+                    fields = void 0;
+                }
+
+                const nextDataSource = this.props.dataSource.map(item => ({...item}));
+                const r = nextDataSource.find(item => item[rowKey] === record[rowKey]);
                 r.showEdit = false;
-                onChange(dataSource);
+
+                // 处理过的罪行dataSource
+                callback && callback(nextDataSource);
             }
         }
 
 
-        const decorator = {};
+        const decorator = {
+            initialValue: record[dataIndex],
 
-        // 会卡
-        decorator.onChange = (e) => {
-            const {getValue = (e) => e.target ? e.target.value : e} = props;
-            const val = getValue(e);
+            // 会卡 做个截流
+            onChange: (e) => {
+                if (props?.decorator?.onChange) props.decorator.onChange(e);
 
-            const nextDataSource = this.props.dataSource.map(item => ({...item}));
+                if (this.st) {
+                    clearTimeout(this.st);
+                }
+                const {getValue = (e) => e.target ? e.target.value : e} = props;
+                const val = getValue(e);
 
-            const currentRecord = nextDataSource.find(item => item[rowKey] === record[rowKey]);
+                this.st = setTimeout(() => {
+                    const nextDataSource = this.props.dataSource.map(item => ({...item}));
+                    const nextRecord = nextDataSource.find(item => item[rowKey] === record[rowKey]);
 
-            currentRecord[dataIndex] = val;
+                    // 重新赋值
+                    nextRecord[dataIndex] = val;
 
-            if (!currentRecord.__changed) currentRecord.__changed = new Set();
-            currentRecord.__changed.add(dataIndex);
-            onChange(this.props.dataSource, nextDataSource);
+                    // 记录是否改变
+                    if (nextRecord.__changed) {
+                        if (!nextRecord.__changed.includes(dataIndex)) nextRecord.__changed.push();
+                    } else {
+                        nextRecord.__changed = [dataIndex];
+                    }
+
+                    // 触发父级的onChange
+                    onChange(nextDataSource);
+                }, 500);
+            }
         };
-
-        decorator.initialValue = record[dataIndex];
 
         return <FormElement form={form} {...props} decorator={{...props.decorator, ...decorator}}/>
     };
@@ -198,7 +241,7 @@ export default class FieldsTable extends Component {
                 ...item,
                 render: (text, record) => {
                     if (render) text = render(text, record);
-                    return this.renderColumns(text, record, item);
+                    return this.renderColumns(text, record, item)
                 },
             }
         });

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button} from 'antd';
+import {Button, Icon} from 'antd';
 import uuid from 'uuid/v4';
 import {TableEditable, Operator} from '../../../index';
 
@@ -29,7 +29,7 @@ export default class extends Component {
                         {required: true, message: '请输入用户名!'}
                     ],
                 },
-            }
+            },
         },
         {
             title: '登录名', width: 200, dataIndex: 'loginName', key: 'loginName',
@@ -75,8 +75,21 @@ export default class extends Component {
                 if (showEdit && editable) {
                     return (
                         <Operator items={[
-                            {label: '保存', onClick: record.save},
-                            {label: '取消', onClick: record.cancel},
+                            {
+                                label: '保存', onClick: () => {
+                                    console.log('click');
+                                    record.__save(dataSource => {
+                                        this.setState({dataSource});
+                                    });
+                                }
+                            },
+                            {
+                                label: '取消', onClick: () => {
+                                    record.__cancel(dataSource => {
+                                        this.setState({dataSource});
+                                    });
+                                }
+                            },
                         ]}/>
                     );
                 }
@@ -100,10 +113,6 @@ export default class extends Component {
         }
     ];
 
-    handleChange = (dataSource) => {
-        this.setState({dataSource});
-    };
-
     handleAdd = () => {
         const dataSource = [...this.state.dataSource];
         dataSource.unshift({
@@ -119,13 +128,9 @@ export default class extends Component {
     };
 
     handleSubmit = () => {
-        // this.tableForm可以用来做校验，编辑过得数据已经同步到 this.state.value中
-        this.tableForm.validateFieldsAndScroll((err, values) => {
+        this.tableSubmit((err, values) => {
             if (err) return;
-            // values为编辑过得数据，会带有后缀
             console.log(values);
-            // this.state.dataSource 是之前未保存的数据
-            console.log(this.state.dataSource);
         });
     };
 
@@ -135,11 +140,10 @@ export default class extends Component {
             <div>
                 <Button style={{marginBottom: 16}} type="primary" onClick={this.handleAdd}>添加</Button>
                 <TableEditable
-                    formRef={(form) => this.tableForm = form}
+                    submitRef={submit => this.tableSubmit = submit}
                     showAddButton
                     columns={this.columns}
                     dataSource={dataSource}
-                    onChange={this.handleChange}
                     rowKey="id"
                 />
                 <Button style={{marginTop: 16}} type="primary" onClick={this.handleSubmit}>提交</Button>
@@ -151,7 +155,5 @@ export default class extends Component {
 export const title = '基础用法';
 
 export const markdown = `
-表格整行可编辑，提供了onChange属性；
-
 表格每一列最好声明width，编辑/展示切换时，列宽不会变
 `;
