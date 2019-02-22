@@ -26,14 +26,13 @@ export default class extends Component {
                         field="number"
                         label="数字"
                         placeholder="请输入数字"
+                        tip="需要输入数字"
                         decorator={{
                             rules: [
                                 {required: true, message: '不能为空！'}
                             ],
                         }}
-                    >
-                        <span className="ant-form-text"> machines</span>
-                    </FormElement>
+                    />
 
                     <FormElement
                         field="input"
@@ -66,11 +65,9 @@ export default class extends Component {
                         placeholder="请选择日期"
                         width={200}
                     />
-                    <Form.Item
-                        wrapperCol={{span: 12, offset: 6}}
-                    >
+                    <FormElement layout>
                         <Button type="primary" htmlType="submit">Submit</Button>
-                    </Form.Item>
+                    </FormElement>
                 </Form>
             </div>
         );

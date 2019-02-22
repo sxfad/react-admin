@@ -108,7 +108,7 @@ export default class FormElement extends Component {
     }
 
     render() {
-        const {
+        let {
             // 自定义属性
             form,
             type = 'input',
@@ -118,6 +118,7 @@ export default class FormElement extends Component {
             field,
             decorator,
             wrapperStyle = {},
+            layout = false,
 
             // Form.Item属性
             colon,
@@ -134,7 +135,14 @@ export default class FormElement extends Component {
             ...others
         } = this.props;
 
+        if (layout) {
+            label = ' ';
+            colon = false;
+            form = null;
+        }
+
         const {getFieldDecorator} = form || {};
+
 
         let elementStyle = {width: '100%'};
         if (width !== void 0) {
