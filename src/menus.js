@@ -23,11 +23,14 @@ export default function getMenus(userId) {
         {key: 'antDesign', local: 'antDesign', text: 'Ant Design 官网', icon: 'ant-design', url: 'https://ant-design.gitee.io', order: 2000},
         {key: 'google', local: 'google', text: '谷歌', icon: 'google', url: 'https://www.google.com', target: '_blank', order: 1200},
         {key: 'document', local: 'document', text: '文档', icon: 'book', url: 'https://open.vbill.cn/react-admin', target: '_blank', order: 1200},
-        {key: 'ajax', local: 'ajax', text: 'ajax请求', icon: 'api', path: '/example/ajax', order: 1000},
+
+        {key: 'menus', local: 'menus', text: '菜单编辑', icon: 'lock', path: '/menu-permission', order: 1000},
+        {key: 'codeGenerator', local: 'codeGenerator', text: '代码生成', icon: 'code', path: '/admin-crud', order: 999},
+        {key: 'ajax', local: 'ajax', text: 'ajax请求', icon: 'api', path: '/example/ajax', order: 998},
         {key: 'user', local: 'users', text: '用户列表', icon: 'user', path: '/users', order: 900},
-        {key: 'user-center', local: 'user-center', text: '用户中心', icon: 'users', path: '/user-center', order: 900},
         {key: 'role', local: 'roles', text: '角色列表 ', icon: 'team', path: '/roles', order: 800},
         {key: 'page404', local: 'page404', text: '404页面不存', icon: 'file-search', path: '/404', order: 700},
+        {key: 'user-center', local: 'user-center', text: '用户中心', icon: 'user', path: '/user-center', order: 600},
         {key: 'component', local: 'component', text: '组件', icon: 'ant-design', order: 700},
     ].concat(antdMenus));
 }
