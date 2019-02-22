@@ -5,6 +5,7 @@ import PageContent from '@/layouts/page-content';
 import localMenus from '../../menus';
 import {convertToTree} from "@/library/utils/tree-utils";
 import {ToolBar, Operator, FormElement} from '@/library/antd';
+import IconPicker from "@/components/icon-picker";
 import './style.less';
 
 @config({
@@ -19,6 +20,7 @@ export default class index extends Component {
         menus: [],
         visible: false,
         record: {},
+        iconVisible: false,
     };
 
     columns = [
@@ -217,6 +219,10 @@ export default class index extends Component {
         });
     };
 
+    handleIconClick = () => {
+        this.setState({iconVisible: true});
+    };
+
     FormElement = (props) => <FormElement form={this.props.form} labelWidth={70} {...props}/>;
 
     render() {
@@ -224,8 +230,9 @@ export default class index extends Component {
             menus,
             visible,
             loading,
+            iconVisible,
         } = this.state;
-        const {form} = this.props;
+        const {form, form: {getFieldValue, setFieldsValue}} = this.props;
 
         const FormElement = this.FormElement;
 
@@ -264,6 +271,7 @@ export default class index extends Component {
                                 <FormElement
                                     label="图标"
                                     field="icon"
+                                    addonAfter={<Icon style={{cursor: 'pointer'}} onClick={this.handleIconClick} type={getFieldValue('icon') || 'search'}/>}
                                 />
                             </Col>
                         </Row>
@@ -329,6 +337,14 @@ export default class index extends Component {
                         </Row>
                     </Form>
                 </Modal>
+                <IconPicker
+                    visible={iconVisible}
+                    onOk={(type) => {
+                        this.setState({iconVisible: false});
+                        setFieldsValue({icon: type});
+                    }}
+                    onCancel={() => this.setState({iconVisible: false})}
+                />
             </PageContent>
         );
     }

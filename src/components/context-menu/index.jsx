@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import './style.less';
 import PropTypes from "prop-types";
 
 export default class ContextMenu extends Component {
@@ -71,10 +70,16 @@ export default class ContextMenu extends Component {
 
         return (
             <div
-                styleName="root"
                 style={{
-                display: visible ? 'block' : 'none',
-            }}>
+                    display: visible ? 'block' : 'none',
+                    position: 'fixed',
+                    left: 0,
+                    top: 0,
+                    zIndex: 99999,
+                    width: 0,
+                    height: 0,
+                }}
+            >
                 <div
                     ref={node => this.container = node}
                     style={{

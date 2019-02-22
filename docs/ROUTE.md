@@ -49,24 +49,3 @@ export default class Parent extends React.Component {
     ...
 }
 ```
-
-## 域名子目录发布项目
-如果项目需要挂载到域名的一个子目录下，比如 `http://xxx.com/react-admin`，
-可以修改`src/router/AppRouter.jsx`中的`ROUTE_BASE_NAME`常量。
-生产构建时添加PUBLIC_URL参数（开发时不需要）。
-
-项目在子目录react-admin下：
-1. 修改常量
-    ```js
-    export const ROUTE_BASE_NAME = '/react-admin';
-    ```
-1. 生产构建添加参数
-    ```bash
-    PUBLIC_URL=/react-admin yarn build
-    ```
-
-项目直接挂载域名根目录：(无需PUBLIC_URL参数)
-```js
-export const ROUTE_BASE_NAME = '';
-```
-
