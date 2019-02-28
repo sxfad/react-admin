@@ -6,6 +6,14 @@ import ColorPicker from '@/components/color-picker';
 import theme from '@/theme';
 import './style.less';
 
+const ROUTE_BASE_NAME = process.env.PUBLIC_URL || '';
+
+const BASE_NAME = ROUTE_BASE_NAME ? ROUTE_BASE_NAME.replace('/', '') : '';
+
+const OLD_LESS_ID = `less:${BASE_NAME ? BASE_NAME + '-' : ''}color:old`;
+const LESS_ID = `less:${BASE_NAME ? BASE_NAME + '-' : ''}color`;
+const LESS_URL = `${ROUTE_BASE_NAME}/less.min.js`;
+
 @config({
     ajax: true,
     event: true,
@@ -26,7 +34,7 @@ export default class ThemeColorPicker extends Component {
         if (themeStyleContent) {
             const themeStyle = document.createElement('style');
             themeStyle.type = 'text/css';
-            themeStyle.id = 'less:color:old';
+            themeStyle.id = OLD_LESS_ID;
             themeStyle.innerHTML = themeStyleContent;
             document.body.insertBefore(themeStyle, document.body.firstChild);
         }
@@ -55,12 +63,12 @@ export default class ThemeColorPicker extends Component {
                     this.props.action.system.setPrimaryColor(color);
 
                     // 先清除缓存样式
-                    const oldStyle = document.getElementById('less:color:old');
+                    const oldStyle = document.getElementById(OLD_LESS_ID);
                     if (oldStyle) oldStyle.remove();
 
                     // 将生成之后的style标签插入body首部
                     // 由于每个页面的css也是异步加载（无论开发、还是生产），会导致样式插入在生成的style标签之后，导致主题失效
-                    const lessColor = document.getElementById('less:color');
+                    const lessColor = document.getElementById(LESS_ID);
                     if (!lessColor) return;
 
                     // document.head.appendChild(lessColor);
@@ -68,8 +76,6 @@ export default class ThemeColorPicker extends Component {
                     window.localStorage.setItem('theme-style-content', lessColor.innerHTML);
                 });
         };
-
-        const lessUrl = '/less.min.js';
 
         if (this.lessLoaded) {
             changeColor();
@@ -84,7 +90,7 @@ export default class ThemeColorPicker extends Component {
                 },
             };
 
-            loadScript(lessUrl).then(() => {
+            loadScript(LESS_URL).then(() => {
                 this.lessLoaded = true;
                 changeColor();
             });
