@@ -204,7 +204,7 @@ export default class FrameTopSideMenu extends Component {
                     title={titleIsString ? titleText : ''}
                 />
                 <BackTop/>
-                <Header theme={(isTopSideMenu || isSideMenu) ? 'default' : 'dark'} layout={layout}/>
+                <Header/>
                 <Side layout={layout} theme={theme}/>
                 <div styleName={topSpaceClass.join(' ')}/>
                 {pageHead}

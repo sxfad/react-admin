@@ -18,6 +18,7 @@ import './style.less';
     const {show: showSide, width, collapsed, collapsedWidth, dragging} = state.side;
     const {local, i18n} = state.system;
     const {breadcrumbs} = state.page;
+    const {pageFrameLayout} = state.settings;
 
     return {
         menus,
@@ -31,6 +32,8 @@ import './style.less';
         local,
         i18n,
         breadcrumbs,
+
+        layout: pageFrameLayout,
     };
 })
 export default class Header extends Component {
@@ -41,7 +44,7 @@ export default class Header extends Component {
 
     static defaultProps = {
         layout: PAGE_FRAME_LAYOUT.SIDE_MENU,    // top-side-menu top-menu side-menu
-        theme: 'default',           // default dark
+        theme: 'default',                       // default dark
     };
 
     handleToggle = () => {
@@ -52,7 +55,6 @@ export default class Header extends Component {
     render() {
         let {
             layout,
-            theme,
             menus,          // 所有的菜单数据
             topMenu,        // 当前页面选中菜单的顶级菜单
             sideCollapsed,
@@ -61,6 +63,7 @@ export default class Header extends Component {
             sideDragging,
             i18n,
             breadcrumbs,
+            children,
         } = this.props;
 
         sideWidth = sideCollapsed ? sideCollapsedWidth : sideWidth;
@@ -81,6 +84,8 @@ export default class Header extends Component {
 
         let transitionDuration = sideDragging ? '0ms' : '300ms';
 
+        const theme = this.props.theme || ((isTopSideMenu || isSideMenu) ? 'default' : 'dark');
+
         return (
             <div styleName="header" data-theme={theme}>
                 <div styleName="logo" style={{flex: `0 0 ${sideWidth}px`, transitionDuration}}>
@@ -98,23 +103,28 @@ export default class Header extends Component {
                             styleName="trigger"
                             type={sideCollapsed ? 'menu-unfold' : 'menu-fold'}
                             onClick={this.handleToggle}
+                            style={theme === 'dark' ? {color: '#fff', backgroundColor: '#222'} : null}
                         />
                     ) : null
                 }
-                <div styleName="center">
-                    {showMenu ? (
-                        <HeaderMenu
-                            theme={theme}
-                            dataSource={topMenus}
-                            selectedKeys={[topMenu && topMenu.key]}
-                        />
-                    ) : null}
-                    {isSideMenu ? <div style={{marginLeft: 16}}><Breadcrumb dataSource={breadcrumbs}/></div> : null}
-                </div>
+                {children ? (
+                    <div styleName="center">{children}</div>
+                ) : (
+                    <div styleName="center">
+                        {showMenu ? (
+                            <HeaderMenu
+                                theme={theme}
+                                dataSource={topMenus}
+                                selectedKeys={[topMenu && topMenu.key]}
+                            />
+                        ) : null}
+                        {isSideMenu ? <div style={{marginLeft: 16}}><Breadcrumb theme={theme} dataSource={breadcrumbs}/></div> : null}
+                    </div>
+                )}
 
                 <div styleName="right">
-                    <HeaderFullScreen styleName="action" className="header-action" />
-                    <ThemeColorPicker styleName="action" className="header-action" />
+                    <HeaderFullScreen styleName="action" className="header-action"/>
+                    <ThemeColorPicker styleName="action" className="header-action"/>
                     <HeaderI18n styleName="action" className="header-action" theme={theme}/>
                     <HeaderUser styleName="action" className="header-action" theme={theme}/>
                 </div>

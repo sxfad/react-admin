@@ -42,8 +42,9 @@ export default class BreadcrumbComponent extends Component {
     }
 
     render() {
+        const {theme} = this.props;
         return (
-            <div styleName="breadcrumb">
+            <div styleName="breadcrumb" className={`system-breadcrumb-${theme}`}>
                 <Breadcrumb>
                     {this.renderItems()}
                 </Breadcrumb>
