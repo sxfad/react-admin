@@ -11,10 +11,10 @@ import KeepPage from './KeepPage';
 import routes, {noFrameRoutes, noAuthRoutes} from './routes';
 
 // 如果项目挂载到网站的子目录下，可以配置ROUTE_BASE_NAME， 开发时拿不到 PUBLIC_URL
-export const ROUTE_BASE_NAME = '/react-admin-live';
+// export const ROUTE_BASE_NAME = '/react-admin-live';
 
 // 直接挂载到域名根目录
-// export const ROUTE_BASE_NAME = '';
+export const ROUTE_BASE_NAME = '';
 
 // 代码分割处理
 const allRoutes = routes.map(item => {

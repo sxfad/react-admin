@@ -1,0 +1,127 @@
+@headerHeight: 64px;
+@transitionDuration: 300ms;
+@layout-header-background: #001529;
+@primary-color: #1890ff;
+
+.header {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: @headerHeight;
+    padding-right: 16px;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+
+    .left-drawer,
+    .right-drawer {
+        display: flex;
+        position: fixed;
+        top: @headerHeight;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        transition: 300ms;
+        transform: translateX(0%);
+
+        .left-blank,
+        .right-blank {
+            flex: 1;
+            transition-delay: 200ms;
+            transition-duration: 300ms;
+            background: rgba(0, 0, 0, 0);
+        }
+
+        .right-drawer-content {
+            flex-direction: column;
+            width: 50%;
+            background: #fff;
+        }
+    }
+
+    .trigger {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 0;
+        flex-shrink: 0;
+        height: 100%;
+        font-size: 20px;
+        cursor: pointer;
+        transition: all .3s;
+        padding: 0 24px;
+
+        &:active {
+            opacity: 0.5;
+        }
+    }
+
+    .center {
+        flex-shrink: 1;
+        flex-grow: 1;
+        overflow: auto;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .right {
+        display: flex;
+        align-items: center;
+        flex-grow: 0;
+        flex-shrink: 0;
+        height: 100%;
+
+        .setting {
+            cursor: pointer;
+            font-size: 20px;
+
+            &:active {
+                opacity: 0.5;
+            }
+        }
+
+        .action {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 0 6px;
+            transition: all @transitionDuration;
+            height: 100%;
+
+            > i {
+                font-size: 16px;
+                vertical-align: middle;
+            }
+
+            //&:global(.ant-popover-open),
+            //&:hover {
+            //    background: lighten(@primary-color, 40%);
+            //}
+        }
+
+    }
+
+    &[data-theme=dark] {
+        background: @layout-header-background;
+        box-shadow: 2px 0 6px lighten(@layout-header-background, 10%);
+
+        .logo {
+            background: @layout-header-background;
+            box-shadow: none;
+        }
+
+        .right {
+            color: #fff;
+        }
+
+        .action {
+            &:global(.ant-popover-open),
+            &:hover {
+                background: lighten(@layout-header-background, 10%) !important;
+            }
+        }
+    }
+}

@@ -99,6 +99,7 @@ export default class Side extends Component {
             sideCollapsedWidth,
             sideWidth,
             sideDragging,
+            style,
         } = this.props;
 
         sideWidth = sideCollapsed ? sideCollapsedWidth : sideWidth;
@@ -121,7 +122,7 @@ export default class Side extends Component {
         }
 
         if (hasSide) return (
-            <div styleName="side" style={{width: sideWidth, display: showSide ? 'block' : 'none', transitionDuration}}>
+            <div styleName="side" style={{width: sideWidth, display: showSide ? 'block' : 'none', transitionDuration, ...style}}>
                 {sideCollapsed ? null : (
                     <DragBar
                         styleName="drag-bar"

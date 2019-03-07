@@ -14,11 +14,11 @@ export default class Logo extends Component {
     };
 
     render() {
-        const {min, title} = this.props;
+        const {min, title, ...others} = this.props;
         return (
             <div styleName="logo">
                 <img src={logo} alt="logo"/>
-                <h1 className={min ? 'title-hide' : ''}>{title}</h1>
+                <h1 {...others} className={min ? 'title-hide' : ''}>{title}</h1>
             </div>
         );
     }
