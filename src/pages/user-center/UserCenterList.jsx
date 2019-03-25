@@ -125,8 +125,9 @@ export default class UserCenterList extends Component {
 
         this.setState({loading: true});
         this.props.ajax
-            .get('/user-center', {...params, pageNum, pageSize})
+            .get('/mock/user-center', {...params, pageNum, pageSize})
             .then(res => {
+                console.log(res);
                 if (res) {
                     const {list: dataSource, total} = res;
                     this.setState({
@@ -166,9 +167,9 @@ export default class UserCenterList extends Component {
                         onSubmit={params => this.setState({params}, this.handleSearch)}
                     />
                 </QueryBar>
-                
+
                 <ToolBar items={this.toolItems}/>
-                    
+
                 <Table
                     columns={this.columns}
                     dataSource={dataSource}

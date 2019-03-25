@@ -46,11 +46,11 @@
         setInterval(() => {
             const root = document.getElementById('root');
 
-            if (root && !root.innerHTML) {
+            if (root && !root.innerHTML && !document.getElementsByTagName('iframe').length) {
                 window.location.reload();
                 clearInterval(si);
             }
-        }, 5000)
+        }, 10000)
     }
 </script>
 </body>

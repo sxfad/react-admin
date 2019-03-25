@@ -18,7 +18,7 @@ export default {
         primaryColor,               // 主题主颜色
         tabs: [],                   // 所有的tab配置 {path, text, icon, component, active, scrollTop}
         keepPage: true,             // 页面切换回去之后，保持内容，通过显示隐藏div实现，不知道会有什么坑！！！性能？各个互相干扰？
-        smallFrame: true,           // 手机上等小屏幕布局
+        smallFrame: false,           // 手机上等小屏幕布局
     },
 
     syncStorage: {
