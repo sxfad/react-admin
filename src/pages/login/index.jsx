@@ -50,7 +50,11 @@ export default class extends Component {
 
                 setTimeout(() => {
                     this.setState({loading: false});
-                    if (userName === 'admin' && password === '111') {
+
+                    // 当需要指定登陆用户时，前端可以写死
+                    let userA = userName === 'admin' && password === '111';
+                    let userB = userName === 'admin2' && password === '222';
+                    if (userA || userB) {
                         setLoginUser({
                             id: 'tempUserId',
                             name: 'Admin',
