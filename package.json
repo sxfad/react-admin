@@ -33,6 +33,7 @@
         "css-loader": "^2.1.0",
         "dotenv": "6.0.0",
         "dotenv-expand": "4.2.0",
+        "dragact": "^0.2.12",
         "echarts": "^4.2.0-rc.2",
         "echarts-for-react": "^2.0.15-beta.0",
         "ejs": "^2.6.1",

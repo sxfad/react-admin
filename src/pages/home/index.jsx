@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ReactEchart from 'echarts-for-react';
 import {Row, Col} from 'antd';
+import { Dragact } from 'dragact';
 import config from '@/commons/config-hoc';
 import PageContent from '@/layouts/page-content';
 import DataBlock from '@/components/data-block';
@@ -279,55 +280,79 @@ export default class Home extends Component {
             borderRadius: '5px',
             padding: 8,
         };
+
+        const firstEcharts = <ReactEchart option={this.getPieOption()}/>;
+        const secondEcharts = <ReactEchart option={this.getBarOption()}/>;
+
+        const fakeData = [
+            { GridX: 0, GridY: 0, w: 8, h: 8,content: firstEcharts, key: '0' },
+            { GridX: 8, GridY: 0, w: 8, h: 8,content: secondEcharts, key: '1' },
+        ];
+
         return (
             <PageContent styleName="root">
-                <div styleName="statistics">
-                    <DataBlock
-                        color="#1890FF"
-                        count={users}
-                        tip="新增用户"
-                        icon="user-add"
-                    />
-                    <DataBlock
-                        color="#FAAD14"
-                        count={read}
-                        tip="昨日阅读"
-                        icon="area-chart"
-                    />
-                    <DataBlock
-                        color="#3E8F2D"
-                        count={like}
-                        tip="新增点赞"
-                        icon="like"
-                    />
-                    <DataBlock
-                        color="red"
-                        count={warning}
-                        tip="报警次数"
-                        icon="warning"
-                    />
-                    <DataBlock
-                        color="#FA541C"
-                        count={start}
-                        tip="新增收藏"
-                        icon="star"
-                    />
-                </div>
-                <Row style={{marginTop: 16}}>
-                    <Col span={8} style={{paddingRight: 16}}>
-                        <div style={colStyle}>
-                            <ReactEchart option={this.getPieOption()}/>
-                        </div>
-                    </Col>
-                    <Col span={16}>
-                        <div style={colStyle}>
-                            <ReactEchart option={this.getBarOption()}/>
-                        </div>
-                    </Col>
-                </Row>
-                <div style={{...colStyle, marginTop: 16}}>
-                    <ReactEchart option={this.getBar2Option()}/>
-                </div>
+                <Dragact
+                    layout={fakeData}//必填项
+                    col={16}//必填项
+                    width={
+                        800
+                    }//必填项
+                    rowHeight={40}//必填项
+                    margin={[5, 5]}//必填项
+                    // styleName='plant-layout'//必填项
+                    style={{ background: '#171819' }}//非必填项 #171819 #d8d9da
+                    placeholder={true}//非必填项
+                >
+                    {(item, provided) => {
+                        return (
+                            <div
+                                {...provided.props}
+                            >
+                                {item.content}
+                                {/*<ReactEchart option={this.getPieOption()}/>*/}
+                                <span
+                                    {...provided.dragHandle}
+                                    style={{
+                                        position: 'absolute',
+                                        width: '100%',
+                                        height: '26px',
+                                        top: '1px',
+                                        cursor: 'move',
+                                        background: '#212124',
+                                        zIndex: 0,}}
+                                />
+                                <span
+                                    {...provided.resizeHandle}
+                                    style={{
+                                        position: 'absolute',
+                                        width: '16px',
+                                        height: '16px',
+                                        right: '2px',
+                                        bottom: '2px',
+                                        cursor: 'se-resize',
+                                        borderRight: '3px solid rgba(105,105,105,.3)',
+                                        borderBottom: '3px solid rgba(105,105,105,.3)',}}
+                                />
+
+                            </div>
+                        )
+                    }}
+                </Dragact>
+                {/*<Row style={{marginTop: 16}}>*/}
+                    {/*<Col span={8} style={{paddingRight: 16}}>*/}
+                        {/*<div style={colStyle}>*/}
+                            {/*<ReactEchart option={this.getPieOption()}/>*/}
+                        {/*</div>*/}
+                    {/*</Col>*/}
+                    {/*<Col span={16}>*/}
+                        {/*<div style={colStyle}>*/}
+                            {/*<ReactEchart option={this.getBarOption()}/>*/}
+                        {/*</div>*/}
+                    {/*</Col>*/}
+                {/*</Row>*/}
+                {/*<div style={{...colStyle, marginTop: 16}}>*/}
+                    {/*<ReactEchart option={this.getBar2Option()}/>*/}
+                {/*</div>*/}
             </PageContent>
         );
     }
