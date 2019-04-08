@@ -16,4 +16,4 @@ module.exports = function (app) {
 };
 ```
 
-注：更过代理配置请参考[http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)
+注：更多代理配置请参考[http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)
