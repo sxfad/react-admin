@@ -1,14 +1,5 @@
 const mysql = require('mysql');
 
-const options = {
-    host: '172.16.60.247',
-    port: '3306',
-    user: 'fd',
-    password: '123456',
-    database: 'code_generate',
-    table: 'code_generate_project',
-};
-
 function testConnection(options) {
     return new Promise(function (resolve, reject) {
         const {host, port, user, password, database} = options;
