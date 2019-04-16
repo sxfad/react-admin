@@ -4,10 +4,6 @@ import {getMenuTreeDataAndPermissions, getSelectedMenuByPath} from '../commons';
 import getMenus from "@/menus";
 import {getCurrentLocal} from '@/i18n';
 
-export const types = {
-    GET_MENU_STATUS: 'MENU:GET_MENU_STATUS',    // 防止各个模块冲突，预订[模块名:]开头
-};
-
 export default {
     initialState: {
         loading: false,         // 请求菜单loading
@@ -16,12 +12,14 @@ export default {
         selectedMenu: [],       // 当前选中菜单
         topMenu: [],            // 当前选中菜单的顶级菜单
         keepOtherOpen: false,   // 点击菜单进入页面时，保持其他菜单打开状态
+        mostUsedMenus: [],      // 最常用菜单，使用此时usedTimes降序排列
     },
     syncStorage: {
         openKeys: true,
         selectedMenu: true,
         topMenu: true,
         keepOtherOpen: true,
+        mostUsedMenus: true,
     },
 
     /**
@@ -51,7 +49,9 @@ export default {
     setMenus: (menus) => ({menus}),
     getMenuStatus: (arg, state) => {
         const path = window.location.pathname;
-        const {keepOtherOpen} = state;
+        const {keepOtherOpen,} = state;
+        const mostUsedMenus = [...state.mostUsedMenus];
+
         let openKeys = [...state.openKeys];
         let selectedMenu = getSelectedMenuByPath(path, state.menus);
         let topMenu = {};
@@ -68,11 +68,23 @@ export default {
             openKeys = keepOtherOpen ? openKeys.concat(parentKeys) : [...parentKeys];
 
             openKeys = uniqueArray(openKeys);
+
+            // 更新最常用菜单
+            const existMostUsedMenu = mostUsedMenus.find(item => item.key === selectedMenu.key)
+            if (existMostUsedMenu) {
+                existMostUsedMenu.usedTimes += 1;
+            } else {
+                mostUsedMenus.push({...selectedMenu, usedTimes: 1});
+            }
+
+            mostUsedMenus.sort((a, b) => b.usedTimes - a.usedTimes);
         }
+
         return {
             topMenu,
             selectedMenu,
             openKeys,
+            mostUsedMenus,
         };
     },
 }
