@@ -2,12 +2,13 @@ import {ajax} from '@/commons/ajax';
 
 export default {
     initialState: {
-        host: {value: ''},
+        host: {value: 'localhost'},
         port: {value: '3306'},
-        user: {value: ''},
-        password: {value: ''},
-        database: {value: ''},
+        user: {value: 'liaoyongxiong'},
+        password: {value: 'patrick1226'},
+        database: {value: 'dianchuang'},
         table: {value: ''},
+        dbtype: {value: '2'},
 
         tableNames: [],
         gettingTableNames: false,
