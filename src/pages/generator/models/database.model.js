@@ -4,11 +4,11 @@ export default {
     initialState: {
         host: {value: 'localhost'},
         port: {value: '3306'},
-        user: {value: 'liaoyongxiong'},
-        password: {value: 'patrick1226'},
-        database: {value: 'dianchuang'},
+        user: {value: ''},
+        password: {value: ''},
+        database: {value: ''},
         table: {value: ''},
-        dbtype: {value: '2'},
+        dbtype: {value: '1'},
 
         tableNames: [],
         gettingTableNames: false,
