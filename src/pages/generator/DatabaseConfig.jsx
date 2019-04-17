@@ -69,6 +69,23 @@ export default class DatabaseConfig extends Component {
             });
         });
     };
+    
+    handleChangeDBType = (dbtype) => {
+        const {form: {setFieldsValue}} = this.props;
+        switch (dbtype)
+        {
+            case "1":
+                setFieldsValue({port:'3306'});
+                break;
+            case "2":
+                setFieldsValue({port:'5432'});
+                break;
+            default:
+                setFieldsValue({port:'3306'});
+                break;
+        }
+
+    }
 
     handleGetTableColumns = (table) => {
         this.validate().then(values => {
@@ -123,6 +140,7 @@ export default class DatabaseConfig extends Component {
                     <Col span={span}>
                         <FormElement
                             label="端口"
+                            tip="Mysql缺省端口：3306；PostgresSQL缺省端口：5432"
                             field="port"
                             decorator={{
                                 rules: [
@@ -164,6 +182,27 @@ export default class DatabaseConfig extends Component {
                                 rules: [
                                     {required: true, message: '请输入数据库',},
                                 ],
+                            }}
+                        />
+                    </Col>
+                    <Col span={span}>
+                        <FormElement
+                            type="select"
+                            field="dbtype"
+                            label="数据库类型"
+                            tip="1、如获取表名失败，请参照Mysql或PostgreSQL手册检查数据库是否配置为可远程连接；2、Mysql数据库版本建议不高于8.0，否则可能会导致连接不上"
+                            placeholder="请选择"
+                            options={[
+                                {label: 'MySql', value: '1'},
+                                {label: 'PostgreSQL', value: '2'},
+                            ]}
+                            decorator={{
+                                rules: [
+                                    {required: false, message: '请选择数据库类型',},
+                                ],
+                                onChange: (value) => {
+                                    this.handleChangeDBType(value);
+                                },
                             }}
                         />
                     </Col>
