@@ -1,7 +1,7 @@
 const mySqlService = require('./my-sql');
-const postgreSQLService = require('./my-sql');
+const postgreSQLService = require('./postgre-sql.js');
 
-function getDBService(dbType) {
+function getDBService(dbType = 'MySql') {
     switch (dbType) {
         case "MySql":
             return mySqlService;

@@ -19,7 +19,17 @@ export default {
         showConfig: true,
     },
 
-    syncStorage: true,
+    syncStorage: {
+        host: true,
+        port: true,
+        user: true,
+        password: true,
+        database: true,
+        table: true,
+        dbType: true,
+        tableNames: true,
+        tableColumns: true,
+    },
 
     setFields: (fields) => ({...fields}),
 
