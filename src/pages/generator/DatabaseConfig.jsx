@@ -69,23 +69,23 @@ export default class DatabaseConfig extends Component {
             });
         });
     };
-    
-    handleChangeDBType = (dbtype) => {
+
+    handleDBTypeChange = (dbType) => {
         const {form: {setFieldsValue}} = this.props;
-        switch (dbtype)
-        {
-            case "1":
-                setFieldsValue({port:'3306'});
+
+        switch (dbType) {
+            case "MySql":
+                setFieldsValue({port: '3306'});
                 break;
-            case "2":
-                setFieldsValue({port:'5432'});
+            case "PostgreSQL":
+                setFieldsValue({port: '5432'});
                 break;
             default:
-                setFieldsValue({port:'3306'});
+                setFieldsValue({port: '3306'});
                 break;
         }
 
-    }
+    };
 
     handleGetTableColumns = (table) => {
         this.validate().then(values => {
@@ -124,6 +124,32 @@ export default class DatabaseConfig extends Component {
         return (
             <Form>
                 <Row style={configRowStyle}>
+                    <Col span={span}>
+                        <FormElement
+                            type="select"
+                            field="dbType"
+                            label="类型"
+                            tip={(
+                                <div>
+                                    <div>1、Mysql数据库版本建议不高于8.0，否则可能会导致连接不上</div>
+                                    <div>2、如获取表名失败，请参照Mysql或PostgreSQL手册检查数据库是否配置为可远程连接；</div>
+                                </div>
+                            )}
+                            placeholder="请选择数据库类型"
+                            options={[
+                                {label: 'MySql', value: 'MySql'},
+                                {label: 'PostgreSQL', value: 'PostgreSQL'},
+                            ]}
+                            decorator={{
+                                rules: [
+                                    {required: true, message: '请选择数据库类型',},
+                                ],
+                                onChange: (value) => {
+                                    this.handleDBTypeChange(value);
+                                },
+                            }}
+                        />
+                    </Col>
                     <Col span={span}>
                         <FormElement
                             label="地址"
@@ -182,27 +208,6 @@ export default class DatabaseConfig extends Component {
                                 rules: [
                                     {required: true, message: '请输入数据库',},
                                 ],
-                            }}
-                        />
-                    </Col>
-                    <Col span={span}>
-                        <FormElement
-                            type="select"
-                            field="dbtype"
-                            label="数据库类型"
-                            tip="1、如获取表名失败，请参照Mysql或PostgreSQL手册检查数据库是否配置为可远程连接；2、Mysql数据库版本建议不高于8.0，否则可能会导致连接不上"
-                            placeholder="请选择"
-                            options={[
-                                {label: 'MySql', value: '1'},
-                                {label: 'PostgreSQL', value: '2'},
-                            ]}
-                            decorator={{
-                                rules: [
-                                    {required: false, message: '请选择数据库类型',},
-                                ],
-                                onChange: (value) => {
-                                    this.handleChangeDBType(value);
-                                },
                             }}
                         />
                     </Col>

@@ -8,7 +8,7 @@ export default {
         password: {value: ''},
         database: {value: ''},
         table: {value: ''},
-        dbtype: {value: '1'},
+        dbType: {value: 'MySql'},
 
         tableNames: [],
         gettingTableNames: false,

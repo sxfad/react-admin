@@ -1,26 +1,26 @@
-const mysql = require('mysql');
+const pg = require("pg");
 
 function testConnection(options) {
     return new Promise(function (resolve, reject) {
         const {host, port, user, password, database} = options;
-        const connection = mysql.createConnection({
+
+        const client = new pg.Client({
             host,
             port,
             user,
             password,
             database,
         });
-
-        connection.connect(function (err) {
+        client.connect(function (err) {
             if (err) {
                 console.error(err);
+                client.end();
                 reject(err);
             } else {
+                client.end();
                 resolve(true);
             }
         });
-
-        connection.end();
     });
 }
 
@@ -28,78 +28,73 @@ function testConnection(options) {
 function getTableNames(options) {
     return new Promise(function (resolve, reject) {
         const {host, port, user, password, database} = options;
-        const connection = mysql.createConnection({
+        const client = new pg.Client({
             host,
             port,
             user,
             password,
             database,
         });
+        const tableInfoSql = `select tablename AS table_name from pg_tables where tablename not like 'pg_%' and tablename not like 'sql_%' order by tablename`;
 
-        // url: jdbc:mysql://172.16.60.247:3306/code_generate?useUnicode=true&characterEncoding=UTF-8&useSSL=false
-        // username: fd
-        // password: 123456
+        client.connect();
+        client.query(tableInfoSql, function (error, results) {
+            if (error) {
+                console.error(error);
+                client.end();
+                return reject(error);
+            }
 
-        connection.connect();
+            const result = results.rows.map(item => item.table_name);
 
-        const tableInfoSql = `select table_name from information_schema.tables where table_schema='${database}' and table_type='base table'`;
-
-        connection.query(tableInfoSql, function (error, results, fields) {
-            if (error) return reject(error);
-
-            const result = results.map(item => {
-                return item.table_name;
-            });
             resolve(result);
-        });
 
-        connection.end();
+            client.end();
+        });
     });
 }
 
 function getTableColumns(options) {
     return new Promise(function (resolve, reject) {
         const {host, port, user, password, database, table} = options;
-        const connection = mysql.createConnection({
+
+        const client = new pg.Client({
             host,
             port,
             user,
             password,
             database,
         });
+        const tableInfoSql = `select * from information_schema.columns where table_schema = 'public' and table_name = '${table}'`;
 
-        // url: jdbc:mysql://172.16.60.247:3306/code_generate?useUnicode=true&characterEncoding=UTF-8&useSSL=false
-        // username: fd
-        // password: 123456
+        client.connect();
 
-        connection.connect();
+        client.query(tableInfoSql, function (error, results) {
+            if (error) {
+                client.end();
+                return reject(error);
+            }
 
-        const tableInfoSql = `select * from information_schema.columns where table_schema = "${database}" and table_name = "${table}"`;
-
-        connection.query(tableInfoSql, function (error, results, fields) {
-            if (error) return reject(error);
-
-            const result = results.map(item => {
-                const name = item.COLUMN_NAME;
+            const result = results.rows.map(item => {
+                const name = item.column_name;
                 const camelCaseName = name.replace(/_(\w)/g, (a, b) => b.toUpperCase());
-                const comment = item.COLUMN_COMMENT;
+                const comment = 'comment';//item.COLUMN_COMMENT;
                 const commentInfo = getInfoByComment(comment);
                 const {chinese} = commentInfo;
 
                 return {
                     camelCaseName,
                     name,
-                    type: item.DATA_TYPE, // COLUMN_TYPE
-                    isNullable: item.IS_NULLABLE === 'YES',
+                    type: item.data_type, // COLUMN_TYPE
+                    isNullable: item.is_nullable === 'YES',
                     comment,
                     chinese,
-                    length: item.CHARACTER_MAXIMUM_LENGTH, // CHARACTER_OCTET_LENGTH
+                    length: item.character_maximum_length, // CHARACTER_OCTET_LENGTH
                 };
             });
             resolve(result);
+            client.end();
         });
-
-        connection.end();
     });
 }
 
@@ -120,4 +115,3 @@ module.exports = {
     getTableColumns,
     getTableNames,
 };
-

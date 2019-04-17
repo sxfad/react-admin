@@ -1,10 +1,11 @@
-const mysqlService = require('../service/my-sql');
+const {getDBService} = require('../service');
 
 module.exports = {
     testConnection(req, res, next) {
-        const {host, port, user, password, database,dbtype} = req.query;
+        const {host, port, user, password, database, dbType} = req.query;
+        const dbService = getDBService(dbType);
 
-        mysqlService.testConnection({host, port, user, password, database,dbtype})
+        dbService.testConnection({host, port, user, password, database})
             .then(result => {
                 res.send(true);
             })
@@ -14,9 +15,10 @@ module.exports = {
     },
 
     getTableNames(req, res, next) {
-        const {host, port, user, password, database,dbtype} = req.query;
+        const {host, port, user, password, database, dbType} = req.query;
+        const dbService = getDBService(dbType);
 
-        mysqlService.getTableNames({host, port, user, password, database,dbtype})
+        dbService.getTableNames({host, port, user, password, database})
             .then(result => {
                 res.send(result);
             })
@@ -26,9 +28,10 @@ module.exports = {
     },
 
     getTableColumns(req, res, next) {
-        const {host, port, user, password, database, table,dbtype} = req.query;
+        const {host, port, user, password, database, table, dbType} = req.query;
+        const dbService = getDBService(dbType);
 
-        mysqlService.getTableColumns({host, port, user, password, database, table,dbtype})
+        dbService.getTableColumns({host, port, user, password, database, table})
             .then(result => {
                 res.send(result);
             })
