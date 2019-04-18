@@ -87,26 +87,26 @@ export default class Header extends Component {
         const theme = this.props.theme || ((isTopSideMenu || isSideMenu) ? 'default' : 'dark');
 
         return (
-            <div styleName="header" data-theme={theme}>
-                <div styleName="logo" style={{flex: `0 0 ${sideWidth}px`, transitionDuration}}>
-                    <Link to="/">
-                        <Logo
-                            min={sideCollapsed}
-                            title={i18n?.application?.name}
-                        />
-                    </Link>
-                </div>
-                {
-                    showToggle ? (
-                        <Icon
-                            className="header-trigger"
-                            styleName="trigger"
-                            type={sideCollapsed ? 'menu-unfold' : 'menu-fold'}
-                            onClick={this.handleToggle}
-                            style={theme === 'dark' ? {color: '#fff', backgroundColor: '#222'} : null}
-                        />
-                    ) : null
-                }
+            <div styleName="header" style={{display: 'none'}} data-theme={theme}>
+                {/*<div styleName="logo" style={{flex: `0 0 ${sideWidth}px`, transitionDuration}}>*/}
+                    {/*<Link to="/">*/}
+                        {/*<Logo*/}
+                            {/*min={sideCollapsed}*/}
+                            {/*title={i18n?.application?.name}*/}
+                        {/*/>*/}
+                    {/*</Link>*/}
+                {/*</div>*/}
+                {/*{*/}
+                    {/*showToggle ? (*/}
+                        {/*<Icon*/}
+                            {/*className="header-trigger"*/}
+                            {/*styleName="trigger"*/}
+                            {/*type={sideCollapsed ? 'menu-unfold' : 'menu-fold'}*/}
+                            {/*onClick={this.handleToggle}*/}
+                            {/*style={theme === 'dark' ? {color: '#fff', backgroundColor: '#222'} : null}*/}
+                        {/*/>*/}
+                    {/*) : null*/}
+                {/*}*/}
                 {children ? (
                     <div styleName="center">{children}</div>
                 ) : (

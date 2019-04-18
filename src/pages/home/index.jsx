@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ReactEchart from 'echarts-for-react';
-import {Row, Col} from 'antd';
+import {Row, Col,Button} from 'antd';
 import config from '@/commons/config-hoc';
 import PageContent from '@/layouts/page-content';
 import DataBlock from '@/components/data-block';
@@ -328,6 +328,7 @@ export default class Home extends Component {
                 <div style={{...colStyle, marginTop: 16}}>
                     <ReactEchart option={this.getBar2Option()}/>
                 </div>
+                <Button type="primary">12313123</Button>
             </PageContent>
         );
     }

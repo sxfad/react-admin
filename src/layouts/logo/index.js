@@ -16,9 +16,9 @@ export default class Logo extends Component {
     render() {
         const {min, title, ...others} = this.props;
         return (
-            <div styleName="logo">
-                <img src={logo} alt="logo"/>
-                <h1 {...others} className={min ? 'title-hide' : ''}>{title}</h1>
+            <div>
+                {/*<img src={logo} alt="logo"/>*/}
+                {/*<h1 {...others} className={min ? 'title-hide' : ''}>{title}</h1>*/}
             </div>
         );
     }
