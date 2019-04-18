@@ -164,7 +164,7 @@ export default class FrameTopSideMenu extends Component {
         if (!hasSide) {
             window.document.body.style.paddingLeft = '0px';
         } else {
-            // window.document.body.style.paddingLeft = `${sideWidth}px`;
+            window.document.body.style.paddingLeft = `${sideWidth}px`;
         }
 
         const theme = (isTopSideMenu || isSideMenu) ? 'dark' : 'default';

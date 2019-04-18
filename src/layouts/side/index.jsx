@@ -122,28 +122,28 @@ export default class Side extends Component {
         }
 
         if (hasSide) return (
-            <div >
-                {/*{sideCollapsed ? null : (*/}
-                    {/*<DragBar*/}
-                        {/*styleName="drag-bar"*/}
-                        {/*onDragStart={this.handleSideResizeStart}*/}
-                        {/*onDragging={this.handleSideResize}*/}
-                        {/*onDragEnd={this.handleSideResizeStop}*/}
-                    {/*/>*/}
-                {/*)}*/}
+            <div styleName="side" style={{width: sideWidth, display: showSide ? 'block' : 'none', transitionDuration, ...style}}>
+                {sideCollapsed ? null : (
+                    <DragBar
+                        styleName="drag-bar"
+                        onDragStart={this.handleSideResizeStart}
+                        onDragging={this.handleSideResize}
+                        onDragEnd={this.handleSideResizeStop}
+                    />
+                )}
 
-                {/*<div styleName="outer" style={{overflow: outerOverFlow, transitionDuration}}>*/}
-                    {/*<div styleName="inner" ref={node => this.inner = node} style={{width: sideInnerWidth, overflow: innerOverFlow, transitionDuration}}>*/}
-                        {/*<SideMenu*/}
-                            {/*theme={theme}*/}
-                            {/*dataSource={sideMenus}*/}
-                            {/*collapsed={sideCollapsed}*/}
-                            {/*openKeys={openKeys}*/}
-                            {/*selectedKeys={[selectedMenu && selectedMenu.key]}*/}
-                            {/*onOpenChange={this.handleMenuOpenChange}*/}
-                        {/*/>*/}
-                    {/*</div>*/}
-                {/*</div>*/}
+                <div styleName="outer" style={{overflow: outerOverFlow, transitionDuration}}>
+                    <div styleName="inner" ref={node => this.inner = node} style={{width: sideInnerWidth, overflow: innerOverFlow, transitionDuration}}>
+                        <SideMenu
+                            theme={theme}
+                            dataSource={sideMenus}
+                            collapsed={sideCollapsed}
+                            openKeys={openKeys}
+                            selectedKeys={[selectedMenu && selectedMenu.key]}
+                            onOpenChange={this.handleMenuOpenChange}
+                        />
+                    </div>
+                </div>
             </div>
         );
         return null;

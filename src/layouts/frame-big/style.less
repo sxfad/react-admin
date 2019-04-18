@@ -12,8 +12,8 @@
 body {
     margin: 0;
     background: #f0f2f5;
-    //padding-left: @contentLeft;
-    //transition: padding-left @transitionDuration;
+    padding-left: @contentLeft;
+    transition: padding-left @transitionDuration;
 }
 
 .base-frame {
@@ -106,8 +106,7 @@ body {
 
 .content-top-space {
     position: relative;
-    //height: @contentTop;
-    height: 0 !important;
+    height: @contentTop;
     background: #f0f2f5;
     transition: all @transitionDuration;
 
@@ -143,7 +142,6 @@ body {
     height: @pageTabsHeight;
     background: #fff;
     z-index: 998;
-    display: none !important;
 
     :global(.ant-tabs-bar) {
         padding-top: 7px;

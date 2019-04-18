@@ -84,7 +84,7 @@ export default class SideMenu extends Component {
         };
 
         return (
-            <div styleName="side-menu" >
+            <div styleName="side-menu">
                 <Menu
                     {...menuProps}
                     selectedKeys={selectedKeys}
