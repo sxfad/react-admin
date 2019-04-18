@@ -8,6 +8,7 @@ import './index.less';
  */
 export default class PaginationComponent extends Component {
     static propTypes = {
+        size: PropTypes.string,
         showSizeChanger: PropTypes.bool,
         showQuickJumper: PropTypes.bool,
         showMessage: PropTypes.bool,
@@ -19,20 +20,20 @@ export default class PaginationComponent extends Component {
     };
 
     static defaultProps = {
+        size: 'default',
         showSizeChanger: true,
         showQuickJumper: true,
         showMessage: true,
         pageSize: 10,
         pageNum: 1,
         total: 0,
-        onPageNumChange() {
-        },
-        onPageSizeChange() {
-        },
+        onPageNumChange: () => void 0,
+        onPageSizeChange: () => void 0,
     };
 
     render() {
         const {
+            size,
             showSizeChanger,
             showQuickJumper,
             showMessage,
@@ -60,6 +61,7 @@ export default class PaginationComponent extends Component {
             <div className="pagination-wrap" style={style}>
                 <Pagination
                     {...props}
+                    size={size}
                     pageSizeOptions={['10', '20', '30', '40', '50', '80', '100']}
                     onShowSizeChange={(num, size) => onPageSizeChange(size)}
                     onChange={(num) => onPageNumChange(num)}

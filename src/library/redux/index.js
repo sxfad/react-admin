@@ -219,10 +219,11 @@ export function getActionsAndReducers({models}) {
  * 根据 mapObj 的结构，获取 originObj 对应结构的数据
  * @param originObj
  * @param mapObj
- * @param result
  * @returns {{}}
  */
 function setObjectByObject(originObj, mapObj = {}) {
+    if (!originObj) return null;
+
     mapObj && Object.keys(mapObj).forEach(key => {
         const value = mapObj[key];
         if (typeof value === 'object' && !Array.isArray(value)) {

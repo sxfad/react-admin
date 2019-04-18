@@ -25,6 +25,7 @@ export default class QueryItem extends Component {
         formRef: PropTypes.func,
         extra: PropTypes.any,
         loadOptions: PropTypes.func,
+        buttonAlone: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -32,6 +33,7 @@ export default class QueryItem extends Component {
         submitText: '查询',
         showReset: true,
         resetText: '重置',
+        buttonAlone: false,
         collapsed: false,
         items: [],
         onSubmit: () => true,
@@ -79,6 +81,7 @@ export default class QueryItem extends Component {
             form,
             extra,
             buttonContainerStyle,
+            buttonAlone,
         } = this.props;
 
         return (
@@ -96,8 +99,12 @@ export default class QueryItem extends Component {
                         return (
                             <div key={index} className="query-item-element-container">
                                 {data.map(item => {
-                                    const {itemStyle, field, collapsedShow, ...others} = item;
+                                    let {itemStyle = {}, width, field, collapsedShow, ...others} = item;
                                     const style = {display: 'block'};
+
+                                    if (width) {
+                                        itemStyle = {flex: `0 0 ${width}px`, ...itemStyle};
+                                    }
 
                                     const options = this.state[field];
                                     if (options && !others.options) others.options = options;
@@ -119,7 +126,7 @@ export default class QueryItem extends Component {
                                         </div>
                                     );
                                 })}
-                                {index === items.length - 1 && (showSubmit || showReset || extra) ? (
+                                {!buttonAlone && index === items.length - 1 && (showSubmit || showReset || extra) ? (
                                     <div className="query-item-button-container" style={{...buttonContainerStyle, paddingTop: '4px'}}>
                                         {showSubmit ? (
                                             <Button
@@ -146,6 +153,29 @@ export default class QueryItem extends Component {
                         );
                     })
                 }
+                {buttonAlone ? (
+                    <div className="query-item-button-container" style={{...buttonContainerStyle, paddingTop: '4px'}}>
+                        {showSubmit ? (
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                                icon="search"
+                            >
+                                {submitText}
+                            </Button>
+                        ) : null}
+                        {showReset ? (
+                            <Button
+                                type="ghost"
+                                icon="rollback"
+                                onClick={() => form.resetFields()}
+                            >
+                                {resetText}
+                            </Button>
+                        ) : null}
+                        {extra}
+                    </div>
+                ) : null}
             </Form>
         );
     }

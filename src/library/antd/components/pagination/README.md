@@ -4,6 +4,7 @@
 
 参数|说明|类型|默认值
 ---|---|---|---
+size | 大小 | string | true
 showSizeChanger | 是否显示，每页显示条数 下拉框 | bool | true
 showQuickJumper | 是否显示，跳转到 输入框 | bool | true
 showMessage | 是否显示统计信息 | bool | true
