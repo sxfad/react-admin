@@ -32,15 +32,13 @@ export default class UserCenter extends Component {
                 type: 'select',
                 field: 'position',
                 label: '职位',
-                placeholder: '请选择职位',
-                itemStyle: {flex: '0 0 200px'}, // 固定宽度
+                width: 200,
             },
             {
                 type: 'select',
                 field: 'job',
                 label: '工作',
-                placeholder: '请选择工作',
-                itemStyle: {flex: '0 0 200px'}, // 固定宽度
+                width: 200,
             },
         ],
         [
@@ -49,8 +47,7 @@ export default class UserCenter extends Component {
                 type: 'input',
                 field: 'name',
                 label: '用户名',
-                placeholder: '请输入用户名',
-                itemStyle: {flex: '0 0 200px'}, // 固定宽度
+                width: 200,
             },
             {
                 collapsedShow: true,
@@ -60,8 +57,7 @@ export default class UserCenter extends Component {
                 min: 0,
                 max: 150,
                 step: 1,
-                placeholder: '请输入年龄',
-                itemStyle: {flex: '0 0 200px'}, // 固定宽度
+                width: 200,
             },
         ],
     ];

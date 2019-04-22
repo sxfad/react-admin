@@ -21,6 +21,8 @@ export default class QueryItem extends Component {
         resetText: PropTypes.any,
         collapsed: PropTypes.bool,
         items: PropTypes.array,
+        itemWidth: PropTypes.number,
+        itemLabelWidth: PropTypes.number,
         onSubmit: PropTypes.func,
         formRef: PropTypes.func,
         extra: PropTypes.any,
@@ -73,6 +75,8 @@ export default class QueryItem extends Component {
     render() {
         const {
             items,
+            itemWidth,
+            itemLabelWidth,
             showSubmit,
             submitText,
             showReset,
@@ -99,7 +103,7 @@ export default class QueryItem extends Component {
                         return (
                             <div key={index} className="query-item-element-container">
                                 {data.map(item => {
-                                    let {itemStyle = {}, width, field, collapsedShow, ...others} = item;
+                                    let {itemStyle = {}, width = itemWidth, labelWidth = itemLabelWidth, field, collapsedShow, ...others} = item;
                                     const style = {display: 'block'};
 
                                     if (width) {
@@ -121,13 +125,14 @@ export default class QueryItem extends Component {
                                             <FormElement
                                                 form={form}
                                                 field={field}
+                                                labelWidth={labelWidth}
                                                 {...others}
                                             />
                                         </div>
                                     );
                                 })}
                                 {!buttonAlone && index === items.length - 1 && (showSubmit || showReset || extra) ? (
-                                    <div className="query-item-button-container" style={{...buttonContainerStyle, paddingTop: '4px'}}>
+                                    <div className="query-item-button-container" style={{...buttonContainerStyle, paddingTop: '7px'}}>
                                         {showSubmit ? (
                                             <Button
                                                 type="primary"

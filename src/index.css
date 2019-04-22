@@ -20,17 +20,27 @@ body {
     z-index: 9999;
 }
 
+.ant-form label,
+.ant-form-explain {
+    font-size: 12px;
+}
+
+/*.ant-form-item-label,*/
+/*.ant-form-item-control {*/
+/*line-height: 25px;*/
+/*}*/
+
 /*.ant-tooltip,*/
 /*.ant-modal-mask,*/
 /*.ant-modal-wrap,*/
 /*.ant-message,*/
 /*.ant-menu-submenu-popup,*/
 /*.ant-notification {*/
-    /*z-index: 9999 !important;;*/
+/*z-index: 9999 !important;;*/
 /*}*/
 
 /*.ant-modal {*/
-    /*padding-bottom: 84px !important;*/
+/*padding-bottom: 84px !important;*/
 /*}*/
 
 /* 只在打印时显示 */

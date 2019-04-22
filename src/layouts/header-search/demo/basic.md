@@ -13,8 +13,8 @@ ReactDOM.render(
   <div
     style={{
       textAlign: 'right',
-      height: '64px',
-      lineHeight: '64px',
+      height: '50px',
+      lineHeight: '50px',
       boxShadow: '0 1px 4px rgba(0,21,41,.12)',
       padding: '0 32px',
       width: '400px',

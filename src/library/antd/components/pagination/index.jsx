@@ -20,11 +20,11 @@ export default class PaginationComponent extends Component {
     };
 
     static defaultProps = {
-        size: 'default',
+        size: 'small',
         showSizeChanger: true,
         showQuickJumper: true,
         showMessage: true,
-        pageSize: 10,
+        pageSize: 15,
         pageNum: 1,
         total: 0,
         onPageNumChange: () => void 0,
@@ -62,7 +62,7 @@ export default class PaginationComponent extends Component {
                 <Pagination
                     {...props}
                     size={size}
-                    pageSizeOptions={['10', '20', '30', '40', '50', '80', '100']}
+                    pageSizeOptions={['10', '15', '30', '50', '100']}
                     onShowSizeChange={(num, size) => onPageSizeChange(size)}
                     onChange={(num) => onPageNumChange(num)}
                     defaultCurrent={1}

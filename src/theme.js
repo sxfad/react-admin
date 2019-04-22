@@ -1,6 +1,6 @@
 /*
 * 主题定制
-* 方案：https':'//ant-design.gitee.io/docs/react/customize-theme-cn
+* 方案：https://ant-design.gitee.io/docs/react/customize-theme-cn
 * 这里利用了 less-loader 的 modifyVars 来进行主题配置
 * 此文件会被 /config/webpack.config.js引用
 *
@@ -12,7 +12,7 @@ module.exports = {
     '@success-color': '#52c41a',                         // 成功色
     '@warning-color': '#faad14',                         // 警告色
     '@error-color': '#f5222d',                           // 错误色
-    '@font-size-base': '14px',                           // 主字号
+    '@font-size-base': '12px',                           // 主字号
     '@heading-color': 'rgba(0, 0, 0, .85)',              // 标题色
     '@text-color': 'rgba(0, 0, 0, .65)',                 // 主文本色
     '@text-color-secondary ': 'rgba(0, 0, 0, .45)',      // 次文本色
@@ -24,4 +24,15 @@ module.exports = {
     // '@layout-header-background': '#001529',                 // 深色主题样式
     '@layout-header-background': '#000',                 // 深色主题样式
     '@menu-dark-submenu-bg': 'lighten(@layout-header-background, 5%)',
+
+    '@input-height-base': '28px',
+    '@input-height-lg': '40px',
+    '@input-height-sm': '24px',
+
+    '@btn-height-base': '28px',
+
+    '@table-padding-vertical': '8px',
+    '@table-padding-horizontal': '8px',
+    '@menu-inline-toplevel-item-height': '30px',
+    '@menu-item-height': '30px',
 };

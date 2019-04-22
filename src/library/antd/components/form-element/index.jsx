@@ -39,6 +39,9 @@ export function isInputLikeElement(type) {
 function getElement(item) {
     const {type = 'input', component, ...props} = item;
 
+    const commonProps = {
+        size: 'default',
+    };
     // 样式
     // const width = props.width || '100%';
     // const elementCommonStyle = {width};
@@ -50,17 +53,17 @@ function getElement(item) {
     }
 
     if (isInputLikeElement(type)) {
-        if (type === 'number') return <InputNumber {...props}/>;
-        if (type === 'textarea') return <TextArea {...props}/>;
-        if (type === 'password') return <Password {...props}/>;
+        if (type === 'number') return <InputNumber {...commonProps} {...props}/>;
+        if (type === 'textarea') return <TextArea {...commonProps} {...props}/>;
+        if (type === 'password') return <Password {...commonProps} {...props}/>;
 
-        return <Input type={type} {...props}/>;
+        return <Input {...commonProps} type={type} {...props}/>;
     }
 
     if (type === 'select') {
         const {options = [], ...others} = props;
         return (
-            <Select {...others}>
+            <Select {...commonProps} {...others}>
                 {
                     options.map(opt => <Select.Option key={opt.value} {...opt}>{opt.label}</Select.Option>)
                 }
@@ -68,26 +71,26 @@ function getElement(item) {
         );
     }
 
-    if (type === 'select-tree') return <TreeSelect {...props} treeData={props.options}/>;
-    if (type === 'checkbox-group') return <Checkbox.Group {...props}/>;
-    if (type === 'radio-group') return <Radio.Group {...props}/>;
-    if (type === 'cascader') return <Cascader {...props}/>;
+    if (type === 'select-tree') return <TreeSelect {...commonProps} {...props} treeData={props.options}/>;
+    if (type === 'checkbox-group') return <Checkbox.Group {...commonProps} {...props}/>;
+    if (type === 'radio-group') return <Radio.Group {...commonProps} {...props}/>;
+    if (type === 'cascader') return <Cascader {...commonProps} {...props}/>;
 
-    if (type === 'checkbox') return <Checkbox {...props}>{props.label}</Checkbox>;
+    if (type === 'checkbox') return <Checkbox {...commonProps} {...props}>{props.label}</Checkbox>;
 
-    if (type === 'radio') return <Radio {...props}>{props.label}</Radio>;
+    if (type === 'radio') return <Radio {...commonProps} {...props}>{props.label}</Radio>;
 
-    if (type === 'switch') return <Switch {...props} style={{...props.style, width: 'auto'}}/>;
+    if (type === 'switch') return <Switch {...commonProps} {...props} style={{...props.style, width: 'auto'}}/>;
 
-    if (type === 'date') return <DatePicker {...props}/>;
+    if (type === 'date') return <DatePicker {...commonProps} {...props}/>;
 
-    if (type === 'date-time') return <DatePicker showTime {...props}/>;
+    if (type === 'date-time') return <DatePicker {...commonProps} showTime {...props}/>;
 
-    if (type === 'date-range') return <DatePicker.RangePicker {...props}/>;
+    if (type === 'date-range') return <DatePicker.RangePicker {...commonProps} {...props}/>;
 
-    if (type === 'month') return <DatePicker.MonthPicker {...props}/>;
+    if (type === 'month') return <DatePicker.MonthPicker {...commonProps} {...props}/>;
 
-    if (type === 'time') return <TimePicker {...props}/>;
+    if (type === 'time') return <TimePicker {...commonProps} {...props}/>;
 
 
     throw new Error(`no such type: ${type}`);
@@ -102,7 +105,7 @@ export default class FormElement extends Component {
             if (labelWidth !== void 0) {
                 label.style.flexBasis = typeof labelWidth === 'string' ? labelWidth : `${labelWidth}px`;
             } else {
-                label.style.paddingLeft = '16px';
+                label.style.paddingLeft = '0';
             }
         }
     }
@@ -156,6 +159,8 @@ export default class FormElement extends Component {
         if (others.placeholder === void 0) {
             if (isInputLikeElement(type)) {
                 others.placeholder = `请输入${label}`;
+            } else if (type === 'date-range') {
+                others.placeholder = ['开始日期', '结束日期'];
             } else {
                 others.placeholder = `请选择${label}`;
             }
@@ -194,9 +199,8 @@ export default class FormElement extends Component {
                     wrapperCol={wrapperCol}
                 >
                     {form ? getFieldDecorator(field, decorator)(
-                        getElement({type, ...others, style: elementStyle})
-                    ) : null}
-                    {children}
+                        children ? children : getElement({type, ...others, style: elementStyle})
+                    ) : children}
                 </FormItem>
             </div>
         );

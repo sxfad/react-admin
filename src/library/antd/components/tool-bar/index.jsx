@@ -7,6 +7,8 @@ export function ToolItem(props) {
     const {items} = props;
 
     return items.map((item, index) => {
+        if (!item) return null;
+
         const {
             key,
             type = 'primary',
@@ -46,16 +48,23 @@ export function ToolItem(props) {
 export default class ToolBar extends Component {
     static propTypes = {
         items: PropTypes.array,
+        right: PropTypes.bool,
     };
 
     static defaultProps = {
         items: [],
+        right: false,
     };
 
     render() {
-        const {items, style} = this.props;
+        const {items, style = {}, right, ...others} = this.props;
+
+        if (right && !style.justifyContent) {
+            style.justifyContent = 'flex-end';
+        }
+
         return (
-            <div className="tool-bar-root" style={style}>
+            <div className="tool-bar-root" style={style} {...others}>
                 <ToolItem items={items}/>
             </div>
         );

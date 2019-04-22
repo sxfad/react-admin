@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    height: 35px;
+    height: 30px;
     box-sizing: border-box;
     overflow: hidden;
     padding-left: 2px;
@@ -78,6 +78,7 @@ body > .draggable-tabs-bar-horizontal-item {
     overflow: hidden;
     white-space: nowrap;
     cursor: pointer;
+    font-size: 12px;
 }
 
 .draggable-tabs-bar-horizontal-item .close-wrapper {
