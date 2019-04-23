@@ -27,6 +27,8 @@ buttonContainerStyle | 查询、重置按钮组样式 | object | -
 ---|---|---|---
 collapsedShow | 是否在收起时显示| bool | false
 itemStyle | 最外层容器样式 | object | -
+parentField| 关联的父级field，如果有关联，并且options是函数，父级改变将触发options函数重新获取下拉数据，用于级联 | string | -
+options | 数组或者函数 | array 或 (parentValue, form, parentChange) => {} | -
 其他 | FormElement所需参数，[点击这里](/example/form-element/README.md) | - | -
 
 

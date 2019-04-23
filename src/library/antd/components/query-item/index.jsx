@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Form, Button} from 'antd';
 import FormElement from '../form-element';
+import {isFunction} from 'lodash/lang';
 import './index.less';
 
 /**
@@ -12,7 +13,6 @@ import './index.less';
  */
 @Form.create()
 export default class QueryItem extends Component {
-
     static propTypes = {
         showSubmit: PropTypes.bool,
         submitText: PropTypes.any,
@@ -42,25 +42,160 @@ export default class QueryItem extends Component {
         extra: null,
     };
 
-    state = {};
+    state = {
+        options: {}, // 所有元素的options
+        visible: {}, // 说有元素是否显示
+    };
 
-    componentWillMount() {
+    componentDidMount() {
         const {formRef, form, loadOptions} = this.props;
 
+        // 处理form引用
         if (formRef) formRef(form);
 
+        // 统一获取options
         if (loadOptions) {
             const result = loadOptions(form);
 
             if (result instanceof Promise) {
-                loadOptions(form).then((data) => this.setState(data));
-            }
+                result.then((data) => this.setState({options: data})).then(() => {
+                    this.getSingleOptions().then(data => {
+                        const options = {...this.state.options, ...data};
 
-            if (typeof result === 'object') {
-                this.setState(result);
+                        this.setState({options});
+                    });
+                });
+            } else {
+                this.setState({options: result});
+
+                this.getSingleOptions().then(data => {
+                    const options = {...result, ...data};
+                    this.setState({options})
+                });
             }
+        } else {
+            this.getSingleOptions().then(data => {
+                this.setState({options: data});
+            });
         }
+
+        const visible = this.getSingleVisible();
+        this.setState({visible});
     }
+
+    // 获取字段改变需要触发的函数
+    getChangeTriggers = () => {
+        const {items} = this.props;
+        const triggers = {};
+        if (items && items.length) {
+            items.forEach(data => {
+                if (!Array.isArray(data)) {
+                    data = [data];
+                }
+
+                data.forEach(item => {
+                    let {field, parentField, options, visible} = item;
+
+                    if (parentField) {
+                        const item = {field};
+
+                        // 如果options是函数，父级改变需要触发
+                        if (isFunction(options)) item.options = options;
+
+                        // 如果visible是函数，父级改变需要触发
+                        if (isFunction(visible)) item.visible = visible;
+
+                        if (!triggers[parentField]) triggers[parentField] = [item];
+
+                        if (!triggers[parentField].find(it => it.field === item.field)) {
+                            triggers[parentField].push(item);
+                        }
+
+                    }
+
+                });
+            })
+        }
+        return triggers;
+    };
+
+    getSingleVisible = () => {
+        const {form, items} = this.props;
+
+        const result = {};
+
+        if (items && items.length) {
+            items.forEach(data => {
+                if (!Array.isArray(data)) {
+                    data = [data];
+                }
+
+                data.forEach(item => {
+                    let {field, parentField, visible} = item;
+                    if (isFunction(visible)) {
+                        const {form: {getFieldsValue, getFieldValue}} = this.props;
+                        const values = parentField ? getFieldValue(parentField) : getFieldsValue();
+                        result[field] = visible(values, form);
+                    } else if (visible !== void 0) {
+                        result[field] = visible;
+                    }
+
+                });
+            });
+
+            return result;
+        }
+    };
+
+    // 单独获取options
+    getSingleOptions = () => {
+        return new Promise((resolve, reject) => {
+            const {form, items} = this.props;
+            const allPromise = {};
+
+            if (items && items.length) {
+                items.forEach(data => {
+                    if (!Array.isArray(data)) {
+                        data = [data];
+                    }
+
+                    data.forEach(item => {
+                        let {field, parentField, options} = item;
+                        if (isFunction(options)) {
+
+                            const {form: {getFieldsValue, getFieldValue}} = this.props;
+                            const values = parentField ? getFieldValue(parentField) : getFieldsValue();
+                            const result = options(values, form);
+                            if (result instanceof Promise) {
+                                allPromise[field] = result;
+
+                            } else {
+                                allPromise[field] = Promise.resolve(result);
+                            }
+                        }
+                    });
+                });
+
+                const allP = [];
+                const allK = [];
+                Object.keys(allPromise).forEach(key => {
+                    const p = allPromise[key];
+                    allK.push(key);
+                    allP.push(p);
+                });
+
+                return Promise.all(allP)
+                    .then(data => {
+                        const result = {};
+                        data.forEach((item, index) => result[allK[index]] = item);
+
+                        resolve(result);
+                    })
+                    .catch(reject);
+            }
+        });
+    };
+
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -104,17 +239,65 @@ export default class QueryItem extends Component {
                             <div key={index} className="query-item-element-container">
                                 {data.map(item => {
                                     let {itemStyle = {}, width = itemWidth, labelWidth = itemLabelWidth, field, collapsedShow, ...others} = item;
+
+                                    const visible = this.state.visible[field] === void 0 ? true : this.state.visible[field];
+
+                                    if (visible === false) return null;
+
+
                                     const style = {display: 'block'};
 
                                     if (width) {
                                         itemStyle = {flex: `0 0 ${width}px`, ...itemStyle};
                                     }
 
-                                    const options = this.state[field];
-                                    if (options && !others.options) others.options = options;
+                                    const options = this.state.options[field] || [];
+                                    if (options && (!others.options || isFunction(others.options))) others.options = options;
 
                                     if (collapsed && !collapsedShow) {
                                         style.display = 'none'
+                                    }
+
+                                    // 字段改变，触发关联字段相关options函数
+                                    const optionsTriggers = this.getChangeTriggers();
+                                    const currentTrigger = optionsTriggers[field];
+
+                                    if (currentTrigger) {
+
+                                        const oriOnChange = others.decorator ? others.decorator.onChange : () => void 0;
+
+                                        others.decorator = {
+                                            ...others.decorator,
+
+                                            onChange: (...args) => {
+                                                // setTimeout 是 为了获取最新的value
+                                                setTimeout(() => {
+                                                    const value = form.getFieldValue(field);
+
+                                                    currentTrigger.forEach(item => {
+                                                        const {
+                                                            field: triggerField,
+                                                            options: triggerOptions,
+                                                            visible: triggerVisible,
+                                                        } = item;
+
+                                                        if (triggerOptions) {
+                                                            const opts = triggerOptions(value, form, true);
+
+                                                            this.setState({options: {...this.state.options, [triggerField]: opts}});
+                                                        }
+
+                                                        if (triggerVisible) {
+                                                            const vis = triggerVisible(value, form, true);
+
+                                                            this.setState({visible: {...this.state.visible, [triggerField]: vis}});
+                                                        }
+                                                    });
+
+                                                    if (oriOnChange) oriOnChange(...args);
+                                                });
+                                            }
+                                        };
                                     }
 
                                     return (
