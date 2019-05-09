@@ -134,7 +134,20 @@ export default class FormElement extends Component {
             validateStatus,
             wrapperCol,
 
+            // decorator属性 展开方便使用
+            getValueFromEvent,
+            initialValue,
+            normalize,
+            preserve,
+            rules,
+            trigger,
+            validateFirst,
+            validateTrigger,
+            valuePropName,
+
             children,
+
+            // 其他的会直接作为Form Element属性
             ...others
         } = this.props;
 
@@ -146,6 +159,27 @@ export default class FormElement extends Component {
 
         const {getFieldDecorator} = form || {};
 
+        const nextDecorator = {
+            getValueFromEvent,
+            initialValue,
+            normalize,
+            preserve,
+            rules,
+            trigger,
+            validateFirst,
+            validateTrigger,
+            valuePropName,
+
+            ...decorator,
+        };
+
+        // 删除undefined属性，否则会引发错误
+        Object.keys(nextDecorator).forEach(key => {
+            const value = nextDecorator[key];
+            if (value === void 0) {
+                Reflect.deleteProperty(nextDecorator, key);
+            }
+        });
 
         let elementStyle = {width: '100%'};
         if (width !== void 0) {
@@ -198,7 +232,7 @@ export default class FormElement extends Component {
                     validateStatus={validateStatus}
                     wrapperCol={wrapperCol}
                 >
-                    {form ? getFieldDecorator(field, decorator)(
+                    {form ? getFieldDecorator(field, nextDecorator)(
                         children ? children : getElement({type, ...others, style: elementStyle})
                     ) : children}
                 </FormItem>

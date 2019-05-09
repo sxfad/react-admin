@@ -125,12 +125,20 @@ export default class SXAjax {
         * 参见：https://github.com/axios/axios/issues/362
         *
         * */
-        const defaultsContentType = instance.defaults.headers[method]['Content-Type'] || '';
-        const contentType = (options.headers && options.headers['Content-Type']) || '';
-        if (
-            (defaultsContentType && defaultsContentType.indexOf('application/x-www-form-urlencoded') > -1)
-            || contentType.indexOf('application/x-www-form-urlencoded') > -1
-        ) {
+        const defaultsContentType = instance.defaults.headers[method]['Content-Type']
+            || instance.defaults.headers[method]['content-type']
+            || instance.defaults.headers[method]['contentType']
+            || '';
+
+        const contentType = (options.headers && options.headers['Content-Type'])
+            || (options.headers && options.headers['content-type'])
+            || (options.headers && options.headers['contentType'])
+            || '';
+
+        const isFormType = (defaultsContentType && defaultsContentType.indexOf('application/x-www-form-urlencoded') > -1)
+            || contentType.indexOf('application/x-www-form-urlencoded') > -1;
+
+        if (isFormType) {
             data = stringify(data);
         }
 

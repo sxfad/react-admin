@@ -165,10 +165,16 @@ export default class QueryItem extends Component {
 
                             const {form: {getFieldsValue, getFieldValue}} = this.props;
                             const values = parentField ? getFieldValue(parentField) : getFieldsValue();
-                            const result = options(values, form);
+
+                            const parentOptions = this.state.options[parentField] || [];
+                            const parentValue = parentField ? getFieldValue(parentField) : void 0;
+                            const parentItem = parentOptions.find(it => it.value === parentValue);
+                            const parentOpt = data.find(it => it.field === parentField);
+
+                            const result = options(values, {form, parentItem, parentChange: false, options: item, parentOptions: parentOpt});
+
                             if (result instanceof Promise) {
                                 allPromise[field] = result;
-
                             } else {
                                 allPromise[field] = Promise.resolve(result);
                             }
@@ -263,40 +269,55 @@ export default class QueryItem extends Component {
                                     const currentTrigger = optionsTriggers[field];
 
                                     if (currentTrigger) {
-
                                         const oriOnChange = others.decorator ? others.decorator.onChange : () => void 0;
+                                        const newOnChange = (...args) => {
+                                            // setTimeout 是 为了获取最新的value
+                                            setTimeout(() => {
+                                                const value = form.getFieldValue(field);
+                                                const parentItem = this.state.options[field].find(it => it.value === value);
+                                                const parentOptions = data.find(i => i.field === item.parentField);
 
+                                                currentTrigger.forEach(it => {
+                                                    const {
+                                                        field: triggerField,
+                                                        options: triggerOptions,
+                                                        visible: triggerVisible,
+                                                    } = it;
+
+                                                    if (triggerOptions) {
+                                                        const opts = triggerOptions(value, {form, parentItem, options: item, parentOptions, parentChange: true});
+
+                                                        if (opts instanceof Promise) {
+                                                            opts.then(data => {
+                                                                this.setState({options: {...this.state.options, [triggerField]: data}});
+                                                            });
+                                                        } else {
+                                                            this.setState({options: {...this.state.options, [triggerField]: opts}});
+                                                        }
+                                                    }
+
+                                                    if (triggerVisible) {
+                                                        const vis = triggerVisible(value, {form, parentItem, options: item, parentOptions, parentChange: true});
+
+                                                        if (vis instanceof Promise) {
+                                                            vis.then(data => {
+                                                                this.setState({visible: {...this.state.visible, [triggerField]: data}});
+                                                            });
+                                                        } else {
+                                                            this.setState({visible: {...this.state.visible, [triggerField]: vis}});
+                                                        }
+                                                    }
+                                                });
+
+                                                if (oriOnChange) oriOnChange(...args);
+                                            });
+                                        };
+
+                                        item._onChange = newOnChange;
                                         others.decorator = {
                                             ...others.decorator,
 
-                                            onChange: (...args) => {
-                                                // setTimeout 是 为了获取最新的value
-                                                setTimeout(() => {
-                                                    const value = form.getFieldValue(field);
-
-                                                    currentTrigger.forEach(item => {
-                                                        const {
-                                                            field: triggerField,
-                                                            options: triggerOptions,
-                                                            visible: triggerVisible,
-                                                        } = item;
-
-                                                        if (triggerOptions) {
-                                                            const opts = triggerOptions(value, form, true);
-
-                                                            this.setState({options: {...this.state.options, [triggerField]: opts}});
-                                                        }
-
-                                                        if (triggerVisible) {
-                                                            const vis = triggerVisible(value, form, true);
-
-                                                            this.setState({visible: {...this.state.visible, [triggerField]: vis}});
-                                                        }
-                                                    });
-
-                                                    if (oriOnChange) oriOnChange(...args);
-                                                });
-                                            }
+                                            onChange: newOnChange,
                                         };
                                     }
 
