@@ -49,7 +49,6 @@ export default {
         };
     },
 
-    // fixme: landLine
     landline(message = '请输入正确的座机号！') { // 座机
         return {
             pattern: regexps.landLine,

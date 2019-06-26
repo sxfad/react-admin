@@ -274,7 +274,7 @@ export default class QueryItem extends Component {
                                             // setTimeout 是 为了获取最新的value
                                             setTimeout(() => {
                                                 const value = form.getFieldValue(field);
-                                                const parentItem = this.state.options[field].find(it => it.value === value);
+                                                const parentItem = this.state.options[field] && this.state.options[field].find(it => it.value === value);
                                                 const parentOptions = data.find(i => i.field === item.parentField);
 
                                                 currentTrigger.forEach(it => {

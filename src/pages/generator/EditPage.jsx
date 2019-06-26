@@ -321,7 +321,7 @@ export default class EditPage extends Component {
                     <Col span={14}>
                         <div style={{display: 'flex'}}>
                             <FormElement
-                                wrapperStyle={{flex: 0}}
+                                style={{flex: 0}}
                                 label="目录/文件名"
                                 tip="可以继续填写子目录，比如：user/UserList.jsx，将自动创建user目录"
                                 type="select-tree"
@@ -339,7 +339,7 @@ export default class EditPage extends Component {
                                 treeNodeLabelProp="shortValue"
                             />
                             <FormElement
-                                wrapperStyle={{flex: 1}}
+                                style={{flex: 1}}
                                 width="100%"
                                 label="/"
                                 labelWidth={24}

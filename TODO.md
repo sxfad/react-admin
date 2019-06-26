@@ -20,3 +20,9 @@
 - [x] 左侧菜单自动滚动到可视范围之内
 - [x] gitBook编写文档
 - [x] 抓取脚本，如果修改了经过webpack构建的文件，会导致首次启动自动打开浏览器是白屏
+- [ ] 去掉QueryItem组件，使用FormElement编写查询条件
+- [x] 优化FormElement组件，参考QueryItem添加布局功能
+    - [x] ItemRow组件用于布局，flex方式 使用antd 的Row Col即可
+    - [ ] 添加propTypes，属性提示
+- [ ] 重写可编辑表格组件
+- [ ] FormElement组件 ref问题，有场景需要获取元素的dom，进行获取焦点等操作

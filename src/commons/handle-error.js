@@ -17,10 +17,6 @@ function getErrorTip({error, errorTip}) {
     if (error && error.response) {
         const {status, message} = error.response;
 
-        if (status === 401) { // 需要登录
-            return toLogin();
-        }
-
         // 后端自定义信息
         if (message) return message;
 
@@ -50,6 +46,10 @@ function getErrorTip({error, errorTip}) {
 
 export default function handleError({error, errorTip}) {
     const ajaxTip = getCurrentLocal()?.ajaxTip || {};
+    const {status} = error.response;
+
+    // 如果是未登录问题，不显示错误提示
+    if (status === 401) return toLogin();
 
     if (errorTip === false) return;
 

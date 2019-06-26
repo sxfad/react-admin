@@ -3,6 +3,7 @@ import {Form, Button} from 'antd';
 import config from '@/commons/config-hoc';
 import {FormElement} from "@/library/antd";
 import PageContent from '@/layouts/page-content';
+import validator from '@/library/utils/validation-rule';
 
 @config({
     path: '/users/_/UserEdit/:id',
@@ -100,7 +101,7 @@ export default class UserEdit extends Component {
         this.props.form.resetFields();
     };
 
-    FormElement = (props) => <FormElement form={this.props.form} labelWidth={100} {...props}/>;
+    FormElement = (props) => <FormElement form={this.props.form} labelWidth={100} {...props} style={{flex: '24 24 24px'}}/>;
 
     render() {
         console.log('render UserEdit.jsx');
@@ -111,32 +112,60 @@ export default class UserEdit extends Component {
         const FormElement = this.FormElement;
 
         return (
-            <PageContent loading={loading} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            <PageContent loading={loading}>
                 <h2>{data.id ? `编辑用户-${query.name}` : '添加用户'}</h2>
-                <Form style={{width: 300}} onSubmit={this.handleSubmit}>
-                    {data.id ? <FormElement type="hidden" field="id" decorator={{initialValue: data.id}}/> : null}
-                    <FormElement
-                        label="姓名"
-                        field="name"
-                        decorator={{
-                            initialValue: data.name,
-                            rules: [
-                                {required: true, message: '请输入姓名！'},
-                            ],
-                        }}
-                    />
-                    <FormElement
-                        label="年龄"
-                        field="number"
-                        min={0}
-                        step={1}
-                        decorator={{
-                            initialValue: data.age,
-                            rules: [
-                                {required: true, message: '请输入年龄！'},
-                            ],
-                        }}
-                    />
+                <Form onSubmit={this.handleSubmit}>
+                    {data.id ? <FormElement type="hidden" field="id" initialValue={data.id}/> : null}
+                    <div style={{display: 'flex'}}>
+                        <FormElement
+                            label="姓名"
+                            tip="就是姓名"
+                            field="name"
+                            required
+                            initialValue={data.name}
+                            rules={[
+                                validator.noSpace(),
+                            ]}
+                        />
+                        <FormElement
+                            label="年龄"
+                            field="number"
+                            min={0}
+                            step={1}
+                            initialValue={data.age}
+                            required
+                        />
+                        <FormElement
+                            type="email"
+                            label="邮箱"
+                            field="email"
+                            initialValue={data.email}
+                            required
+                        />
+                    </div>
+                    <div style={{display: 'flex'}}>
+                        <FormElement
+                            label="姓名"
+                            field="name1"
+                            initialValue={data.name}
+                            required
+                        />
+                        <FormElement
+                            field="name2"
+                            initialValue={data.name2}
+                            required
+                            placeholder="请输入姓名2"
+                        />
+
+                        <FormElement
+                            label="年龄"
+                            field="number2"
+                            min={0}
+                            step={1}
+                            initialValue={data.age2}
+                            required
+                        />
+                    </div>
                     <div style={{paddingLeft: 100}}>
                         <Button type="primary" htmlType="submit">提交</Button>
                         <Button style={{marginLeft: 8}} onClick={this.handleReset}>重置</Button>

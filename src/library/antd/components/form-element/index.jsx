@@ -62,6 +62,7 @@ function getElement(item) {
 
     if (type === 'select') {
         const {options = [], ...others} = props;
+
         return (
             <Select {...commonProps} {...others}>
                 {
@@ -72,13 +73,22 @@ function getElement(item) {
     }
 
     if (type === 'select-tree') return <TreeSelect {...commonProps} {...props} treeData={props.options}/>;
-    if (type === 'checkbox-group') return <Checkbox.Group {...commonProps} {...props}/>;
-    if (type === 'radio-group') return <Radio.Group {...commonProps} {...props}/>;
-    if (type === 'cascader') return <Cascader {...commonProps} {...props}/>;
 
     if (type === 'checkbox') return <Checkbox {...commonProps} {...props}>{props.label}</Checkbox>;
+    if (type === 'checkbox-group') return <Checkbox.Group {...commonProps} {...props}/>;
 
     if (type === 'radio') return <Radio {...commonProps} {...props}>{props.label}</Radio>;
+    if (type === 'radio-group') return <Radio.Group {...commonProps} {...props}/>;
+    if (type === 'radio-button') {
+        const {options = [], ...others} = props;
+        return (
+            <Radio.Group buttonStyle="solid" {...commonProps} {...others}>
+                {options.map(opt => <Radio.Button key={opt.value} {...opt}>{opt.label}</Radio.Button>)}
+            </Radio.Group>
+        );
+    }
+
+    if (type === 'cascader') return <Cascader {...commonProps} {...props}/>;
 
     if (type === 'switch') return <Switch {...commonProps} {...props} style={{...props.style, width: 'auto'}}/>;
 
@@ -120,7 +130,8 @@ export default class FormElement extends Component {
             tip,
             field,
             decorator,
-            wrapperStyle = {},
+            style = {},
+            elementStyle = {},
             layout = false,
 
             // Form.Item属性
@@ -173,6 +184,10 @@ export default class FormElement extends Component {
             ...decorator,
         };
 
+        if (type === 'switch') {
+            nextDecorator.valuePropName = 'checked';
+        }
+
         // 删除undefined属性，否则会引发错误
         Object.keys(nextDecorator).forEach(key => {
             const value = nextDecorator[key];
@@ -181,15 +196,16 @@ export default class FormElement extends Component {
             }
         });
 
-        let elementStyle = {width: '100%'};
+
+        // 处理元素样式
+        let eleStyle = {width: '100%'};
         if (width !== void 0) {
-            elementStyle.width = width;
+            eleStyle.width = width;
         }
 
-        if (others.style) {
-            elementStyle = {...elementStyle, ...others.style};
-        }
+        eleStyle = {...eleStyle, ...elementStyle};
 
+        // 处理placeholder
         if (others.placeholder === void 0) {
             if (isInputLikeElement(type)) {
                 others.placeholder = `请输入${label}`;
@@ -198,6 +214,13 @@ export default class FormElement extends Component {
             } else {
                 others.placeholder = `请选择${label}`;
             }
+        }
+
+        if (!nextDecorator.rules) nextDecorator.rules = [];
+
+        // 如果存在required属性，自动添加必填校验
+        if (required && !nextDecorator.rules.find(item => 'required' in item)) {
+            nextDecorator.rules.push({required: true, message: `${others.placeholder}!`});
         }
 
         let formLabel = label;
@@ -217,7 +240,7 @@ export default class FormElement extends Component {
 
         return (
             <div
-                style={{display: type === 'hidden' ? 'none' : 'block', ...wrapperStyle}}
+                style={{display: type === 'hidden' ? 'none' : 'block', ...style}}
                 className="form-element-flex-root"
                 ref={node => this.container = node}
             >
@@ -233,7 +256,7 @@ export default class FormElement extends Component {
                     wrapperCol={wrapperCol}
                 >
                     {form ? getFieldDecorator(field, nextDecorator)(
-                        children ? children : getElement({type, ...others, style: elementStyle})
+                        children ? children : getElement({type, ...others, style: eleStyle})
                     ) : children}
                 </FormItem>
             </div>
