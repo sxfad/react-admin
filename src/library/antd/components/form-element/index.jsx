@@ -155,6 +155,7 @@ export default class FormElement extends Component {
             validateFirst,
             validateTrigger,
             valuePropName,
+            onChange,
 
             children,
 
@@ -180,6 +181,7 @@ export default class FormElement extends Component {
             validateFirst,
             validateTrigger,
             valuePropName,
+            onChange,
 
             ...decorator,
         };
