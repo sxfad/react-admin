@@ -1,38 +1,20 @@
 import {getStringByteLength, stringFormat} from './index';
-import {debounce} from 'lodash/function';
 import * as regexps from './regexp';
-
-/**
- * @ignore
- * currying function 简化异步校验封装，进行节流，提高性能
- * @param ajax
- * @returns {*}
- */
-export function remoteCheck(ajax) {
-    // 节流
-    return debounce((options) => { // options = {rule, value, callback, ignoreValues, [自定义字段]}
-        let {value, callback, ignoreValues = []} = options; // ignoreValues 忽略的values，不进行检测，常用与修改的情况
-        if (!ignoreValues) ignoreValues = []; // 有可能是 null情况
-
-        if (typeof ignoreValues === 'string') {
-            ignoreValues = [ignoreValues];
-        }
-
-        if (!value || ignoreValues.indexOf(value) > -1) {
-            return callback();
-        }
-
-        ajax(options)
-            .catch(err => {
-                if (typeof err === 'string') {
-                    return callback(err);
-                }
-                callback((err && err.response && err.response.data && (err.response.data.resultMsg || err.response.data.message)) || '未知系统错误');
-            });
-    }, 300);
-}
+import _ from "lodash";
 
 export default {
+    ip(message = '请输入正确的IP地址！') {
+        return {
+            pattern: regexps.ip,
+            message,
+        };
+    },
+    port(message = '请输入正确的端口号！') {
+        return {
+            pattern: regexps.port,
+            message,
+        };
+    },
     noSpace(message = '不能含有空格！') {
         return {
             validator: (rule, value, callback) => {
@@ -171,5 +153,16 @@ export default {
                 length > max ? callback(stringFormat(message, {max})) : callback();
             },
         };
+    },
+
+    // 截流校验写法
+    userNameExist() {
+        if (!this._userNameExist) this._userNameExist = _.debounce((rule, value, callback) => {
+            console.log('发请求');
+        }, 500);
+
+        return {
+            validator: this._userNameExist
+        }
     },
 };

@@ -108,14 +108,16 @@ function getElement(item) {
 
 export default class FormElement extends Component {
     componentDidMount() {
-        const {labelWidth} = this.props;
-        const label = this.container.querySelector('.ant-form-item-label');
+        let {labelWidth, label} = this.props;
+        const labelDom = this.container.querySelector('.ant-form-item-label');
 
-        if (label) {
+        if (!label) labelWidth = 0;
+
+        if (labelDom) {
             if (labelWidth !== void 0) {
-                label.style.flexBasis = typeof labelWidth === 'string' ? labelWidth : `${labelWidth}px`;
+                labelDom.style.flexBasis = typeof labelWidth === 'string' ? labelWidth : `${labelWidth}px`;
             } else {
-                label.style.paddingLeft = '0';
+                labelDom.style.paddingLeft = '0';
             }
         }
     }
@@ -164,8 +166,6 @@ export default class FormElement extends Component {
         } = this.props;
 
         if (layout) {
-            label = ' ';
-            colon = false;
             form = null;
         }
 
@@ -198,13 +198,14 @@ export default class FormElement extends Component {
             }
         });
 
+        // 处理整体样式
+        if (width !== void 0) {
+            style.width = width;
+            style.flexBasis = width;
+        }
 
         // 处理元素样式
         let eleStyle = {width: '100%'};
-        if (width !== void 0) {
-            eleStyle.width = width;
-        }
-
         eleStyle = {...eleStyle, ...elementStyle};
 
         // 处理placeholder

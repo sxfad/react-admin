@@ -45,6 +45,7 @@ const api = `## API
 参数|说明|类型|默认值
 ---|---|---|---
 items | 工具项配置 | array | -
+right | 是否居右 | false | -
 
 ### 每一项API
 

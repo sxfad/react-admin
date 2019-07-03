@@ -40,22 +40,6 @@ export default [
         path: '/example/antd/query-bar',
     },
     {
-        key: '/example/antd/query-item', 
-        parentKey: 'component', 
-        icon: 'deployment-unit',
-        local: 'queryItem',
-        text: 'QueryItem # 查询条件', 
-        path: '/example/antd/query-item',
-    },
-    {
-        key: '/example/antd/table-editable', 
-        parentKey: 'component', 
-        icon: 'deployment-unit',
-        local: 'tableEditable',
-        text: 'TableEditable # 可编辑表格', 
-        path: '/example/antd/table-editable',
-    },
-    {
         key: '/example/antd/table-row-draggable', 
         parentKey: 'component', 
         icon: 'deployment-unit',
