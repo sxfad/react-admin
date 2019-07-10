@@ -57,7 +57,7 @@ export default class ToolBar extends Component {
     };
 
     render() {
-        const {items, style = {}, right, ...others} = this.props;
+        const {items, style = {}, right, children, ...others} = this.props;
 
         if (right && !style.justifyContent) {
             style.justifyContent = 'flex-end';
@@ -65,7 +65,7 @@ export default class ToolBar extends Component {
 
         return (
             <div className="tool-bar-root" style={style} {...others}>
-                <ToolItem items={items}/>
+                {children ? children : <ToolItem items={items}/>}
             </div>
         );
     }

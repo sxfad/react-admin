@@ -10,27 +10,32 @@ export default {
                 __id: uuid(), // 节点的唯一标识
                 children: [
                     {
-                        __type: 'Button',
+                        __type: 'ToolBar',
                         __id: uuid(),
                         children: [
                             {
-                                __type: 'text',
+                                __type: 'Button',
                                 __id: uuid(),
-                                content: '默认按钮',
-                            }
-                        ],
-                    },
-                    {
-                        __type: 'ButtonPrimary',
-                        __id: uuid(),
-                        type: 'primary',
-                        style: {marginLeft: 8},
-                        children: [
+                                children: [
+                                    {
+                                        __type: 'text',
+                                        __id: uuid(),
+                                        content: '默认按钮',
+                                    }
+                                ],
+                            },
                             {
-                                __type: 'text',
+                                __type: 'ButtonPrimary',
                                 __id: uuid(),
-                                content: '主按钮',
-                            }
+                                type: 'primary',
+                                children: [
+                                    {
+                                        __type: 'text',
+                                        __id: uuid(),
+                                        content: '主按钮',
+                                    }
+                                ],
+                            },
                         ],
                     },
                     {
@@ -58,32 +63,41 @@ export default {
 
     addChild: ({pageId, targetNodeId, childIndex, child}, state) => {
         const pageConfigs = {...state.pageConfigs};
-        const config = pageConfigs[pageId];
+        const config = {...pageConfigs[pageId]};
 
         addChild(config, targetNodeId, childIndex, child);
+        pageConfigs[pageId] = config;
+
         return {pageConfigs};
     },
 
     deleteNode: ({pageId, targetNodeId}, state) => {
         const pageConfigs = {...state.pageConfigs};
-        const config = pageConfigs[pageId];
+        const config = {...pageConfigs[pageId]};
+
         deleteNode(config, targetNodeId);
+        pageConfigs[pageId] = config;
+
         return {pageConfigs};
     },
 
     updateNode: ({pageId, node}, state) => {
         const pageConfigs = {...state.pageConfigs};
-        const config = pageConfigs[pageId];
+        const config = {...pageConfigs[pageId]};
 
         updateNode(config, node);
+        pageConfigs[pageId] = config;
+
         return {pageConfigs};
     },
 
     findNodeById: ({pageId, targetNodeId}, state) => {
         const pageConfigs = {...state.pageConfigs};
-        const config = pageConfigs[pageId];
+        const config = {...pageConfigs[pageId]};
 
         findNodeById(config, targetNodeId);
+        pageConfigs[pageId] = config;
+
         return {pageConfigs};
     },
 }

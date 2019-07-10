@@ -12,12 +12,12 @@ export default class DragBox extends React.Component {
 
     constructor(...args) {
         super(...args);
-        const {type, id, children, onDropped, ...others} = this.props;
+        const {type, id, children, onDropped, draggingStyle = {}, style = {}, ...others} = this.props;
 
         this.Com = DragSource(
             type,
             {
-                beginDrag: () => ({id}),
+                beginDrag: () => ({id}), // 返回结果将作为 DropTarget 中 monitor.getItem(); 的值
                 endDrag(props, monitor) {
                     const dropResult = monitor.getDropResult();
 
@@ -32,8 +32,11 @@ export default class DragBox extends React.Component {
             }),
         )(({isDragging, connectDragSource}) => {
 
+            const ds = isDragging ? draggingStyle : {};
+
             return (
                 <div
+                    style={{...style, ...ds}}
                     ref={connectDragSource}
                     styleName={`drag-box ${isDragging ? 'dragging' : ''}`}
                     {...others}

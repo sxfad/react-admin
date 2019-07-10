@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button} from 'antd';
 import PageContent from '@/layouts/page-content';
+import {ToolBar} from '@/library/antd';
 
 export default {
     div: {
@@ -23,6 +24,15 @@ export default {
         dependence: null,
         container: true,
         import: 'import PageContent from \'@/layouts/page-content\'',
+    },
+    ToolBar: {
+        component: ToolBar,
+        demonstration: <ToolBar>工具条</ToolBar>,
+        category: '布局',
+        origin: 'customer',
+        dependence: null,
+        container: true,
+        import: 'import {ToolBar} from \'@/library/antd\';',
     },
     Button: {
         component: Button,
