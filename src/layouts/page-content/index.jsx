@@ -20,7 +20,7 @@ export default class PageContent extends Component {
     };
 
     static defaultProps = {
-        footer: true,
+        footer: false,
     };
 
     componentWillUnmount() {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import config from '@/commons/config-hoc';
 import uuid from "uuid/v4";
-import {addChild, deleteNode, updateNode, findNodeById} from './virtual-dom';
+import {addChild, deleteNode, updateNode, findNodeById, findParentById} from './virtual-dom';
 
 const rootId = uuid();
 const divId = uuid();
@@ -74,6 +74,8 @@ updateNode(virtualDom, {
 });
 
 // deleteNode(virtualDom, bId);
+
+console.log(findParentById(virtualDom, bId));
 
 @config({path: '/gen'})
 export default class test extends Component {

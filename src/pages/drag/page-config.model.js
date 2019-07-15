@@ -1,5 +1,6 @@
-import {addChild, deleteNode, updateNode, findNodeById} from './virtual-dom';
+import {addChild, deleteNode, updateNode, findNodeById, findParentById} from './virtual-dom';
 import uuid from "uuid/v4";
+import update from "immutability-helper";
 
 export default {
     initialState: {
@@ -96,6 +97,27 @@ export default {
         const config = {...pageConfigs[pageId]};
 
         findNodeById(config, targetNodeId);
+        pageConfigs[pageId] = config;
+
+        return {pageConfigs};
+    },
+
+    sort: ({pageId, dragId, dropId}, state) => {
+        const pageConfigs = {...state.pageConfigs};
+        const config = {...pageConfigs[pageId]};
+
+        const parentNode = findParentById(config, dropId);
+        let children = parentNode.children;
+        const dragIndex = children.findIndex(item => item.__id === dragId);
+        const dropIndex = children.findIndex(item => item.__id === dropId);
+        const dragCard = children[dragIndex];
+
+        children = update(children, {
+            $splice: [[dragIndex, 1], [dropIndex, 0, dragCard]],
+        });
+
+        parentNode.children = children;
+
         pageConfigs[pageId] = config;
 
         return {pageConfigs};

@@ -12,7 +12,9 @@ export default class Sortable extends React.Component {
         return (
             <div>
                 <DndProvider backend={HTML5Backend}>
-                    <Example/>
+                    <div style={{display: 'flex'}}>
+                        <Example/>
+                    </div>
                 </DndProvider>
             </div>
         );
