@@ -38,19 +38,15 @@ export default class ComponentContainer extends Component {
         return (
             <div>
                 {Object.keys(components).map(key => {
-                    const {demonstration, defaultProps = {}} = components[key];
+                    const {defaultProps = {}} = components[key];
 
-                    let children = demonstration;
+                    const node = {
+                        __id: uuid(),
+                        __type: key,
+                        ...defaultProps,
+                    };
 
-                    if (!children) {
-                        const node = {
-                            __id: uuid(),
-                            __type: key,
-                            ...defaultProps,
-                        };
-
-                        children = renderNode(node, resultCom => resultCom);
-                    }
+                    const children = renderNode(node, resultCom => resultCom);
 
                     const style = {
                         display: 'inline-block',

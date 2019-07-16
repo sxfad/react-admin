@@ -10,7 +10,6 @@ import uuid from "uuid/v4";
  * tagName: 标签名，一般用于生成源码，缺省取key作为tagName
  * parentTagName: 父级标签名，用于做投放限制
  * component：组件，用于渲染，一般与key同名
- * demonstration：演示，由于左侧组件列表的显示
  * category：组件分类
  * origin：组件来源、native、antd、customer等
  * dependence：组件涉及到的依赖
@@ -26,32 +25,47 @@ import uuid from "uuid/v4";
 export default {
     PageContent: {
         component: PageContent,
-        demonstration: <PageContent footer={false}>页面容器</PageContent>,
         category: '布局',
         origin: 'customer',
         dependence: null,
         container: true,
         import: 'import PageContent from \'@/layouts/page-content\'',
+        defaultProps: {
+            children: [
+                {
+                    __type: 'text',
+                    __id: uuid(),
+                    content: '页面容器',
+                }
+            ],
+        },
     },
     div: {
         component: 'div',
-        demonstration: <div style={{width: 60, height: 30, lineHeight: '30px', textAlign: 'center'}}>div容器</div>,
         category: '布局',
         origin: 'native', // antd customer
         dependence: null,
         container: true,
         defaultProps: {
             style: {
-                minHeight: 50,
-                minWidth: 100,
+                minHeight: 30,
+                minWidth: 50,
             },
+            children: [
+                {
+                    __type: 'text',
+                    __id: uuid(),
+                    content: 'div容器',
+                }
+            ],
         },
+        render: props => <div {...props}>{props.children}</div>
     },
     text: {
         component: 'text', // 文字节点
-        demonstration: <span>文字</span>,
+        render: props => props.content,
         defaultProps: {
-            content: '文字',
+            content: '文字11',
         },
     },
     ToolBar: {

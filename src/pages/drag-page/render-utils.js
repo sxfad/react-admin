@@ -10,7 +10,7 @@ export function renderNode(node, render, __parentId = '0', __parentDirection) {
         return null;
     }
 
-    const {component: Component, direction} = com;
+    const {component: Component, direction, render: renderCom} = com;
 
     let resultCom = null;
 
@@ -20,18 +20,17 @@ export function renderNode(node, render, __parentId = '0', __parentDirection) {
             return renderNode(item, render, __id, direction);
         });
 
-        resultCom = <Component key={__id} {...others}>{renderChildren}</Component>;
-
-        if (Component === 'div') {
-            resultCom = <div key={__id} {...others}>{renderChildren}</div>
+        if (renderCom) {
+            resultCom = renderCom({key: __id, content, ...others, children: renderChildren});
+        } else {
+            resultCom = <Component key={__id} {...others}>{renderChildren}</Component>;
         }
-
     } else {
-        resultCom = <Component key={__id}  {...others}/>;
-
-        if (Component === 'div') resultCom = <div key={__id}  {...others}/>;
-
-        if (Component === 'text') resultCom = content;
+        if (renderCom) {
+            resultCom = renderCom({key: __id, content, ...others});
+        } else {
+            resultCom = <Component key={__id}  {...others}/>;
+        }
     }
 
     // 文字节点不可拖拽
