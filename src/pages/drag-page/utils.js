@@ -1,15 +1,28 @@
 /**
  * 向目标节点中添加一个子节点
  * @param root 中体树状结构数据
- * @param targetNodeId
+ * @param targetId
  * @param childIndex
  * @param child
  */
-export function addChild(root, targetNodeId, childIndex, child) {
-    const targetNode = findNodeById(root, targetNodeId);
+export function addChild(root, targetId, childIndex, child) {
+    const targetNode = findNodeById(root, targetId);
     if (targetNode) {
         let {children} = targetNode;
         if (!children) children = [];
+        children.splice(childIndex, 0, child);
+
+        targetNode.children = children;
+    }
+}
+
+export function appendChild(root, targetId, child) {
+    const targetNode = findNodeById(root, targetId);
+    if (targetNode) {
+        let {children} = targetNode;
+        if (!children) children = [];
+
+        const childIndex = children.length;
         children.splice(childIndex, 0, child);
 
         targetNode.children = children;

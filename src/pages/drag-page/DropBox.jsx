@@ -53,48 +53,69 @@ export default DropTarget(
             if (hoverId === 'delete-node') return;
 
             const dragLevel = monitor.getItem().level;
+
+            if (!dragLevel) return;
+
             const hoverLevel = props.level;
 
             const dragId = monitor.getItem().id;
 
             // Don't replace items with themselves
-            if (dragLevel === hoverLevel) {
-                return;
-            }
+            if (dragLevel === hoverLevel) return;
+            if (dragId === hoverId) return;
+
             // 容器内组件排列方式 // vertical / horizontal
             const direction = props.direction;
 
             // Determine rectangle on screen
             const hoverBoundingRect = component.getBoundingClientRect();
-            // Get vertical middle
-            const hoverMiddleY =
-                (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
             // Determine mouse position
             const clientOffset = monitor.getClientOffset();
-            // Get pixels to the top
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
-            // 兄弟节点之间移动
-            console.log(dragLevel, hoverLevel, `${dragLevel}`.length, `${hoverLevel}`.length);
-            // Only perform the move when the mouse has crossed half of the items height
-            // When dragging downwards, only move when the cursor is below 50%
-            // When dragging upwards, only move when the cursor is above 50%
-            // Dragging downwards
-            if (dragLevel < hoverLevel && hoverClientY < hoverMiddleY) {
-                return;
-            }
-            // Dragging upwards
-            if (dragLevel > hoverLevel && hoverClientY > hoverMiddleY) {
-                return;
+            // 子元素水平排列
+            if (direction === 'horizontal') {
+                // Get horizontal middle
+                const hoverMiddleX = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
+
+                // Get pixels to the left
+                const hoverClientX = clientOffset.x - hoverBoundingRect.left;
+
+                // Only perform the move when the mouse has crossed half of the items height
+                // When dragging downwards, only move when the cursor is below 50%
+                // When dragging upwards, only move when the cursor is above 50%
+                // Dragging downwards
+                if (dragLevel < hoverLevel && hoverClientX < hoverMiddleX) {
+                    return;
+                }
+                // Dragging upwards
+                if (dragLevel > hoverLevel && hoverClientX > hoverMiddleX) {
+                    return;
+                }
+
+            } else {
+                // 子元素垂直排列
+                // Get vertical middle
+                const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+                // Get pixels to the top
+                const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+                // Only perform the move when the mouse has crossed half of the items height
+                // When dragging downwards, only move when the cursor is below 50%
+                // When dragging upwards, only move when the cursor is above 50%
+                // Dragging downwards
+                if (dragLevel < hoverLevel && hoverClientY < hoverMiddleY) {
+                    return;
+                }
+                // Dragging upwards
+                if (dragLevel > hoverLevel && hoverClientY > hoverMiddleY) {
+                    return;
+                }
             }
 
             // Time to actually perform the action
             props.onMove(dragId, hoverId);
-            // Note: we're mutating the monitor item here!
-            // Generally it's better to avoid mutations,
-            // but it's good here for the sake of performance
-            // to avoid expensive index searches.
-            // monitor.getItem().level = hoverLevel;
+
+            monitor.getItem().level = hoverLevel;
         },
     },
     (connect, monitor) => ({

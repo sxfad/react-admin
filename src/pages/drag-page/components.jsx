@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button} from 'antd';
+import {Button, Input} from 'antd';
 import PageContent from '@/layouts/page-content';
 import {ToolBar} from '@/library/antd';
 import uuid from "uuid/v4";
@@ -143,6 +143,19 @@ export default {
                     content: '危险按钮',
                 }
             ],
+        },
+    },
+    Input: {
+        tagName: 'Input',
+        component: Input,
+        category: '输入框',
+        origin: 'antd',
+        dependence: 'antd',
+        import: 'import {Input} from \'antd\'',
+        container: false,
+        display: 'inline-block',
+        defaultProps: {
+            placeholder: '请输入',
         },
     },
 };

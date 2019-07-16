@@ -17,25 +17,18 @@ export default class ComponentContainer extends Component {
     }
 
     handleEndDrag = (dragKey, dropId) => {
-        console.log(222, dragKey, dropId);
         const config = components[dragKey];
         const defaultProps = config.defaultProps || {};
 
-        console.log(defaultProps);
-
+        const __id = uuid();
         const child = {
             __type: dragKey,
-            __id: uuid(),
+            __id,
             ...defaultProps,
         };
 
-        this.props.action.dragPage.addChild({
-            targetNodeId: dropId,
-            childIndex: 1,
-            child,
-        });
-
-        // TODO
+        this.props.action.dragPage.appendChild({targetId: dropId, child});
+        this.props.action.dragPage.setCurrentId(__id);
     };
 
     render() {
@@ -47,14 +40,11 @@ export default class ComponentContainer extends Component {
                     let children = demonstration;
 
                     if (!children) {
-
                         const node = {
                             __id: uuid(),
                             __type: key,
                             ...defaultProps,
                         };
-
-                        console.log(node);
 
                         children = renderNode(node, resultCom => resultCom);
                     }
@@ -65,7 +55,7 @@ export default class ComponentContainer extends Component {
                         padding: 4,
                         cursor: 'move',
                         position: 'relative',
-                        border: '1px dashed #ccc',
+                        border: '1px dashed #d9d9d9',
                     };
 
                     return (

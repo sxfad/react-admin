@@ -6,6 +6,7 @@ const DragBox = (props) => {
         children,
         isDragging,
         connectDragSource,
+        beginDrag,
         endDrag,
         style = {},
         draggingStyle = {},
@@ -24,10 +25,14 @@ const DragBox = (props) => {
 export default DragSource(
     props => props.type,
     {
-        beginDrag: props => ({
-            id: props.id,
-            level: props.level,
-        }),
+        beginDrag: props => {
+            if (props.beginDrag) props.beginDrag();
+
+            return {
+                id: props.id,
+                level: props.level,
+            };
+        },
         endDrag(props, monitor) {
             const dropResult = monitor.getDropResult();
             if (dropResult) {
