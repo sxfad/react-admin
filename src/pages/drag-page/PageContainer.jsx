@@ -31,9 +31,12 @@ export default class Dnd extends Component {
         this.setState({dragging: true});
     };
 
-    handleEndDrag = (dragId, dropId) => {
+    handleEndDrag = (dragId, result) => {
         this.setState({dragging: false});
 
+        if (!result) return;
+
+        const dropId = result.id;
         if (dropId === 'delete-node') {
             this.props.action.dragPage.deleteNode(dragId);
         }
@@ -105,9 +108,21 @@ export default class Dnd extends Component {
             // types如果是数组，拖拽排序是会报错：Uncaught Invariant Violation: Expected to find a valid target
             // 通过dragging变量来切换，避免报错
             const containerSortType = (container && !dragging) ? ['component', __parentId] : __parentId;
-            const activeStyle = {background: '#aff3b5', transform: 'scale(1.02)',};
+            const activeStyle = {background: '#aff3b5', transform: 'scale(1.05)',};
             const canDropStyle = {background: '#f9ecc5'};
             const dropBoxStyle = {transition: '300ms',};
+
+            if (showGuideLine) {
+                dropBoxStyle.border = '1px dashed #d9d9d9';
+                dropBoxStyle.padding = GUIDE_PADDING;
+                // dropBoxStyle.margin = GUIDE_PADDING;
+
+                if (currentId === __id) {
+                    dropBoxStyle.border = '1px dashed #64F36A';
+                    dropBoxStyle.background = '#aff3b5';
+                }
+            }
+
 
             resultCom = (
                 <DropBox
@@ -133,14 +148,7 @@ export default class Dnd extends Component {
             };
 
             if (showGuideLine) {
-                dragBoxStyle.border = '1px dashed #d9d9d9';
-                dragBoxStyle.padding = GUIDE_PADDING;
                 dragBoxStyle.margin = GUIDE_PADDING;
-
-                if (currentId === __id) {
-                    dragBoxStyle.border = '1px dashed #64F36A';
-                    dragBoxStyle.background = '#aff3b5';
-                }
             }
 
             return (
@@ -154,7 +162,7 @@ export default class Dnd extends Component {
                     onClick={(e) => this.handleClick(e, __id)}
                     onDoubleClick={(e) => this.handleDoubleClick(e, __id)}
                     beginDrag={this.handleBeginDrag}
-                    endDrag={result => this.handleEndDrag(__id, result.id)}
+                    endDrag={result => this.handleEndDrag(__id, result)}
                 >
                     {resultCom}
                     {/*###{__id}###*/}

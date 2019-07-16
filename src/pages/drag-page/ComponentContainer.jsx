@@ -16,7 +16,10 @@ export default class ComponentContainer extends Component {
 
     }
 
-    handleEndDrag = (dragKey, dropId) => {
+    handleEndDrag = (dragKey, result) => {
+        if (!result) return;
+
+        const dropId = result.id;
         const config = components[dragKey];
         const defaultProps = config.defaultProps || {};
 
@@ -64,7 +67,7 @@ export default class ComponentContainer extends Component {
                             id={key}
                             type="component"
                             style={style}
-                            endDrag={result => this.handleEndDrag(key, result.id)}
+                            endDrag={result => this.handleEndDrag(key, result)}
                         >
                             <div style={{
                                 position: 'absolute',

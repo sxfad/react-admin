@@ -42,13 +42,17 @@ export default {
         container: true,
         defaultProps: {
             style: {
-                minHeight: 100,
+                minHeight: 50,
+                minWidth: 100,
             },
         },
     },
     text: {
         component: 'text', // 文字节点
         demonstration: <span>文字</span>,
+        defaultProps: {
+            content: '文字',
+        },
     },
     ToolBar: {
         component: ToolBar,

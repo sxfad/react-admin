@@ -35,9 +35,8 @@ export default DragSource(
         },
         endDrag(props, monitor) {
             const dropResult = monitor.getDropResult();
-            if (dropResult) {
-                if (props.endDrag) props.endDrag(dropResult);
-            }
+
+            if (props.endDrag) props.endDrag(dropResult);
         },
     },
     (connect, monitor) => ({
