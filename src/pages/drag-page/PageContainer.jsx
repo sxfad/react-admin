@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Input} from 'antd';
+import {Input, Form} from 'antd';
 import DropBox from './DropBox'
 import DragBox from './DragBox'
 import config from '@/commons/config-hoc';
@@ -18,6 +18,7 @@ const GUIDE_PADDING = 10;
         }
     },
 })
+@Form.create()
 export default class Dnd extends Component {
     state = {
         dragging: false,
@@ -150,6 +151,7 @@ export default class Dnd extends Component {
             __parentId,
             __parentDirection,
             level,
+            tagName,
             container,
             display,
 
@@ -185,6 +187,8 @@ export default class Dnd extends Component {
                     dropBoxStyle.background = '#d6eeff';
                 }
             }
+
+            if (tagName === 'FormElement') resultCom = <Component form={this.props.form} {...componentProps} field={__id}>{componentChildren}</Component>;
 
             if (innerWrapper) resultCom = componentChildren;
 

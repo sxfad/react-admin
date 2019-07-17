@@ -44,6 +44,7 @@ export function renderNode(node, render, __parentId = '0', __parentDirection) {
         innerWrapper,
         direction,
         render: renderCom,
+        tagName,
     } = com;
 
     let renderChildren = null;
@@ -70,6 +71,7 @@ export function renderNode(node, render, __parentId = '0', __parentDirection) {
         __parentId,
         __parentDirection,
         level: __level,
+        tagName,
         Component,
         componentProps: others,
         componentChildren: renderChildren,

@@ -1,6 +1,7 @@
 import * as native from './native';
 import * as antd from './antd';
 import * as customer from './customer';
+import * as form from './form';
 
 /**
  * 系统可用组件配置文件
@@ -20,9 +21,10 @@ import * as customer from './customer';
  * acceptTypes: string 或 [string, string] 指定当前组件可以接受投放的类型，比如Row要指定 targetTypes: 'Col'等，与targetTypes成对出现
  * */
 
-export const categories = [customer, antd, native];
+export const categories = [customer, form, antd, native];
 
 export default {
+    ...form.default,
     ...native.default,
     ...antd.default,
     ...customer.default,

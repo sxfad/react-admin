@@ -1,6 +1,8 @@
 import PageContent from '@/layouts/page-content';
 import {ToolBar, QueryBar} from '@/library/antd';
 import uuid from "uuid/v4";
+import {Button} from "antd";
+import React from "react";
 
 export const category = '自定义组件';
 
@@ -33,7 +35,7 @@ export default {
         title: '工具条',
         container: true,
         direction: 'horizontal',
-        import: 'import {ToolBar} from \'@/library/antd\';',
+        dependence: '@/library/antd',
         description: '工具容器，一般内部是一些按钮。',
         defaultProps: {
             children: [
@@ -69,33 +71,67 @@ export default {
         title: '查询条件',
         container: true,
         direction: 'horizontal',
-        import: 'import {QueryBar} from \'@/library/antd\';',
+        dependence: '@/library/antd',
         description: '用于包裹一些查询条件的容器。',
         defaultProps: {
             children: [
                 {
-                    __type: 'Button',
+                    __type: 'FormRow',
                     __id: uuid(),
-                    type: 'primary',
-                    style: {marginRight: 8},
                     children: [
                         {
-                            __type: 'text',
+                            __type: 'FormInput',
                             __id: uuid(),
-                            content: '查询',
-                        }
-                    ],
-                },
-                {
-                    __type: 'Button',
-                    __id: uuid(),
-                    type: 'default',
-                    children: [
+                            label: '输入框',
+                            style: {paddingLeft: 16},
+                            width: 200,
+                        },
                         {
-                            __type: 'text',
+                            __type: 'FormSelect',
                             __id: uuid(),
-                            content: '重置',
-                        }
+                            type: 'select',
+                            label: '下拉框',
+                            style: {paddingLeft: 16},
+                            width: 200,
+                            options: [
+                                {value: '1', label: '下拉项1'},
+                                {value: '2', label: '下拉项2'},
+                            ],
+                        },
+                        {
+                            __type: 'FormElement',
+                            __id: uuid(),
+                            layout: true,
+                            style: {paddingLeft: 16},
+                            width: 'auto',
+                            children: [
+                                {
+                                    __type: 'Button',
+                                    __id: uuid(),
+                                    type: 'primary',
+                                    style: {marginRight: 8},
+                                    children: [
+                                        {
+                                            __type: 'text',
+                                            __id: uuid(),
+                                            content: '查询',
+                                        }
+                                    ],
+                                },
+                                {
+                                    __type: 'Button',
+                                    __id: uuid(),
+                                    type: 'default',
+                                    children: [
+                                        {
+                                            __type: 'text',
+                                            __id: uuid(),
+                                            content: '重置',
+                                        }
+                                    ],
+                                },
+                            ],
+                        },
                     ],
                 },
             ],

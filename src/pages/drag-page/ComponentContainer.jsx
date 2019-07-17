@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Collapse, Icon, Popover} from 'antd';
+import {Alert, Collapse, Icon, Popover, Form} from 'antd';
 import DragBox from './DragBox'
 import components, {categories} from './components';
 import config from '@/commons/config-hoc';
@@ -12,6 +12,7 @@ const {Panel} = Collapse;
  * 可用组件容器
  */
 @config({connect: true})
+@Form.create()
 export default class ComponentContainer extends Component {
     state = {};
 
@@ -26,15 +27,23 @@ export default class ComponentContainer extends Component {
         const config = components[dragKey];
         const defaultProps = config.defaultProps || {};
 
-        const __id = uuid();
         const child = {
             __type: dragKey,
-            __id,
             ...defaultProps,
         };
 
+        // 替换__id否则会导致__id重复
+        const loop = (node) => {
+            node.__id = uuid();
+            if (node.children && node.children.length) {
+                node.children.forEach(loop);
+            }
+        };
+        loop(child);
+
+
         this.props.action.dragPage.appendChild({targetId: dropId, child});
-        this.props.action.dragPage.setCurrentId(__id);
+        this.props.action.dragPage.setCurrentId(child.__id);
     };
 
     render() {
@@ -47,9 +56,9 @@ export default class ComponentContainer extends Component {
 
                             {Object.keys(components).map(key => {
                                 const com = components[key];
-                                let {defaultProps = {}, visible, title, description} = com;
+                                let {defaultProps = {}, visible, title, showTagName, description} = com;
 
-                                let componentName = getTagName(key, com);
+                                let componentName = showTagName || getTagName(key, com);
 
                                 title = `${title}(${componentName})`;
 
@@ -80,7 +89,11 @@ export default class ComponentContainer extends Component {
                                             message={
                                                 <div>
                                                     <h4>预览：</h4>
-                                                    {renderNode(node, resultCom => resultCom)}
+                                                    {renderNode(node, (resultCom, {__id, __type, tagName, Component, componentProps, componentChildren}) => {
+                                                        if (tagName === 'FormElement') return <Component key={__id} form={this.props.form} {...componentProps} field={__id}>{componentChildren}</Component>;
+
+                                                        return resultCom;
+                                                    })}
                                                 </div>
                                             }
                                         />
