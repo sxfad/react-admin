@@ -25,6 +25,8 @@ export default class Dnd extends Component {
         inputValue: void 0,
         inputPlaceholder: void 0,
         currentInputId: null,
+
+        currentHoverId: null,
     };
 
     handleBeginDrag = () => {
@@ -110,6 +112,19 @@ export default class Dnd extends Component {
         return canDrop(dragType, dropType);
     };
 
+    handleEnter = (e, __id) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.setState({currentHoverId: __id});
+    };
+
+    handleLeave = (e, __id) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.setState({currentHoverId: null});
+    };
+
     renderPage = (node) => {
         return renderNode(node, (resultCom, {
             __id,
@@ -126,7 +141,7 @@ export default class Dnd extends Component {
             innerWrapper,
         }) => {
             const {currentId, showGuideLine} = this.props;
-            const {dragging} = this.state;
+            const {dragging, currentHoverId} = this.state;
             const sortType = __parentId;
             // types如果是数组，拖拽排序是会报错：Uncaught Invariant Violation: Expected to find a valid target
             // 通过dragging变量来切换，避免报错
@@ -142,9 +157,9 @@ export default class Dnd extends Component {
                 dropBoxStyle.border = '1px dashed #d9d9d9';
                 dropBoxStyle.padding = GUIDE_PADDING;
 
-                if (currentId === __id) {
+                if (currentId === __id || currentHoverId === __id) {
                     dropBoxStyle.border = '1px dashed #64F36A';
-                    dropBoxStyle.background = '#aff3b5';
+                    dropBoxStyle.background = '#e7ffee';
                 }
             }
 
@@ -159,6 +174,8 @@ export default class Dnd extends Component {
                     activeStyle={activeStyle}
                     canDropStyle={canDropStyle}
                     direction={__parentDirection}
+                    onMouseEnter={e => this.handleEnter(e, __id)}
+                    onMouseLeave={e => this.handleLeave(e, __id)}
                     onMove={this.handleMove}
                     canDrop={(monitor) => this.handleCanDrop(__type, monitor)}
                 >
