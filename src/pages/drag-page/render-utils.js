@@ -1,6 +1,18 @@
 import React from "react";
 import components from "./components";
 
+export function canDrop(dragType, dropType) {
+    const com = components[dragType];
+    if (!com) return true;
+
+    const {parentComponent} = com;
+    if (typeof parentComponent === 'string') return parentComponent === dropType;
+
+    if (Array.isArray(parentComponent)) return parentComponent.includes(dropType);
+
+    return true;
+}
+
 export function getTagName(key, com) {
     const {component, tagName} = com;
 
@@ -20,7 +32,13 @@ export function renderNode(node, render, __parentId = '0', __parentDirection) {
         return null;
     }
 
-    const {component: Component, noWrapper, innerWrapper, direction, render: renderCom} = com;
+    const {
+        component: Component,
+        noWrapper,
+        innerWrapper,
+        direction,
+        render: renderCom,
+    } = com;
 
     let renderChildren = null;
     if (children && children.length) {
@@ -42,6 +60,7 @@ export function renderNode(node, render, __parentId = '0', __parentDirection) {
 
     const options = {
         __id,
+        __type,
         __parentId,
         __parentDirection,
         level: __level,

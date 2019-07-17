@@ -43,7 +43,7 @@ export default class ComponentSettings extends Component {
         })
     }, 500);
 
-    FormElement = (props) => <FormElement form={this.props.form} labelWidth={50} disabled={this.props.isDetail} {...props}/>;
+    FormElement = (props) => <FormElement form={this.props.form} labelWidth={60} disabled={this.props.isDetail} {...props}/>;
 
     render() {
         let {

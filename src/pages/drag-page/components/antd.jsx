@@ -1,4 +1,4 @@
-import {Button, Input, Row, Col} from 'antd';
+import {Button, Input, Row, Col, Tabs,} from 'antd';
 import uuid from "uuid/v4";
 
 export const category = 'Ant Design 组件库';
@@ -8,7 +8,7 @@ function button({type, content, description}) {
         tagName: 'Button',
         component: Button,
         title: `${content}`,
-        import: 'import {Button} from \'antd\'',
+        dependence: 'antd',
         container: false,
         display: 'inline-block',
         description,
@@ -89,7 +89,7 @@ export default {
     Row: {
         component: Row,
         title: '栅格行',
-        import: 'import {Row} from \'antd\'',
+        dependence: 'antd',
         container: true,
         direction: 'horizontal',
         defaultProps: {
@@ -110,13 +110,14 @@ export default {
     Col: {
         component: Col,
         title: '栅格列',
-        import: 'import {Col} from \'antd\'',
+        dependence: 'antd',
         container: true,
         innerWrapper: true,
+        parentComponent: 'Row',
+        description: '栅格系统说明啊',
         defaultProps: {
             span: 12,
         },
-        description: '栅格系统说明啊',
         props: [
             {
                 name: '格数',
@@ -153,10 +154,66 @@ export default {
             },
         ],
     },
+    Tabs: {
+        component: Tabs,
+        title: '标签容器',
+        dependence: 'antd',
+        container: true,
+        description: '标签页容器，只能接受TabPane作为直接子节点。',
+        defaultProps: {
+            type: 'card',
+            children: [
+                {
+                    __type: 'Tabs.TabPane',
+                    __id: uuid(),
+                    tab: '标签1',
+                    key: '1',
+                },
+                {
+                    __type: 'Tabs.TabPane',
+                    __id: uuid(),
+                    tab: '标签2',
+                    key: '2',
+                },
+            ],
+        },
+        props: [
+            {
+                name: '标签样式',
+                attribute: 'type',
+                valueType: 'string',
+                defaultValue: 'line',
+                formType: 'select',
+                options: [
+                    {value: 'line', label: '线条'},
+                    {value: 'card', label: '卡片'},
+                ],
+            },
+        ],
+    },
+    'Tabs.TabPane': {
+        component: Tabs.TabPane,
+        title: '标签页',
+        dependence: 'antd',
+        container: true,
+        innerWrapper: true,
+        parentComponent: 'Tabs', // 可投放容器
+        description: '标签页面板，只能放在标签容器组件中。',
+        defaultProps: {
+            tab: '标签名'
+        },
+        props: [
+            {
+                name: '标签名',
+                attribute: 'tab',
+                valueType: 'string',
+            },
+        ],
+    },
     Input: {
         component: Input,
         title: '输入框',
-        import: 'import {Input} from \'antd\'',
+        dependence: 'antd',
         container: false,
         display: 'inline-block',
         defaultProps: {

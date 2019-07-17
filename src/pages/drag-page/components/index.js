@@ -7,15 +7,16 @@ import * as customer from './customer';
  * 结构为对象，key对应组件type
  * tagName: 标签名，一般用于生成源码，获取方式为：tagName component === 'string' key
  * component：组件，用于渲染，一般与key同名
- * dependence：组件涉及到的依赖
+ * dependence：组件涉及到的依赖，可以生成import代码：import {${tagName}} from '${dependence}';
  * container：是否是容器组件，容器组件内部可以添加其他组件
  * direction: vertical / horizontal 默认 vertical 子组件排列方式，默认垂直（vertical）排列
- * import：文件头部引入，用于生成源码
+ * import：文件头部引入，用于生成源码，
  * display: 用于拖拽包裹显示方式
  * visible: 是否在组件列表中显示
  * defaultProps: 默认属性，用于投放到页面时的默认样式
  * props：组件的属性列表，用于右侧的属性编辑
  * render: 渲染组件
+ * parentComponent: string 或 [string, string] 用于指定当前组件可以投放到那些组件当中，比如Col要指定 parentComponent: 'Row'等
  * */
 
 export const categories = [customer, antd, native];

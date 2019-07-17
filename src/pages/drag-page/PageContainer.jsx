@@ -4,7 +4,7 @@ import DropBox from './DropBox'
 import DragBox from './DragBox'
 import config from '@/commons/config-hoc';
 import {findNodeById} from './utils';
-import {renderNode} from './render-utils';
+import {renderNode, canDrop} from './render-utils';
 import './style.less';
 
 const GUIDE_PADDING = 10;
@@ -104,9 +104,16 @@ export default class Dnd extends Component {
         this.props.action.dragPage.sort({dragId, hoverId});
     };
 
+    handleCanDrop = (dropType, monitor) => {
+        const {id: dragType} = monitor.getItem();
+
+        return canDrop(dragType, dropType);
+    };
+
     renderPage = (node) => {
         return renderNode(node, (resultCom, {
             __id,
+            __type,
             __parentId,
             __parentDirection,
             level,
@@ -153,6 +160,7 @@ export default class Dnd extends Component {
                     canDropStyle={canDropStyle}
                     direction={__parentDirection}
                     onMove={this.handleMove}
+                    canDrop={(monitor) => this.handleCanDrop(__type, monitor)}
                 >
                     {resultCom}
                 </DropBox>

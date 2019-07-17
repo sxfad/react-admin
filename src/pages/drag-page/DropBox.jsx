@@ -44,6 +44,10 @@ export default DropTarget(
 
             return {id: props.id};
         },
+        canDrop(props, monitor) {
+            if (props.canDrop) return props.canDrop(monitor);
+            return true;
+        },
         hover(props, monitor, component) {
             if (!component) return;
 
