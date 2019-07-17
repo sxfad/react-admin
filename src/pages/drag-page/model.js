@@ -94,6 +94,7 @@ export default {
 
         return {pageConfig: config};
     },
+
     addChild: ({targetId, childIndex, child}, state) => {
         const config = cloneDeep(state.pageConfig);
 
@@ -108,6 +109,26 @@ export default {
         deleteNode(config, targetId);
 
         return {pageConfig: config};
+    },
+
+    deleteNodeAndSelectOther: (targetId, state) => {
+        const config = cloneDeep(state.pageConfig);
+        const parentNode = findParentById(config, targetId);
+
+        deleteNode(config, targetId);
+
+        // 选中下一个节点
+        let currentId = null;
+
+        if (parentNode) {
+            if (parentNode.children && parentNode.children.length) {
+                currentId = parentNode.children[parentNode.children.length - 1].__id;
+            } else {
+                currentId = parentNode.__id;
+            }
+        }
+
+        return {pageConfig: config, currentId};
     },
 
     updateNode: (node, state) => {

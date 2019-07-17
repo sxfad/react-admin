@@ -91,6 +91,7 @@ export default {
         title: '栅格行',
         dependence: 'antd',
         container: true,
+        acceptTypes: 'Col',
         direction: 'horizontal',
         defaultProps: {
             children: [
@@ -113,7 +114,7 @@ export default {
         dependence: 'antd',
         container: true,
         innerWrapper: true,
-        parentComponent: 'Row',
+        targetTypes: 'Row',
         description: '栅格系统说明啊',
         defaultProps: {
             span: 12,
@@ -159,6 +160,7 @@ export default {
         title: '标签容器',
         dependence: 'antd',
         container: true,
+        acceptTypes: 'Tabs.TabPane',
         description: '标签页容器，只能接受TabPane作为直接子节点。',
         defaultProps: {
             type: 'card',
@@ -197,7 +199,7 @@ export default {
         dependence: 'antd',
         container: true,
         innerWrapper: true,
-        parentComponent: 'Tabs', // 可投放容器
+        targetTypes: 'Tabs', // 可投放容器
         description: '标签页面板，只能放在标签容器组件中。',
         defaultProps: {
             tab: '标签名'

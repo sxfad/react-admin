@@ -2,13 +2,19 @@ import React from "react";
 import components from "./components";
 
 export function canDrop(dragType, dropType) {
-    const com = components[dragType];
-    if (!com) return true;
+    const dragCom = components[dragType];
+    const dropCom = components[dropType];
+    if (!dragCom) return true;
 
-    const {parentComponent} = com;
-    if (typeof parentComponent === 'string') return parentComponent === dropType;
+    const {targetTypes} = dragCom;
+    if (typeof targetTypes === 'string') return targetTypes === dropType;
 
-    if (Array.isArray(parentComponent)) return parentComponent.includes(dropType);
+    if (Array.isArray(targetTypes)) return targetTypes.includes(dropType);
+
+    const {acceptTypes} = dropCom;
+    if (typeof acceptTypes === 'string') return dragType === acceptTypes;
+
+    if (Array.isArray(acceptTypes)) return acceptTypes.includes(dragType);
 
     return true;
 }

@@ -3,12 +3,13 @@ import {Input} from 'antd';
 import DropBox from './DropBox'
 import DragBox from './DragBox'
 import config from '@/commons/config-hoc';
-import {findNodeById} from './utils';
+import {findNodeById, findParentById} from './utils';
 import {renderNode, canDrop} from './render-utils';
 import './style.less';
 
 const GUIDE_PADDING = 10;
 @config({
+    event: true,
     connect: state => {
         return {
             pageConfig: state.dragPage.pageConfig,
@@ -28,6 +29,20 @@ export default class Dnd extends Component {
 
         currentHoverId: null,
     };
+
+    componentDidMount() {
+        this.props.addEventListener(document, 'keydown', e => {
+            const {keyCode} = e;
+            // Delete
+            if (keyCode === 46) {
+                const {currentId} = this.props;
+                if (currentId) {
+                    this.props.action.dragPage.deleteNodeAndSelectOther(currentId);
+                }
+            }
+        });
+    }
+
 
     handleBeginDrag = () => {
         this.setState({dragging: true});
@@ -115,14 +130,17 @@ export default class Dnd extends Component {
     handleEnter = (e, __id) => {
         e.preventDefault();
         e.stopPropagation();
-
         this.setState({currentHoverId: __id});
     };
 
     handleLeave = (e, __id) => {
         e.preventDefault();
         e.stopPropagation();
-        this.setState({currentHoverId: null});
+
+        const {pageConfig} = this.props;
+        const parentNode = findParentById(pageConfig, __id) || {};
+        this.setState({currentHoverId: parentNode.__id});
+
     };
 
     renderPage = (node) => {
@@ -157,9 +175,14 @@ export default class Dnd extends Component {
                 dropBoxStyle.border = '1px dashed #d9d9d9';
                 dropBoxStyle.padding = GUIDE_PADDING;
 
-                if (currentId === __id || currentHoverId === __id) {
+                if (currentId === __id) {
                     dropBoxStyle.border = '1px dashed #64F36A';
                     dropBoxStyle.background = '#e7ffee';
+                }
+
+                if (currentHoverId === __id) {
+                    dropBoxStyle.border = '1px dashed #B8CEDC';
+                    dropBoxStyle.background = '#d6eeff';
                 }
             }
 
