@@ -11,6 +11,7 @@ export default {
         container: true,
         visible: false,
         import: 'import PageContent from \'@/layouts/page-content\'',
+        description: '页面统一容器。',
         defaultProps: {
             children: [
                 {
@@ -33,6 +34,7 @@ export default {
         container: true,
         direction: 'horizontal',
         import: 'import {ToolBar} from \'@/library/antd\';',
+        description: '工具容器，一般内部是一些按钮。',
         defaultProps: {
             children: [
                 {
@@ -68,6 +70,7 @@ export default {
         container: true,
         direction: 'horizontal',
         import: 'import {QueryBar} from \'@/library/antd\';',
+        description: '用于包裹一些查询条件的容器。',
         defaultProps: {
             children: [
                 {

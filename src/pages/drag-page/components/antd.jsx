@@ -3,7 +3,7 @@ import uuid from "uuid/v4";
 
 export const category = 'Ant Design 组件库';
 
-function button({type, content}) {
+function button({type, content, description}) {
     return {
         tagName: 'Button',
         component: Button,
@@ -11,6 +11,7 @@ function button({type, content}) {
         import: 'import {Button} from \'antd\'',
         container: false,
         display: 'inline-block',
+        description,
         defaultProps: {
             type,
             children: [
@@ -81,10 +82,10 @@ function button({type, content}) {
 }
 
 export default {
-    ButtonPrimary: button({type: 'primary', content: '主按钮'}),
-    Button: button({content: '次按钮'}),
+    ButtonPrimary: button({type: 'primary', content: '主按钮', description: '一般用于主要操作，比如添加等。'}),
+    Button: button({content: '次按钮', description: '一般用于次要操作，比如导入导出等。'}),
     ButtonDashed: button({type: 'dashed', content: '虚线按钮'}),
-    ButtonDanger: button({type: 'danger', content: '危险按钮'}),
+    ButtonDanger: button({type: 'danger', content: '危险按钮', description: '一般用于删除等危险操作。'}),
     Row: {
         component: Row,
         title: '栅格行',
@@ -115,6 +116,7 @@ export default {
         defaultProps: {
             span: 12,
         },
+        description: '栅格系统说明啊',
         props: [
             {
                 name: '格数',

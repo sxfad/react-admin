@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {Collapse, Icon, Popover} from 'antd';
+import {Alert, Collapse, Icon, Popover} from 'antd';
 import DragBox from './DragBox'
 import components, {categories} from './components';
 import config from '@/commons/config-hoc';
 import uuid from "uuid/v4";
-import {renderNode} from './render-utils';
+import {renderNode, getTagName} from './render-utils';
 import './style.less';
 
 const {Panel} = Collapse;
@@ -46,7 +46,12 @@ export default class ComponentContainer extends Component {
                         <Panel header={category} key={category}>
 
                             {Object.keys(components).map(key => {
-                                const {defaultProps = {}, visible, title} = components[key];
+                                const com = components[key];
+                                let {defaultProps = {}, visible, title, description} = com;
+
+                                let componentName = getTagName(key, com);
+
+                                title = `${title}(${componentName})`;
 
                                 if (visible === false) return null;
 
@@ -56,7 +61,31 @@ export default class ComponentContainer extends Component {
                                     ...defaultProps,
                                 };
 
-                                const tip = renderNode(node, resultCom => resultCom);
+
+                                const tip = (
+                                    <div>
+                                        <Alert
+                                            style={{marginBottom: 10}}
+                                            type="warning"
+                                            message={
+                                                <div>
+                                                    <h4>说明：</h4>
+                                                    {description || '没有说明。'}
+                                                </div>
+                                            }
+                                        />
+                                        <Alert
+                                            style={{marginBottom: 10}}
+                                            type="success"
+                                            message={
+                                                <div>
+                                                    <h4>预览：</h4>
+                                                    {renderNode(node, resultCom => resultCom)}
+                                                </div>
+                                            }
+                                        />
+                                    </div>
+                                );
 
                                 const children = (
                                     <div style={{display: 'flex', padding: 10, alignItems: 'center'}}>

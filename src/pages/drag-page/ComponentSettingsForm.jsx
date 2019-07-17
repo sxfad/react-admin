@@ -50,9 +50,8 @@ export default class ComponentSettings extends Component {
             currentNode,
         } = this.props;
 
-        if (!currentNode) currentNode = {};
-        let currentComponent = components[currentNode.__type] || {};
-        let props = currentComponent.props || [];
+        const currentComponent = components[(currentNode || {}).__type] || {};
+        const props = currentComponent.props || [];
 
         const FormElement = this.FormElement;
         return (
@@ -83,7 +82,7 @@ export default class ComponentSettings extends Component {
                         })}
                         <FormElement
                             type="textarea"
-                            label="说明"
+                            label="备注"
                             field="__TODO"
                             initialValue={currentNode['__TODO']}
                             placeholder="特殊说明，用于给开发人员提示"

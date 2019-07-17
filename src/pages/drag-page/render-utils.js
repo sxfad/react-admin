@@ -1,6 +1,16 @@
 import React from "react";
 import components from "./components";
 
+export function getTagName(key, com) {
+    const {component, tagName} = com;
+
+    if (tagName) return tagName;
+
+    if (typeof component === 'string') return component;
+
+    return key;
+}
+
 export function renderNode(node, render, __parentId = '0', __parentDirection) {
     const {__id, __type, __level = 1000, __TODO, children, content, ...others} = node;
     const com = components[__type];
