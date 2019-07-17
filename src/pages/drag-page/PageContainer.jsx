@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Icon, Input} from 'antd';
+import {Input} from 'antd';
 import DropBox from './DropBox'
 import DragBox from './DragBox'
 import config from '@/commons/config-hoc';
@@ -108,24 +108,12 @@ export default class Dnd extends Component {
             // types如果是数组，拖拽排序是会报错：Uncaught Invariant Violation: Expected to find a valid target
             // 通过dragging变量来切换，避免报错
             const containerSortType = (container && !dragging) ? ['component', __parentId] : __parentId;
-            const activeStyle = {background: '#aff3b5', transform: 'scale(1.05)',};
+            const activeStyle = {background: '#aff3b5', transform: 'scale(1.01)',};
             const canDropStyle = {background: '#f9ecc5'};
             const dropBoxStyle = {
                 display,
                 transition: '300ms',
             };
-
-            if (showGuideLine) {
-                dropBoxStyle.border = '1px dashed #d9d9d9';
-                dropBoxStyle.padding = GUIDE_PADDING;
-                // dropBoxStyle.margin = GUIDE_PADDING;
-
-                if (currentId === __id) {
-                    dropBoxStyle.border = '1px dashed #64F36A';
-                    dropBoxStyle.background = '#aff3b5';
-                }
-            }
-
 
             resultCom = (
                 <DropBox
@@ -151,7 +139,13 @@ export default class Dnd extends Component {
             };
 
             if (showGuideLine) {
-                dragBoxStyle.margin = GUIDE_PADDING;
+                dragBoxStyle.border = '1px dashed #d9d9d9';
+                dragBoxStyle.padding = GUIDE_PADDING;
+
+                if (currentId === __id) {
+                    dragBoxStyle.border = '1px dashed #64F36A';
+                    dragBoxStyle.background = '#aff3b5';
+                }
             }
 
             return (
@@ -185,17 +179,6 @@ export default class Dnd extends Component {
         } = this.state;
         const {pageConfig} = this.props;
 
-        const allIds = ['0'];
-        const loop = node => {
-            const {__id, children} = node;
-            allIds.push(__id);
-
-            if (children && children.length) {
-                children.forEach(loop);
-            }
-        };
-        loop(pageConfig);
-
         const inputProps = {
             ref: node => this.input = node,
             value: inputValue,
@@ -217,21 +200,6 @@ export default class Dnd extends Component {
                 <div style={inputStyle}>
                     {isTextArea ? <Input.TextArea {...inputProps}/> : <Input {...inputProps}/>}
                 </div>
-                <DropBox
-                    types={allIds}
-                    id="delete-node"
-                    style={{
-                        position: 'fixed',
-                        bottom: 10,
-                        right: 10,
-                        transition: '300ms',
-                    }}
-                    activeStyle={{
-                        transform: 'scale(1.5)',
-                    }}
-                >
-                    <Icon style={{fontSize: 40, color: 'red'}} type="delete"/>
-                </DropBox>
             </div>
         );
     }

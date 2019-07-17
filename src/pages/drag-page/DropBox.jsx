@@ -14,7 +14,7 @@ const DropBox = (props) => {
         onMove,
         isOver,
         level,
-        type,
+        types,
         ...others
     } = props;
 

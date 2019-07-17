@@ -1,3 +1,35 @@
+.component-cover {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    transition: background, 300ms;
+
+    background: rgba(255, 251, 122, 0);
+
+    &:hover {
+        background: rgba(255, 251, 122, 0.4)
+    }
+}
+
+.component-preview {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    z-index: 2;
+    font-size: 16px;
+    cursor: default;
+    opacity: .3;
+    transition: opacity, 300ms;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
 .root {
     display: flex;
     width: 100%;

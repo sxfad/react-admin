@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
+import {Collapse, Icon, Popover} from 'antd';
 import DragBox from './DragBox'
-import components from './components';
+import components, {categories} from './components';
 import config from '@/commons/config-hoc';
 import uuid from "uuid/v4";
 import {renderNode} from './render-utils';
+import './style.less';
 
+const {Panel} = Collapse;
 /**
  * 可用组件容器
  */
@@ -36,50 +39,63 @@ export default class ComponentContainer extends Component {
 
     render() {
         return (
-            <div>
-                {Object.keys(components).map(key => {
-                    const {defaultProps = {}, visible} = components[key];
-
-                    if (visible === false) return null;
-
-                    const node = {
-                        __id: uuid(),
-                        __type: key,
-                        ...defaultProps,
-                    };
-
-                    const children = renderNode(node, resultCom => resultCom);
-
-                    const style = {
-                        display: 'inline-block',
-                        margin: 4,
-                        padding: 4,
-                        cursor: 'move',
-                        position: 'relative',
-                        border: '1px dashed #d9d9d9',
-                    };
-
+            <Collapse defaultActiveKey={categories?.length ? categories[0].category : null}>
+                {categories.map(item => {
+                    const {category, default: components} = item;
                     return (
-                        <DragBox
-                            key={key}
-                            id={key}
-                            type="component"
-                            style={style}
-                            endDrag={result => this.handleEndDrag(key, result)}
-                        >
-                            <div style={{
-                                position: 'absolute',
-                                top: 0,
-                                right: 0,
-                                bottom: 0,
-                                left: 0,
-                                zIndex: 1,
-                            }}/>
-                            {children}
-                        </DragBox>
+                        <Panel header={category} key={category}>
+
+                            {Object.keys(components).map(key => {
+                                const {defaultProps = {}, visible, title} = components[key];
+
+                                if (visible === false) return null;
+
+                                const node = {
+                                    __id: uuid(),
+                                    __type: key,
+                                    ...defaultProps,
+                                };
+
+                                const tip = renderNode(node, resultCom => resultCom);
+
+                                const children = (
+                                    <div style={{display: 'flex', padding: 10, alignItems: 'center'}}>
+                                        <Icon type="code-sandbox" style={{fontSize: 20, marginRight: 10}}/>
+                                        <span>{title}</span>
+                                    </div>
+                                );
+
+
+                                const dragBoxStyle = {
+                                    cursor: 'move',
+                                    position: 'relative',
+                                };
+
+                                return (
+                                    <DragBox
+                                        key={key}
+                                        id={key}
+                                        type="component"
+                                        style={dragBoxStyle}
+                                        endDrag={result => this.handleEndDrag(key, result)}
+                                    >
+                                        <Popover
+                                            key={key}
+                                            title={title}
+                                            content={tip}
+                                            placement="right"
+                                        >
+                                            <Icon styleName="component-preview" type="eye"/>
+                                        </Popover>
+                                        <div styleName="component-cover"/>
+                                        {children}
+                                    </DragBox>
+                                );
+                            })}
+                        </Panel>
                     );
                 })}
-            </div>
+            </Collapse>
         );
     }
 }

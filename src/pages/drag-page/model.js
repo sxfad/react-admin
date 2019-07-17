@@ -67,6 +67,8 @@ export default {
         showGuideLine: true, // 是否显示辅助线
     },
 
+    setGuideLine: showGuideLine => ({showGuideLine}),
+
     setCurrentId: currentId => ({currentId}),
 
     setPageConfigs: (pageConfig) => ({pageConfig}),
