@@ -5,14 +5,16 @@ const DropBox = (props) => {
     const {
         children,
         canDrop,
-        isOver,
         isOverCurrent,
         connectDropTarget,
         style = {},
         canDropStyle = {},
         activeStyle = {},
-        onMove,
         forwardedRef,
+        onMove,
+        isOver,
+        level,
+        type,
         ...others
     } = props;
 

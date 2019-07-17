@@ -110,7 +110,10 @@ export default class Dnd extends Component {
             const containerSortType = (container && !dragging) ? ['component', __parentId] : __parentId;
             const activeStyle = {background: '#aff3b5', transform: 'scale(1.05)',};
             const canDropStyle = {background: '#f9ecc5'};
-            const dropBoxStyle = {transition: '300ms',};
+            const dropBoxStyle = {
+                display,
+                transition: '300ms',
+            };
 
             if (showGuideLine) {
                 dropBoxStyle.border = '1px dashed #d9d9d9';

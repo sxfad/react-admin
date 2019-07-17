@@ -6,10 +6,12 @@ const DragBox = (props) => {
         children,
         isDragging,
         connectDragSource,
-        beginDrag,
-        endDrag,
         style = {},
         draggingStyle = {},
+        beginDrag,
+        endDrag,
+        level,
+        type,
         ...others
     } = props;
 

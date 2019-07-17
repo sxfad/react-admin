@@ -1,5 +1,4 @@
 import {appendChild, addChild, deleteNode, updateNode, findParentById, findNodeById} from './utils';
-import uuid from "uuid/v4";
 import {cloneDeep} from 'lodash';
 import update from "immutability-helper";
 

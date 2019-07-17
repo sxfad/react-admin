@@ -38,7 +38,9 @@ export default class ComponentContainer extends Component {
         return (
             <div>
                 {Object.keys(components).map(key => {
-                    const {defaultProps = {}} = components[key];
+                    const {defaultProps = {}, visible} = components[key];
+
+                    if (visible === false) return null;
 
                     const node = {
                         __id: uuid(),
