@@ -53,7 +53,17 @@ export function updateNode(root, node) {
     const {__id} = node;
     const n = findNodeById(root, __id);
 
-    Object.keys(node).forEach(key => {
+    const newKeys = Object.keys(node);
+    const oldKeys = Object.keys(n);
+
+    // 删除不存在元素
+    oldKeys.forEach(key => {
+        if (!newKeys.includes(key)) {
+            Reflect.deleteProperty(n, key);
+        }
+    });
+
+    newKeys.forEach(key => {
         n[key] = node[key];
     });
 }

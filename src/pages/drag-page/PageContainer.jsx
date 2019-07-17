@@ -67,8 +67,12 @@ export default class Dnd extends Component {
         };
 
         const node = findNodeById(pageConfig, __id);
-        if (node && node.children && node.children.length === 1 && node.children[0].__type === 'text') {
-            const content = node.children[0].content || '';
+        const nodeChildren = (node && node.children) || [];
+        const nodeTextChildren = nodeChildren.filter(item => item.__type === 'text');
+
+        // 子节点中只存在一个
+        if (nodeTextChildren && nodeTextChildren.length === 1) {
+            const content = nodeTextChildren[0].content || '';
 
             this.setState({
                 isTextArea: height > 100 || content.length > 30,
@@ -101,7 +105,19 @@ export default class Dnd extends Component {
     };
 
     renderPage = (node) => {
-        return renderNode(node, (resultCom, {__id, __parentId, level, container, __parentDirection, display}) => {
+        return renderNode(node, (resultCom, {
+            __id,
+            __parentId,
+            __parentDirection,
+            level,
+            container,
+            display,
+
+            Component,
+            componentProps,
+            componentChildren,
+            innerWrapper,
+        }) => {
             const {currentId, showGuideLine} = this.props;
             const {dragging} = this.state;
             const sortType = __parentId;
@@ -114,6 +130,18 @@ export default class Dnd extends Component {
                 display,
                 transition: '300ms',
             };
+
+            if (showGuideLine) {
+                dropBoxStyle.border = '1px dashed #d9d9d9';
+                dropBoxStyle.padding = GUIDE_PADDING;
+
+                if (currentId === __id) {
+                    dropBoxStyle.border = '1px dashed #64F36A';
+                    dropBoxStyle.background = '#aff3b5';
+                }
+            }
+
+            if (innerWrapper) resultCom = componentChildren;
 
             resultCom = (
                 <DropBox
@@ -138,17 +166,8 @@ export default class Dnd extends Component {
                 cursor: 'move',
             };
 
-            if (showGuideLine) {
-                dragBoxStyle.border = '1px dashed #d9d9d9';
-                dragBoxStyle.padding = GUIDE_PADDING;
 
-                if (currentId === __id) {
-                    dragBoxStyle.border = '1px dashed #64F36A';
-                    dragBoxStyle.background = '#aff3b5';
-                }
-            }
-
-            return (
+            resultCom = (
                 <DragBox
                     type={sortType}
                     key={__id}
@@ -166,6 +185,10 @@ export default class Dnd extends Component {
                     {/****{level}****/}
                 </DragBox>
             );
+
+            if (innerWrapper) return <Component key={__id} {...componentProps}>{resultCom}</Component>;
+
+            return resultCom;
         });
 
     };

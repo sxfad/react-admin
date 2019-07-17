@@ -19,13 +19,6 @@ import * as customer from './customer';
  * */
 
 export const categories = [customer, antd, native];
-console.log(
-    {
-        ...native.default,
-        ...antd.default,
-        ...customer.default,
-    }
-);
 
 export default {
     ...native.default,

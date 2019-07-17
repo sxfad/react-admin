@@ -86,6 +86,8 @@ export default {
     numberRange(min, max, message = '请输入{min}到{max}之间的值.') {
         return {
             validator(rule, value, callback) {
+                if (!value) return callback();
+
                 value = Number(value);
 
                 if (!value && value !== 0) return callback();
@@ -97,6 +99,8 @@ export default {
     numberMaxRange(max, message = '不能大于{max}') {
         return {
             validator(rule, value, callback) {
+                if (!value) return callback();
+
                 value = Number(value);
 
                 if (!value && value !== 0) return callback();
@@ -108,6 +112,8 @@ export default {
     numberMinRange(min, message = '不能小于{min}') {
         return {
             validator(rule, value, callback) {
+                if (!value) return callback();
+
                 value = Number(value);
 
                 if (!value && value !== 0) return callback();
@@ -121,6 +127,7 @@ export default {
         return {
             validator(rule, value, callback) {
                 if (!value) return callback();
+
                 let length = getStringByteLength(value);
                 (length < min || length > max) ? callback(stringFormat(message, {min, max})) : callback();
             },

@@ -64,12 +64,26 @@ export default {
             ],
         },
         currentId: null, // 当前点击选中的元素id
+        currentNode: null,
         showGuideLine: true, // 是否显示辅助线
+    },
+
+    setProps: ({targetId, props}, state) => {
+        const config = cloneDeep(state.pageConfig);
+        const node = findNodeById(config, targetId);
+        const {__id, __type, __level, children} = node;
+
+        updateNode(config, {__id, __type, __level, children, ...props});
+
+        return {pageConfig: config};
     },
 
     setGuideLine: showGuideLine => ({showGuideLine}),
 
-    setCurrentId: currentId => ({currentId}),
+    setCurrentId: (currentId, state) => {
+        const currentNode = cloneDeep(findNodeById(state.pageConfig, currentId));
+        return {currentId, currentNode};
+    },
 
     setPageConfigs: (pageConfig) => ({pageConfig}),
 

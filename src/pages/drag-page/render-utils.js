@@ -2,7 +2,7 @@ import React from "react";
 import components from "./components";
 
 export function renderNode(node, render, __parentId = '0', __parentDirection) {
-    const {__id, __type, __level = 1000, children, content, ...others} = node;
+    const {__id, __type, __level = 1000, __TODO, children, content, ...others} = node;
     const com = components[__type];
 
     if (!com) {
@@ -10,31 +10,37 @@ export function renderNode(node, render, __parentId = '0', __parentDirection) {
         return null;
     }
 
-    const {component: Component, direction, render: renderCom} = com;
+    const {component: Component, noWrapper, innerWrapper, direction, render: renderCom} = com;
 
-    let resultCom = null;
-
+    let renderChildren = null;
     if (children && children.length) {
-        const renderChildren = children.map((item, index) => {
+        renderChildren = children.map((item, index) => {
             item.__level = __level * 10 + index;
             return renderNode(item, render, __id, direction);
         });
+    }
 
-        if (renderCom) {
-            resultCom = renderCom({key: __id, content, ...others, children: renderChildren});
-        } else {
-            resultCom = <Component key={__id} {...others}>{renderChildren}</Component>;
-        }
+    let resultCom = null;
+    if (renderCom) {
+        resultCom = renderCom({key: __id, content, ...others, children: renderChildren});
     } else {
-        if (renderCom) {
-            resultCom = renderCom({key: __id, content, ...others});
-        } else {
-            resultCom = <Component key={__id}  {...others}/>;
-        }
+        resultCom = <Component key={__id} {...others}>{renderChildren}</Component>;
     }
 
     // 文字节点不可拖拽
-    if (Component === 'text') return resultCom;
+    if (noWrapper) return resultCom;
 
-    return render(resultCom, {__id, __parentId, __parentDirection, level: __level, ...com});
+    const options = {
+        __id,
+        __parentId,
+        __parentDirection,
+        level: __level,
+        Component,
+        componentProps: others,
+        componentChildren: renderChildren,
+        innerWrapper,
+        ...com
+    };
+
+    return render(resultCom, options);
 }

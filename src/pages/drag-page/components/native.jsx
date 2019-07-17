@@ -7,6 +7,7 @@ export default {
         component: 'text',
         title: '纯文本',
         visible: false,
+        noWrapper: true, // 直接渲染，不拖拽包裹
         defaultProps: {
             content: '纯文本',
         },
