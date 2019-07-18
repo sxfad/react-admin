@@ -85,6 +85,7 @@ export default class ComponentSettings extends Component {
                                 name,
                                 attribute,
                                 valueType,
+                                ignoreAttribute,
                                 defaultValue,
                                 tabSize = 4,
                                 half,
