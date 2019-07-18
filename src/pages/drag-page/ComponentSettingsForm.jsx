@@ -18,28 +18,14 @@ export default class ComponentSettings extends Component {
     handlePropsChange = debounce(() => {
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (err) return;
+            const {currentNode} = this.props;
+            const propsConfigs = components[currentNode.__type].props || [];
 
-            const {
-                currentNode,
-            } = this.props;
-
-            const finaleProps = {};
-            const props = components[currentNode.__type].props || [];
-
-            Object.keys(values).forEach(key => {
-                const value = values[key];
-                const propsConfig = props.find(item => item.attribute === key);
-                if (propsConfig) {
-                    const {defaultValue} = propsConfig;
-                    if (value !== void 0 && value !== defaultValue) {
-                        finaleProps[key] = value;
-                    }
-                }
+            this.props.action.dragPage.setProps({
+                targetId: currentNode.__id,
+                newProps: values,
+                propsConfigs,
             });
-
-            const {__TODO} = values;
-
-            this.props.action.dragPage.setProps({targetId: currentNode.__id, props: {__TODO, ...finaleProps}});
         })
     }, 500);
 

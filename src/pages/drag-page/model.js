@@ -2,6 +2,9 @@ import {appendChild, addChild, deleteNode, updateNode, findParentById, findNodeB
 import {cloneDeep} from 'lodash';
 import update from "immutability-helper";
 
+// model 中不能引入components，否则会报错
+// import components from "@/pages/drag-page/components";
+
 export default {
     initialState: {
         // 所有页面配置数据，持久化的，从数据库中来。
@@ -68,22 +71,28 @@ export default {
         showGuideLine: true, // 是否显示辅助线
     },
 
-    // 设置某一属性
-    setOneProps: ({targetId, propsName, content}, state) => {
-        const config = cloneDeep(state.pageConfig);
-        const node = findNodeById(config, targetId);
-
-        node[propsName] = content;
-
-        return {pageConfig: config};
-    },
     // 设置所有属性
-    setProps: ({targetId, props}, state) => {
+    setProps: ({targetId, newProps, propsConfigs = []}, state) => {
         const config = cloneDeep(state.pageConfig);
         const node = findNodeById(config, targetId);
-        const {__id, __type, __level, children} = node;
 
-        updateNode(config, {__id, __type, __level, children, ...props});
+        const newNode = {...node, ...newProps};
+
+        // 如果属性与默认属性相同，则删除
+        Object.keys(newNode).forEach(key => {
+            const propsConfig = propsConfigs.find(item => item.attribute === key);
+
+            if (!propsConfig) return;
+
+            const {defaultValue} = propsConfig;
+            const value = newNode[key];
+            if (defaultValue === value) {
+                Reflect.deleteProperty(newNode, key);
+            }
+        });
+
+        console.log(newNode);
+        updateNode(config, newNode);
 
         return {pageConfig: config};
     },

@@ -30,8 +30,6 @@ export default class index extends Component {
                     <div style={{
                         flex: '0 0 260px',
                         marginRight: 10,
-                        padding: 10,
-                        border: '1px solid #d9d9d9',
                         height,
                         overflow: 'auto',
                     }}>

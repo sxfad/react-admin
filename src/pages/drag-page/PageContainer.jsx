@@ -116,7 +116,7 @@ export default class Dnd extends Component {
         if (!inputValue) return;
 
         if (editProps) {
-            this.props.action.dragPage.setOneProps({targetId: currentInputId, propsName: editProps, content: inputValue});
+            this.props.action.dragPage.setProps({targetId: currentInputId, newProps: {[editProps]: inputValue}});
         } else {
             this.props.action.dragPage.setContent({targetId: currentInputId, content: inputValue});
         }

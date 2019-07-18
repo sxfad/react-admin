@@ -107,7 +107,16 @@ function getElement(item) {
 }
 
 export default class FormElement extends Component {
+
     componentDidMount() {
+        this.setLabelWidth();
+    }
+
+    componentDidUpdate() {
+        this.setLabelWidth();
+    }
+
+    setLabelWidth = () => {
         let {labelWidth, label} = this.props;
         const labelDom = this.container.querySelector('.ant-form-item-label');
 
@@ -120,7 +129,7 @@ export default class FormElement extends Component {
                 labelDom.style.paddingLeft = '0';
             }
         }
-    }
+    };
 
     render() {
         let {

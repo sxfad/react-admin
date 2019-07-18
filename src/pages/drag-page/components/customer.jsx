@@ -82,7 +82,7 @@ export default {
                             __id: uuid(),
                             label: '输入框',
                             style: {paddingLeft: 16},
-                            width: 200,
+                            width: '200px',
                         },
                         {
                             __type: 'FormSelect',
@@ -90,7 +90,7 @@ export default {
                             type: 'select',
                             label: '下拉框',
                             style: {paddingLeft: 16},
-                            width: 200,
+                            width: '200px',
                             options: [
                                 {value: '1', label: '下拉项1'},
                                 {value: '2', label: '下拉项2'},
