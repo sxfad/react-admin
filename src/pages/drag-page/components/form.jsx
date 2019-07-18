@@ -78,6 +78,31 @@ const allowClear = (half) => ({
     unCheckedChildren: '否',
 });
 
+const showSearch = (half) => ({
+    name: '可搜索',
+    attribute: 'showSearch',
+    valueType: 'boolean',
+    defaultValue: false,
+    formType: 'switch',
+    half,
+    checkedChildren: '是',
+    unCheckedChildren: '否',
+});
+
+const optionFilterProp = (withShowSearch) => {
+    return {
+        name: '搜索范围',
+        attribute: 'optionFilterProp',
+        valueType: 'string',
+        defaultValue: 'value',
+        formType: 'select',
+        visible: withShowSearch ? values => values.showSearch : true,
+        options: [
+            {value: 'value', label: '内部值'},
+            {value: 'children', label: '显示的内容'},
+        ],
+    };
+};
 const commonProps = [
     {
         name: '字段名',
@@ -141,6 +166,10 @@ export default {
             label: '输入框',
             width: '200px',
         },
+        props: [
+            ...commonProps,
+            allowClear(),
+        ],
     },
     FormSelect: {
         component: FormElement,
@@ -162,29 +191,9 @@ export default {
         props: [
             ...commonProps,
             ...getOptionsAttribute('下拉项'),
-            {
-                name: '可搜索',
-                attribute: 'showSearch',
-                valueType: 'boolean',
-                defaultValue: false,
-                formType: 'switch',
-                half: true,
-                checkedChildren: '是',
-                unCheckedChildren: '否',
-            },
+            showSearch(true),
             allowClear(true),
-            {
-                name: '搜索范围',
-                attribute: 'optionFilterProp',
-                valueType: 'string',
-                defaultValue: 'value',
-                formType: 'select',
-                visible: values => values.showSearch,
-                options: [
-                    {value: 'value', label: '内部值'},
-                    {value: 'children', label: '显示的内容'},
-                ],
-            },
+            optionFilterProp(true),
         ],
     },
 };
