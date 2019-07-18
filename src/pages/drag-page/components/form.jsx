@@ -31,6 +31,53 @@ const optionsValidator = {
     }
 };
 
+export const optionsTypes = [
+    {value: '01', label: '是否', options: [{value: '1', label: '是'}, {value: '0', label: '否'}]},
+    {value: '02', label: '状态', options: [{value: '1', label: '启用'}, {value: '0', label: '禁用'}]},
+    {value: 'customer', label: '自定义', options: [{value: '1', label: '项1'}, {value: '2', label: '项2'}]},
+];
+
+function getOptionsAttribute(name) {
+    return [
+        {
+            name,
+            attribute: 'optionsType',
+            valueType: 'string',
+            formType: 'select',
+            options: optionsTypes,
+            ignoreAttribute: true,
+        },
+        {
+            name: `自定义${name}`,
+            attribute: 'customerOptions',
+            valueType: 'json',
+            formType: 'json',
+            label: '',
+            height: '200px',
+            defaultValue: [{value: '1', label: '项1'}, {value: '2', label: '项2'}],
+            visible: values => values.optionsType === 'customer',
+            ignoreAttribute: true,
+            rules: [
+                optionsValidator,
+            ],
+            tabSize: 2,
+            // showGutter: false,
+            // showPrintMargin: false,
+        },
+    ];
+}
+
+const allowClear = (half) => ({
+    name: '可清除',
+    attribute: 'allowClear',
+    valueType: 'boolean',
+    defaultValue: false,
+    formType: 'switch',
+    half,
+    checkedChildren: '是',
+    unCheckedChildren: '否',
+});
+
 const commonProps = [
     {
         name: '字段名',
@@ -40,6 +87,11 @@ const commonProps = [
     {
         name: '标签',
         attribute: 'label',
+        valueType: 'string',
+    },
+    {
+        name: '提示',
+        attribute: 'tip',
         valueType: 'string',
     },
     {
@@ -109,20 +161,7 @@ export default {
         },
         props: [
             ...commonProps,
-            {
-                name: '下拉项',
-                attribute: 'options',
-                valueType: 'json',
-                formType: 'json',
-                labelBlock: true,
-                height: '200px',
-                rules: [
-                    optionsValidator,
-                ],
-                tabSize: 2,
-                // showGutter: false,
-                // showPrintMargin: false,
-            },
+            ...getOptionsAttribute('下拉项'),
             {
                 name: '可搜索',
                 attribute: 'showSearch',
@@ -133,16 +172,7 @@ export default {
                 checkedChildren: '是',
                 unCheckedChildren: '否',
             },
-            {
-                name: '可清除',
-                attribute: 'allowClear',
-                valueType: 'boolean',
-                defaultValue: false,
-                formType: 'switch',
-                half: true,
-                checkedChildren: '是',
-                unCheckedChildren: '否',
-            },
+            allowClear(true),
             {
                 name: '搜索范围',
                 attribute: 'optionFilterProp',

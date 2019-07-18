@@ -25,6 +25,7 @@ import * as form from './form';
  *      half: true/false 是否只占半行，用于两个属性一行显示
  *      allowEmpty: true/false 是否允许空值（'' null void 0），如果允许，对应节点将保留对应属性，否则删除
  *      visible: true/false/function(values) 是否显示，用于联动控制
+ *      ignoreAttribute: true/false 是否是自定义属性，如果是，生成源码时，将忽略此属性
  *      其他属性作为FormElement属性
  *
  * render: 渲染组件

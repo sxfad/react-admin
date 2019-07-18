@@ -5,6 +5,7 @@ import components from './components';
 import {FormElement} from '@/library/antd';
 import {debounce} from 'lodash';
 import {canEdit} from './render-utils';
+import {optionsTypes} from './components/form';
 
 @config({
     event: true,
@@ -31,6 +32,17 @@ export default class ComponentSettings extends Component {
                     values[key] = JSON.parse(value);
                 }
             });
+
+            const {optionsType} = values;
+            if (optionsType) {
+                const optionsConfig = optionsTypes.find(item => item.value === optionsType);
+                const {options} = optionsConfig;
+                if (optionsType === 'customer') {
+                    values.options = values.customerOptions || options;
+                } else {
+                    values.options = options.map(item => ({value: item.value, label: item.label}));
+                }
+            }
 
             this.props.action.dragPage.setProps({
                 targetId: currentNode.__id,
