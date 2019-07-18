@@ -68,34 +68,27 @@ export default class Dnd extends Component {
         this.props.action.dragPage.setCurrentId(__id);
     };
 
-    handleDoubleClick = (e, {currentTarget, __id, container, content}) => {
-        console.log(__id);
+    handleDoubleClick = (e, __id) => {
         if (e) {
             e.preventDefault();
             e.stopPropagation();
         }
 
-        let {showGuideLine, pageConfig} = this.props;
+        let {pageConfig} = this.props;
+        const node = canEdit(pageConfig, __id);
 
-        if (!content) {
-            const node = canEdit(pageConfig, __id);
+        if (!node) return;
 
-            if (!node) return;
+        const {content, editProps} = node;
+        let dom = document.getElementById(`dropBox-${__id}`).childNodes[0];
 
-            content = node.content;
-        }
-
-        const {x, y, width, height} = currentTarget.getBoundingClientRect();
-        console.log(currentTarget, currentTarget.getBoundingClientRect());
-
-        if (!container) showGuideLine = false;
-
+        const {x, y, width, height} = dom.getBoundingClientRect();
         const inputWrapperStyle = {
             position: 'fixed',
             top: y,
-            left: showGuideLine ? x + GUIDE_MARGIN : x,
+            left: x,
             height,
-            width: showGuideLine ? width - GUIDE_MARGIN * 2 : width,
+            width,
             boxSizing: 'border-box',
         };
 
@@ -105,6 +98,7 @@ export default class Dnd extends Component {
             inputWrapperStyle,
             inputValue: void 0,
             inputPlaceholder: content,
+            editProps,
         }, () => this.input.focus());
     };
 
@@ -115,13 +109,19 @@ export default class Dnd extends Component {
     };
 
     handleInputBlur = () => {
-        const {currentInputId, inputValue} = this.state;
+        const {currentInputId, inputValue, editProps} = this.state;
 
         this.setState({inputWrapperStyle: {display: 'none'}});
 
         if (!inputValue) return;
 
-        this.props.action.dragPage.setContent({targetId: currentInputId, content: inputValue});
+        if (editProps) {
+            this.props.action.dragPage.setOneProps({targetId: currentInputId, propsName: editProps, content: inputValue});
+        } else {
+            this.props.action.dragPage.setContent({targetId: currentInputId, content: inputValue});
+        }
+
+
     };
 
     // 输入框（非文本框）回车事件，自动定位下一个可编辑节点
@@ -135,11 +135,10 @@ export default class Dnd extends Component {
 
         if (!node) return;
 
-        const {__id, container, content} = node;
-        const currentTarget = document.getElementById(__id);
+        const {__id} = node;
 
         // 等待上次编辑完成，dom刷新完成之后，否则会出现输入框定位不准的现象
-        setTimeout(() => this.handleDoubleClick(null, {__id, currentTarget, container, content}));
+        setTimeout(() => this.handleDoubleClick(null, __id));
     };
 
     handleInputKeyDown = (e) => {
@@ -261,7 +260,7 @@ export default class Dnd extends Component {
                     style={dragBoxStyle}
                     draggingStyle={draggingStyle}
                     onClick={(e) => this.handleClick(e, __id)}
-                    onDoubleClick={(e) => this.handleDoubleClick(e, {__id, container, currentTarget: e.currentTarget})}
+                    onDoubleClick={(e) => this.handleDoubleClick(e, __id)}
                     beginDrag={this.handleBeginDrag}
                     endDrag={result => this.handleEndDrag(__id, result)}
                 >

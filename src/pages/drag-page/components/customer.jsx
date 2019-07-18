@@ -1,8 +1,6 @@
 import PageContent from '@/layouts/page-content';
 import {ToolBar, QueryBar} from '@/library/antd';
 import uuid from "uuid/v4";
-import {Button} from "antd";
-import React from "react";
 
 export const category = '自定义组件';
 
@@ -106,7 +104,7 @@ export default {
                             width: 'auto',
                             children: [
                                 {
-                                    __type: 'Button',
+                                    __type: 'ButtonPrimary',
                                     __id: uuid(),
                                     type: 'primary',
                                     style: {marginRight: 8},

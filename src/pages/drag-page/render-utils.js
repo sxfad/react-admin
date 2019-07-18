@@ -9,14 +9,22 @@ import {findNodeById, findSiblingsById, findParentById} from "@/pages/drag-page/
  */
 export function canEdit(pageConfig, __id) {
     const node = findNodeById(pageConfig, __id) || {};
-    const {container} = node;
+    const {__type} = node;
+    const com = components[__type];
+    const {container, tagName} = com;
     const nodeChildren = node.children || [];
-    const nodeTextChildren = nodeChildren.filter(item => item.__type === 'text');
 
     // 子节点中只存在一个文本节点
+    const nodeTextChildren = nodeChildren.filter(item => item.__type === 'text');
     if (nodeTextChildren && nodeTextChildren.length === 1) {
         const content = nodeTextChildren[0].content || '';
         return {__id, content, container};
+    }
+
+    // 表单元素的label
+    if (tagName === 'FormElement') {
+        const {label: content} = node;
+        return {__id, editProps: 'label', content, container: false}
     }
 
     return null;
@@ -63,8 +71,6 @@ export function findNextCanEdit(pageConfig, __id) {
         }
 
         const parentNode = findParentById(pageConfig, __id);
-
-        console.log(parentNode);
 
         if (parentNode) {
             return loopParent(parentNode);

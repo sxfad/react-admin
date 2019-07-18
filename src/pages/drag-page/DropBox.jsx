@@ -15,6 +15,7 @@ const DropBox = (props) => {
         isOver,
         level,
         types,
+        id,
         ...others
     } = props;
 
@@ -22,7 +23,7 @@ const DropBox = (props) => {
     const finalStyle = {...style, ...(canDrop ? canDropStyle : {}), ...(isActive ? activeStyle : {})};
     connectDropTarget(forwardedRef);
     return (
-        <div ref={forwardedRef} style={finalStyle} {...others}>
+        <div id={`dropBox-${id}`} ref={forwardedRef} style={finalStyle} {...others}>
             {children}
         </div>
     )

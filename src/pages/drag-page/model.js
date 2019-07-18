@@ -68,6 +68,16 @@ export default {
         showGuideLine: true, // 是否显示辅助线
     },
 
+    // 设置某一属性
+    setOneProps: ({targetId, propsName, content}, state) => {
+        const config = cloneDeep(state.pageConfig);
+        const node = findNodeById(config, targetId);
+
+        node[propsName] = content;
+
+        return {pageConfig: config};
+    },
+    // 设置所有属性
     setProps: ({targetId, props}, state) => {
         const config = cloneDeep(state.pageConfig);
         const node = findNodeById(config, targetId);

@@ -47,5 +47,16 @@ export default {
                 {value: '2', label: '下拉项2'},
             ],
         },
+        props: [
+            {
+                name: '可清除',
+                attribute: 'allowClear',
+                valueType: 'boolean',
+                defaultValue: false,
+                formType: 'switch',
+                checkedChildren: '是',
+                unCheckedChildren: '否',
+            },
+        ],
     },
 };

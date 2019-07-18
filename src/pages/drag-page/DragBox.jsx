@@ -12,13 +12,14 @@ const DragBox = (props) => {
         endDrag,
         level,
         type,
+        id,
         ...others
     } = props;
 
     const finalStyle = isDragging ? {...style, ...draggingStyle} : style;
 
     return (
-        <div ref={connectDragSource} {...others} style={finalStyle}>
+        <div id={`dragBox-${id}`} ref={connectDragSource} {...others} style={finalStyle}>
             {children}
         </div>
     )
