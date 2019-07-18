@@ -6,6 +6,10 @@ import uuid from "uuid/v4";
 // model 中不能引入components，否则会报错
 // import components from "@/pages/drag-page/components";
 
+const isEmpty = value => {
+    return value === '' || value === null || value === void 0;
+};
+
 export default {
     initialState: {
         // 所有页面配置数据，持久化的，从数据库中来。
@@ -144,15 +148,19 @@ export default {
 
         const newNode = {...node, ...newProps};
 
-        // 如果属性与默认属性相同，则删除
+        // 如果属性与默认属性相同或者为空，则删除
         Object.keys(newNode).forEach(key => {
             const propsConfig = propsConfigs.find(item => item.attribute === key);
 
             if (!propsConfig) return;
 
-            const {defaultValue} = propsConfig;
+            const {defaultValue, allowEmpty} = propsConfig;
             const value = newNode[key];
             if (defaultValue === value) {
+                Reflect.deleteProperty(newNode, key);
+            }
+
+            if (!allowEmpty && isEmpty(value)) {
                 Reflect.deleteProperty(newNode, key);
             }
         });

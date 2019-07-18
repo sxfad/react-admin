@@ -29,11 +29,12 @@ function button({type, content, description}) {
                 valueType: 'string',
                 defaultValue: 'default', // 如果与defaultValue相同，则不需要在组件上添加这个属性
                 formType: 'select',
+                // formType: 'hidden',
                 options: [
-                    {value: 'primary', label: '主'},
-                    {value: 'default', label: '次'},
-                    {value: 'dashed', label: '虚线'},
-                    {value: 'danger', label: '危险'},
+                    {value: 'primary', label: '主要按钮'},
+                    {value: 'default', label: '次要按钮'},
+                    {value: 'dashed', label: '虚线按钮'},
+                    {value: 'danger', label: '危险按钮'},
                 ],
             },
             {

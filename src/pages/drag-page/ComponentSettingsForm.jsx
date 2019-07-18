@@ -4,7 +4,6 @@ import config from '@/commons/config-hoc';
 import components from './components';
 import {FormElement} from '@/library/antd';
 import {debounce} from 'lodash';
-import {isJson} from '@/commons';
 
 @config({
     event: true,
@@ -24,12 +23,10 @@ export default class ComponentSettings extends Component {
 
             Object.keys(values).forEach(key => {
                 const config = propsConfigs.find(item => item.attribute === key);
+                const value = values[key];
 
-                if (config?.formType === 'json') {
-                    const value = values[key];
-                    if (value) {
-                        values[key] = JSON.parse(value);
-                    }
+                if (config?.formType === 'json' && value) {
+                    values[key] = JSON.parse(value);
                 }
             });
 
@@ -62,7 +59,10 @@ export default class ComponentSettings extends Component {
                                 valueType,
                                 defaultValue,
                                 tabSize = 4,
+                                half,
                                 formType = 'input',
+                                style = {},
+                                visible,
                                 ...others
                             } = item;
 
@@ -72,6 +72,23 @@ export default class ComponentSettings extends Component {
                                 initialValue = JSON.stringify(initialValue, null, tabSize);
                             }
 
+                            if (half) {
+                                style.width = '50%';
+                                style.float = 'left';
+                            } else {
+                                style.clear = 'both';
+                            }
+
+                            let isVisible = true;
+
+                            if (visible !== void 0) isVisible = visible;
+
+                            if (visible && typeof visible === 'function') {
+                                isVisible = visible({...currentNode, ...this.props.form.getFieldsValue()});
+                            }
+
+                            if (!isVisible) return null;
+
                             return (
                                 <FormElement
                                     key={attribute}
@@ -80,6 +97,7 @@ export default class ComponentSettings extends Component {
                                     field={attribute}
                                     initialValue={initialValue}
                                     onChange={this.handlePropsChange}
+                                    style={style}
                                     {...others}
                                 />
                             );
@@ -91,6 +109,7 @@ export default class ComponentSettings extends Component {
                             initialValue={currentNode['__TODO']}
                             placeholder="特殊说明，用于给开发人员提示"
                             rows={3}
+                            style={{clear: 'both'}}
                             onChange={this.handlePropsChange}
                         />
                     </div>

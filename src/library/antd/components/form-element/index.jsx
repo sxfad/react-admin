@@ -150,7 +150,6 @@ export default class FormElement extends Component {
             // 自定义属性
             form,
             type = 'input',
-            labelBlock = false,
             labelWidth,
             width, // 元素宽度，默认 100%
             tip,

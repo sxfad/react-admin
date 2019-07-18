@@ -43,19 +43,24 @@ const commonProps = [
         valueType: 'string',
     },
     {
-        name: '标签宽度',
-        attribute: 'labelWidth',
-        valueType: 'string',
-        placeholder: '比如：200px 或者 auto',
-    },
-    {
         name: '总宽度',
         attribute: 'width',
         valueType: 'string',
         defaultValue: 'auto',
         placeholder: '比如：200px 或者 auto',
     },
-
+    {
+        name: '标签宽度',
+        attribute: 'labelWidth',
+        valueType: 'string',
+        placeholder: '比如：200px 或者 auto',
+    },
+    {
+        name: '占位文案',
+        attribute: 'placeholder',
+        valueType: 'string',
+        placeholder: '为空时的提示文案',
+    },
 ];
 
 export default {
@@ -119,20 +124,22 @@ export default {
                 // showPrintMargin: false,
             },
             {
-                name: '可清除',
-                attribute: 'allowClear',
-                valueType: 'boolean',
-                defaultValue: false,
-                formType: 'switch',
-                checkedChildren: '是',
-                unCheckedChildren: '否',
-            },
-            {
                 name: '可搜索',
                 attribute: 'showSearch',
                 valueType: 'boolean',
                 defaultValue: false,
                 formType: 'switch',
+                half: true,
+                checkedChildren: '是',
+                unCheckedChildren: '否',
+            },
+            {
+                name: '可清除',
+                attribute: 'allowClear',
+                valueType: 'boolean',
+                defaultValue: false,
+                formType: 'switch',
+                half: true,
                 checkedChildren: '是',
                 unCheckedChildren: '否',
             },
@@ -142,6 +149,7 @@ export default {
                 valueType: 'string',
                 defaultValue: 'value',
                 formType: 'select',
+                visible: values => values.showSearch,
                 options: [
                     {value: 'value', label: '内部值'},
                     {value: 'children', label: '显示的内容'},

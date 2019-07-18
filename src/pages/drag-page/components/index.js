@@ -15,7 +15,18 @@ import * as form from './form';
  * display: 用于拖拽包裹显示方式
  * visible: 是否在组件列表中显示
  * defaultProps: 默认属性，用于投放到页面时的默认样式
- * props：组件的属性列表，用于右侧的属性编辑
+ * props：组件的属性列表，用于右侧的属性编辑，属性说明：
+ *      name: 属性名称
+ *      attribute: 属性字段名
+ *      valueType: 属性值的类型
+ *      defaultValue: 属性的默认值，用于判断是对应节点否保留属性
+ *      formType: 表单类型
+ *      labelBlock: true/false label是否独占一行
+ *      half: true/false 是否只占半行，用于两个属性一行显示
+ *      allowEmpty: true/false 是否允许空值（'' null void 0），如果允许，对应节点将保留对应属性，否则删除
+ *      visible: true/false/function(values) 是否显示，用于联动控制
+ *      其他属性作为FormElement属性
+ *
  * render: 渲染组件
  * targetTypes: string 或 [string, string] 用于指定当前组件可以投放到那些组件当中，比如Col要指定 targetTypes: 'Row'等
  * acceptTypes: string 或 [string, string] 指定当前组件可以接受投放的类型，比如Row要指定 targetTypes: 'Col'等，与targetTypes成对出现
