@@ -3,11 +3,12 @@ import {Input, Form} from 'antd';
 import DropBox from './DropBox'
 import DragBox from './DragBox'
 import config from '@/commons/config-hoc';
-import {findNodeById, findParentById} from './utils';
-import {renderNode, canDrop} from './render-utils';
+import {findParentById} from './utils';
+import {renderNode, canDrop, canEdit, findNextCanEdit} from './render-utils';
 import './style.less';
 
-const GUIDE_PADDING = 10;
+const GUIDE_PADDING = 15;
+const GUIDE_MARGIN = 10;
 @config({
     event: true,
     connect: state => {
@@ -23,7 +24,7 @@ export default class Dnd extends Component {
     state = {
         dragging: false,
         isTextArea: false,
-        inputStyle: {display: 'none'},
+        inputWrapperStyle: {display: 'none'},
         inputValue: void 0,
         inputPlaceholder: void 0,
         currentInputId: null,
@@ -67,39 +68,44 @@ export default class Dnd extends Component {
         this.props.action.dragPage.setCurrentId(__id);
     };
 
-    handleDoubleClick = (e, __id) => {
-        e.preventDefault();
-        e.stopPropagation();
+    handleDoubleClick = (e, {currentTarget, __id, container, content}) => {
+        console.log(__id);
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
 
-        const {showGuideLine, pageConfig} = this.props;
-        const dom = e.currentTarget;
-        const {x, y, width, height} = dom.getBoundingClientRect();
+        let {showGuideLine, pageConfig} = this.props;
 
-        const inputStyle = {
+        if (!content) {
+            const node = canEdit(pageConfig, __id);
+
+            if (!node) return;
+
+            content = node.content;
+        }
+
+        const {x, y, width, height} = currentTarget.getBoundingClientRect();
+        console.log(currentTarget, currentTarget.getBoundingClientRect());
+
+        if (!container) showGuideLine = false;
+
+        const inputWrapperStyle = {
             position: 'fixed',
             top: y,
-            left: x,
+            left: showGuideLine ? x + GUIDE_MARGIN : x,
             height,
-            width,
-            padding: showGuideLine ? GUIDE_PADDING : 0,
+            width: showGuideLine ? width - GUIDE_MARGIN * 2 : width,
+            boxSizing: 'border-box',
         };
 
-        const node = findNodeById(pageConfig, __id);
-        const nodeChildren = (node && node.children) || [];
-        const nodeTextChildren = nodeChildren.filter(item => item.__type === 'text');
-
-        // 子节点中只存在一个
-        if (nodeTextChildren && nodeTextChildren.length === 1) {
-            const content = nodeTextChildren[0].content || '';
-
-            this.setState({
-                isTextArea: height > 100 || content.length > 30,
-                currentInputId: __id,
-                inputStyle,
-                inputValue: void 0,
-                inputPlaceholder: content,
-            }, () => this.input.focus());
-        }
+        this.setState({
+            isTextArea: height > 100 || content.length > 30,
+            currentInputId: __id,
+            inputWrapperStyle,
+            inputValue: void 0,
+            inputPlaceholder: content,
+        }, () => this.input.focus());
     };
 
     handleInputChange = (e) => {
@@ -111,11 +117,34 @@ export default class Dnd extends Component {
     handleInputBlur = () => {
         const {currentInputId, inputValue} = this.state;
 
-        this.setState({inputStyle: {display: 'none'}});
+        this.setState({inputWrapperStyle: {display: 'none'}});
 
         if (!inputValue) return;
 
         this.props.action.dragPage.setContent({targetId: currentInputId, content: inputValue});
+    };
+
+    // 输入框（非文本框）回车事件，自动定位下一个可编辑节点
+    handleInputEnter = () => {
+        this.handleInputBlur();
+
+        const {currentInputId} = this.state;
+        const {pageConfig} = this.props;
+
+        const node = findNextCanEdit(pageConfig, currentInputId);
+
+        if (!node) return;
+
+        const {__id, container, content} = node;
+        const currentTarget = document.getElementById(__id);
+
+        // 等待上次编辑完成，dom刷新完成之后，否则会出现输入框定位不准的现象
+        setTimeout(() => this.handleDoubleClick(null, {__id, currentTarget, container, content}));
+    };
+
+    handleInputKeyDown = (e) => {
+        // Esc退出编辑
+        if (e.keyCode === 27) this.handleInputBlur();
     };
 
     handleMove = (dragId, hoverId) => {
@@ -160,7 +189,7 @@ export default class Dnd extends Component {
             componentChildren,
             innerWrapper,
         }) => {
-            const {currentId, showGuideLine} = this.props;
+            let {currentId, showGuideLine} = this.props;
             const {dragging, currentHoverId} = this.state;
             const sortType = __parentId;
             // types如果是数组，拖拽排序是会报错：Uncaught Invariant Violation: Expected to find a valid target
@@ -173,9 +202,13 @@ export default class Dnd extends Component {
                 transition: '300ms',
             };
 
+            if (!container) showGuideLine = false;
+
             if (showGuideLine) {
                 dropBoxStyle.border = '1px dashed #d9d9d9';
                 dropBoxStyle.padding = GUIDE_PADDING;
+                dropBoxStyle.margin = GUIDE_MARGIN;
+
 
                 if (currentId === __id) {
                     dropBoxStyle.border = '1px dashed #64F36A';
@@ -228,12 +261,12 @@ export default class Dnd extends Component {
                     style={dragBoxStyle}
                     draggingStyle={draggingStyle}
                     onClick={(e) => this.handleClick(e, __id)}
-                    onDoubleClick={(e) => this.handleDoubleClick(e, __id)}
+                    onDoubleClick={(e) => this.handleDoubleClick(e, {__id, container, currentTarget: e.currentTarget})}
                     beginDrag={this.handleBeginDrag}
                     endDrag={result => this.handleEndDrag(__id, result)}
                 >
                     {resultCom}
-                    {/*###{__id}###*/}
+                    {/*#{__id}#*/}
                     {/****{level}****/}
                 </DragBox>
             );
@@ -247,7 +280,7 @@ export default class Dnd extends Component {
 
     render() {
         const {
-            inputStyle,
+            inputWrapperStyle,
             inputValue,
             inputPlaceholder,
             isTextArea,
@@ -259,6 +292,7 @@ export default class Dnd extends Component {
             value: inputValue,
             onChange: this.handleInputChange,
             onBlur: this.handleInputBlur,
+            onKeyDown: this.handleInputKeyDown,
             placeholder: inputPlaceholder,
             style: {
                 width: '100%',
@@ -272,8 +306,8 @@ export default class Dnd extends Component {
                 <div styleName="content">
                     {this.renderPage(pageConfig)}
                 </div>
-                <div style={inputStyle}>
-                    {isTextArea ? <Input.TextArea {...inputProps}/> : <Input {...inputProps}/>}
+                <div style={inputWrapperStyle}>
+                    {isTextArea ? <Input.TextArea {...inputProps}/> : <Input {...inputProps} onPressEnter={this.handleInputEnter}/>}
                 </div>
             </div>
         );
