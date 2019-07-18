@@ -4,12 +4,14 @@ import config from '@/commons/config-hoc';
 import components from './components';
 import {FormElement} from '@/library/antd';
 import {debounce} from 'lodash';
+import {canEdit} from './render-utils';
 
 @config({
     event: true,
     connect: state => {
         return {
             currentNode: state.dragPage.currentNode,
+            pageConfig: state.dragPage.pageConfig,
         }
     },
 })
@@ -38,6 +40,20 @@ export default class ComponentSettings extends Component {
         })
     }, 500);
 
+    getTitle = (currentComponent) => {
+        const {currentNode, pageConfig} = this.props;
+        const {container, title} = currentComponent;
+
+        if (!container) {
+            const result = canEdit(pageConfig, currentNode.__id);
+            if (!result) return title;
+
+            return result.content;
+        }
+
+        return title;
+    };
+
     FormElement = (props) => <FormElement form={this.props.form} labelWidth={60} disabled={this.props.isDetail} {...props}/>;
 
     render() {
@@ -51,7 +67,7 @@ export default class ComponentSettings extends Component {
             <Form>
                 {currentNode ? (
                     <div>
-                        <h3 style={{textAlign: 'center'}}>{currentComponent.title}</h3>
+                        <h3 style={{textAlign: 'center'}}>{this.getTitle(currentComponent)}</h3>
                         {props.map(item => {
                             let {
                                 name,
