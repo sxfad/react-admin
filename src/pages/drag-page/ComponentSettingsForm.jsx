@@ -4,6 +4,7 @@ import config from '@/commons/config-hoc';
 import components from './components';
 import {FormElement} from '@/library/antd';
 import {debounce} from 'lodash';
+import {isJson} from '@/commons';
 
 @config({
     event: true,
@@ -21,6 +22,17 @@ export default class ComponentSettings extends Component {
             const {currentNode} = this.props;
             const propsConfigs = components[currentNode.__type].props || [];
 
+            Object.keys(values).forEach(key => {
+                const config = propsConfigs.find(item => item.attribute === key);
+
+                if (config?.formType === 'json') {
+                    const value = values[key];
+                    if (value) {
+                        values[key] = JSON.parse(value);
+                    }
+                }
+            });
+
             this.props.action.dragPage.setProps({
                 targetId: currentNode.__id,
                 newProps: values,
@@ -32,9 +44,7 @@ export default class ComponentSettings extends Component {
     FormElement = (props) => <FormElement form={this.props.form} labelWidth={60} disabled={this.props.isDetail} {...props}/>;
 
     render() {
-        let {
-            currentNode,
-        } = this.props;
+        let {currentNode} = this.props;
 
         const currentComponent = components[(currentNode || {}).__type] || {};
         const props = currentComponent.props || [];
@@ -46,21 +56,29 @@ export default class ComponentSettings extends Component {
                     <div>
                         <h3 style={{textAlign: 'center'}}>{currentComponent.title}</h3>
                         {props.map(item => {
-                            const {
+                            let {
                                 name,
                                 attribute,
                                 valueType,
                                 defaultValue,
+                                tabSize = 4,
                                 formType = 'input',
                                 ...others
                             } = item;
+
+                            let initialValue = currentNode[attribute] || defaultValue;
+
+                            if (formType === 'json' && initialValue) {
+                                initialValue = JSON.stringify(initialValue, null, tabSize);
+                            }
+
                             return (
                                 <FormElement
                                     key={attribute}
                                     type={formType}
                                     label={name}
                                     field={attribute}
-                                    initialValue={currentNode[attribute] || defaultValue}
+                                    initialValue={initialValue}
                                     onChange={this.handlePropsChange}
                                     {...others}
                                 />

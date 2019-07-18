@@ -223,3 +223,13 @@ export function loadScript(src) {
         document.head.appendChild(script);
     });
 }
+
+export function isJson(str) {
+    try {
+        if (typeof JSON.parse(str) == "object") {
+            return true;
+        }
+    } catch (e) {
+        return false;
+    }
+}

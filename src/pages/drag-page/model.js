@@ -1,6 +1,7 @@
 import {appendChild, addChild, deleteNode, updateNode, findParentById, findNodeById} from './utils';
 import {cloneDeep} from 'lodash';
 import update from "immutability-helper";
+import uuid from "uuid/v4";
 
 // model 中不能引入components，否则会报错
 // import components from "@/pages/drag-page/components";
@@ -12,6 +13,71 @@ export default {
             __type: 'PageContent', // 节点组件类型
             __id: '1', // 节点的唯一标识
             children: [
+                {
+                    __type: 'QueryBar',
+                    __id: '01',
+                    children: [
+                        {
+                            __type: 'FormRow',
+                            __id: uuid(),
+                            children: [
+                                {
+                                    __type: 'FormInput',
+                                    __id: uuid(),
+                                    label: '输入框',
+                                    style: {paddingLeft: 16},
+                                    width: '200px',
+                                },
+                                {
+                                    __type: 'FormSelect',
+                                    __id: uuid(),
+                                    type: 'select',
+                                    label: '下拉框',
+                                    style: {paddingLeft: 16},
+                                    width: '200px',
+                                    options: [
+                                        {value: '1', label: '下拉项1'},
+                                        {value: '2', label: '下拉项2'},
+                                    ],
+                                },
+                                {
+                                    __type: 'FormElement',
+                                    __id: uuid(),
+                                    layout: true,
+                                    style: {paddingLeft: 16},
+                                    width: 'auto',
+                                    children: [
+                                        {
+                                            __type: 'ButtonPrimary',
+                                            __id: uuid(),
+                                            type: 'primary',
+                                            style: {marginRight: 8},
+                                            children: [
+                                                {
+                                                    __type: 'text',
+                                                    __id: uuid(),
+                                                    content: '查询',
+                                                }
+                                            ],
+                                        },
+                                        {
+                                            __type: 'Button',
+                                            __id: uuid(),
+                                            type: 'default',
+                                            children: [
+                                                {
+                                                    __type: 'text',
+                                                    __id: uuid(),
+                                                    content: '重置',
+                                                }
+                                            ],
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
                 {
                     __type: 'ToolBar',
                     __id: '11',
@@ -91,7 +157,6 @@ export default {
             }
         });
 
-        console.log(newNode);
         updateNode(config, newNode);
 
         return {pageConfig: config};

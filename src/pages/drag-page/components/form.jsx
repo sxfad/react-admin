@@ -1,6 +1,35 @@
 import {FormElement, FormRow} from '@/library/antd';
+import _ from 'lodash';
+import {isJson} from "@/commons";
 
 export const category = '表单元素';
+
+const optionsValidator = {
+    validator: (rule, value, callback) => {
+        if (!value) return callback();
+
+        const isJsonStr = isJson(value);
+        if (!isJsonStr) return callback('请输入正确的JSON各式数据');
+
+        const options = JSON.parse(value);
+        if (!_.isArray(options)) return callback('整体数据必须是数组');
+
+        for (let i = 0; i < options.length; i++) {
+            const val = options[i];
+            if (!_.isPlainObject(val)) return callback('每一项必须是包含value、label属性的对象');
+
+            if (!('value' in val && 'label' in val)) return callback('每一项必须是包含value、label属性的对象');
+
+            const values = options.filter(item => item.value === val.value);
+            if (values.length > 1) return callback(`"value": "${val.value}" 已存在，value值不可重复`);
+
+            const labels = options.filter(item => item.label === val.label);
+            if (labels.length > 1) return callback(`"label": "${val.label}" 已存在，label值不可重复`);
+        }
+
+        return callback();
+    }
+};
 
 const commonProps = [
     {
@@ -78,7 +107,16 @@ export default {
             {
                 name: '下拉项',
                 attribute: 'options',
-                valueType: 'string',
+                valueType: 'json',
+                formType: 'json',
+                labelBlock: true,
+                height: '200px',
+                rules: [
+                    optionsValidator,
+                ],
+                tabSize: 2,
+                // showGutter: false,
+                // showPrintMargin: false,
             },
             {
                 name: '可清除',

@@ -12,6 +12,7 @@ import {
     TimePicker,
     Cascader, Icon, Tooltip,
 } from 'antd';
+import JsonEditor from '../json-editor';
 import './index.less';
 
 const {TextArea, Password} = Input;
@@ -102,6 +103,7 @@ function getElement(item) {
 
     if (type === 'time') return <TimePicker {...commonProps} {...props}/>;
 
+    if (type === 'json') return <JsonEditor {...commonProps} {...props}/>;
 
     throw new Error(`no such type: ${type}`);
 }
@@ -109,25 +111,37 @@ function getElement(item) {
 export default class FormElement extends Component {
 
     componentDidMount() {
-        this.setLabelWidth();
+        this.setStyle();
     }
 
     componentDidUpdate() {
-        this.setLabelWidth();
+        this.setStyle();
     }
 
-    setLabelWidth = () => {
-        let {labelWidth, label} = this.props;
+    setStyle = () => {
+        let {labelWidth, label, labelBlock} = this.props;
         const labelDom = this.container.querySelector('.ant-form-item-label');
 
         if (!label) labelWidth = 0;
 
         if (labelDom) {
             if (labelWidth !== void 0) {
-                labelDom.style.flexBasis = typeof labelWidth === 'string' ? labelWidth : `${labelWidth}px`;
+                const width = typeof labelWidth === 'string' ? labelWidth : `${labelWidth}px`;
+
+                if (labelBlock) {
+                    labelDom.style.width = width;
+                } else {
+                    labelDom.style.flexBasis = width;
+                }
             } else {
                 labelDom.style.paddingLeft = '0';
             }
+        }
+
+        // label自己独占一行
+        if (labelBlock) {
+            const formItemDom = this.container.querySelector('.ant-form-item');
+            formItemDom.style.flexDirection = 'column';
         }
     };
 
@@ -136,6 +150,7 @@ export default class FormElement extends Component {
             // 自定义属性
             form,
             type = 'input',
+            labelBlock = false,
             labelWidth,
             width, // 元素宽度，默认 100%
             tip,
