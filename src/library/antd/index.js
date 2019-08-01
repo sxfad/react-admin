@@ -10,6 +10,7 @@ import _AsyncSelect from './components/async-select';
 import _Operator from "./components/operator";
 import _UserAvatar from './components/user-avatar';
 import _JsonEditor from './components/json-editor';
+import _Table from './components/table';
 
 export const rowDraggable = _rowDraggable;
 export const TableEditable = _TableEditable;
@@ -24,3 +25,4 @@ export const AsyncSelect = _AsyncSelect;
 export const Operator = _Operator;
 export const UserAvatar = _UserAvatar;
 export const JsonEditor = _JsonEditor;
+export const Table = _Table;

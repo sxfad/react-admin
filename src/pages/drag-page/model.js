@@ -52,7 +52,7 @@ export default {
                                     width: 'auto',
                                     children: [
                                         {
-                                            __type: 'ButtonPrimary',
+                                            __type: 'Button',
                                             __id: uuid(),
                                             type: 'primary',
                                             style: {marginRight: 8},
@@ -98,7 +98,7 @@ export default {
                             ],
                         },
                         {
-                            __type: 'ButtonPrimary',
+                            __type: 'Button',
                             __id: '112',
                             type: 'primary',
                             children: [
@@ -110,7 +110,7 @@ export default {
                             ],
                         },
                         {
-                            __type: 'ButtonDanger',
+                            __type: 'Button',
                             __id: '113',
                             type: 'danger',
                             children: [

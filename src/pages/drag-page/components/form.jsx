@@ -138,6 +138,15 @@ const commonProps = [
         valueType: 'string',
         placeholder: '为空时的提示文案',
     },
+    {
+        name: '是否必填',
+        attribute: 'required',
+        valueType: 'boolean',
+        defaultValue: false,
+        formType: 'switch',
+        checkedChildren: '是',
+        unCheckedChildren: '否',
+    },
 ];
 
 export default {

@@ -1,24 +1,30 @@
-import {Button, Input, Row, Col, Tabs,} from 'antd';
+import {
+    Button,
+    Input,
+    Row,
+    Col,
+    Tabs,
+} from 'antd';
 import uuid from "uuid/v4";
 
 export const category = 'Ant Design 组件库';
 
-function button({type, content, description}) {
-    return {
+export default {
+    Button: {
         tagName: 'Button',
         component: Button,
-        title: `${content}`,
+        title: '按钮',
         dependence: 'antd',
         container: false,
         display: 'inline-block',
-        description,
+        description: '普通按钮',
         defaultProps: {
-            type,
+            type: 'primary',
             children: [
                 {
                     __type: 'text',
                     __id: uuid(),
-                    content,
+                    content: '按钮',
                 }
             ],
         },
@@ -79,14 +85,7 @@ function button({type, content, description}) {
                 ],
             },
         ],
-    };
-}
-
-export default {
-    ButtonPrimary: button({type: 'primary', content: '主按钮', description: '一般用于主要操作，比如添加等。'}),
-    Button: button({content: '次按钮', description: '一般用于次要操作，比如导入导出等。'}),
-    ButtonDashed: button({type: 'dashed', content: '虚线按钮'}),
-    ButtonDanger: button({type: 'danger', content: '危险按钮', description: '一般用于删除等危险操作。'}),
+    },
     Row: {
         component: Row,
         title: '栅格行',

@@ -11,6 +11,9 @@ export function canEdit(pageConfig, __id) {
     const node = findNodeById(pageConfig, __id) || {};
     const {__type} = node;
     const com = components[__type];
+
+    if (!com) return null;
+
     const {container, tagName} = com;
     const nodeChildren = node.children || [];
 
@@ -25,6 +28,11 @@ export function canEdit(pageConfig, __id) {
     if (tagName === 'FormElement') {
         const {label: content} = node;
         return {__id, editProps: 'label', content, container: false}
+    }
+
+    // 表格
+    if (__type === 'Table') {
+        return {__id, __type, content: ''}
     }
 
     return null;

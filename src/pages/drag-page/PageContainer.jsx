@@ -3,7 +3,7 @@ import {Input, Form} from 'antd';
 import DropBox from './DropBox'
 import DragBox from './DragBox'
 import config from '@/commons/config-hoc';
-import {findParentById} from './utils';
+import {findParentById, findNodeById} from './utils';
 import {renderNode, canDrop, canEdit, findNextCanEdit} from './render-utils';
 import './style.less';
 
@@ -79,9 +79,38 @@ export default class Dnd extends Component {
 
         if (!node) return;
 
-        const {content, editProps} = node;
+        let {content, editProps} = node;
         let dom = document.getElementById(`dropBox-${__id}`).childNodes[0];
 
+        const isTable = node.__type === 'Table';
+        let columnIndex = 0;
+
+        if (isTable) {
+            if (!e) {
+                dom = document.getElementById(`dropBox-${__id}`).querySelector('th');
+                content = dom.innerText;
+            } else {
+                if (e.target.parentNode.tagName !== 'TH') return;
+
+                dom = e.target.parentNode;
+                content = e.target.innerHTML;
+            }
+
+            const ths = Array.from(dom.parentNode.querySelectorAll('th'));
+            columnIndex = ths.indexOf(dom);
+        }
+
+        this.showEdit({
+            __id,
+            dom,
+            content,
+            editProps,
+            isTable,
+            columnIndex,
+        });
+    };
+
+    showEdit({__id, dom, content, editProps, isTable, columnIndex}) {
         const {x, y, width, height} = dom.getBoundingClientRect();
         const inputWrapperStyle = {
             position: 'fixed',
@@ -99,8 +128,11 @@ export default class Dnd extends Component {
             inputValue: void 0,
             inputPlaceholder: content,
             editProps,
+            isTable,
+            columnIndex,
+            editDom: dom,
         }, () => this.input.focus());
-    };
+    }
 
     handleInputChange = (e) => {
         const inputValue = e.target.value;
@@ -109,18 +141,31 @@ export default class Dnd extends Component {
     };
 
     handleInputBlur = () => {
-        const {currentInputId, inputValue, editProps} = this.state;
+        const {currentInputId, inputValue, editProps, isTable, columnIndex} = this.state;
 
         this.setState({inputWrapperStyle: {display: 'none'}});
 
-        if (!inputValue) return;
 
-        if (editProps) {
-            this.props.action.dragPage.setProps({targetId: currentInputId, newProps: {[editProps]: inputValue}});
-        } else {
-            this.props.action.dragPage.setContent({targetId: currentInputId, content: inputValue});
+        if (isTable) {
+            let {pageConfig} = this.props;
+            const node = findNodeById(pageConfig, currentInputId);
+            let {columns} = node;
+
+            if (!inputValue) {
+                columns = columns.filter((item, index) => !(item.title === '新增列' && index === columnIndex));
+            } else {
+                const column = columns[columnIndex];
+
+                column.title = inputValue;
+            }
+            return this.props.action.dragPage.setProps({targetId: currentInputId, newProps: {columns}});
         }
 
+        if (!inputValue) return;
+
+        if (editProps) return this.props.action.dragPage.setProps({targetId: currentInputId, newProps: {[editProps]: inputValue}});
+
+        this.props.action.dragPage.setContent({targetId: currentInputId, content: inputValue});
 
     };
 
@@ -128,8 +173,42 @@ export default class Dnd extends Component {
     handleInputEnter = () => {
         this.handleInputBlur();
 
-        const {currentInputId} = this.state;
+        const {currentInputId, editDom, isTable, columnIndex} = this.state;
         const {pageConfig} = this.props;
+
+        if (isTable) {
+            const ths = Array.from(editDom.parentNode.querySelectorAll('th'));
+            let index = columnIndex + 1;
+            let dom = ths[index];
+            let content = dom?.innerText;
+
+            // 新增一列
+            if (content === '操作' || !dom) {
+                const node = findNodeById(pageConfig, currentInputId);
+                const {columns} = node;
+
+                content = '新增列';
+                columns.splice(index, 0, {id: index, title: content, dataIndex: `dataIndex${index}`});
+
+                this.props.action.dragPage.setProps({targetId: currentInputId, newProps: {columns}});
+            }
+
+            setTimeout(() => {
+                const ths = Array.from(editDom.parentNode.querySelectorAll('th'));
+                dom = ths[index];
+
+                this.showEdit({
+                    __id: currentInputId,
+                    dom,
+                    content,
+                    isTable,
+                    columnIndex: index,
+                });
+
+            });
+
+            return;
+        }
 
         const node = findNextCanEdit(pageConfig, currentInputId);
 

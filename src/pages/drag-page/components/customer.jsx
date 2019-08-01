@@ -1,8 +1,37 @@
 import PageContent from '@/layouts/page-content';
-import {ToolBar, QueryBar} from '@/library/antd';
+import {ToolBar, QueryBar, Table} from '@/library/antd';
 import uuid from "uuid/v4";
+import {isJson} from "@/commons";
+import _ from "lodash";
 
 export const category = '自定义组件';
+
+const columnsValidator = {
+    validator: (rule, value, callback) => {
+        if (!value) return callback();
+
+        const isJsonStr = isJson(value);
+        if (!isJsonStr) return callback('请输入正确的JSON各式数据');
+
+        const options = JSON.parse(value);
+        if (!_.isArray(options)) return callback('整体数据必须是数组');
+
+        for (let i = 0; i < options.length; i++) {
+            const val = options[i];
+            if (!_.isPlainObject(val)) return callback('每一项必须是包含title、dataIndex属性的对象');
+
+            if (!('title' in val && 'dataIndex' in val)) return callback('每一项必须是包含title、dataIndex属性的对象');
+
+            const titles = options.filter(item => item.title === val.title);
+            if (titles.length > 1) return callback(`"title": "${val.title}" 已存在，title值不可重复`);
+
+            const dataIndexes = options.filter(item => item.dataIndex === val.dataIndex);
+            if (dataIndexes.length > 1) return callback(`"dataIndex": "${val.dataIndex}" 已存在，dataIndex值不可重复`);
+        }
+
+        return callback();
+    }
+};
 
 export default {
     PageContent: {
@@ -38,7 +67,7 @@ export default {
         defaultProps: {
             children: [
                 {
-                    __type: 'ButtonPrimary',
+                    __type: 'Button',
                     __id: uuid(),
                     type: 'primary',
                     children: [
@@ -50,7 +79,7 @@ export default {
                     ],
                 },
                 {
-                    __type: 'ButtonDanger',
+                    __type: 'Button',
                     __id: uuid(),
                     type: 'danger',
                     children: [
@@ -104,7 +133,7 @@ export default {
                             width: 'auto',
                             children: [
                                 {
-                                    __type: 'ButtonPrimary',
+                                    __type: 'Button',
                                     __id: uuid(),
                                     type: 'primary',
                                     style: {marginRight: 8},
@@ -134,5 +163,70 @@ export default {
                 },
             ],
         },
+    },
+    Table: {
+        component: Table,
+        title: '表格',
+        dependence: '@/library/antd',
+        container: false,
+        defaultProps: {
+            columns: [
+                {title: '姓名', dataIndex: 'name', width: 100,},
+                {title: '年龄', dataIndex: 'age', width: 100},
+                {title: '操作', dataIndex: '__operator'},
+            ],
+            dataSource: [
+                {key: '1', name: '张三', age: 23},
+                {key: '2', name: '李四', age: 24},
+                {key: '3', name: '王五', age: 25},
+            ],
+        },
+        props: [
+            {
+                name: '分页',
+                attribute: 'pagination',
+                valueType: 'boolean',
+                defaultValue: true,
+                formType: 'switch',
+                checkedChildren: '是',
+                unCheckedChildren: '否',
+                half: true,
+            },
+            {
+                name: '铺面全屏',
+                attribute: 'surplusSpace',
+                valueType: 'boolean',
+                defaultValue: true,
+                formType: 'switch',
+                checkedChildren: '是',
+                unCheckedChildren: '否',
+                half: true,
+            },
+            {
+                name: '可选择',
+                attribute: 'rowSelection',
+                valueType: 'boolean',
+                formType: 'switch',
+                checkedChildren: '是',
+                unCheckedChildren: '否',
+            },
+            {
+                name: '列配置',
+                attribute: 'columns',
+                valueType: 'json',
+                formType: 'json',
+                height: '200px',
+                defaultValue: [
+                    {title: '姓名', dataIndex: 'name', width: 100,},
+                    {title: '年龄', dataIndex: 'age', width: 100},
+                    {title: '操作', dataIndex: '__operator'},
+                ],
+                rules: [
+                    columnsValidator,
+                ],
+                tabSize: 2,
+                labelBlock: true,
+            },
+        ],
     },
 };
