@@ -8,8 +8,8 @@ import './style.less';
 
 @config({
     path: '/',
-    title: {local: 'home', text: '首页', icon: 'home'},
-    breadcrumbs: [{key: 'home', local: 'home', text: '首页', icon: 'home'}],
+    title: {text: '首页', icon: 'home'},
+    breadcrumbs: [{key: 'home', text: '首页', icon: 'home'}],
 })
 export default class Home extends Component {
     constructor(...props) {

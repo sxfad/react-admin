@@ -21,8 +21,8 @@ export default (options) => {
             // noFrame = false,     // 标记当前页面为不需要导航框架的页面，比如登录页，通过脚本抓取实现
             // noAuth = false,      // 标记当前页面为不需要登录即可访问的页面，通过脚本抓取实现
             // keepAlive,           // 页面内容保持
-            title = true,           // true：当前页面显示通过菜单结构自动生成的title；false：当前页面不显示title；string：自定义title，并不参与国际化；object：{local, text}，text对应国际化menu中的配置，label为国际化失败之后的默认显示；function(props): 返回值作为title
-            breadcrumbs = true,     // true：当前页面显示通过菜单结构自动生成的面包屑；false：当前页面不显示面包屑；object：[{local, text, ...}]，local对应国际化menu中的配置，text为国际化失败之后的默认显示；function(props): 返回值作为面包屑
+            title = true,           // true：当前页面显示通过菜单结构自动生成的title；false：当前页面不显示title；string：自定义title；object：{text，icon} text为显示的名称，icon为图标；function(props): 返回值作为title
+            breadcrumbs = true,     // true：当前页面显示通过菜单结构自动生成的面包屑；false：当前页面不显示面包屑；object：[{text, ...}]，对象方式；function(props): 返回值作为面包屑
             appendBreadcrumbs = [], // 在当前面包屑基础上添加；function(props): 返回值作为面包屑
             pageHead,               // 页面头部是否显示
             side,                   // 页面左侧是否显示

@@ -1,5 +1,4 @@
 import {notification} from 'antd';
-import {getCurrentLocal} from '@/i18n';
 import {toLogin} from './index';
 
 /**
@@ -10,7 +9,6 @@ import {toLogin} from './index';
  * @returns {*}
  */
 function getErrorTip({error, errorTip}) {
-    const ajaxTip = getCurrentLocal()?.ajaxTip || {};
 
     if (errorTip && errorTip !== true) return errorTip;
 
@@ -21,31 +19,30 @@ function getErrorTip({error, errorTip}) {
         if (message) return message;
 
         if (status === 403) {
-            return ajaxTip.noAccess;
+            return '您无权访问';
         }
 
         if (status === 404) {
-            return ajaxTip.notFound;
+            return '您访问的资源不存在';
         }
 
         if (status === 504) {
-            return ajaxTip.serverBusy;
+            return '服务器繁忙';
         }
 
         if (status === 500) {
-            return ajaxTip.serverBusy;
+            return '服务器繁忙';
         }
     }
 
-    if (error && error.message && error.message.startsWith('timeout of')) return ajaxTip.timeOut;
+    if (error && error.message && error.message.startsWith('timeout of')) return '方位超时';
 
     if (error) return error.message;
 
-    return ajaxTip.serverBusy;
+    return '服务器繁忙';
 }
 
 export default function handleError({error, errorTip}) {
-    const ajaxTip = getCurrentLocal()?.ajaxTip || {};
     const {status} = error.response;
 
     // 如果是未登录问题，不显示错误提示
@@ -56,7 +53,7 @@ export default function handleError({error, errorTip}) {
     const description = getErrorTip({error, errorTip});
 
     notification.error({
-        message: ajaxTip.error,
+        message: '失败',
         description,
     });
 }

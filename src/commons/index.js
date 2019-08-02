@@ -1,5 +1,5 @@
 import {session} from '@/library/utils/storage';
-import {getNodeByPropertyAndValue, convertToTree, renderNode} from '@/library/utils/tree-utils';
+import {getNodeByPropertyAndValue, convertToTree} from '@/library/utils/tree-utils';
 import pathToRegexp from "path-to-regexp/index";
 import {ROUTE_BASE_NAME} from '@/router/AppRouter';
 
@@ -190,22 +190,6 @@ export function getMenuTreeDataAndPermissions(menus) {
 
     const menuTreeData = convertToTree(orderedData);
     return {menuTreeData, permissions}
-}
-
-/**
- * 树形菜单国际化处理
- * @param menuTreeData
- * @param i18n
- */
-export function setMenuI18n(menuTreeData, i18n) {
-    const treeData = [...menuTreeData];
-
-    renderNode(treeData, (item) => {
-        const text = i18n[item.local];
-        if (text) item.text = text;
-    });
-
-    return treeData;
 }
 
 /**

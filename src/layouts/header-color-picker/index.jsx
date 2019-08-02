@@ -21,7 +21,6 @@ const LESS_URL = `${ROUTE_BASE_NAME}/less.min.js`;
         return {
             primaryColor: state.system.primaryColor,
             loading: state.system.loading,
-            local: state.system.i18n.setting,
         };
     },
 })
@@ -112,7 +111,6 @@ export default class ThemeColorPicker extends Component {
         const {
             primaryColor = theme['@primary-color'],
             className,
-            local,
         } = this.props;
         const {toolTipVisible} = this.state;
         return (
@@ -120,7 +118,7 @@ export default class ThemeColorPicker extends Component {
                 <Tooltip
                     visible={toolTipVisible}
                     placement="bottom"
-                    title={local.selectPrimaryColor}
+                    title="主颜色"
                 >
                     <div styleName="picker"
                          onMouseEnter={this.handleToolTipShow}

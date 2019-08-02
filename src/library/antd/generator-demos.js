@@ -101,7 +101,6 @@ function writeMenus(options) {
         key: '/example/antd/${componentName}', 
         parentKey: 'component', 
         icon: 'deployment-unit',
-        local: '${firstLowerCase(componentName)}',
         text: '${firstUpperCase(componentName)} ${title}', 
         path: '/example/antd/${componentName}',
     },`;

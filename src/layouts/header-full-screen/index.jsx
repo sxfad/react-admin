@@ -4,9 +4,6 @@ import config from '@/commons/config-hoc';
 
 @config({
     event: true,
-    connect: state => ({
-        local: state.system.i18n.setting,
-    }),
 })
 export default class HeaderFullScreen extends Component {
     state = {
@@ -68,7 +65,7 @@ export default class HeaderFullScreen extends Component {
     };
 
     render() {
-        const {className, local} = this.props;
+        const {className} = this.props;
         const {fullScreen, toolTipVisible} = this.state;
         return (
             <div
@@ -78,7 +75,7 @@ export default class HeaderFullScreen extends Component {
                 onMouseEnter={this.handleToolTipShow}
                 onMouseLeave={() => this.handleToolTipHide()}
             >
-                <Tooltip visible={toolTipVisible} placement="bottom" title={fullScreen ? local.exitFullScreen : local.fullScreen}>
+                <Tooltip visible={toolTipVisible} placement="bottom" title={fullScreen ? '全屏' : '退出全屏'}>
                     <div style={{height: '30px', lineHeight: '30px', fontSize: 16}}>
                         {fullScreen ? (
                             <Icon type="fullscreen-exit"/>

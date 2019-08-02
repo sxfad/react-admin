@@ -2,7 +2,6 @@ import {getTopNodeByNode} from '@/library/utils/tree-utils';
 import {uniqueArray} from '@/library/utils';
 import {getMenuTreeDataAndPermissions, getSelectedMenuByPath} from '../commons';
 import getMenus from "@/menus";
-import {getCurrentLocal} from '@/i18n';
 
 export default {
     initialState: {
@@ -31,16 +30,7 @@ export default {
             resolve: (state, {payload: menus}) => {
                 // 重新获取菜单之后，过滤mostUsedMenus，防止脏数据
                 const mostUsedMenus = menus.filter(item => state.mostUsedMenus.find(it => it.key === item.key));
-
-                // 首次获取数据之后进行国际化处理
-                const i18n = getCurrentLocal();
-                const localedMenus = menus.map(item => {
-                    const {local} = item;
-                    const text = i18n.menu[local];
-                    if (text) return {...item, text};
-                    return {...item};
-                });
-                const {menuTreeData} = getMenuTreeDataAndPermissions(localedMenus);
+                const {menuTreeData} = getMenuTreeDataAndPermissions(menus);
 
                 return {menus: menuTreeData, mostUsedMenus};
             },

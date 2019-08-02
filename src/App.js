@@ -1,7 +1,6 @@
 import React from 'react';
 import AppRouter from './router/AppRouter';
 import {connect} from './models';
-import Local from './i18n/Local';
 import {getMenuTreeDataAndPermissions, getLoginUser, setLoginUser} from './commons'
 
 @connect()
@@ -44,9 +43,7 @@ export default class App extends React.Component {
 
     render() {
         return (
-            <Local>
-                <AppRouter/>
-            </Local>
+            <AppRouter/>
         );
     }
 }

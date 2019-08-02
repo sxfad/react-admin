@@ -9,7 +9,6 @@ import './style.less';
     router: true,
     connect: state => ({
         dataSource: state.system.tabs,
-        local: state.system.i18n.tabs,
     }),
 })
 export default class PageTabs extends Component {
@@ -57,7 +56,7 @@ export default class PageTabs extends Component {
     };
 
     renderContextMenu = (tab) => {
-        const {dataSource, local} = this.props;
+        const {dataSource} = this.props;
         const disabledClose = dataSource.length === 1;
         const tabIndex = dataSource.findIndex(item => item.path === tab.path);
         const disabledCloseLeft = tabIndex === 0;
@@ -69,26 +68,26 @@ export default class PageTabs extends Component {
                 onClick={({key: action}) => this.handleMenuClick(action, tab.path)}
             >
                 <Menu.Item key="refresh">
-                    <Icon type="sync"/> {local.refresh}
+                    <Icon type="sync"/> 刷新
                 </Menu.Item>
                 <Menu.Item key="refreshAll">
-                    <Icon type="sync"/> {local.refreshAll}
+                    <Icon type="sync"/> 刷新全部
                 </Menu.Item>
                 <Menu.Divider/>
                 <Menu.Item key="close" disabled={disabledClose}>
-                    <Icon type="close"/> {local.close}
+                    <Icon type="close"/> 关闭
                 </Menu.Item>
                 <Menu.Item key="closeOthers" disabled={disabledClose}>
-                    <Icon type="close-circle"/> {local.closeOthers}
+                    <Icon type="close-circle"/> 关闭其他
                 </Menu.Item>
                 <Menu.Item key="closeAll" disabled={disabledClose}>
-                    <Icon type="close-square"/> {local.closeAll}
+                    <Icon type="close-square"/> 关闭所有
                 </Menu.Item>
                 <Menu.Item key="closeLeft" disabled={disabledCloseLeft}>
-                    <Icon type="vertical-left"/> {local.closeLeft}
+                    <Icon type="vertical-left"/> 关闭左侧
                 </Menu.Item>
                 <Menu.Item key="closeRight" disabled={disabledCloseRight}>
-                    <Icon type="vertical-right"/> {local.closeRight}
+                    <Icon type="vertical-right"/> 关闭右侧
                 </Menu.Item>
             </Menu>
         );

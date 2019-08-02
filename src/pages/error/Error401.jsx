@@ -6,9 +6,6 @@ import './style.less';
 @config({
     router: true,
     keepAlive: false,
-    connect: state => ({
-        local: state.system.i18n,
-    }),
 })
 export default class Error401 extends Component {
     state = {
@@ -38,17 +35,17 @@ export default class Error401 extends Component {
     }
 
     render() {
-        const {history, local} = this.props;
+        const {history} = this.props;
         const {time} = this.state;
         return (
             <div styleName="root error401">
                 <div styleName="container">
                     <div styleName="header">
-                        <h3>{local.errorPage.needLogin}</h3>
+                        <h3>需要登录</h3>
                     </div>
                     <p styleName="intro">
-                        {local.errorPage.redirectTo}<a onClick={toLogin}> {local.menu.login}({time}) </a>
-                        {history.length >= 2 ? <span>{local.errorPage.orReturn} <a onClick={this.handleGoBack}>{local.errorPage.previousStep}</a></span> : null}
+                        跳转到<a onClick={toLogin}> 登录页面({time}) </a>
+                        {history.length >= 2 ? <span>或者返回 <a onClick={this.handleGoBack}>上一步</a></span> : null}
                     </p>
                 </div>
             </div>
