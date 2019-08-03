@@ -3,7 +3,7 @@ import components from "./components";
 import {findNodeById, findSiblingsById, findParentById} from "@/pages/drag-page/utils";
 
 /**
- * 是否可编辑，如果可编辑，返回当前节点内容。
+ * 是否可编辑，如果可编辑，返回当前节点编辑配置信息。
  * @param pageConfig
  * @param __id
  */
@@ -140,7 +140,7 @@ export function canEdit(pageConfig, __id, e) {
 }
 
 /**
- * 获取下一个可编辑节点，如果找到了，返回{__id, content, container}， 如果未找到，返回null
+ * 获取下一个可编辑节点，如果找到了，返回节点的编辑信息， 如果未找到，返回null
  * @param pageConfig
  * @param __id
  */
