@@ -3,7 +3,7 @@ import {Input, Form} from 'antd';
 import DropBox from './DropBox'
 import DragBox from './DragBox'
 import config from '@/commons/config-hoc';
-import {findParentById, findNodeById} from './utils';
+import {findParentById} from './utils';
 import {renderNode, canDrop, canEdit, findNextCanEdit} from './render-utils';
 import './style.less';
 

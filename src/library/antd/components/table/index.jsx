@@ -115,6 +115,8 @@ export default class TableComponent extends Component {
 
         if (rowSelection === true) rowSelection = {};
 
+        if (!rowSelection) rowSelection = void 0;
+
         return (
             <div ref={node => this.wrapper = node}>
                 <Table

@@ -189,6 +189,7 @@ export default {
                 {title: '操作', dataIndex: '__operator'},
             ],
             dataSource: getTableMockDataSource(),
+            total: 50,
         },
         props: [
             {

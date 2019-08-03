@@ -1,6 +1,9 @@
 import React from 'react';
+import {LocaleProvider} from 'antd';
+import zhCN from 'antd/lib/locale-provider/zh_CN';
 import AppRouter from './router/AppRouter';
 import {connect} from './models';
+import moment from 'moment';
 import {getMenuTreeDataAndPermissions, getLoginUser, setLoginUser} from './commons'
 
 @connect()
@@ -35,6 +38,9 @@ export default class App extends React.Component {
                 this.setState({loading: false});
             },
         });
+
+        // 设置语言
+        moment.locale('zh-cn')
     }
 
     state = {
@@ -43,7 +49,9 @@ export default class App extends React.Component {
 
     render() {
         return (
-            <AppRouter/>
+            <LocaleProvider locale={zhCN}>
+                <AppRouter/>
+            </LocaleProvider>
         );
     }
 }
