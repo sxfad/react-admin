@@ -6,7 +6,7 @@ import Logo from '../logo';
 import HeaderUser from '../header-user';
 import HeaderMenu from '../header-menu';
 import HeaderFullScreen from '../header-full-screen';
-// import ThemeColorPicker from '../header-color-picker';
+import ThemeColorPicker from '../header-color-picker';
 import {connect} from '../../models/index';
 import {PAGE_FRAME_LAYOUT} from '@/models/settings';
 import Breadcrumb from '../breadcrumb';
@@ -83,7 +83,7 @@ export default class Header extends Component {
 
         return (
             <div id="header" styleName="header" data-theme={theme}>
-                <div styleName="logo" style={{flex: `0 0 ${sideWidth}px`, transitionDuration}}>
+                <div styleName="logo-container" id="logo-container" style={{flex: `0 0 ${sideWidth}px`, transitionDuration}}>
                     <Link to="/">
                         <Logo
                             min={sideCollapsed}
@@ -119,7 +119,7 @@ export default class Header extends Component {
 
                 <div styleName="right">
                     <HeaderFullScreen styleName="action" className="header-action"/>
-                    {/*<ThemeColorPicker styleName="action" className="header-action"/>*/}
+                    <ThemeColorPicker styleName="action" className="header-action"/>
                     <HeaderUser styleName="action" className="header-action" theme={theme}/>
                 </div>
             </div>

@@ -60,7 +60,7 @@ export default class ComponentSettings extends Component {
             const result = canEdit(pageConfig, currentNode.__id);
             if (!result) return title;
 
-            return result.content;
+            return result.title || result.content;
         }
 
         return title;

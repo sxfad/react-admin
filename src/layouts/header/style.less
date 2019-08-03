@@ -14,11 +14,11 @@
     height: @headerHeight;
     padding-right: 16px;
     background-color: @primary-color;
-    background-image: url("./topbg.jpg");
+    background-image: url('./topbg.png');
     background-repeat: no-repeat;
     background-size: cover;
 
-    .logo {
+    .logo-container {
         display: inline-flex;
         align-items: center;
         flex-grow: 0;
@@ -26,7 +26,7 @@
         height: @headerHeight;
         position: relative;
         overflow: hidden;
-        background: linear-gradient(to right, #00dfe7, #0098fb);
+        background: linear-gradient(to right, darken(@primary-color, 20%), @primary-color);
         box-shadow: none;
 
         h1 {

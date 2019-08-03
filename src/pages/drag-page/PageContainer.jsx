@@ -68,49 +68,28 @@ export default class Dnd extends Component {
         this.props.action.dragPage.setCurrentId(__id);
     };
 
-    handleDoubleClick = (e, __id) => {
+    handleDoubleClick = (e, id) => {
         if (e) {
             e.preventDefault();
             e.stopPropagation();
         }
 
         let {pageConfig} = this.props;
-        const node = canEdit(pageConfig, __id);
+        const editConfig = canEdit(pageConfig, id, e);
 
-        if (!node) return;
-
-        let {content, editProps} = node;
-        let dom = document.getElementById(`dropBox-${__id}`).childNodes[0];
-
-        const isTable = node.__type === 'Table';
-        let columnIndex = 0;
-
-        if (isTable) {
-            if (!e) {
-                dom = document.getElementById(`dropBox-${__id}`).querySelector('th');
-                content = dom.innerText;
-            } else {
-                if (e.target.parentNode.tagName !== 'TH') return;
-
-                dom = e.target.parentNode;
-                content = e.target.innerHTML;
-            }
-
-            const ths = Array.from(dom.parentNode.querySelectorAll('th'));
-            columnIndex = ths.indexOf(dom);
-        }
+        if (!editConfig) return;
+        const {__id, dom, content, getNewProps, getNextEditConfig} = editConfig;
 
         this.showEdit({
             __id,
             dom,
             content,
-            editProps,
-            isTable,
-            columnIndex,
+            getNewProps,
+            getNextEditConfig,
         });
     };
 
-    showEdit({__id, dom, content, editProps, isTable, columnIndex}) {
+    showEdit({__id, dom, content, getNewProps, getNextEditConfig}) {
         const {x, y, width, height} = dom.getBoundingClientRect();
         const inputWrapperStyle = {
             position: 'fixed',
@@ -127,10 +106,9 @@ export default class Dnd extends Component {
             inputWrapperStyle,
             inputValue: void 0,
             inputPlaceholder: content,
-            editProps,
-            isTable,
-            columnIndex,
             editDom: dom,
+            getNewProps,
+            getNextEditConfig,
         }, () => this.input.focus());
     }
 
@@ -141,72 +119,45 @@ export default class Dnd extends Component {
     };
 
     handleInputBlur = () => {
-        const {currentInputId, inputValue, editProps, isTable, columnIndex} = this.state;
+        const {currentInputId, inputValue, getNewProps} = this.state;
 
         this.setState({inputWrapperStyle: {display: 'none'}});
 
-
-        if (isTable) {
-            let {pageConfig} = this.props;
-            const node = findNodeById(pageConfig, currentInputId);
-            let {columns} = node;
-
-            if (!inputValue) {
-                columns = columns.filter((item, index) => !(item.title === '新增列' && index === columnIndex));
-            } else {
-                const column = columns[columnIndex];
-
-                column.title = inputValue;
+        if (getNewProps) {
+            const newProps = getNewProps(inputValue);
+            if (newProps) {
+                return this.props.action.dragPage.setProps({targetId: currentInputId, newProps});
             }
-            return this.props.action.dragPage.setProps({targetId: currentInputId, newProps: {columns}});
         }
 
         if (!inputValue) return;
-
-        if (editProps) return this.props.action.dragPage.setProps({targetId: currentInputId, newProps: {[editProps]: inputValue}});
-
         this.props.action.dragPage.setContent({targetId: currentInputId, content: inputValue});
-
     };
 
     // 输入框（非文本框）回车事件，自动定位下一个可编辑节点
     handleInputEnter = () => {
         this.handleInputBlur();
 
-        const {currentInputId, editDom, isTable, columnIndex} = this.state;
+        const {currentInputId, editDom, getNextEditConfig} = this.state;
         const {pageConfig} = this.props;
 
-        if (isTable) {
-            const ths = Array.from(editDom.parentNode.querySelectorAll('th'));
-            let index = columnIndex + 1;
-            let dom = ths[index];
-            let content = dom?.innerText;
-
-            // 新增一列
-            if (content === '操作' || !dom) {
-                const node = findNodeById(pageConfig, currentInputId);
-                const {columns} = node;
-
-                content = '新增列';
-                columns.splice(index, 0, {id: index, title: content, dataIndex: `dataIndex${index}`});
-
-                this.props.action.dragPage.setProps({targetId: currentInputId, newProps: {columns}});
-            }
-
-            setTimeout(() => {
-                const ths = Array.from(editDom.parentNode.querySelectorAll('th'));
-                dom = ths[index];
+        if (getNextEditConfig) {
+            const editConfig = getNextEditConfig(editDom, (config) => {
+                const {__id, dom, content, getNewProps, getNextEditConfig: gnec} = config;
 
                 this.showEdit({
-                    __id: currentInputId,
+                    __id,
                     dom,
                     content,
-                    isTable,
-                    columnIndex: index,
+                    getNewProps,
+                    getNextEditConfig: gnec,
                 });
-
             });
 
+            if (!editConfig) return;
+
+            const {newProps} = editConfig;
+            if (newProps) this.props.action.dragPage.setProps({targetId: currentInputId, newProps});
             return;
         }
 

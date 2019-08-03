@@ -33,6 +33,19 @@ const columnsValidator = {
     }
 };
 
+function getTableMockDataSource() {
+    const dataSource = [];
+    for (let i = 0; i < 50; i++) {
+        const data = {key: `${i}`, name: '张三', age: 23};
+        for (let j = 0; j < 50; j++) {
+            data[`dataIndex${j}`] = j;
+        }
+        dataSource.push(data)
+    }
+
+    return dataSource;
+}
+
 export default {
     PageContent: {
         component: PageContent,
@@ -175,11 +188,7 @@ export default {
                 {title: '年龄', dataIndex: 'age', width: 100},
                 {title: '操作', dataIndex: '__operator'},
             ],
-            dataSource: [
-                {key: '1', name: '张三', age: 23},
-                {key: '2', name: '李四', age: 24},
-                {key: '3', name: '王五', age: 25},
-            ],
+            dataSource: getTableMockDataSource(),
         },
         props: [
             {

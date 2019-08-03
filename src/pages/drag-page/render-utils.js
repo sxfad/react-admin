@@ -7,32 +7,133 @@ import {findNodeById, findSiblingsById, findParentById} from "@/pages/drag-page/
  * @param pageConfig
  * @param __id
  */
-export function canEdit(pageConfig, __id) {
+export function canEdit(pageConfig, __id, e) {
     const node = findNodeById(pageConfig, __id) || {};
     const {__type} = node;
     const com = components[__type];
 
     if (!com) return null;
 
-    const {container, tagName} = com;
+    const {tagName} = com;
     const nodeChildren = node.children || [];
 
     // 子节点中只存在一个文本节点
     const nodeTextChildren = nodeChildren.filter(item => item.__type === 'text');
     if (nodeTextChildren && nodeTextChildren.length === 1) {
         const content = nodeTextChildren[0].content || '';
-        return {__id, content, container};
+        const dom = document.getElementById(`dropBox-${__id}`).childNodes[0];
+
+        return {
+            __id,
+            content,
+            dom,
+        };
     }
 
     // 表单元素的label
     if (tagName === 'FormElement') {
         const {label: content} = node;
-        return {__id, editProps: 'label', content, container: false}
+        const dom = document.getElementById(`dropBox-${__id}`).childNodes[0];
+
+        return {
+            __id,
+            content,
+            dom,
+            getNewProps: inputValue => {
+                if (!inputValue) return;
+
+                return {label: inputValue};
+            },
+        }
     }
 
     // 表格
     if (__type === 'Table') {
-        return {__id, __type, content: ''}
+        let dom;
+        let content;
+        if (e) {
+            if (e.target.parentNode.tagName !== 'TH') return;
+
+            dom = e.target.parentNode;
+            content = e.target.innerHTML;
+        } else {
+            dom = document.getElementById(`dropBox-${__id}`).querySelector('th');
+            content = dom.innerText;
+        }
+
+        const getNewProps = (inputValue, editDom) => {
+            if (editDom) dom = editDom;
+            const ths = Array.from(dom.parentNode.querySelectorAll('th'));
+            const columnIndex = ths.indexOf(dom);
+            let {columns} = node;
+
+            if (!inputValue) {
+                columns = columns.filter((item, index) => !(item.title === '新增列' && index === columnIndex));
+            } else {
+                const column = columns[columnIndex];
+
+                column.title = inputValue;
+            }
+            return {columns};
+        };
+
+        const getNextEditConfig = (editDom, cb) => {
+            const ths = Array.from(editDom.parentNode.querySelectorAll('th'));
+            const columnIndex = ths.indexOf(editDom);
+
+            let index = columnIndex + 1;
+            let dom = ths[index];
+            let content = dom?.innerText;
+
+            // 新增一列
+            if (content === '操作' || !dom) {
+                const {columns} = node;
+
+                content = '新增列';
+                columns.splice(index, 0, {id: index, title: content, dataIndex: `dataIndex${index}`, width: 100});
+
+                if (cb) {
+                    setTimeout(() => {
+                        const ths = Array.from(editDom.parentNode.querySelectorAll('th'));
+                        const dom = ths[index];
+
+                        cb({
+                            __id,
+                            content,
+                            title: '表格',
+                            dom,
+                            getNewProps: inputValue => getNewProps(inputValue, dom),
+                            getNextEditConfig,
+                        });
+                    });
+                }
+
+                return {
+                    newProps: {columns},
+                };
+            }
+            // 选取下一个
+            if (cb) {
+                cb({
+                    __id,
+                    content,
+                    title: '表格',
+                    dom,
+                    getNewProps: inputValue => getNewProps(inputValue, dom),
+                    getNextEditConfig,
+                });
+            }
+            return null;
+        };
+
+        return {
+            __id,
+            content,
+            title: '表格',
+            dom,
+            getNewProps,
+            getNextEditConfig,
+        };
     }
 
     return null;
