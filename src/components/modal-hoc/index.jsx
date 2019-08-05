@@ -23,9 +23,15 @@ export default (options) => WrappedComponent => {
             const {visible, onCancel} = this.props;
 
             let title;
-            if (typeof options === 'string') title = options;
+            if (typeof options === 'string') {
+                title = options;
+                options = {};
+            }
 
-            if (typeof options === 'function') title = options;
+            if (typeof options === 'function') {
+                title = options;
+                options = {};
+            }
 
             if (typeof options === 'object') title = options.title;
 

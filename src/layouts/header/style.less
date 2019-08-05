@@ -45,6 +45,7 @@
         cursor: pointer;
         transition: all .3s;
         padding: 0 24px;
+        color: #fff;
 
         &:hover {
             opacity: 0.5;
@@ -56,9 +57,18 @@
         flex-grow: 1;
         overflow: auto;
 
-        :global(.ant-menu) {
-            background: none;
+        :global {
+            .ant-menu {
+                background: none;
+            }
+
+            .ant-breadcrumb a,
+            .ant-breadcrumb .ant-breadcrumb-link,
+            .ant-breadcrumb .ant-breadcrumb-separator {
+                color: #fff;
+            }
         }
+
     }
 
     .right {
@@ -75,6 +85,7 @@
             padding: 0 6px;
             transition: all @transitionDuration;
             height: 100%;
+            color: #fff;
 
             > i {
                 font-size: 16px;

@@ -160,7 +160,7 @@ export default class FrameTopSideMenu extends Component {
             window.document.body.style.paddingLeft = `${sideWidth}px`;
         }
 
-        const theme = (isTopSideMenu || isSideMenu) ? 'dark' : 'default';
+        const theme = 'default'; // (isTopSideMenu || isSideMenu) ? 'dark' : 'default';
 
         let pageHead = null;
         if (showPageHead) {

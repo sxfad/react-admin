@@ -138,7 +138,7 @@ export default class ThemeColorPicker extends Component {
                                 '#A0D911',
                                 '#52C41A',
                                 '#13C2C2',
-                                '#1890FF',
+                                '#18BFFF',
                                 '#2F54EB',
                                 '#722ED1',
                                 '#EB2F96',
