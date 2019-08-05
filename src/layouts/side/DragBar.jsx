@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import './style.less';
 
 export default class DragBar extends Component {
     constructor(props) {
@@ -98,7 +99,9 @@ export default class DragBar extends Component {
                 {...others}
                 onMouseDown={this.handleDragStart}
                 onTouchStart={this.handleDragStart}
-            />
+            >
+                <div styleName="bar-icon"/>
+            </div>
         );
     }
 }
