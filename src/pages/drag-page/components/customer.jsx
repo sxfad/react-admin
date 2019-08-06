@@ -35,9 +35,9 @@ const columnsValidator = {
 
 function getTableMockDataSource() {
     const dataSource = [];
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 20; i++) {
         const data = {key: `${i}`, name: '张三', age: 23};
-        for (let j = 0; j < 50; j++) {
+        for (let j = 0; j < 20; j++) {
             data[`dataIndex${j}`] = j;
         }
         dataSource.push(data)

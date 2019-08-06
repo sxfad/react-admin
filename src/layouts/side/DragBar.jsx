@@ -99,9 +99,7 @@ export default class DragBar extends Component {
                 {...others}
                 onMouseDown={this.handleDragStart}
                 onTouchStart={this.handleDragStart}
-            >
-                <div styleName="bar-icon"/>
-            </div>
+            />
         );
     }
 }

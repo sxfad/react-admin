@@ -23,19 +23,23 @@ export default (options) => WrappedComponent => {
             const {visible, onCancel} = this.props;
 
             let title;
+            if (typeof options === 'object') title = options.title;
+
             if (typeof options === 'string') {
                 title = options;
-                options = {};
             }
 
             if (typeof options === 'function') {
                 title = options;
-                options = {};
             }
 
-            if (typeof options === 'object') title = options.title;
+            if (typeof options === 'object') {
+                title = options.title;
+            }
 
             if (typeof title === 'function') title = title(this.props);
+
+            const others = typeof options === 'object' ? options : {};
 
             return (
                 <Modal
@@ -44,7 +48,7 @@ export default (options) => WrappedComponent => {
                     bodyStyle={{padding: 0}}
                     footer={null}
 
-                    {...options}
+                    {...others}
                     title={title}
 
                     onCancel={onCancel}

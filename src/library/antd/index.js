@@ -1,4 +1,4 @@
-import _TableEditable from './components/table-editable';
+import _tableEditable from './components/table-editable';
 import _rowDraggable from './components/table-row-draggable';
 import _FormElement from './components/form-element';
 import _FormRow from './components/form-row';
@@ -13,7 +13,7 @@ import _JsonEditor from './components/json-editor';
 import _Table from './components/table';
 
 export const rowDraggable = _rowDraggable;
-export const TableEditable = _TableEditable;
+export const tableEditable = _tableEditable;
 export const FormElement = _FormElement;
 export const Pagination = _Pagination;
 export const QueryBar = _QueryBar;
