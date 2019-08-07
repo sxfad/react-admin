@@ -61,7 +61,6 @@ export default class ComponentSettings extends Component {
                     flex: '0 0 50px',
                     borderBottom: '1px solid #d9d9d9',
                     alignItems: 'center',
-                    background: '#f1f1f1',
                 }}>
                     <div style={{width: 50, textAlign: 'center', borderRight: '1px solid #d9d9d9',}}>
                         <DropBox

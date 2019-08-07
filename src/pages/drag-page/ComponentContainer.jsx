@@ -50,10 +50,9 @@ export default class ComponentContainer extends Component {
         return (
             <Collapse defaultActiveKey={categories?.length ? categories[0].category : null}>
                 {categories.map(item => {
-                    const {category, default: components} = item;
+                    const {category, icon = 'code-sandbox', default: components} = item;
                     return (
                         <Panel header={category} key={category}>
-
                             {Object.keys(components).map(key => {
                                 const com = components[key];
                                 let {defaultProps = {}, visible, title, showTagName, description} = com;
@@ -69,7 +68,6 @@ export default class ComponentContainer extends Component {
                                     __type: key,
                                     ...defaultProps,
                                 };
-
 
                                 const tip = (
                                     <div>
@@ -102,11 +100,10 @@ export default class ComponentContainer extends Component {
 
                                 const children = (
                                     <div style={{display: 'flex', padding: 10, alignItems: 'center'}}>
-                                        <Icon type="code-sandbox" style={{fontSize: 20, marginRight: 10}}/>
+                                        <Icon type={icon} style={{fontSize: 20, marginRight: 10}}/>
                                         <span>{title}</span>
                                     </div>
                                 );
-
 
                                 const dragBoxStyle = {
                                     cursor: 'move',

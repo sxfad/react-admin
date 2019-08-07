@@ -42,7 +42,12 @@ export default class extends Component {
             if (!err) {
                 this.setState({loading: true, message: ''});
 
-                // TODO 发送请求进行登录，一下为前端硬编码，模拟请求
+                /**
+                * 加密传输用户名密码方案：
+                *   1 使用https；
+                *   2 使用非对称加密（RSA），后端提供公钥，前端加密，后端使用私钥解密；
+                * */
+                // TODO 发送请求进行登录，以下为前端硬编码，模拟请求
                 const {userName, password} = values;
 
                 setTimeout(() => {

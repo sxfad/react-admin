@@ -3,6 +3,8 @@ import uuid from "uuid/v4";
 
 export const category = '原生HTML元素';
 
+export const icon = 'html5';
+
 export default {
     text: {
         component: 'text',

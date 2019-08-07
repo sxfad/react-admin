@@ -83,10 +83,10 @@ export default class index extends Component {
     ];
 
     componentDidMount() {
-        this.fetchMenus();
+        this.handleSearch();
     }
 
-    fetchMenus() {
+    handleSearch() {
         localMenus().then(menus => {
             // 菜单根据order 排序
             const orderedData = [...menus].sort((a, b) => {
@@ -130,7 +130,7 @@ export default class index extends Component {
             .del(`/menus/${key}`)
             .then(() => {
                 this.setState({visible: false});
-                this.fetchMenus();
+                this.handleSearch();
             })
             .finally(() => this.setState({loading: false}));
     };
@@ -150,7 +150,7 @@ export default class index extends Component {
                 ajax('/menus', values)
                     .then(() => {
                         this.setState({visible: false});
-                        this.fetchMenus();
+                        this.handleSearch();
                     })
                     .finally(() => this.setState({loading: false}));
             }
@@ -167,7 +167,9 @@ export default class index extends Component {
 
         return (
             <PageContent styleName="root">
-                <ToolBar items={[{type: 'primary', text: '添加顶级', icon: 'plus', onClick: this.handleAddTopMenu}]}/>
+                <ToolBar items={[
+                    {type: 'primary', text: '添加顶级', icon: 'plus', onClick: this.handleAddTopMenu},
+                ]}/>
                 <Table
                     loading={loading}
                     columns={this.columns}
@@ -177,7 +179,7 @@ export default class index extends Component {
                 <EditModal
                     visible={visible}
                     data={data}
-                    onOk={() => this.setState({visible: false}, this.fetchMenus)}
+                    onOk={() => this.setState({visible: false}, this.handleSearch)}
                     onCancel={() => this.setState({visible: false})}
                 />
             </PageContent>

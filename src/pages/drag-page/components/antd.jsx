@@ -8,6 +8,7 @@ import {
 import uuid from "uuid/v4";
 
 export const category = 'Ant Design 组件库';
+export const icon = 'ant-design';
 
 export default {
     Button: {

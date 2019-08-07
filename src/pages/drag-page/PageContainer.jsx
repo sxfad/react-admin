@@ -331,7 +331,7 @@ export default class Dnd extends Component {
         };
 
         return (
-            <div styleName="root">
+            <div styleName="page-container">
                 <div styleName="content">
                     {this.renderPage(pageConfig)}
                 </div>

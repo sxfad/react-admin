@@ -4,6 +4,8 @@ import {isJson} from "@/commons";
 
 export const category = '表单元素';
 
+export const icon = 'form';
+
 const optionsValidator = {
     validator: (rule, value, callback) => {
         if (!value) return callback();
