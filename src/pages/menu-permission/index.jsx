@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {Table, Icon, Modal, Form, Row, Col} from 'antd';
+import {Icon, Form} from 'antd';
 import config from '@/commons/config-hoc';
 import PageContent from '@/layouts/page-content';
 import localMenus from '../../menus';
 import {convertToTree} from "@/library/utils/tree-utils";
-import {ToolBar, Operator, FormElement} from '@/library/antd';
-import IconPicker from "@/components/icon-picker";
+import {Table, ToolBar, Operator} from '@/library/antd';
+import EditModal from './EditModal';
 import './style.less';
 
 @config({
@@ -24,11 +24,8 @@ export default class index extends Component {
     };
 
     columns = [
-        // key 与parentKey自动生成了，不需要展示和编辑
-        // {title: 'key', dataIndex: 'key', key: 'key'},
-        // {title: 'parentKey', dataIndex: 'parentKey', key: 'parentKey'},
         {
-            title: '名称', dataIndex: 'text', key: 'text', width: 200,
+            title: '名称', dataIndex: 'text', key: 'text', width: 300,
             render: (value, record) => {
                 const {icon} = record;
 
@@ -37,7 +34,7 @@ export default class index extends Component {
                 return value;
             }
         },
-        {title: 'path', dataIndex: 'path', key: 'path', width: 100},
+        {title: 'path', dataIndex: 'path', key: 'path', width: 250},
         {title: 'url', dataIndex: 'url', key: 'url'},
         {title: 'target', dataIndex: 'target', key: 'target', width: 60},
         {
@@ -45,7 +42,7 @@ export default class index extends Component {
             render: value => {
                 if (value === '1') return '菜单';
                 if (value === '2') return '功能';
-                // 默认都为菜单
+
                 return '菜单';
             }
         },
@@ -58,7 +55,7 @@ export default class index extends Component {
                     {
                         label: '编辑',
                         icon: 'form',
-                        onClick: () => this.handleEditNode(record),
+                        onClick: () => this.setState({data: record, visible: true}),
                     },
                     {
                         label: '删除',
@@ -72,12 +69,12 @@ export default class index extends Component {
                     {
                         label: '添加子菜单',
                         icon: 'folder-add',
-                        onClick: () => this.handleAddSubMenu(record),
+                        onClick: () => this.setState({data: {parentKey: record.key, type: '1'}, visible: true}),
                     },
                     {
                         label: '添加子功能',
                         icon: 'file-add',
-                        onClick: () => this.handleAddSubFunction(record),
+                        onClick: () => this.setState({data: {parentKey: record.key, type: '2'}, visible: true}),
                     },
                 ];
                 return <Operator items={items}/>
@@ -121,63 +118,7 @@ export default class index extends Component {
     }
 
     handleAddTopMenu = () => {
-        this.props.form.resetFields();
-        this.setState({visible: true});
-    };
-
-    handleEditNode = (record) => {
-        const {resetFields, setFieldsValue} = this.props.form;
-
-        resetFields();
-        const {
-            key,
-            parentKey,
-            text,
-            icon,
-            path,
-            url,
-            target,
-            type = '1',
-            code,
-            order,
-        } = record;
-
-        setTimeout(() => {
-            setFieldsValue({
-                key,
-                parentKey,
-                text,
-                icon,
-                path,
-                url,
-                target,
-                type,
-                code,
-                order,
-            })
-        });
-        this.setState({visible: true, record});
-    };
-
-    handleAddSubMenu = (record) => {
-        const {resetFields, setFieldsValue} = this.props.form;
-
-        resetFields();
-
-        const parentKey = record.key;
-        setTimeout(() => setFieldsValue({parentKey, type: '1'}));
-
-        this.setState({visible: true, record});
-    };
-
-    handleAddSubFunction = (record) => {
-        const {resetFields, setFieldsValue} = this.props.form;
-
-        resetFields();
-        const parentKey = record.key;
-        setTimeout(() => setFieldsValue({parentKey, type: '2'}));
-
-        this.setState({visible: true, record});
+        this.setState({data: {type: '1'}, visible: true});
     };
 
     handleDeleteNode = (record) => {
@@ -216,125 +157,28 @@ export default class index extends Component {
         });
     };
 
-    handleIconClick = () => {
-        this.setState({iconVisible: true});
-    };
-
-    FormElement = (props) => <FormElement form={this.props.form} labelWidth={70} {...props}/>;
-
     render() {
         const {
             menus,
             visible,
             loading,
-            iconVisible,
+            data,
         } = this.state;
-        const {form, form: {getFieldValue, setFieldsValue}} = this.props;
-
-        const FormElement = this.FormElement;
 
         return (
             <PageContent styleName="root">
-                <ToolBar items={[{type: 'primary', text: '添加顶级', onClick: this.handleAddTopMenu}]}/>
+                <ToolBar items={[{type: 'primary', text: '添加顶级', icon: 'plus', onClick: this.handleAddTopMenu}]}/>
                 <Table
                     loading={loading}
                     columns={this.columns}
                     dataSource={menus}
                     pagination={false}
                 />
-                <Modal
-                    id="menu-modal"
-                    title="菜单&权限"
+                <EditModal
                     visible={visible}
-                    onOk={this.handleSubmit}
+                    data={data}
+                    onOk={() => this.setState({visible: false}, this.fetchMenus)}
                     onCancel={() => this.setState({visible: false})}
-                >
-                    <Form onSubmit={this.handleSubmit}>
-                        <FormElement type="hidden" field="key"/>
-                        <FormElement type="hidden" field="parentKey"/>
-                        <Row>
-                            <Col span={12}>
-                                <FormElement
-                                    label="名称"
-                                    field="text"
-                                    decorator={{
-                                        rules: [
-                                            {required: true, message: '请输入名称！'},
-                                        ],
-                                    }}
-                                />
-                            </Col>
-                            <Col span={12}>
-                                <FormElement
-                                    label="图标"
-                                    field="icon"
-                                    addonAfter={<Icon style={{cursor: 'pointer'}} onClick={this.handleIconClick} type={getFieldValue('icon') || 'search'}/>}
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={12}>
-                                <FormElement
-                                    label="类型"
-                                    type="select"
-                                    options={[
-                                        {value: '1', label: '菜单'},
-                                        {value: '2', label: '功能'},
-                                    ]}
-                                    field="type"
-                                    decorator={{initialValue: '1'}}
-                                    getPopupContainer={() => document.querySelector('.ant-modal-wrap')}
-                                />
-                            </Col>
-                            <Col span={12}>
-                                <FormElement
-                                    disabled={form.getFieldValue('type') !== '2'}
-                                    label="编码"
-                                    field="code"
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={12}>
-                                <FormElement
-                                    label="排序"
-                                    type="number"
-                                    field="order"
-                                    min={0}
-                                    step={1}
-                                />
-                            </Col>
-                        </Row>
-                        <FormElement
-                            disabled={form.getFieldValue('type') === '2'}
-                            label="path"
-                            field="path"
-                        />
-                        <Row>
-                            <Col span={15}>
-                                <FormElement
-                                    disabled={form.getFieldValue('type') === '2'}
-                                    label="url"
-                                    field="url"
-                                />
-                            </Col>
-                            <Col span={9}>
-                                <FormElement
-                                    disabled={form.getFieldValue('type') === '2'}
-                                    label="target"
-                                    field="target"
-                                />
-                            </Col>
-                        </Row>
-                    </Form>
-                </Modal>
-                <IconPicker
-                    visible={iconVisible}
-                    onOk={(type) => {
-                        this.setState({iconVisible: false});
-                        setFieldsValue({icon: type});
-                    }}
-                    onCancel={() => this.setState({iconVisible: false})}
                 />
             </PageContent>
         );

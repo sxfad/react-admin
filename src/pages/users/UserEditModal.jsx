@@ -7,9 +7,9 @@ import config from '@/commons/config-hoc';
 import validator from '@/library/utils/validation-rule';
 import modal from '@/components/modal-hoc';
 
+@modal(props => props.id === null ? '添加用户' : '修改用户')
 @config({ajax: true})
 @Form.create()
-@modal(props => props.id === null ? '添加用户' : '修改用户')
 export default class EditModal extends Component {
     state = {
         loading: false,

@@ -86,7 +86,7 @@ export default class TestTable extends Component {
         return (
             <PageContent>
                 <Button onClick={() => this.props.form.resetFields()}>重置</Button>
-                <Button onClick={() => this.props.form.setFieldsValue({table: dataSource})}>数据1</Button>
+                <Button style={{margin: '0 10px'}} onClick={() => this.props.form.setFieldsValue({table: dataSource})}>数据1</Button>
                 <Button onClick={() => this.props.form.setFieldsValue({table: dataSource2})}>数据2</Button>
 
                 <Form onSubmit={this.handleSubmit}>

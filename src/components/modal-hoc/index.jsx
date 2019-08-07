@@ -3,6 +3,7 @@ import {Modal} from 'antd';
 
 /**
  *  modal高级组件，确保每次弹框内部组件都是新创建的
+ *  注：modal装饰器要放到最上面（最外层）
  *
  * @param options 各种类型说明如下：
  *      string：modal 的 title
