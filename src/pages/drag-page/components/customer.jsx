@@ -219,6 +219,16 @@ export default {
                 formType: 'switch',
                 checkedChildren: '是',
                 unCheckedChildren: '否',
+                half: true,
+            },
+            {
+                name: '显示序号',
+                attribute: 'serialNumber',
+                valueType: 'boolean',
+                formType: 'switch',
+                checkedChildren: '是',
+                unCheckedChildren: '否',
+                half: true,
             },
             {
                 name: '列配置',

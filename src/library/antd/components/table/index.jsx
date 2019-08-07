@@ -19,6 +19,7 @@ function getElementTop(element) {
 export default class TableComponent extends Component {
     static propTypes = {
         surplusSpace: PropTypes.bool, // 是否使用剩余空间，如果 true 表格将铺满全屏
+        serialNumber: PropTypes.bool, // 是否显示序号
         otherHeight: PropTypes.number,
         pagination: PropTypes.bool,
     };
@@ -26,6 +27,8 @@ export default class TableComponent extends Component {
     static defaultProps = {
         surplusSpace: true,
         pagination: true,
+        pageSize: 10,
+        pageNum: 1,
     };
 
     state = {
@@ -95,6 +98,7 @@ export default class TableComponent extends Component {
             scroll = {},
             pagination,
             surplusSpace,
+            serialNumber,
             // 分页属性
 
             size,
@@ -108,6 +112,7 @@ export default class TableComponent extends Component {
             onPageSizeChange,
 
             rowSelection,
+            columns,
             ...others
         } = this.props;
         const {tableBodyHeight} = this.state;
@@ -117,6 +122,19 @@ export default class TableComponent extends Component {
 
         if (!rowSelection) rowSelection = void 0;
 
+        if (serialNumber) {
+            columns = [
+                {
+                    title: '#',
+                    width: 70,
+                    dataIndex: '__num',
+                    key: '__num',
+                    render: (value, record, index) => (index + 1) + pageSize * (pageNum - 1),
+                },
+                ...columns,
+            ];
+        }
+
         return (
             <div ref={node => this.wrapper = node}>
                 <Table
@@ -124,6 +142,7 @@ export default class TableComponent extends Component {
                     pagination={false}
                     rowSelection={rowSelection}
                     {...others}
+                    columns={columns}
                 />
                 {pagination ? (
                     <Pagination
