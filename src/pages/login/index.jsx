@@ -5,7 +5,7 @@ import {setLoginUser} from '@/commons';
 import config from '@/commons/config-hoc';
 import Color from '@/layouts/header-color-picker';
 import {ROUTE_BASE_NAME} from '@/router/AppRouter';
-import logo from './logo.jpg';
+import logo from './logo.png';
 import './style.less'
 
 function hasErrors(fieldsError) {
