@@ -5,6 +5,7 @@ import {setLoginUser} from '@/commons';
 import config from '@/commons/config-hoc';
 import Color from '@/layouts/header-color-picker';
 import {ROUTE_BASE_NAME} from '@/router/AppRouter';
+import logo from './logo.jpg';
 import './style.less'
 
 function hasErrors(fieldsError) {
@@ -89,7 +90,7 @@ export default class extends Component {
                 <Helmet title="欢迎登陆"/>
                 <div style={{position: 'fixed', bottom: -1000}}><Color/></div>
                 <div styleName="left">
-                    <div styleName="logo"/>
+                    <img styleName="logo" alt="logo" src={logo}/>
                 </div>
                 <div styleName="right">
                     <div styleName="box">
