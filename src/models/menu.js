@@ -6,12 +6,13 @@ import getMenus from "@/menus";
 export default {
     initialState: {
         loading: false,         // 请求菜单loading
-        menus: [],              // 菜单数据，树状结构
         openKeys: [],           // 当前展开菜单keys
         selectedMenu: null,     // 当前选中菜单
         topMenu: [],            // 当前选中菜单的顶级菜单
         keepOtherOpen: false,   // 点击菜单进入页面时，保持其他菜单打开状态
+        menus: [],              // 菜单数据，树状结构
         mostUsedMenus: [],      // 最常用菜单，使用此时usedTimes降序排列
+        plainMenus: [],         // 菜单数据，扁平化
     },
     syncStorage: {
         openKeys: true,
@@ -32,7 +33,7 @@ export default {
                 const mostUsedMenus = menus.filter(item => state.mostUsedMenus.find(it => it.key === item.key));
                 const {menuTreeData} = getMenuTreeDataAndPermissions(menus);
 
-                return {menus: menuTreeData, mostUsedMenus};
+                return {menus: menuTreeData, mostUsedMenus, plainMenus: menus};
             },
         },
     },

@@ -8,7 +8,7 @@ import Error404 from '@/pages/error/Error404';
 import config from '@/commons/config-hoc';
 import KeepAuthRoute from './KeepAuthRoute';
 import KeepPage from './KeepPage';
-import routes, {noFrameRoutes, noAuthRoutes} from './routes';
+import routes, {noFrameRoutes, noAuthRoutes, /*commonPaths*/} from './routes';
 
 // 如果项目挂载到网站的子目录下，可以配置ROUTE_BASE_NAME， 开发时拿不到 PUBLIC_URL
 // export const ROUTE_BASE_NAME = '/react-admin-live';
@@ -24,12 +24,23 @@ const allRoutes = routes.map(item => {
     };
 });
 
+
 @config({
     query: true,
+    connect: state => ({userPaths: state.system.userPaths})
 })
 export default class AppRouter extends Component {
     render() {
         const {noFrame, noAuth} = this.props.query;
+
+        // allRoutes为全部路由配置，根据用户可用 菜单 和 功能 的path，对allRoutes进行过滤，可以解决越权访问页面的问题
+        // commonPaths 为所有人都可以访问的路径
+        // const {userPaths} = this.props;
+        // const allPaths = [...userPaths, ...commonPaths];
+        // const userRoutes = allRoutes.filter(item => allPaths.includes(item.path));
+
+        const userRoutes = allRoutes;
+
         return (
             <BrowserRouter basename={ROUTE_BASE_NAME}>
                 <div style={{display: 'flex', flexDirection: 'column', position: 'relative', minHeight: '100vh'}}>
@@ -57,7 +68,7 @@ export default class AppRouter extends Component {
                     <KeepPage/>
 
                     <Switch>
-                        {allRoutes.map(item => {
+                        {userRoutes.map(item => {
                             const {path, component} = item;
                             let isNoAuthRoute = false;
 

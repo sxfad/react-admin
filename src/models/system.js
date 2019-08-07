@@ -10,7 +10,8 @@ export default {
     initialState: {
         loading: false,             // 全局loading
         loginUser: void 0,          // 当前登录用户
-        permissions: [],            // 当前登录用户权限
+        permissions: [],            // 当前登录用户权限 [code, code, ...]
+        userPaths: [],              // 当前登录用户可用的路由path，用于过滤前端路由，解决页面越权访问。[path, path, ...]
         primaryColor,               // 主题主颜色
         tabs: [],                   // 所有的tab配置 {path, text, icon, component, active, scrollTop}
         keepPage: true,             // 页面切换回去之后，保持内容，通过显示隐藏div实现，不知道会有什么坑！！！性能？各个互相干扰？
@@ -113,41 +114,20 @@ export default {
         }
     },
 
-    /**
-     * 设置主题颜色
-     * @param primaryColor
-     * @returns {{primaryColor: *}}
-     */
     setPrimaryColor: (primaryColor) => {
         setItem('primaryColor', primaryColor);
 
         return {primaryColor};
     },
 
-    /**
-     * 设置当前用户
-     * @param loginUser
-     * @returns {{loginUser: *}}
-     */
     setLoginUser: (loginUser) => ({loginUser}),
 
-    /**
-     * 设置当前用户权限
-     * @param permissions
-     * @returns {{permissions: *}}
-     */
     setPermissions: (permissions) => ({permissions}),
 
-    /**
-     * 显示全局loading
-     * @returns {{loading: boolean}}
-     */
+    setUserPaths: userPaths => ({userPaths}),
+
     showLoading: () => ({loading: true}),
 
-    /**
-     * 隐藏全局loading
-     * @returns {{loading: boolean}}
-     */
     hideLoading: () => ({loading: false}),
 }
 

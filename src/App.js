@@ -4,7 +4,7 @@ import zhCN from 'antd/lib/locale-provider/zh_CN';
 import AppRouter from './router/AppRouter';
 import {connect} from './models';
 import moment from 'moment';
-import {getMenuTreeDataAndPermissions, getLoginUser, setLoginUser} from './commons'
+import {getLoginUser, setLoginUser} from './commons'
 
 @connect()
 export default class App extends React.Component {
@@ -21,8 +21,15 @@ export default class App extends React.Component {
         menu.getMenus({
             params: {userId: loginUser?.id},
             onResolve: (res) => {
-                let menus = res || [];
-                const {permissions} = getMenuTreeDataAndPermissions(menus);
+                const menus = res || [];
+                const permissions = [];
+                const paths = [];
+
+                menus.forEach(({type, path, code}) => {
+                    if (type === '2' && code) permissions.push(code);
+
+                    if (path) paths.push(path);
+                });
 
                 if (loginUser) {
                     loginUser.permissions = permissions;
@@ -31,8 +38,12 @@ export default class App extends React.Component {
 
                 // 设置当前登录的用户到model中
                 system.setLoginUser(loginUser);
+
                 // 保存用户权限到model中
                 system.setPermissions(permissions);
+
+                // 保存当前用户可用path到model中
+                system.setUserPaths(paths);
             },
             onComplete: () => {
                 this.setState({loading: false});
