@@ -19,6 +19,7 @@ body > .draggable-tabs-bar-horizontal-item {
 }
 
 .draggable-tabs-bar-horizontal-item {
+    position: relative;
     display: flex;
     flex-shrink: 1;
     flex-grow: 0;
@@ -28,7 +29,6 @@ body > .draggable-tabs-bar-horizontal-item {
     height: 100%;
     user-select: none;
     font-weight: 400;
-    overflow: hidden;
 }
 
 /* 激活样式 --start */
@@ -39,16 +39,9 @@ body > .draggable-tabs-bar-horizontal-item {
     color: #1890ff;
 }
 
-.draggable-tabs-bar-horizontal-item:hover .close-wrapper:after,
-.draggable-tabs-bar-horizontal-item.active .close-wrapper:after {
-    background: #f0f2f5;
-    box-shadow: 0 0 10px 10px #f0f2f5;
-}
-
 .draggable-tabs-bar-horizontal-item:hover,
 .draggable-tabs-bar-horizontal-item.active {
     position: relative;
-    overflow: visible;
 }
 
 .draggable-tabs-bar-horizontal-item:hover .tabs-bar-right-corner,
@@ -102,9 +95,11 @@ body > .draggable-tabs-bar-horizontal-item {
     transition: width 300ms;
     box-sizing: border-box;
     padding-right: 2px;
+    overflow: hidden;
 }
 
 .draggable-tabs-bar-horizontal-item .draggable-tabs-bar-wrapper {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -121,6 +116,23 @@ body > .draggable-tabs-bar-horizontal-item {
     transition: 300ms;
 }
 
+.draggable-tabs-bar-horizontal-item .draggable-tabs-bar-wrapper:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 3px;
+    height: 100%;
+    width: 0;
+    box-shadow: 0 0 10px 20px #fff;
+    transition: 300ms;
+}
+
+.draggable-tabs-bar-horizontal-item:hover .draggable-tabs-bar-wrapper:after,
+.draggable-tabs-bar-horizontal-item.active .draggable-tabs-bar-wrapper:after {
+    box-shadow: 0 0 10px 20px #f0f2f5;
+}
+
 .draggable-tabs-bar-horizontal-item .item-inner {
     display: flex;
     flex-grow: 1;
@@ -134,25 +146,19 @@ body > .draggable-tabs-bar-horizontal-item {
 }
 
 .draggable-tabs-bar-horizontal-item .close-wrapper {
-    position: relative;
+    position: absolute;
+    right: 3px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    width: 16px;
     color: rgba(0, 0, 0, 0.45);
     font-size: 12px;
     cursor: pointer;
+    opacity: 0;
+    z-index: 1;
 }
 
-.draggable-tabs-bar-horizontal-item .close-wrapper:after {
-    content: '';
-    display: block;
-    position: absolute;
-    top: 0;
-    left: -3px;
-    height: 100%;
-    width: 0;
-    background: #fff;
-    box-shadow: 0 0 10px 10px #fff;
-    transition: 300ms;
+.draggable-tabs-bar-horizontal-item:hover .close-wrapper,
+.draggable-tabs-bar-horizontal-item.active .close-wrapper {
+    opacity: 1;
 }
