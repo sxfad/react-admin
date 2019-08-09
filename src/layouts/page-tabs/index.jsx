@@ -106,7 +106,7 @@ export default class PageTabs extends Component {
     };
 
     render() {
-        const {dataSource} = this.props;
+        const {dataSource, width} = this.props;
         const {contextVisible, contextEvent, contextMenu} = this.state;
         const currentTab = dataSource.find(item => item.active);
 
@@ -152,6 +152,7 @@ export default class PageTabs extends Component {
                     onClose={this.handleClose}
                     onClick={this.handleClick}
                     activeKey={currentTab?.path}
+                    parentWidth={width}
                 />
             </div>
         );

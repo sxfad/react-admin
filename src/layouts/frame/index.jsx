@@ -190,6 +190,8 @@ export default class FrameTopSideMenu extends Component {
         if (showPageHead && pageHead && pageHeadFixed) topSpaceClass.push('with-fixed-page-head');
         if (tabsShow) topSpaceClass.push('with-tabs');
 
+        const windowWidth = window.innerWidth;
+        const sideWidthSpace = hasSide ? sideWidth : 0;
 
         return (
             <div styleName="base-frame" className="no-print">
@@ -199,7 +201,7 @@ export default class FrameTopSideMenu extends Component {
                 <Side layout={layout} theme={theme}/>
                 <div styleName={topSpaceClass.join(' ')}/>
                 {pageHead}
-                {tabsShow ? <div styleName="page-tabs" style={{left: hasSide ? sideWidth : 0, transitionDuration}}><PageTabs/></div> : null}
+                {tabsShow ? <div styleName="page-tabs" style={{left: sideWidthSpace, width: windowWidth - sideWidthSpace, transitionDuration}}><PageTabs width={windowWidth - sideWidthSpace}/></div> : null}
                 <div styleName="global-loading" style={{display: globalLoading ? 'block' : 'none'}}>
                     <Spin spinning size="large"/>
                 </div>

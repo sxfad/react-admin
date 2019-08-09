@@ -111,6 +111,20 @@ export function getScrollBarWidth() {
 }
 
 /**
+ * 判断是否有滚动条
+ * @param el
+ * @param direction
+ * @returns {boolean}
+ */
+export function hasScrollBar(el, direction = "vertical") {
+    if (direction === "vertical") {
+        return el.scrollHeight > el.clientHeight;
+    } else if (direction === "horizontal") {
+        return el.scrollWidth > el.clientWidth;
+    }
+}
+
+/**
  * 获得一个指定范围内的随机数
  * @param {number} min 最范围
  * @param {number} max 最大范围

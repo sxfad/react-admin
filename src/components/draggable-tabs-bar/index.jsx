@@ -91,6 +91,7 @@ export default class DraggableTabsBar extends Component {
         onClose: PropTypes.func,
         onClick: PropTypes.func,
         itemWrapper: PropTypes.func,
+        parentWidth: PropTypes.number,
     };
 
     static defaultProps = {
@@ -108,6 +109,11 @@ export default class DraggableTabsBar extends Component {
         // tabs 个数有变，调整宽度
         if (prevDataSource.length !== dataSource.length) {
             this.setTabsWidth();
+        }
+
+        // 父级宽度改变，调整宽度
+        if (prevProps.parentWidth !== this.props.parentWidth) {
+            setTimeout(() => this.setTabsWidth(), 500);
         }
     }
 
