@@ -18,11 +18,6 @@ body > .draggable-tabs-bar-horizontal-item {
     transition: 0ms;
 }
 
-body > .draggable-tabs-bar-horizontal-item .tabs-bar-left-corner,
-body > .draggable-tabs-bar-horizontal-item .tabs-bar-right-corner {
-    display: none;
-}
-
 .draggable-tabs-bar-horizontal-item {
     display: flex;
     flex-shrink: 1;
@@ -37,80 +32,64 @@ body > .draggable-tabs-bar-horizontal-item .tabs-bar-right-corner {
 }
 
 /* 激活样式 --start */
-.draggable-tabs-bar-horizontal-item:hover .draggable-tabs-bar-wrapper {
-
-}
-
-.draggable-tabs-bar-horizontal-item:hover .close-wrapper:after {
-
-}
-
+.draggable-tabs-bar-horizontal-item:hover .draggable-tabs-bar-wrapper,
 .draggable-tabs-bar-horizontal-item.active .draggable-tabs-bar-wrapper {
     position: relative;
     background: #f0f2f5;
     color: #1890ff;
 }
 
+.draggable-tabs-bar-horizontal-item:hover .close-wrapper:after,
 .draggable-tabs-bar-horizontal-item.active .close-wrapper:after {
     background: #f0f2f5;
     box-shadow: 0 0 10px 10px #f0f2f5;
 }
 
+.draggable-tabs-bar-horizontal-item:hover,
 .draggable-tabs-bar-horizontal-item.active {
     position: relative;
     overflow: visible;
 }
 
-.draggable-tabs-bar-horizontal-item.active .tabs-bar-left-corner:before,
-.draggable-tabs-bar-horizontal-item.active .tabs-bar-left-corner:after {
-    content: '';
+.draggable-tabs-bar-horizontal-item:hover .tabs-bar-right-corner,
+.draggable-tabs-bar-horizontal-item:hover .tabs-bar-left-corner,
+.draggable-tabs-bar-horizontal-item.active .tabs-bar-right-corner,
+.draggable-tabs-bar-horizontal-item.active .tabs-bar-left-corner {
     position: absolute;
-    left: -9px;
     bottom: 0;
+    left: -9px;
     width: 10px;
     height: 10px;
-    background: #f0f2f5;
     z-index: 10;
+    overflow: hidden;
 }
 
-.draggable-tabs-bar-horizontal-item.active .tabs-bar-left-corner:after {
-    background: #fff;
+.draggable-tabs-bar-horizontal-item:hover .tabs-bar-left-corner:before,
+.draggable-tabs-bar-horizontal-item.active .tabs-bar-left-corner:before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
     border-bottom-right-radius: 10px;
     border-right: 1px solid #e8e8e8;
+    box-shadow: 10px 0 0 10px #f0f2f5;
 }
 
-/*.draggable-tabs-bar-horizontal-item.active:before,*/
-/*.draggable-tabs-bar-horizontal-item.active:after {*/
-/*content: '';*/
-/*position: absolute;*/
-/*left: -3px;*/
-/*bottom: 3px;*/
-/*height: 10px;*/
-/*border-left: 1px solid #e8e8e8;*/
-/*z-index: 11;*/
-/*}*/
-
-/*.draggable-tabs-bar-horizontal-item.active:after {*/
-/*left: auto;*/
-/*right: -1px;*/
-/*}*/
-
-.draggable-tabs-bar-horizontal-item.active .tabs-bar-right-corner:before,
-.draggable-tabs-bar-horizontal-item.active .tabs-bar-right-corner:after {
-    content: '';
-    position: absolute;
+.draggable-tabs-bar-horizontal-item:hover .tabs-bar-right-corner,
+.draggable-tabs-bar-horizontal-item.active .tabs-bar-right-corner {
+    left: auto;
     right: -7px;
-    bottom: 0;
-    width: 10px;
-    height: 10px;
-    background: #f0f2f5;
-    z-index: 10;
 }
 
-.draggable-tabs-bar-horizontal-item.active .tabs-bar-right-corner:after {
-    background: #fff;
+.draggable-tabs-bar-horizontal-item:hover .tabs-bar-right-corner:before,
+.draggable-tabs-bar-horizontal-item.active .tabs-bar-right-corner:before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
     border-bottom-left-radius: 10px;
     border-left: 1px solid #e8e8e8;
+    box-shadow: -10px 0 0 10px #f0f2f5;
 }
 
 /* 激活样式 --end */
@@ -138,7 +117,7 @@ body > .draggable-tabs-bar-horizontal-item .tabs-bar-right-corner {
     border-top-right-radius: 5px;
     background-color: #fff;
     color: #333;
-    /*transition: 300ms;*/
+    transition: 300ms;
 }
 
 .draggable-tabs-bar-horizontal-item .item-inner {
@@ -174,5 +153,5 @@ body > .draggable-tabs-bar-horizontal-item .tabs-bar-right-corner {
     width: 0;
     background: #fff;
     box-shadow: 0 0 10px 10px #fff;
-    /*transition: 300ms;*/
+    transition: 300ms;
 }

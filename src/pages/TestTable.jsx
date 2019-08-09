@@ -85,16 +85,16 @@ export default class TestTable extends Component {
         const FormElement = this.FormElement;
         return (
             <PageContent>
-                <div style={{width: 100, height: 100, background: 'red'}}>
+                <div style={{width: 100, height: 100, overflow: 'hidden'}}>
                     <div
                         style={{
                             width: 100,
                             height: 100,
                             background: 'green',
-                            borderRight: '1px solid blue',
-                            borderBottom: '1px solid blue',
                             borderBottomRightRadius: 100,
-                        }}></div>
+                            boxShadow: `10px 0 0 10px blue`,
+                            overflow: 'hidden',
+                        }}/>
                 </div>
                 <Button onClick={() => this.props.form.resetFields()}>重置</Button>
                 <Button style={{margin: '0 10px'}} onClick={() => this.props.form.setFieldsValue({table: dataSource})}>数据1</Button>
