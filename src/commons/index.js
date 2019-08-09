@@ -43,7 +43,6 @@ export function getLoginUser() {
     return loginUser ? JSON.parse(loginUser) : null;
 }
 
-
 /**
  * 判断用户是否登录
  */
@@ -92,7 +91,6 @@ export function compose(funcs) {
 
     return funcs.reduce((a, b) => (...args) => a(b(...args)))
 }
-
 
 /**
  * 根据path获取对应的菜单
@@ -208,6 +206,11 @@ export function loadScript(src) {
     });
 }
 
+/**
+ * 判断字符串是否符合json各式
+ * @param str
+ * @returns {boolean}
+ */
 export function isJson(str) {
     try {
         if (typeof JSON.parse(str) == "object") {

@@ -18,6 +18,11 @@ body > .draggable-tabs-bar-horizontal-item {
     transition: 0ms;
 }
 
+body > .draggable-tabs-bar-horizontal-item .tabs-bar-left-corner,
+body > .draggable-tabs-bar-horizontal-item .tabs-bar-right-corner {
+    display: none;
+}
+
 .draggable-tabs-bar-horizontal-item {
     display: flex;
     flex-shrink: 1;
@@ -31,17 +36,84 @@ body > .draggable-tabs-bar-horizontal-item {
     overflow: hidden;
 }
 
-.draggable-tabs-bar-horizontal-item.active .draggable-tabs-bar-wrapper,
+/* 激活样式 --start */
 .draggable-tabs-bar-horizontal-item:hover .draggable-tabs-bar-wrapper {
-    background: #fff;
+
+}
+
+.draggable-tabs-bar-horizontal-item:hover .close-wrapper:after {
+
+}
+
+.draggable-tabs-bar-horizontal-item.active .draggable-tabs-bar-wrapper {
+    position: relative;
+    background: #f0f2f5;
     color: #1890ff;
 }
 
-.draggable-tabs-bar-horizontal-item.active .close-wrapper:after,
-.draggable-tabs-bar-horizontal-item:hover .close-wrapper:after {
-    background: #fff;
-    box-shadow: 0 0 10px 10px #fff;
+.draggable-tabs-bar-horizontal-item.active .close-wrapper:after {
+    background: #f0f2f5;
+    box-shadow: 0 0 10px 10px #f0f2f5;
 }
+
+.draggable-tabs-bar-horizontal-item.active {
+    position: relative;
+    overflow: visible;
+}
+
+.draggable-tabs-bar-horizontal-item.active .tabs-bar-left-corner:before,
+.draggable-tabs-bar-horizontal-item.active .tabs-bar-left-corner:after {
+    content: '';
+    position: absolute;
+    left: -9px;
+    bottom: 0;
+    width: 10px;
+    height: 10px;
+    background: #f0f2f5;
+    z-index: 10;
+}
+
+.draggable-tabs-bar-horizontal-item.active .tabs-bar-left-corner:after {
+    background: #fff;
+    border-bottom-right-radius: 10px;
+    border-right: 1px solid #e8e8e8;
+}
+
+/*.draggable-tabs-bar-horizontal-item.active:before,*/
+/*.draggable-tabs-bar-horizontal-item.active:after {*/
+/*content: '';*/
+/*position: absolute;*/
+/*left: -3px;*/
+/*bottom: 3px;*/
+/*height: 10px;*/
+/*border-left: 1px solid #e8e8e8;*/
+/*z-index: 11;*/
+/*}*/
+
+/*.draggable-tabs-bar-horizontal-item.active:after {*/
+/*left: auto;*/
+/*right: -1px;*/
+/*}*/
+
+.draggable-tabs-bar-horizontal-item.active .tabs-bar-right-corner:before,
+.draggable-tabs-bar-horizontal-item.active .tabs-bar-right-corner:after {
+    content: '';
+    position: absolute;
+    right: -7px;
+    bottom: 0;
+    width: 10px;
+    height: 10px;
+    background: #f0f2f5;
+    z-index: 10;
+}
+
+.draggable-tabs-bar-horizontal-item.active .tabs-bar-right-corner:after {
+    background: #fff;
+    border-bottom-left-radius: 10px;
+    border-left: 1px solid #e8e8e8;
+}
+
+/* 激活样式 --end */
 
 .draggable-tabs-bar-horizontal-item .draggable-tabs-bar-horizontal-item-inner {
     display: flex;
@@ -64,9 +136,9 @@ body > .draggable-tabs-bar-horizontal-item {
     border-bottom: 0;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    background-color: #fafafa;
+    background-color: #fff;
     color: #333;
-    transition: 300ms;
+    /*transition: 300ms;*/
 }
 
 .draggable-tabs-bar-horizontal-item .item-inner {
@@ -100,7 +172,7 @@ body > .draggable-tabs-bar-horizontal-item {
     left: -3px;
     height: 100%;
     width: 0;
-    background: #fafafa;
-    box-shadow: 0 0 10px 10px #fafafa;
-    transition: 300ms;
+    background: #fff;
+    box-shadow: 0 0 10px 10px #fff;
+    /*transition: 300ms;*/
 }

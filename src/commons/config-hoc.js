@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
+import PubSub from 'pubsub-js'
 import {compose} from '@/commons'
 import queryHoc from '@/commons/query-hoc';
 import {connect as reduxConnect} from '@/models';
 import {ajaxHoc} from '@/commons/ajax';
 import pubSubHoc from '@/library/utils/pub-sub-hoc'
 import eventHoc from '@/library/utils/dom-event-hoc';
-import PubSub from 'pubsub-js'
 import {ROUTE_BASE_NAME} from '@/router/AppRouter';
 
 /**
