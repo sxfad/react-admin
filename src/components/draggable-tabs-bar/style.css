@@ -57,9 +57,9 @@ body > .draggable-tabs-bar-horizontal-item {
 .draggable-tabs-bar-horizontal-item.active .tabs-bar-left-corner {
     position: absolute;
     bottom: 0;
-    left: -9px;
-    width: 10px;
-    height: 10px;
+    left: -14px;
+    width: 15px;
+    height: 15px;
     z-index: 10;
     overflow: hidden;
 }
@@ -70,15 +70,16 @@ body > .draggable-tabs-bar-horizontal-item {
     display: block;
     width: 100%;
     height: 100%;
-    border-bottom-right-radius: 10px;
+    border-bottom-right-radius: 15px;
     border-right: 1px solid #e8e8e8;
-    box-shadow: 10px 0 0 10px #f0f2f5;
+    border-right: 1px solid #e8e8e8;
+    box-shadow: 15px 0 0 15px #f0f2f5;
 }
 
 .draggable-tabs-bar-horizontal-item:hover .tabs-bar-right-corner,
 .draggable-tabs-bar-horizontal-item.active .tabs-bar-right-corner {
     left: auto;
-    right: -7px;
+    right: -12px;
 }
 
 .draggable-tabs-bar-horizontal-item:hover .tabs-bar-right-corner:before,
@@ -87,9 +88,9 @@ body > .draggable-tabs-bar-horizontal-item {
     display: block;
     width: 100%;
     height: 100%;
-    border-bottom-left-radius: 10px;
+    border-bottom-left-radius: 15px;
     border-left: 1px solid #e8e8e8;
-    box-shadow: -10px 0 0 10px #f0f2f5;
+    box-shadow: -15px 0 0 15px #f0f2f5;
 }
 
 /* 激活样式 --end */
