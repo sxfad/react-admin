@@ -1,0 +1,162 @@
+@default-color: #fff;
+@active-color: #f0f2f5;
+@primary-color: #1890ff;
+@border-color: #e8e8e8;
+
+:global {
+    .draggable-tabs-bar-root {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 30px;
+        box-sizing: border-box;
+        overflow: hidden;
+        padding-left: 2px;
+
+        &.sorting,
+        &.sorting * {
+            cursor: move !important;
+        }
+    }
+
+    body > .draggable-tabs-bar-horizontal-item {
+        z-index: 9999;
+        transition: 0ms;
+    }
+
+    .draggable-tabs-bar-horizontal-item {
+        position: relative;
+        display: flex;
+        flex-shrink: 1;
+        flex-grow: 0;
+        align-items: center;
+        justify-content: space-between;
+        box-sizing: border-box;
+        height: 100%;
+        user-select: none;
+        font-weight: 400;
+
+        &:hover,
+        &.active {
+            position: relative;
+
+            .draggable-tabs-bar-wrapper {
+                position: relative;
+                background: @active-color;
+                color: @primary-color;
+            }
+
+            .tabs-bar-left-corner,
+            .tabs-bar-right-corner {
+                position: absolute;
+                bottom: 0;
+                left: -14px;
+                width: 15px;
+                height: 15px;
+                z-index: 10;
+                overflow: hidden;
+            }
+
+            .tabs-bar-left-corner:before {
+                content: '';
+                display: block;
+                width: 100%;
+                height: 100%;
+                border-bottom-right-radius: 15px;
+                border-right: 1px solid @border-color;
+                box-shadow: 15px 0 0 15px @active-color;
+            }
+
+            .tabs-bar-right-corner {
+                left: auto;
+                right: -12px;
+
+                &:before {
+                    content: '';
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    border-bottom-left-radius: 15px;
+                    border-left: 1px solid @border-color;
+                    box-shadow: -15px 0 0 15px @active-color;
+                }
+            }
+
+            .draggable-tabs-bar-wrapper {
+                border-bottom: 1px solid @active-color;
+
+                &:after {
+                    box-shadow: 0 0 10px 20px @active-color;
+                }
+            }
+
+            .close-wrapper {
+                opacity: 1;
+            }
+        }
+
+        .draggable-tabs-bar-horizontal-item-inner {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            transition: width 300ms;
+            box-sizing: border-box;
+            padding-right: 2px;
+            overflow: hidden;
+        }
+
+        .draggable-tabs-bar-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            padding: 0 8px;
+            border: 1px solid @border-color;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            background-color: @default-color;
+            color: #333;
+            transition: 300ms;
+
+            &:after {
+                content: '';
+                display: block;
+                position: absolute;
+                top: 0;
+                right: 3px;
+                height: 100%;
+                width: 0;
+                box-shadow: 0 0 10px 20px @default-color;
+                transition: 300ms;
+            }
+        }
+
+        .item-inner {
+            display: flex;
+            flex-grow: 1;
+            align-items: center;
+            position: relative;
+            height: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .close-wrapper {
+            position: absolute;
+            right: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            color: rgba(0, 0, 0, 0.45);
+            font-size: 12px;
+            cursor: pointer;
+            opacity: 0;
+            z-index: 1;
+        }
+    }
+}

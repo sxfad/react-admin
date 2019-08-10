@@ -6,7 +6,7 @@ import {
     SortableElement
 } from 'react-sortable-hoc';
 import classNames from 'classnames';
-import './style.css';
+import './style.less';
 
 
 const SortableItem = SortableElement((props) => {
