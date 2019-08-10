@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Table, Form} from 'antd';
+import {Button, Form} from 'antd';
 import PageContent from '@/layouts/page-content';
 import {
     QueryBar,
@@ -8,6 +8,7 @@ import {
     ToolBar,
     FormRow,
     FormElement,
+    Table,
 } from "@/library/antd";
 import config from '@/commons/config-hoc';
 import UserEditModal from './UserEditModal';
