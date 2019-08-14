@@ -11,7 +11,7 @@ import {connect} from '../../models/index';
  * 1. 自动判断是否含有FixBottom，并为之腾出空间
  * 1. 是否含有公共footer
  */
-@connect(state => ({pageLoading: state.page.loading, smallFrame: state.system.smallFrame}))
+@connect(state => ({pageLoading: state.page.loading}))
 export default class PageContent extends Component {
     static propTypes = {
         loading: PropTypes.bool,
@@ -35,7 +35,6 @@ export default class PageContent extends Component {
             children,
             action,
             className,
-            smallFrame,
             ...others
         } = this.props;
 
@@ -49,18 +48,18 @@ export default class PageContent extends Component {
             rootStyle.marginBottom = '66px';
         }
 
-        const contentStyle = {};
-        if (smallFrame) {
-            contentStyle.margin = '8px';
-            contentStyle.padding = '8px';
-        }
-
         return (
             <div style={rootStyle} styleName="page-content-root">
                 <div styleName="page-loading" style={{display: loading || pageLoading ? 'block' : 'none'}}>
                     <Spin spinning size="large"/>
                 </div>
-                <div style={contentStyle} styleName="page-content" className={className} {...others} >{children}</div>
+                <div
+                    styleName="page-content"
+                    className={`${className} page-content`}
+                    {...others}
+                >
+                    {children}
+                </div>
                 {footer ? <div styleName="footer"><Footer/></div> : null}
             </div>
         );

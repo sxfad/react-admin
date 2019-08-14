@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
-import {Form, Row, Col, Button, Spin} from 'antd';
+import React, {Component, Fragment} from 'react';
+import {Form, Row, Col, Button} from 'antd';
 import _ from 'lodash';
 import {FormElement} from '@/library/antd';
 import PageContent from '@/layouts/page-content';
 import config from '@/commons/config-hoc';
 import validator from '@/library/utils/validation-rule';
 import modal from '@/components/modal-hoc';
+import ModalContent from '@/components/modal-hoc/ModalContent';
 
 @modal(props => props.id === null ? '添加用户' : '修改用户')
 @config({ajax: true})
@@ -85,9 +86,18 @@ export default class EditModal extends Component {
 
         const FormElement = this.FormElement;
         return (
-            <Spin spinning={loading}>
+            <ModalContent
+                loading={loading}
+                footer={
+                    <Fragment>
+                        <Button onClick={this.handleOk} type="primary">保存</Button>
+                        <Button onClick={this.handleReset}>重置</Button>
+                        <Button onClick={this.handleCancel}>取消</Button>
+                    </Fragment>
+                }
+            >
                 <PageContent footer={false}>
-                    <Form onSubmit={this.handleSubmit}>
+                    <Form onSubmit={this.handleSubmit} style={{height: 1000, background: 'red'}}>
                         {isEdit ? <FormElement type="hidden" field="id" initialValue={data.id}/> : null}
                         <Row>
                             <Col span={24}>
@@ -106,12 +116,7 @@ export default class EditModal extends Component {
                         </Row>
                     </Form>
                 </PageContent>
-                <div className="ant-modal-footer">
-                    <Button onClick={this.handleOk} type="primary">保存</Button>
-                    <Button onClick={this.handleReset}>重置</Button>
-                    <Button onClick={this.handleCancel}>取消</Button>
-                </div>
-            </Spin>
+            </ModalContent>
         );
     }
 }
