@@ -83,6 +83,8 @@ export default class Index extends Component {
             wrapper: {
                 position: 'inherit',
                 zIndex: '100',
+                transform: 'translateX(-50%)',
+                color: '#000',
             },
         };
 

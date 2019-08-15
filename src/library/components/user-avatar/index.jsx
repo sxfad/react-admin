@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Avatar} from "antd";
+import {Avatar, Icon} from "antd";
 import PropTypes from 'prop-types';
 
 /**
@@ -14,7 +14,9 @@ export default class UserAvatar extends Component {
     };
 
     render() {
-        const {name = 'unknown', src, ...others} = this.props;
+        const {name = 'unknown', src, icon, ...others} = this.props;
+
+        if (icon === true) return <Icon type="user" style={{marginRight: 5}}/>;
 
         if (src) return <Avatar {...others} src={src}/>;
 

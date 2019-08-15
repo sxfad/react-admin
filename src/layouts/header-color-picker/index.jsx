@@ -128,20 +128,19 @@ export default class ThemeColorPicker extends Component {
                             type="sketch"
                             small
                             color={primaryColor}
-                            position="bottom"
                             presetColors={[
-                                '#F5222D',
-                                '#FA541C',
-                                '#FA8C16',
-                                '#FAAD14',
-                                '#FADB14',
-                                '#A0D911',
-                                '#52C41A',
                                 '#13C2C2',
                                 '#18BFFF',
                                 '#2F54EB',
                                 '#722ED1',
                                 '#EB2F96',
+                                '#F5222D',
+                                '#FA541C',
+                                '#FA8C16',
+                                '#FAAD14',
+                                '#E1C40B',
+                                '#A0D911',
+                                '#52C41A',
                             ]}
                             onChangeComplete={this.handleColorChange}
                         />

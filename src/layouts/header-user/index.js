@@ -56,7 +56,7 @@ export default class HeaderUser extends Component {
                         {avatar ? (
                             <UserAvatar size="default" styleName="avatar" src={avatar}/>
                         ) : (
-                            <UserAvatar size="default" styleName="avatar" name={name}/>
+                            <UserAvatar size="default" styleName="avatar" icon name={name}/>
                         )}
                         {name}
                         <Icon type="caret-down"/>
