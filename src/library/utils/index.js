@@ -137,6 +137,23 @@ export function getRandomNum(min, max) {
 }
 
 /**
+ * 获取一个元素距离浏览器顶部高度
+ * @param element
+ * @returns {number | Requireable<number>}
+ */
+export function getElementTop(element) {
+    let actualTop = element.offsetTop;
+    let current = element.offsetParent;
+
+    while (current !== null) {
+        actualTop += current.offsetTop;
+        current = current.offsetParent;
+    }
+
+    return actualTop;
+}
+
+/**
  * 为一个dom元素移除class
  * @param {string} selector document.querySelectory 要到的选择器
  * @param {string} className 要移除的class

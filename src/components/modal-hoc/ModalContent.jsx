@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {Button, Spin} from 'antd';
 import PropTypes from "prop-types";
+import {getElementTop} from '@/library/utils';
 
 /**
  * Modal 的内容容器，默认会铺满全屏，内部内容滚动
@@ -23,7 +24,7 @@ export default class ModalContent extends Component {
 
     static defaultProps = {
         surplusSpace: true,
-        otherHeight: 179, // top + head height + padding bottom
+        // otherHeight: 179, // top + head height + padding bottom
         okText: '确定',
         cancelText: '取消',
         onOk: () => void 0,
@@ -45,10 +46,15 @@ export default class ModalContent extends Component {
         if (surplusSpace) window.removeEventListener('resize', this.handleWindowResize)
     }
 
-
     handleWindowResize = () => {
-        const {otherHeight} = this.props;
+        let {otherHeight} = this.props;
         const windowHeight = document.documentElement.clientHeight;
+        if (!otherHeight) {
+            const top = getElementTop(this.wrapper);
+            const bottom = 24;
+
+            otherHeight = top + bottom;
+        }
         const height = windowHeight - otherHeight;
 
         this.setState({height});
@@ -71,7 +77,7 @@ export default class ModalContent extends Component {
         const {height} = this.state;
         return (
             <Spin spinning={loading}>
-                <div style={{display: 'flex', flexDirection: 'column', height, ...style}} {...others}>
+                <div ref={node => this.wrapper = node} style={{display: 'flex', flexDirection: 'column', height, ...style}} {...others}>
                     <div style={{flex: 1, overflow: surplusSpace ? 'auto' : ''}}>
                         {children}
                     </div>

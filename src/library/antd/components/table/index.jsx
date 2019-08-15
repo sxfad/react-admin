@@ -2,19 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Table} from 'antd';
 import {Pagination} from '../../index';
-
-function getElementTop(element) {
-    let actualTop = element.offsetTop;
-    let current = element.offsetParent;
-
-    while (current !== null) {
-        actualTop += current.offsetTop;
-        current = current.offsetParent;
-    }
-
-    return actualTop;
-}
-
+import {getElementTop} from '../../../utils';
 
 export default class TableComponent extends Component {
     static propTypes = {
