@@ -10,6 +10,7 @@ import ModalContent from '@/components/modal-hoc/ModalContent';
 
 @modal({
     title: props => props.id === null ? '添加用户' : '修改用户',
+    fullScreen: true,
 })
 @config({ajax: true})
 @Form.create()
@@ -90,7 +91,6 @@ export default class EditModal extends Component {
         return (
             <ModalContent
                 loading={loading}
-                fullScreen
                 footer={
                     <Fragment>
                         <Button onClick={this.handleOk} type="primary">保存</Button>

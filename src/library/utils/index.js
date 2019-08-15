@@ -154,6 +154,25 @@ export function getElementTop(element) {
 }
 
 /**
+ * 根据className 获取父级元素
+ * @param el
+ * @param parentClassName
+ * @returns {*}
+ */
+export function getParentByClassName(el, parentClassName) {
+    const parentNode = el.parentNode;
+    if (!parentNode) return null;
+
+    const classList = Array.from(parentNode.classList || []);
+
+    if (classList?.length && classList.includes(parentClassName)) {
+        return parentNode;
+    } else {
+        return getParentByClassName(parentNode, parentClassName);
+    }
+}
+
+/**
  * 为一个dom元素移除class
  * @param {string} selector document.querySelectory 要到的选择器
  * @param {string} className 要移除的class

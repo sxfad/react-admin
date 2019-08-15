@@ -1,7 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import {Button, Spin} from 'antd';
 import PropTypes from "prop-types";
-import {getElementTop} from '@/library/utils';
+import {getElementTop, getParentByClassName} from '@/library/utils';
+
 
 /**
  * Modal 的内容容器，默认会铺满全屏，内部内容滚动
@@ -38,6 +39,8 @@ export default class ModalContent extends Component {
             this.handleWindowResize();
             window.addEventListener('resize', this.handleWindowResize);
         }
+
+
     }
 
     componentWillUnmount() {
@@ -51,7 +54,15 @@ export default class ModalContent extends Component {
         const windowHeight = document.documentElement.clientHeight;
         if (!otherHeight) {
             const top = getElementTop(this.wrapper);
-            const bottom = 24;
+            let bottom = 24;
+            const antModalDom = getParentByClassName(this.wrapper, 'ant-modal');
+
+            if (antModalDom) {
+                const classList = Array.from(antModalDom.classList);
+                const isFullScreen = classList.find(item => item.startsWith('full-screen'));
+
+                if (isFullScreen) bottom = 0;
+            }
 
             otherHeight = top + bottom;
         }
@@ -77,7 +88,12 @@ export default class ModalContent extends Component {
         const {height} = this.state;
         return (
             <Spin spinning={loading}>
-                <div ref={node => this.wrapper = node} style={{display: 'flex', flexDirection: 'column', height, ...style}} {...others}>
+                <div
+                    className="modal-content"
+                    ref={node => this.wrapper = node}
+                    style={{display: 'flex', flexDirection: 'column', height, ...style}}
+                    {...others}
+                >
                     <div style={{flex: 1, overflow: surplusSpace ? 'auto' : ''}}>
                         {children}
                     </div>
