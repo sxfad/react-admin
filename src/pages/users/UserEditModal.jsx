@@ -78,15 +78,12 @@ export default class EditModal extends Component {
         this.props.form.resetFields();
     };
 
-    // 这样可以保证每次render时，FormElement不是每次都创建，这里可以进行一些共用属性的设置
-    FormElement = (props) => <FormElement form={this.props.form} labelWidth={100} disabled={this.props.isDetail} {...props}/>;
-
     render() {
-        const {id} = this.props;
+        const {id, from} = this.props;
         const isEdit = id !== null;
         const {loading, data} = this.state;
+        const labelWidth = 100;
 
-        const FormElement = this.FormElement;
         return (
             <ModalContent
                 loading={loading}
@@ -104,7 +101,9 @@ export default class EditModal extends Component {
                         <Row>
                             <Col span={24}>
                                 <FormElement
+                                    form={from}
                                     label="名称"
+                                    labelWidth={labelWidth}
                                     field="name"
                                     initialValue={data.name}
                                     required
