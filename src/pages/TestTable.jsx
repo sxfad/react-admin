@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Table, Button, Row, Col, Form} from 'antd';
-import {FormElement, tableEditable} from '@/library/antd';
+import {FormElement, tableEditable} from '@/library/components';
 import config from '@/commons/config-hoc';
 import PageContent from '@/layouts/page-content';
 

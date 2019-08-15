@@ -4,7 +4,7 @@ import config from '@/commons/config-hoc';
 import PageContent from '@/layouts/page-content';
 import localMenus from '../../menus';
 import {convertToTree} from "@/library/utils/tree-utils";
-import {Table, ToolBar, Operator} from '@/library/antd';
+import {Table, ToolBar, Operator} from '@/library/components';
 import EditModal from './EditModal';
 import './style.less';
 

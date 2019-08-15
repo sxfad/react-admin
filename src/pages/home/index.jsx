@@ -3,7 +3,7 @@ import ReactEchart from 'echarts-for-react';
 import {Row, Col} from 'antd';
 import config from '@/commons/config-hoc';
 import PageContent from '@/layouts/page-content';
-import DataBlock from '@/components/data-block';
+import {DataBlock} from '@/library/components';
 import './style.less';
 
 @config({

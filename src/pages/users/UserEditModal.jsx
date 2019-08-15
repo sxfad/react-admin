@@ -1,12 +1,11 @@
 import React, {Component, Fragment} from 'react';
 import {Form, Row, Col, Button} from 'antd';
 import _ from 'lodash';
-import {FormElement} from '@/library/antd';
+import {FormElement} from '@/library/components';
 import PageContent from '@/layouts/page-content';
 import config from '@/commons/config-hoc';
 import validator from '@/library/utils/validation-rule';
-import modal from '@/components/modal-hoc';
-import ModalContent from '@/components/modal-hoc/ModalContent';
+import {modal, ModalContent} from '@/library/components';
 
 @modal({
     title: props => props.id === null ? '添加用户' : '修改用户',

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Menu, Dropdown, Icon} from 'antd';
 import {Link} from 'react-router-dom';
 import {toLogin, getLoginUser} from '@/commons';
-import {UserAvatar} from '@/library/antd';
+import {UserAvatar} from '@/library/components';
 import ModifyPassword from './ModifyPassword';
 import './style.less';
 

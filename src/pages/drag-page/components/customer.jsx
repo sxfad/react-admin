@@ -1,5 +1,5 @@
 import PageContent from '@/layouts/page-content';
-import {ToolBar, QueryBar, Table} from '@/library/antd';
+import {ToolBar, QueryBar, Table} from '@/library/components';
 import uuid from "uuid/v4";
 import {isJson} from "@/commons";
 import _ from "lodash";
@@ -75,7 +75,7 @@ export default {
         title: '工具条',
         container: true,
         direction: 'horizontal',
-        dependence: '@/library/antd',
+        dependence: '@/library/components',
         description: '工具容器，一般内部是一些按钮。',
         defaultProps: {
             children: [
@@ -111,7 +111,7 @@ export default {
         title: '查询条件',
         container: true,
         direction: 'horizontal',
-        dependence: '@/library/antd',
+        dependence: '@/library/components',
         description: '用于包裹一些查询条件的容器。',
         defaultProps: {
             children: [
@@ -180,7 +180,7 @@ export default {
     Table: {
         component: Table,
         title: '表格',
-        dependence: '@/library/antd',
+        dependence: '@/library/components',
         container: false,
         defaultProps: {
             columns: [

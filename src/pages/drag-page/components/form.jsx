@@ -1,4 +1,4 @@
-import {FormElement, FormRow} from '@/library/antd';
+import {FormElement, FormRow} from '@/library/components';
 import _ from 'lodash';
 import {isJson} from "@/commons";
 
@@ -156,14 +156,14 @@ export default {
         component: FormRow,
         title: '表单行',
         container: true,
-        dependence: '@/library/antd',
+        dependence: '@/library/components',
         description: '用于。。。',
     },
     FormElement: {
         component: FormElement,
         title: '表单元素',
         visible: false,
-        dependence: '@/library/antd',
+        dependence: '@/library/components',
     },
 
     FormInput: {
@@ -171,7 +171,7 @@ export default {
         tagName: 'FormElement',
         showTagName: 'Input',
         title: '输入框',
-        dependence: '@/library/antd',
+        dependence: '@/library/components',
         description: '文本输入框。',
         defaultProps: {
             label: '输入框',
@@ -187,7 +187,7 @@ export default {
         tagName: 'FormElement',
         showTagName: 'Select',
         title: '下拉框',
-        dependence: '@/library/antd',
+        dependence: '@/library/components',
         description: '下拉选择。',
         defaultProps: {
             type: 'select',

@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Table} from 'antd';
-import {Pagination} from '../../index';
-import {getElementTop} from '../../../utils';
+import {Pagination} from '@/library/components';
+import {getElementTop} from '@/library/utils';
 
 export default class TableComponent extends Component {
     static propTypes = {

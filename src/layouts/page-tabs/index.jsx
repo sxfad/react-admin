@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Menu, Icon} from 'antd';
-import DraggableTabsBar from '@/components/draggable-tabs-bar';
+import {DraggableTabsBar} from '@/library/components';
 import config from '@/commons/config-hoc';
-import ContextMenu from '@/components/context-menu';
+import {ContextMenu} from '@/library/components';
 import './style.less';
 
 @config({

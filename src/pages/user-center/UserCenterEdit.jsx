@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Modal, Form, Spin} from 'antd';
 import config from '@/commons/config-hoc';
-import {FormElement} from '@/library/antd';
+import {FormElement} from '@/library/components';
 
 @config({
     ajax: true,

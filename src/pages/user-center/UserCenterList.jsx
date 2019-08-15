@@ -8,7 +8,7 @@ import {
     Pagination,
     Operator,
     ToolBar,
-} from "@/library/antd";
+} from "@/library/components";
 import PageContent from '@/layouts/page-content';
 import config from '@/commons/config-hoc';
 import UserCenterEdit from './UserCenterEdit';

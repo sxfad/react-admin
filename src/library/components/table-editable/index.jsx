@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {Form} from 'antd';
-import {FormElement} from '@/library/antd';
+import {FormElement} from '@/library/components';
 import './style.less';
 import _ from 'lodash';
 
@@ -137,7 +137,7 @@ export default function Editable(OriTable) {
 
             return (
                 <OriTable
-                    styleName="root"
+                    className="table-editable-root"
                     {...others}
                     size={size}
                     rowKey={rowKey}

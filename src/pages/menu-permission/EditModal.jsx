@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
-import modal from '@/components/modal-hoc';
 import {Button, Col, Form, Icon, Row} from "antd";
-import {FormElement} from '@/library/antd';
-import IconPicker from "@/components/icon-picker";
+import {FormElement, IconPicker, modal} from '@/library/components';
 import config from '@/commons/config-hoc';
 
 @modal({

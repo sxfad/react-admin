@@ -9,7 +9,7 @@ import {
     FormRow,
     FormElement,
     Table,
-} from "@/library/antd";
+} from "@/library/components";
 import config from '@/commons/config-hoc';
 import UserEditModal from './UserEditModal';
 

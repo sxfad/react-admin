@@ -30,15 +30,15 @@ export default class DataBlock extends Component {
         };
 
         return (
-            <div styleName="data-block" style={blockStyle}>
-                <div styleName="icon" style={iconStyle}>
+            <div className="data-block-root" style={blockStyle}>
+                <div className="icon" style={iconStyle}>
                     <Icon type={icon}/>
                 </div>
-                <div styleName="message">
-                    <div styleName="count">
+                <div className="message">
+                    <div className="count">
                         <CountUp end={count}/>
                     </div>
-                    <div styleName="tip">{tip}</div>
+                    <div className="tip">{tip}</div>
                 </div>
             </div>
         );

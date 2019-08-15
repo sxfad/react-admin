@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Icon, Tooltip} from 'antd';
 import config from '@/commons/config-hoc';
 import {loadScript} from '@/commons';
-import ColorPicker from '@/components/color-picker';
+import {ColorPicker} from '@/library/components';
 import theme from '@/theme';
 import './style.less';
 

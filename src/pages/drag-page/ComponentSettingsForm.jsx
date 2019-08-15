@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Alert, Form} from 'antd';
 import config from '@/commons/config-hoc';
 import components from './components';
-import {FormElement} from '@/library/antd';
+import {FormElement} from '@/library/components';
 import {debounce} from 'lodash';
 import {canEdit} from './render-utils';
 import {optionsTypes} from './components/form';
