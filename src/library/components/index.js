@@ -13,7 +13,6 @@ export Operator  from './operator';
 export Pagination from './pagination';
 export Permission  from './permission';
 export QueryBar  from './query-bar';
-export QueryItem from './query-item';
 export Table  from './table';
 export tableEditable  from './table-editable';
 export tableRowDraggable  from './table-row-draggable';
