@@ -79,7 +79,7 @@ export default class EditModal extends Component {
     };
 
     render() {
-        const {id, from} = this.props;
+        const {id, form} = this.props;
         const isEdit = id !== null;
         const {loading, data} = this.state;
         const labelWidth = 100;
@@ -101,7 +101,7 @@ export default class EditModal extends Component {
                         <Row>
                             <Col span={24}>
                                 <FormElement
-                                    form={from}
+                                    form={form}
                                     label="名称"
                                     labelWidth={labelWidth}
                                     field="name"

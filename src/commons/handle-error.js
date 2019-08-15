@@ -9,6 +9,7 @@ import {toLogin} from './index';
  * @returns {*}
  */
 function getErrorTip({error, errorTip}) {
+    const commonTip = '系统开小差了，请稍后再试或联系管理员';
 
     if (errorTip && errorTip !== true) return errorTip;
 
@@ -27,11 +28,11 @@ function getErrorTip({error, errorTip}) {
         }
 
         if (status === 504) {
-            return '服务器繁忙';
+            return commonTip;
         }
 
         if (status === 500) {
-            return '服务器繁忙';
+            return commonTip;
         }
     }
 
@@ -39,7 +40,7 @@ function getErrorTip({error, errorTip}) {
 
     if (error) return error.message;
 
-    return '服务器繁忙';
+    return commonTip;
 }
 
 export default function handleError({error, errorTip}) {
@@ -55,5 +56,6 @@ export default function handleError({error, errorTip}) {
     notification.error({
         message: '失败',
         description,
+        duration: 1,
     });
 }

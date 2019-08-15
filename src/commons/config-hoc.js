@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import PubSub from 'pubsub-js'
-import {compose} from '@/commons'
-import queryHoc from '@/commons/query-hoc';
+import {compose} from '@/library/utils'
+import queryHoc from '@/library/utils/query-hoc';
 import {connect as reduxConnect} from '@/models';
 import {ajaxHoc} from '@/commons/ajax';
 import pubSubHoc from '@/library/utils/pub-sub-hoc'

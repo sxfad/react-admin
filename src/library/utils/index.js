@@ -1,5 +1,54 @@
 import {cloneDeep} from 'lodash/lang';
 
+
+/**
+ * 复合函数工具
+ * @param functions
+ * @returns {*}
+ */
+export function compose(functions) {
+    if (functions.length === 0) {
+        return arg => arg
+    }
+
+    if (functions.length === 1) {
+        return functions[0]
+    }
+
+    return functions.reduce((a, b) => (...args) => a(b(...args)))
+}
+
+/**
+ * 加载 JavaScript
+ * @param src
+ * @returns {Promise<any>}
+ */
+export function loadScript(src) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+    });
+}
+
+/**
+ * 判断字符串是否符合json各式
+ * @param str
+ * @returns {boolean}
+ */
+export function isJson(str) {
+    try {
+        if (typeof JSON.parse(str) == "object") {
+            return true;
+        }
+    } catch (e) {
+        return false;
+    }
+}
+
 /**
  * 通用的一些工具方法
  * @module 通用工具方法

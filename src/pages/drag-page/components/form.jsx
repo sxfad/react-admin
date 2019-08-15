@@ -1,6 +1,6 @@
 import {FormElement, FormRow} from '@/library/components';
 import _ from 'lodash';
-import {isJson} from "@/commons";
+import {isJson} from "@/library/utils";
 
 export const category = '表单元素';
 

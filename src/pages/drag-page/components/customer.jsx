@@ -1,7 +1,7 @@
 import PageContent from '@/layouts/page-content';
 import {ToolBar, QueryBar, Table} from '@/library/components';
 import uuid from "uuid/v4";
-import {isJson} from "@/commons";
+import {isJson} from "@/library/utils";
 import _ from "lodash";
 
 export const category = '自定义组件';

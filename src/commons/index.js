@@ -76,23 +76,6 @@ export function toLogin() {
 }
 
 /**
- * 复合函数工具
- * @param funcs
- * @returns {*}
- */
-export function compose(funcs) {
-    if (funcs.length === 0) {
-        return arg => arg
-    }
-
-    if (funcs.length === 1) {
-        return funcs[0]
-    }
-
-    return funcs.reduce((a, b) => (...args) => a(b(...args)))
-}
-
-/**
  * 根据path获取对应的菜单
  * @param path
  * @param menuTreeData
@@ -190,33 +173,3 @@ export function getMenuTreeDataAndPermissions(menus) {
     return {menuTreeData, permissions}
 }
 
-/**
- * 加载 JavaScript
- * @param src
- * @returns {Promise<any>}
- */
-export function loadScript(src) {
-    return new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = src;
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-    });
-}
-
-/**
- * 判断字符串是否符合json各式
- * @param str
- * @returns {boolean}
- */
-export function isJson(str) {
-    try {
-        if (typeof JSON.parse(str) == "object") {
-            return true;
-        }
-    } catch (e) {
-        return false;
-    }
-}
