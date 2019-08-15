@@ -3,7 +3,6 @@ import {Button, Spin} from 'antd';
 import PropTypes from "prop-types";
 import {getElementTop, getParentByClassName} from '@/library/utils';
 
-
 /**
  * Modal 的内容容器，默认会铺满全屏，内部内容滚动
  */
@@ -25,7 +24,6 @@ export default class ModalContent extends Component {
 
     static defaultProps = {
         surplusSpace: true,
-        // otherHeight: 179, // top + head height + padding bottom
         okText: '确定',
         cancelText: '取消',
         onOk: () => void 0,
