@@ -32,6 +32,12 @@
         -webkit-overflow-scrolling: touch;
     }
 
+    :global {
+        .ant-menu-item-selected {
+            z-index: 1;
+        }
+    }
+
     .drag-bar {
         position: absolute;
         top: 0;
@@ -40,17 +46,33 @@
         height: 100%;
         cursor: col-resize;
         z-index: 1;
+    }
 
-        &:before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            margin-top: -50px;
-            right: -4px;
-            width: 5px;
-            height: 100px;
-            background: url("./drag.png") no-repeat;
-            background-size: 100% 100%;
+    .drag-bar-icon {
+        position: absolute;
+        top: 50%;
+        margin-top: -50px;
+        right: -5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: flex-start;
+        padding: 20px 0;
+        width: 6px;
+        height: 100px;
+        background: #fff;
+        border: 1px solid #e8e8e8;
+        border-left: 0;
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+        cursor: move;
+
+        span {
+            display: block;
+            width: 2px;
+            height: 2px;
+            background: @primary-color;
+            border-radius: 50%;
         }
     }
 }
