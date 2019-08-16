@@ -84,8 +84,6 @@ export default class UserCenter extends Component {
 
     };
 
-    FormElement = (props) => <FormElement form={this.props.form} labelWidth={62} width={300} style={{paddingLeft: 16}} {...props}/>;
-
     render() {
         const {
             total,
@@ -97,7 +95,12 @@ export default class UserCenter extends Component {
             id,
         } = this.state;
 
-        const FormElement = this.FormElement;
+        const formElementProps = {
+            labelWidth: 62,
+            width: 300,
+            style: {paddingLeft: 16},
+            form: this.props.form,
+        };
         return (
             <PageContent>
                 <QueryBar
@@ -107,10 +110,12 @@ export default class UserCenter extends Component {
                 >
                     <FormRow>
                         <FormElement
+                            {...formElementProps}
                             label="名称"
                             field="name"
                         />
                         <FormElement
+                            {...formElementProps}
                             type="select"
                             label="职位"
                             field="job"
@@ -122,15 +127,17 @@ export default class UserCenter extends Component {
                     </FormRow>
                     <FormRow>
                         <FormElement
+                            {...formElementProps}
                             type="date"
                             label="入职时间"
                             field="time"
                         />
                         <FormElement
+                            {...formElementProps}
                             label="年龄"
                             field="age"
                         />
-                        <FormElement layout width="auto">
+                        <FormElement {...formElementProps} layout>
                             <Button type="primary" onClick={this.handleSearch}>提交</Button>
                             <Button onClick={() => this.props.form.resetFields()}>重置</Button>
                         </FormElement>

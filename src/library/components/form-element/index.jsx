@@ -151,7 +151,7 @@ export default class FormElement extends Component {
             form,
             type = 'input',
             labelWidth,
-            width, // 元素宽度，默认 100%
+            width, // 整体宽度，默认 100%
             tip,
             field,
             decorator,
@@ -222,9 +222,14 @@ export default class FormElement extends Component {
         });
 
         // 处理整体样式
+        const wrapperStyle = {};
         if (width !== void 0) {
-            style.width = width;
-            style.flexBasis = width;
+            wrapperStyle.width = width;
+            wrapperStyle.flexBasis = width;
+            wrapperStyle.flexGrow = 0;
+            wrapperStyle.flexShrink = 0;
+        } else {
+            wrapperStyle.flex = 1;
         }
 
         // 处理元素样式
@@ -266,7 +271,7 @@ export default class FormElement extends Component {
 
         return (
             <div
-                style={{display: type === 'hidden' ? 'none' : 'block', ...style}}
+                style={{display: type === 'hidden' ? 'none' : 'block', ...wrapperStyle, ...style}}
                 className="form-element-flex-root"
                 ref={node => this.container = node}
             >

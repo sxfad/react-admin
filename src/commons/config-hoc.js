@@ -7,6 +7,7 @@ import {connect as reduxConnect} from '@/models';
 import {ajaxHoc} from '@/commons/ajax';
 import pubSubHoc from '@/library/utils/pub-sub-hoc'
 import eventHoc from '@/library/utils/dom-event-hoc';
+import {modal as modalHoc} from '@/library/components';
 import {ROUTE_BASE_NAME} from '@/router/AppRouter';
 
 /**
@@ -33,27 +34,31 @@ export default (options) => {
             connect = false,        // 是否与redux进行连接，true：只注入了this.props.action相关方法；false：不与redux进行连接；(state) => ({title: state.page.title})：将函数返回的数据注入this.props
             event = false,          // 是否添加event高阶组件，可以使用this.props.addEventListener添加dom事件，并在组件卸载时会自动清理；通过this.props.removeEventListener移出dom事件
             pubSub = false,         // 是否添加发布订阅高阶组件，可以使用this.props.subscribe(topic, (msg, data) => {...})订阅事件，并在组件卸载时，会自动取消订阅; 通过this.props.publish(topic, data)发布事件
+            modal = false,          // 当前组件是否是modal
         } = options;
 
-        const hocFuncs = [];
+        const hocFunctions = [];
 
-        if (event) hocFuncs.push(eventHoc());
+        // 确保modal在第一个
+        if (modal) hocFunctions.push(modalHoc(modal));
 
-        if (pubSub) hocFuncs.push(pubSubHoc());
+        if (event) hocFunctions.push(eventHoc());
 
-        if (query === true) hocFuncs.push(queryHoc());
+        if (pubSub) hocFunctions.push(pubSubHoc());
 
-        if (router === true) hocFuncs.push(withRouter);
+        if (query === true) hocFunctions.push(queryHoc());
 
-        if (ajax === true) hocFuncs.push(ajaxHoc());
+        if (router === true) hocFunctions.push(withRouter);
 
-        hocFuncs.push(reduxConnect());
+        if (ajax === true) hocFunctions.push(ajaxHoc());
 
-        if (connect === true) hocFuncs.push(reduxConnect());
+        hocFunctions.push(reduxConnect());
 
-        if (typeof connect === 'function') hocFuncs.push(reduxConnect(connect));
+        if (connect === true) hocFunctions.push(reduxConnect());
 
-        const hocs = compose(hocFuncs);
+        if (typeof connect === 'function') hocFunctions.push(reduxConnect(connect));
+
+        const hocs = compose(hocFunctions);
 
         const componentName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
 

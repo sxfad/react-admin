@@ -1,17 +1,19 @@
 import React, {Component, Fragment} from 'react';
-import {Form, Row, Col, Button} from 'antd';
+import {Form, Button} from 'antd';
 import _ from 'lodash';
-import {FormElement} from '@/library/components';
+import {FormElement, FormRow} from '@/library/components';
 import PageContent from '@/layouts/page-content';
 import config from '@/commons/config-hoc';
 import validator from '@/library/utils/validation-rule';
-import {modal, ModalContent} from '@/library/components';
+import {ModalContent} from '@/library/components';
 
-@modal({
-    title: props => props.id === null ? '添加用户' : '修改用户',
-    fullScreen: true,
+@config({
+    ajax: true,
+    modal: {
+        title: props => props.id === null ? '添加用户' : '修改用户',
+        fullScreen: true,
+    }
 })
-@config({ajax: true})
 @Form.create()
 export default class EditModal extends Component {
     state = {
@@ -82,7 +84,10 @@ export default class EditModal extends Component {
         const {id, form} = this.props;
         const isEdit = id !== null;
         const {loading, data} = this.state;
-        const labelWidth = 100;
+        const formElementProps = {
+            labelWidth: 100,
+            form,
+        };
 
         return (
             <ModalContent
@@ -96,25 +101,76 @@ export default class EditModal extends Component {
                 }
             >
                 <PageContent footer={false}>
-                    <Form onSubmit={this.handleSubmit} style={{height: 1000, background: 'red'}}>
+                    <Form onSubmit={this.handleSubmit} style={{height: 1000}}>
                         {isEdit ? <FormElement type="hidden" field="id" initialValue={data.id}/> : null}
-                        <Row>
-                            <Col span={24}>
-                                <FormElement
-                                    form={form}
-                                    label="名称"
-                                    labelWidth={labelWidth}
-                                    field="name"
-                                    initialValue={data.name}
-                                    required
-                                    rules={[
-                                        validator.noSpace(),
-                                        validator.userNameExist(),
-                                        {validator: this.userNameExist}
-                                    ]}
-                                />
-                            </Col>
-                        </Row>
+                        <FormRow>
+                            <FormElement
+                                {...formElementProps}
+                                width={300}
+                                label="名称"
+                                field="name"
+                                initialValue={data.name}
+                                required
+                                rules={[
+                                    validator.noSpace(),
+                                    validator.userNameExist(),
+                                    {validator: this.userNameExist}
+                                ]}
+                            />
+                            <FormElement
+                                {...formElementProps}
+                                label="年龄"
+                                field="age"
+                                initialValue={data.age}
+                                required
+                            />
+                            <FormElement
+                                {...formElementProps}
+                                width={300}
+                                label="名称"
+                                field="name2"
+                                initialValue={data.name}
+                                required
+                                rules={[
+                                    validator.noSpace(),
+                                    validator.userNameExist(),
+                                    {validator: this.userNameExist}
+                                ]}
+                            />
+                            <FormElement
+                                {...formElementProps}
+                                label="年龄"
+                                field="age2"
+                                initialValue={data.age}
+                                required
+                            />
+                        </FormRow>
+                        <FormRow>
+                            <FormElement
+                                {...formElementProps}
+                                label="名称"
+                                field="name3"
+                                initialValue={data.name}
+                                required
+                                rules={[
+                                    validator.noSpace(),
+                                    validator.userNameExist(),
+                                    {validator: this.userNameExist}
+                                ]}
+                            />
+                        </FormRow>
+                        <FormElement
+                            {...formElementProps}
+                            label="名称"
+                            field="name4"
+                            initialValue={data.name}
+                            required
+                            rules={[
+                                validator.noSpace(),
+                                validator.userNameExist(),
+                                {validator: this.userNameExist}
+                            ]}
+                        />
                     </Form>
                 </PageContent>
             </ModalContent>

@@ -21,7 +21,7 @@ export default (options) => WrappedComponent => {
     const componentName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
 
     return class ModalComponent extends Component {
-        static displayName = `withModal(${componentName})`;
+        static displayName = `WithModal(${componentName})`;
 
         getTitle = () => {
             let title;
