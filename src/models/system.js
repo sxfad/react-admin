@@ -22,7 +22,10 @@ export default {
         tabs: [{path: true, text: true, icon: true, active: true, scrollTop: true}],
     },
 
-    setTabs: (tabs) => ({tabs}),
+    setTabs: (newTabs) => {
+        const tabs = newTabs.filter(item => item.path !== '/login');
+        return {tabs};
+    },
     setKeepPage: keepPage => ({keepPage}),
 
     setCurrentTabTitle: (title, state) => {
