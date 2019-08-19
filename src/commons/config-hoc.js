@@ -58,12 +58,14 @@ export default (options) => {
 
         if (typeof connect === 'function') hocFunctions.push(reduxConnect(connect));
 
-        const hocs = compose(hocFunctions);
+        const higherOrderComponents = compose(hocFunctions);
 
         const componentName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
 
-        @hocs
+        @higherOrderComponents
         class WithConfig extends Component {
+            static displayName = `WithConfig(${componentName})`;
+
             constructor(...args) {
                 super(...args);
                 this.initFrame();
@@ -153,8 +155,6 @@ export default (options) => {
                 // 页面左侧是否收起
                 if (sideCollapsed !== undefined) sideAction.setCollapsed(sideCollapsed);
             };
-
-            static displayName = `WithConfig(${componentName})`;
 
             render() {
                 return (

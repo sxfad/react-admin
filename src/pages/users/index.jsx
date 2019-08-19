@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {Button, Form} from 'antd';
 import PageContent from '@/layouts/page-content';
 import {
@@ -94,17 +94,17 @@ export default class UserCenter extends Component {
             visible,
             id,
         } = this.state;
+        const {form} = this.props;
 
         const formElementProps = {
+            form,
             labelWidth: 62,
             width: 300,
             style: {paddingLeft: 16},
-            form: this.props.form,
         };
         return (
             <PageContent>
                 <QueryBar
-                    showCollapsed
                     collapsed={collapsed}
                     onCollapsedChange={collapsed => this.setState({collapsed})}
                 >
@@ -124,20 +124,22 @@ export default class UserCenter extends Component {
                                 {value: 2, label: 2},
                             ]}
                         />
-                    </FormRow>
-                    <FormRow>
-                        <FormElement
-                            {...formElementProps}
-                            type="date"
-                            label="入职时间"
-                            field="time"
-                        />
-                        <FormElement
-                            {...formElementProps}
-                            label="年龄"
-                            field="age"
-                        />
-                        <FormElement {...formElementProps} layout>
+                        {collapsed ? null : (
+                            <Fragment>
+                                <FormElement
+                                    {...formElementProps}
+                                    type="date"
+                                    label="入职时间"
+                                    field="time"
+                                />
+                                <FormElement
+                                    {...formElementProps}
+                                    label="年龄"
+                                    field="age"
+                                />
+                            </Fragment>
+                        )}
+                        <FormElement {...formElementProps} width="auto" layout>
                             <Button type="primary" onClick={this.handleSearch}>提交</Button>
                             <Button onClick={() => this.props.form.resetFields()}>重置</Button>
                         </FormElement>

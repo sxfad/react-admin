@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {getElementTop, getParentByClassName} from '@/library/utils';
 
 /**
- * Modal 的内容容器，默认会铺满全屏，内部内容滚动
+ * Modal 的内容容器，默认会使用屏幕剩余空间，内部内容滚动
  */
 export default class ModalContent extends Component {
     state = {
@@ -12,7 +12,7 @@ export default class ModalContent extends Component {
     };
 
     static propTypes = {
-        surplusSpace: PropTypes.bool,   // 是否铺面全屏
+        surplusSpace: PropTypes.bool,   // 是否使用屏幕剩余空间
         loading: PropTypes.bool,        // 是否加载中
         otherHeight: PropTypes.number,  // 除了主体内容之外的其他高度，用于计算主体高度；
         footer: PropTypes.any,          // 底部

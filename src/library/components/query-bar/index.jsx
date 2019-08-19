@@ -1,22 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Icon} from 'antd';
+import classNames from 'classnames';
 import './index.less';
 
 export default class QueryBar extends React.Component {
     static propTypes = {
-        showCollapsed: PropTypes.bool,      // 是否显示隐藏 展开/收起 按钮
         collapsed: PropTypes.bool,          // 展开/收起 状态
         onCollapsedChange: PropTypes.func,  // 展开/收起 状态改变
     };
 
     static defaultProps = {
-        showCollapsed: false,
-        collapsed: true,
         onCollapsedChange: collapsed => collapsed,
     };
 
-    state = {};
+    state = {
+        showCollapsed: false,
+    };
+
+    static getDerivedStateFromProps(nextProps) {
+        if ('collapsed' in nextProps) return {showCollapsed: true};
+    }
 
     handleCollapsedChange = (e) => {
         e.preventDefault();
@@ -25,21 +29,31 @@ export default class QueryBar extends React.Component {
         if (onCollapsedChange) {
             onCollapsedChange(!collapsed);
         }
+
+        // 页面内容有改动，页面中有可能有撑满全屏的元素，需要调整
+        // 切换时，滚动条会有闪动，需要调整body的overflow
+        const oldOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => {
+            window.dispatchEvent(new Event('resize'));
+            document.body.style.overflow = oldOverflow;
+        });
     };
 
     render() {
         const {
             collapsed,
-            showCollapsed,
             className,
             onCollapsedChange,
             ...others
         } = this.props;
+        const {showCollapsed} = this.state;
 
         return (
             <div
-                className={`${className} sx-query-bar`}
-                {...others}>
+                className={classNames(className, 'sx-query-bar', {'with-collapse': showCollapsed})}
+                {...others}
+            >
                 {
                     showCollapsed ? (
                         <a className="sx-query-bar-collapsed" onClick={this.handleCollapsedChange}>
