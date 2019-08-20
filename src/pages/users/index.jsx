@@ -30,12 +30,12 @@ export default class UserCenter extends Component {
     };
 
     columns = [
-        {title: '用户名', dataIndex: 'name', key: 'name'},
-        {title: '年龄', dataIndex: 'age', key: 'age'},
-        {title: '工作', dataIndex: 'job', key: 'job'},
-        {title: '职位', dataIndex: 'position', key: 'position'},
+        {title: '用户名', dataIndex: 'name', width: 100},
+        {title: '年龄', dataIndex: 'age', width: 100},
+        {title: '工作', dataIndex: 'job', width: 100},
+        {title: '职位', dataIndex: 'position', width: 100},
         {
-            title: '操作', dataIndex: 'operator', key: 'operator',
+            title: '操作', dataIndex: 'operator', width: 100,
             render: (value, record) => {
                 const {id, name} = record;
                 const items = [
@@ -60,13 +60,15 @@ export default class UserCenter extends Component {
 
     componentDidMount() {
         this.handleSearch();
+        console.log(this.nameDom);
     }
 
     handleSearch = () => {
+        /*
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (err) return;
-            const {pageNum, pageSize} = this.state;
 
+            const {pageNum, pageSize} = this.state;
             const params = {
                 ...values,
                 pageNum,
@@ -82,6 +84,21 @@ export default class UserCenter extends Component {
                 });
         });
 
+        */
+
+        const dataSource = Array.from({length: 20})
+            .map((item, index) => {
+                const n = index + 1;
+                return {
+                    id: n,
+                    name: n,
+                    age: n,
+                    job: n,
+                    position: n,
+                };
+            });
+
+        this.setState({dataSource});
     };
 
     render() {
@@ -113,6 +130,7 @@ export default class UserCenter extends Component {
                             {...formElementProps}
                             label="名称"
                             field="name"
+                            ref={node => this.nameDom = node}
                         />
                         <FormElement
                             {...formElementProps}

@@ -23,6 +23,6 @@
 - [ ] 去掉QueryItem组件，使用FormElement编写查询条件
 - [x] 优化FormElement组件，参考QueryItem添加布局功能
     - [x] ItemRow组件用于布局，flex方式 使用antd 的Row Col即可
-    - [ ] 添加propTypes，属性提示
-- [ ] 重写可编辑表格组件
+    - [x] 添加propTypes，属性提示
+- [x] 重写可编辑表格组件
 - [ ] FormElement组件 ref问题，有场景需要获取元素的dom，进行获取焦点等操作

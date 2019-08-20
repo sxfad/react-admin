@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {
     Form,
     InputNumber,
@@ -108,7 +109,49 @@ function getElement(item) {
     throw new Error(`no such type: ${type}`);
 }
 
-export default class FormElement extends Component {
+class FormElement extends Component {
+    static propTypes = {
+        // 自定义属性
+        form: PropTypes.object,
+        type: PropTypes.string.isRequired,
+        labelWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        tip: PropTypes.any,
+        field: PropTypes.string,
+        decorator: PropTypes.object,
+        style: PropTypes.object,
+        elementStyle: PropTypes.object,
+        layout: PropTypes.bool,
+
+        // Form.Item属性
+        colon: PropTypes.any,
+        extra: PropTypes.any,
+        hasFeedback: PropTypes.any,
+        help: PropTypes.any,
+        label: PropTypes.any,
+        labelCol: PropTypes.any,
+        required: PropTypes.any,
+        validateStatus: PropTypes.any,
+        wrapperCol: PropTypes.any,
+
+        // decorator属性 展开方便使用
+        getValueFromEvent: PropTypes.any,
+        initialValue: PropTypes.any,
+        normalize: PropTypes.any,
+        preserve: PropTypes.any,
+        rules: PropTypes.any,
+        trigger: PropTypes.any,
+        validateFirst: PropTypes.any,
+        validateTrigger: PropTypes.any,
+        valuePropName: PropTypes.any,
+    };
+
+    static defaultProps = {
+        type: 'input',
+        style: {},
+        elementStyle: {},
+        layout: false,
+    };
 
     componentDidMount() {
         this.setStyle();
@@ -149,15 +192,16 @@ export default class FormElement extends Component {
         let {
             // 自定义属性
             form,
-            type = 'input',
+            type,
             labelWidth,
             width, // 整体宽度，默认 100%
             tip,
             field,
             decorator,
-            style = {},
-            elementStyle = {},
-            layout = false,
+            style,
+            elementStyle,
+            layout,
+            forwardedRef,
 
             // Form.Item属性
             colon,
@@ -286,11 +330,21 @@ export default class FormElement extends Component {
                     validateStatus={validateStatus}
                     wrapperCol={wrapperCol}
                 >
-                    {form ? getFieldDecorator(field, nextDecorator)(
-                        children ? children : getElement({type, ...others, style: eleStyle})
+                    {form ? (
+                        getFieldDecorator(field, nextDecorator)(
+                            children ? (
+                                children
+                            ) : (
+                                getElement({type, ...others, ref: forwardedRef, style: eleStyle})
+                            )
+                        )
                     ) : children}
                 </FormItem>
             </div>
         );
     }
 }
+
+export default React.forwardRef((props, ref) => {
+    return <FormElement {...props} forwardedRef={ref}/>;
+});
