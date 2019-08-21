@@ -5,7 +5,6 @@ import DropBox from "./DropBox";
 import ComponentSettingsForm from './ComponentSettingsForm';
 
 @config({
-    event: true,
     connect: state => {
         return {
             pageConfig: state.dragPage.pageConfig,
@@ -15,16 +14,7 @@ import ComponentSettingsForm from './ComponentSettingsForm';
     },
 })
 export default class ComponentSettings extends Component {
-    state = {
-        windowHeight: document.body.clientHeight,
-    };
-
-    componentDidMount() {
-        this.props.addEventListener(window, 'resize', () => {
-            const windowHeight = document.body.clientHeight;
-            this.setState({windowHeight});
-        })
-    }
+    state = {};
 
     handleToggleGuideLine = () => {
         const {showGuideLine} = this.props;
@@ -38,8 +28,6 @@ export default class ComponentSettings extends Component {
             pageConfig,
             currentNode,
         } = this.props;
-
-        const {windowHeight} = this.state;
 
         const allIds = ['0'];
         const loop = node => {
@@ -55,7 +43,7 @@ export default class ComponentSettings extends Component {
         if (!currentNode) currentNode = {};
 
         return (
-            <div style={{display: 'flex', flexDirection: 'column'}}>
+            <div style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
                 <div style={{
                     display: 'flex',
                     flex: '0 0 50px',
@@ -87,7 +75,7 @@ export default class ComponentSettings extends Component {
                 </div>
                 <div
                     style={{
-                        height: windowHeight - 36 - 50 - 50,
+                        flex: 1,
                         overflow: 'auto',
                         padding: 10,
                     }}>

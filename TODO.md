@@ -15,14 +15,14 @@
     - [x] 登录页面
     - [x] Logo
     - [x] 404 401 等错误页面
-- [ ] antd 组件整理
+- [x] antd 组件整理
 - [x] 相关文档整理
 - [x] 左侧菜单自动滚动到可视范围之内
 - [x] gitBook编写文档
 - [x] 抓取脚本，如果修改了经过webpack构建的文件，会导致首次启动自动打开浏览器是白屏
-- [ ] 去掉QueryItem组件，使用FormElement编写查询条件
+- [x] 去掉QueryItem组件，使用FormElement编写查询条件
 - [x] 优化FormElement组件，参考QueryItem添加布局功能
     - [x] ItemRow组件用于布局，flex方式 使用antd 的Row Col即可
     - [x] 添加propTypes，属性提示
 - [x] 重写可编辑表格组件
-- [ ] FormElement组件 ref问题，有场景需要获取元素的dom，进行获取焦点等操作
+- [x] FormElement组件 ref问题，有场景需要获取元素的dom，进行获取焦点等操作

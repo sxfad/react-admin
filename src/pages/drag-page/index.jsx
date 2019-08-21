@@ -6,29 +6,36 @@ import PageContent from '@/layouts/page-content';
 import ComponentContainer from './ComponentContainer';
 import PageContainer from './PageContainer';
 import ComponentSettings from './ComponentSettings';
+import {getElementTop} from '@/library/utils';
 import './index-style.less';
 
-@config({path: '/drag-page', event: true})
+@config({path: '/drag-page', event: true, noFrame: true})
 export default class index extends Component {
     state = {
         windowHeight: document.body.clientHeight,
     };
 
     componentDidMount() {
+        this.setHeight();
         this.props.addEventListener(window, 'resize', () => {
-            const windowHeight = document.body.clientHeight;
-            this.setState({windowHeight});
-        })
+            this.setHeight();
+        });
     }
 
+    setHeight = () => {
+        const windowHeight = document.body.clientHeight;
+        const top = getElementTop(this.container);
+
+        this.setState({height: windowHeight - 10 - top});
+    };
+
     render() {
-        const {windowHeight} = this.state;
-        const height = windowHeight - 20 - 50;
+        const {height} = this.state;
 
         return (
             <DndProvider backend={HTML5Backend}>
                 <PageContent styleName="root">
-                    <div styleName="component-container" style={{height,}}>
+                    <div ref={node => this.container = node} styleName="component-container" style={{height,}}>
                         <ComponentContainer/>
                     </div>
                     <div styleName="page-container" style={{height,}}>

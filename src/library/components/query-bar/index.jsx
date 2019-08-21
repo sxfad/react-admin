@@ -19,7 +19,9 @@ export default class QueryBar extends React.Component {
     };
 
     static getDerivedStateFromProps(nextProps) {
-        if ('collapsed' in nextProps) return {showCollapsed: true};
+        const showCollapsed = 'collapsed' in nextProps;
+
+        return {showCollapsed};
     }
 
     handleCollapsedChange = (e) => {
