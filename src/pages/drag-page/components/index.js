@@ -29,6 +29,7 @@ import * as form from './form';
  *      其他属性作为FormElement属性
  *
  * render: 渲染组件
+ * toSource: 转换成源码
  * targetTypes: string 或 [string, string] 用于指定当前组件可以投放到那些组件当中，比如Col要指定 targetTypes: 'Row'等
  * acceptTypes: string 或 [string, string] 指定当前组件可以接受投放的类型，比如Row要指定 targetTypes: 'Col'等，与targetTypes成对出现
  * */

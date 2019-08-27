@@ -15,6 +15,7 @@ export default {
             content: '纯文本',
         },
         render: props => props.content,
+        toSource: props => props.content,
     },
     tip: {
         component: 'div',

@@ -1,6 +1,7 @@
 import React from "react";
 import components from "./components";
 import {findNodeById, findSiblingsById, findParentById} from "@/pages/drag-page/utils";
+import uuid from "uuid/v4";
 
 /**
  * 是否可编辑，如果可编辑，返回当前节点编辑配置信息。
@@ -271,3 +272,198 @@ export function renderNode(node, render, __parentId = '0', __parentDirection) {
 
     return render(resultCom, options);
 }
+
+const INDENT_SPACE = 4;
+
+export function virtualDomToString(virtualDom) {
+    if (!virtualDom) return null;
+
+    if (!virtualDom.__indent) virtualDom.__indent = INDENT_SPACE;
+
+    const {__type, __id, children, __indent, ...props} = virtualDom;
+    const com = components[__type];
+    // tagName component === 'string' key
+    let {tagName, component, toSource} = com;
+
+    if (!tagName) {
+        if (typeof component === 'string') {
+            tagName = component;
+        } else {
+            tagName = __type;
+        }
+    }
+
+    if (!tagName) return '';
+
+
+    let propsString = propsToString(props, __indent + INDENT_SPACE);
+
+    const indentSpace = getIndentSpace(__indent);
+
+    if (children?.length) {
+        return `${indentSpace}<${tagName}${propsString}>
+${children.map(item => {
+            item.__indent = __indent + INDENT_SPACE;
+            return virtualDomToString(item)
+        }).join('\n')}
+${indentSpace}</${tagName}>`
+    }
+
+    if (toSource) return `${indentSpace}${toSource(props)}`;
+    return `${indentSpace}<${tagName}${propsString}/>`
+}
+
+function getIndentSpace(indent) {
+    return Array.from({length: indent + 1}).join(' ');
+}
+
+function propsToString(props, indent = INDENT_SPACE) {
+    let propsArr = Object.keys(props || {}).map(key => {
+        const value = props[key];
+        const valueStr = JSON.stringify(value);
+
+        if (typeof value === 'string') return `${key}=${valueStr}`;
+
+        return `${key}={${valueStr}}`;
+    });
+
+    if (propsArr?.length) {
+        if (propsArr.length > 3) {
+            const indentSpace = getIndentSpace(indent);
+            const finallyIndentSpace = getIndentSpace(indent - INDENT_SPACE);
+
+            return `\n${indentSpace}${propsArr.join('\n' + indentSpace)}\n${finallyIndentSpace}`;
+        } else {
+            return ` ${propsArr.join(' ')}`;
+        }
+    }
+
+    return '';
+}
+
+
+const testVirtualDom = {
+    __type: 'PageContent', // 节点组件类型
+    __id: '1', // 节点的唯一标识
+    children: [
+        {
+            __type: 'QueryBar',
+            __id: '01',
+            children: [
+                {
+                    __type: 'FormRow',
+                    __id: uuid(),
+                    children: [
+                        {
+                            __type: 'FormInput',
+                            __id: uuid(),
+                            label: '输入框',
+                            style: {paddingLeft: 16},
+                            width: '200px',
+                        },
+                        {
+                            __type: 'FormSelect',
+                            __id: uuid(),
+                            type: 'select',
+                            label: '下拉框',
+                            style: {paddingLeft: 16},
+                            width: '200px',
+                            options: [
+                                {value: '1', label: '下拉项1'},
+                                {value: '2', label: '下拉项2'},
+                            ],
+                        },
+                        {
+                            __type: 'FormElement',
+                            __id: uuid(),
+                            layout: true,
+                            style: {paddingLeft: 16},
+                            width: 'auto',
+                            children: [
+                                {
+                                    __type: 'Button',
+                                    __id: uuid(),
+                                    type: 'primary',
+                                    style: {marginRight: 8},
+                                    children: [
+                                        {
+                                            __type: 'text',
+                                            __id: uuid(),
+                                            content: '查询',
+                                        }
+                                    ],
+                                },
+                                {
+                                    __type: 'Button',
+                                    __id: uuid(),
+                                    type: 'default',
+                                    children: [
+                                        {
+                                            __type: 'text',
+                                            __id: uuid(),
+                                            content: '重置',
+                                        }
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            __type: 'ToolBar',
+            __id: '11',
+            children: [
+                {
+                    __type: 'Button',
+                    __id: '111',
+                    children: [
+                        {
+                            __type: 'text',
+                            __id: '1111',
+                            content: '默认按钮',
+                        }
+                    ],
+                },
+                {
+                    __type: 'Button',
+                    __id: '112',
+                    type: 'primary',
+                    children: [
+                        {
+                            __type: 'text',
+                            __id: '1121',
+                            content: '主按钮',
+                        }
+                    ],
+                },
+                {
+                    __type: 'Button',
+                    __id: '113',
+                    type: 'danger',
+                    children: [
+                        {
+                            __type: 'text',
+                            __id: '1131',
+                            content: '危险按钮',
+                        }
+                    ],
+                },
+            ],
+        },
+        {
+            __type: 'div',
+            __id: '12',
+            children: [
+                {
+                    __type: 'text', // 临时容器，元素投放使用，不实际渲染成节点
+                    __id: '121',
+                    content: '文字节点内容',
+                },
+            ],
+        },
+    ],
+};
+
+console.log(virtualDomToString(testVirtualDom));

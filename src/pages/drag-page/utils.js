@@ -107,7 +107,3 @@ export function findSiblingsById(root, id) {
     const parent = findParentById(root, id);
     return parent?.children;
 }
-
-
-
-
