@@ -99,6 +99,7 @@ export default class SXAjax {
         let cancel;
 
         const isGet = method === 'get';
+        const isDelete = method === 'delete';
         const isMock = this.isMock(url, data, method, options);
 
         let instance = this.instance;
@@ -143,8 +144,8 @@ export default class SXAjax {
         }
 
         let params = {};
-        if (isGet) {
-            params = data; // params 是get请求拼接到url上的
+        if (isGet || isDelete) {
+            params = data; // params 是get或delete请求拼接到url上的
             data = {}; // data 是put、post 等请求发送的数据
         }
 

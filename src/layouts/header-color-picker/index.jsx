@@ -50,6 +50,10 @@ export default class ThemeColorPicker extends Component {
         toolTipVisible: false,
     };
 
+    componentWillUnmount() {
+        if (this.ST) clearTimeout(this.ST);
+    }
+
     handleColorChange = color => {
         const changeColor = () => {
             window.less

@@ -11,7 +11,7 @@ import {ModalContent} from '@/library/components';
     ajax: true,
     modal: {
         title: props => props.id === null ? '添加用户' : '修改用户',
-        fullScreen: true,
+        fullScreen: false,
     }
 })
 @Form.create()
@@ -65,11 +65,20 @@ export default class EditModal extends Component {
         });
     };
 
+    // 节流校验写法 如果同一个页面多次调用，必须传递key参数
+    userNameExist = (key = 'userNameExit', prevValue, message = '用户名重复') => {
+        if (!this[key]) this[key] = _.debounce((rule, value, callback) => {
+            if (!value) return callback();
+            if (prevValue && value === prevValue) return callback();
 
-    // 节流校验写法
-    userNameExist = _.debounce((rule, value, callback) => {
-        console.log('节流发请求');
-    }, 500);
+            if (value === '22') return callback(message);
+
+            console.log('组件内节流发请求');
+            return callback();
+        }, 500);
+
+        return {validator: this[key]};
+    };
 
     handleCancel = () => {
         const {onCancel} = this.props;
@@ -101,46 +110,28 @@ export default class EditModal extends Component {
                 }
             >
                 <PageContent footer={false}>
-                    <Form onSubmit={this.handleSubmit} style={{height: 1000}}>
+                    <Form onSubmit={this.handleSubmit}>
                         {isEdit ? <FormElement type="hidden" field="id" initialValue={data.id}/> : null}
                         <FormRow>
                             <FormElement
                                 {...formElementProps}
                                 width={300}
                                 label="名称"
+                                labelTip="label中的提示信息"
+                                tip="显示出来的提示信息"
                                 field="name"
                                 initialValue={data.name}
                                 required
                                 rules={[
                                     validator.noSpace(),
-                                    validator.userNameExist(),
-                                    {validator: this.userNameExist}
+                                    validator.userNameExist('name1'),
+                                    this.userNameExist('nam2'),
                                 ]}
                             />
                             <FormElement
                                 {...formElementProps}
                                 label="年龄"
                                 field="age"
-                                initialValue={data.age}
-                                required
-                            />
-                            <FormElement
-                                {...formElementProps}
-                                width={300}
-                                label="名称"
-                                field="name2"
-                                initialValue={data.name}
-                                required
-                                rules={[
-                                    validator.noSpace(),
-                                    validator.userNameExist(),
-                                    {validator: this.userNameExist}
-                                ]}
-                            />
-                            <FormElement
-                                {...formElementProps}
-                                label="年龄"
-                                field="age2"
                                 initialValue={data.age}
                                 required
                             />
@@ -154,8 +145,8 @@ export default class EditModal extends Component {
                                 required
                                 rules={[
                                     validator.noSpace(),
-                                    validator.userNameExist(),
-                                    {validator: this.userNameExist}
+                                    validator.userNameExist('name2'),
+                                    this.userNameExist('name2'),
                                 ]}
                             />
                         </FormRow>
@@ -167,10 +158,11 @@ export default class EditModal extends Component {
                             required
                             rules={[
                                 validator.noSpace(),
-                                validator.userNameExist(),
-                                {validator: this.userNameExist}
+                                // validator.userNameExist(),
+                                // {validator: this.userNameExist}
                             ]}
                         />
+                        <div style={{height: 1000, width: 100, background: 'red'}}/>
                     </Form>
                 </PageContent>
             </ModalContent>

@@ -116,6 +116,7 @@ class FormElement extends Component {
         type: PropTypes.string.isRequired,
         labelWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        labelTip: PropTypes.any,
         tip: PropTypes.any,
         field: PropTypes.string,
         decorator: PropTypes.object,
@@ -195,6 +196,7 @@ class FormElement extends Component {
             type,
             labelWidth,
             width, // 整体宽度，默认 100%
+            labelTip,
             tip,
             field,
             decorator,
@@ -299,12 +301,12 @@ class FormElement extends Component {
         }
 
         let formLabel = label;
-        if (tip) {
+        if (labelTip) {
             formLabel = (
                 <span>
                     <Tooltip
                         placement="bottom"
-                        title={tip}
+                        title={labelTip}
                     >
                         <Icon type="question-circle-o" style={{marginRight: '4px'}}/>
                     </Tooltip>
@@ -315,7 +317,7 @@ class FormElement extends Component {
 
         return (
             <div
-                style={{display: type === 'hidden' ? 'none' : 'block', ...wrapperStyle, ...style}}
+                style={{display: type === 'hidden' ? 'none' : 'flex', ...wrapperStyle, ...style}}
                 className="form-element-flex-root"
                 ref={node => this.container = node}
             >
@@ -340,6 +342,7 @@ class FormElement extends Component {
                         )
                     ) : children}
                 </FormItem>
+                {tip ? <div className="font-element-tip">{tip}</div> : null}
             </div>
         );
     }

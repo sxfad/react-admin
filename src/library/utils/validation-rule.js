@@ -162,14 +162,19 @@ export default {
         };
     },
 
-    // 截流校验写法
-    userNameExist() {
-        if (!this._userNameExist) this._userNameExist = _.debounce((rule, value, callback) => {
-            console.log('发请求');
-        }, 500);
+    // 截流校验写法，如果同一个页面多次使用，必须使用不同的key进行区分
+    userNameExist(key = '_userNameExit', prevValue, message = '用户名重复') {
+        if (!this[key]) this[key] = _.debounce((rule, value, callback) => {
+            if (!value) return callback();
 
+            if (prevValue && value === prevValue) return callback();
+            console.log('发请求');
+            if (value === '1') return callback(message);
+
+            callback();
+        }, 500);
         return {
-            validator: this._userNameExist
+            validator: this[key]
         }
     },
 };

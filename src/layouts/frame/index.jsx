@@ -8,7 +8,7 @@ import Header from '../header';
 import Side from '../side';
 import PageTabs from '../page-tabs';
 import {connect} from '@/models/index';
-import {getSelectedMenuByPath} from '@/commons';
+import {getLoginUser, getSelectedMenuByPath, setLoginUser} from '@/commons';
 import {PAGE_FRAME_LAYOUT} from '@/models/settings';
 import './style.less';
 
@@ -41,7 +41,46 @@ import './style.less';
 export default class FrameTopSideMenu extends Component {
     constructor(...props) {
         super(...props);
-        const {action: {menu, side}} = this.props;
+        const {action: {menu, side, system}} = this.props;
+        // 从Storage中获取出需要同步到redux的数据
+        this.props.action.getStateFromStorage();
+
+        const loginUser = getLoginUser();
+        const userId = loginUser?.id;
+
+        // 获取系统菜单 和 随菜单携带过来的权限
+        this.state.loading = true;
+        menu.getMenus({
+            params: {userId},
+            onResolve: (res) => {
+                const menus = res || [];
+                const permissions = [];
+                const paths = [];
+
+                menus.forEach(({type, path, code}) => {
+                    if (type === '2' && code) permissions.push(code);
+
+                    if (path) paths.push(path);
+                });
+
+                if (loginUser) {
+                    loginUser.permissions = permissions;
+                    setLoginUser(loginUser);
+                }
+
+                // 设置当前登录的用户到model中
+                system.setLoginUser(loginUser);
+
+                // 保存用户权限到model中
+                system.setPermissions(permissions);
+
+                // 保存当前用户可用path到model中
+                system.setUserPaths(paths);
+            },
+            onComplete: () => {
+                this.setState({loading: false});
+            },
+        });
 
         setTimeout(() => { // 等待getStateFromStorage获取配置之后再设置
             menu.getMenuStatus();
@@ -67,6 +106,8 @@ export default class FrameTopSideMenu extends Component {
         layout: PAGE_FRAME_LAYOUT.SIDE_MENU,    // top-menu side-menu
         pageHeadFixed: true,        // 页面头部是否固定
     };
+
+    state = {};
 
     setTitleAndBreadcrumbs() {
         const {

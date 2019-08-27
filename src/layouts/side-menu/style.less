@@ -4,13 +4,20 @@
 
 .side-menu {
     height: 100%;
+    padding-right: 6px;
 
     & > ul {
         height: 100%;
     }
 
-    :global(.font-icon) {
-        margin-right: 8px;
+    :global {
+        .font-icon {
+            margin-right: 8px;
+        }
+
+        .ant-menu {
+            border-right: 0;
+        }
     }
 
     .menu-text {

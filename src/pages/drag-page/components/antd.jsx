@@ -85,6 +85,12 @@ export default {
                     {value: 'large', label: '大按钮'},
                 ],
             },
+            // {
+            //     name: '单击事件',
+            //     attribute: 'onClick',
+            //     valueType: 'string',
+            //     formType: 'input',
+            // },
         ],
     },
     Row: {
