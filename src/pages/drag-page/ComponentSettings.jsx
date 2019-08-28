@@ -3,6 +3,8 @@ import {Icon, Tooltip, Switch} from 'antd';
 import config from '@/commons/config-hoc';
 import DropBox from "./DropBox";
 import ComponentSettingsForm from './ComponentSettingsForm';
+import SourceCode from './SourceCode.jsx';
+import {virtualDomToString} from "./render-utils";
 
 @config({
     connect: state => {
@@ -14,7 +16,9 @@ import ComponentSettingsForm from './ComponentSettingsForm';
     },
 })
 export default class ComponentSettings extends Component {
-    state = {};
+    state = {
+        codeVisible: false,
+    };
 
     handleToggleGuideLine = () => {
         const {showGuideLine} = this.props;
@@ -28,6 +32,7 @@ export default class ComponentSettings extends Component {
             pageConfig,
             currentNode,
         } = this.props;
+        const {codeVisible} = this.state;
 
         const allIds = ['0'];
         const loop = node => {
@@ -41,7 +46,6 @@ export default class ComponentSettings extends Component {
         loop(pageConfig);
 
         if (!currentNode) currentNode = {};
-
         return (
             <div style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
                 <div style={{
@@ -72,14 +76,31 @@ export default class ComponentSettings extends Component {
                             onChange={this.handleToggleGuideLine}
                         />
                     </div>
+
+                    <div style={{flex: 1, textAlign: 'right', paddingRight: 16}}>
+                        <a onClick={() => this.setState({codeVisible: !codeVisible})}>
+                            <Icon
+                                style={{alignSelf: 'flex-end', fontSize: 20}}
+                                type={codeVisible ? 'form' : 'code'}
+                            />
+                        </a>
+                    </div>
                 </div>
                 <div
                     style={{
                         flex: 1,
                         overflow: 'auto',
-                        padding: 10,
+                        padding: codeVisible ? 0 : 10,
                     }}>
-                    <ComponentSettingsForm key={currentNode.__id}/>
+                    {codeVisible ? (
+                        <SourceCode
+                            code={virtualDomToString({virtualDom: currentNode, indent: 0}).jsx}
+                            language="jsx"
+                            plugins={["line-numbers"]}
+                        />
+                    ) : (
+                        <ComponentSettingsForm key={currentNode.__id}/>
+                    )}
                 </div>
             </div>
         );

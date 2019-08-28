@@ -2,6 +2,8 @@ import React from "react";
 import components from "./components";
 import {findNodeById, findSiblingsById, findParentById} from "@/pages/drag-page/utils";
 import uuid from "uuid/v4";
+import {isPlainObject, isArray} from 'lodash';
+
 
 /**
  * 是否可编辑，如果可编辑，返回当前节点编辑配置信息。
@@ -275,70 +277,171 @@ export function renderNode(node, render, __parentId = '0', __parentDirection) {
 
 const INDENT_SPACE = 4;
 
-export function virtualDomToString(virtualDom) {
-    if (!virtualDom) return null;
+export function virtualDomToString({virtualDom, path, indent = INDENT_SPACE * 3}) {
+    const imports = [];
+    const loop = virtualDom => {
+        if (!virtualDom?.__type) return '';
 
-    if (!virtualDom.__indent) virtualDom.__indent = INDENT_SPACE;
+        // 添加缩进
+        if (!virtualDom.__indent) virtualDom.__indent = indent;
 
-    const {__type, __id, children, __indent, ...props} = virtualDom;
-    const com = components[__type];
-    // tagName component === 'string' key
-    let {tagName, component, toSource} = com;
+        console.log(virtualDom);
+        const {__type, __id, children, __indent, __level, __TODO, ...props} = virtualDom;
+        const com = components[__type];
 
-    if (!tagName) {
-        if (typeof component === 'string') {
-            tagName = component;
-        } else {
-            tagName = __type;
+        // 获取标签（组件）名
+        let {tagName, component, toSource, dependence} = com;
+        if (!tagName) {
+            if (typeof component === 'string') {
+                tagName = component;
+            } else {
+                tagName = __type;
+            }
         }
-    }
 
-    if (!tagName) return '';
+        if (!tagName) return '';
 
+        if (dependence) imports.push({tagName, dependence});
 
-    let propsString = propsToString(props, __indent + INDENT_SPACE);
+        let propsString = propsToString(props, __indent + INDENT_SPACE);
 
-    const indentSpace = getIndentSpace(__indent);
+        const indentSpace = getIndentSpace(__indent);
 
-    if (children?.length) {
-        return `${indentSpace}<${tagName}${propsString}>
+        const todo = __TODO ? `${indentSpace}{/* TODO ${__TODO} */}\n` : '';
+
+        if (toSource) return `${todo}${indentSpace}${toSource({...props, children})}`;
+
+        if (children?.length) {
+            return `${todo}${indentSpace}<${tagName}${propsString}>
 ${children.map(item => {
-            item.__indent = __indent + INDENT_SPACE;
-            return virtualDomToString(item)
-        }).join('\n')}
+                item.__indent = __indent + INDENT_SPACE;
+                return loop(item);
+            }).join('\n')}
 ${indentSpace}</${tagName}>`
+        }
+        return `${todo}${indentSpace}<${tagName}${propsString}/>`
+    };
+
+    const jsx = loop(virtualDom);
+    let importsStrArray = [
+        "import React, {Component} from 'react';",
+        "import config from '@/commons/config-hoc';",
+    ];
+    if (imports?.length) {
+        const tagNameDependence = {};
+        imports.forEach(item => {
+            const {tagName, dependence} = item;
+            if (!tagNameDependence[dependence]) {
+                tagNameDependence[dependence] = new Set();
+            }
+            tagNameDependence[dependence].add(tagName);
+        });
+        Object.keys(tagNameDependence).forEach(key => {
+            const tagNames = Array.from(tagNameDependence[key]);
+            importsStrArray.push(`import {${tagNames.join(', ')}} from ${key};`);
+        });
     }
 
-    if (toSource) return `${indentSpace}${toSource(props)}`;
-    return `${indentSpace}<${tagName}${propsString}/>`
+
+    const indentSpace = getIndentSpace(INDENT_SPACE);
+    // 装饰器
+    const decorators = [
+        `@config({path: '${path}'})`,
+    ];
+
+    // 初始化 state
+    const initStates = `${indentSpace}state = {};\n`;
+
+    // 方法
+    const methods = `${indentSpace}componentDidMount() {
+    
+${indentSpace}}\n`;
+
+    return {
+        imports: `${importsStrArray.join('\n')}\n`,
+        decorators: decorators.join('\n'),
+        initStates,
+        methods,
+        jsx,
+    };
+}
+
+function getClassContent(options) {
+    const {
+        imports = '',
+        decorators = '',
+        initStates = '',
+        methods = '',
+        states = '',
+        props = '',
+        jsx = '',
+        componentName = 'index',
+    } = options;
+    return `${imports}
+${decorators}
+export default class ${componentName} extends Component {
+${initStates}
+${methods}
+    render() {
+${props}${states}
+        return (
+${jsx}        
+        );            
+    }
+}
+    `;
 }
 
 function getIndentSpace(indent) {
     return Array.from({length: indent + 1}).join(' ');
 }
 
+/**
+ * 获取属性字符串
+ * @param props
+ * @param indent
+ * @returns {string}
+ */
 function propsToString(props, indent = INDENT_SPACE) {
+    const indentSpace = getIndentSpace(indent);
+    const finallyIndentSpace = getIndentSpace(indent - INDENT_SPACE);
+
+    // 属性单独占用一行
+    let isSingleLine = false;
     let propsArr = Object.keys(props || {}).map(key => {
         const value = props[key];
         const valueStr = JSON.stringify(value);
 
+        // 值为字符串，直接写入，不添加{}
         if (typeof value === 'string') return `${key}=${valueStr}`;
+
+        // 值为true的属性，直接填写属性值即可
+        if (value === true) return `${key}`;
+
+        // 如果是对象 进行格式化，并去掉属性的双引号
+        if (isPlainObject(value) || isArray(value)) {
+            // space上线为10
+            let valueStr = JSON.stringify(value, null, INDENT_SPACE);
+            valueStr = valueStr
+                .split('\n')
+                .map(item => {
+                    return item
+                        .replace('"', '')
+                        .replace('":', ':');
+                })
+                .join(`\n${indentSpace}`);
+            isSingleLine = true;
+            return `${key}={${valueStr}}`;
+        }
 
         return `${key}={${valueStr}}`;
     });
 
-    if (propsArr?.length) {
-        if (propsArr.length > 3) {
-            const indentSpace = getIndentSpace(indent);
-            const finallyIndentSpace = getIndentSpace(indent - INDENT_SPACE);
-
-            return `\n${indentSpace}${propsArr.join('\n' + indentSpace)}\n${finallyIndentSpace}`;
-        } else {
-            return ` ${propsArr.join(' ')}`;
-        }
+    if (propsArr?.length > 3 || isSingleLine) {
+        return `\n${indentSpace}${propsArr.join('\n' + indentSpace)}\n${finallyIndentSpace}`;
     }
 
-    return '';
+    return propsArr?.length ? ` ${propsArr.join(' ')}` : '';
 }
 
 
@@ -466,4 +569,4 @@ const testVirtualDom = {
     ],
 };
 
-console.log(virtualDomToString(testVirtualDom));
+console.log(getClassContent(virtualDomToString({virtualDom: testVirtualDom, path: '/test', fileName: 'test.jsx'})));

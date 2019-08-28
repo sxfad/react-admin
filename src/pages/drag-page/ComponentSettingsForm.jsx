@@ -143,7 +143,7 @@ export default class ComponentSettings extends Component {
                         />
                     </div>
                 ) : (
-                    <Alert type="error" message="点击组件进行属性编辑"/>
+                    <Alert type="error" message="点击组件进行 属性编辑 或 查看源码"/>
                 )}
             </Form>
         );

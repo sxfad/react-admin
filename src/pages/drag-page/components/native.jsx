@@ -20,6 +20,10 @@ export default {
     tip: {
         component: 'div',
         title: '额外说明',
+        toSource: props => {
+            const {children: [{content}]} = props;
+            return `{/* TODO ${content} */}`;
+        },
         description: (
             <div>
                 <div>一般可以用来添加一些额外的说明，给开发人员一些提示。</div>
@@ -30,7 +34,9 @@ export default {
             style: {
                 padding: 8,
                 border: '1px dashed #ffa39e',
-                background: '#fff1f0'
+                background: '#fff1f0',
+                wordBreak: 'break-all',
+                overflowWrap: 'break-word',
             },
             children: [
                 {

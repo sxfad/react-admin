@@ -79,6 +79,7 @@
         "postcss-loader": "3.0.0",
         "postcss-preset-env": "6.3.1",
         "postcss-safe-parser": "4.0.1",
+        "prismjs": "^1.17.1",
         "prop-types": "^15.6.2",
         "pubsub-js": "^1.7.0",
         "qs": "^6.6.0",
@@ -211,6 +212,24 @@
                             "syntax": "postcss-less"
                         }
                     }
+                }
+            ],
+            [
+                "prismjs",
+                {
+                    "languages": [
+                        "javascript",
+                        "jsx",
+                        "css",
+                        "html"
+                    ],
+                    "plugins": [
+                        "line-numbers",
+                        "copy-to-clipboard",
+                        "show-language"
+                    ],
+                    "theme": "okaidia",
+                    "css": true
                 }
             ]
         ]

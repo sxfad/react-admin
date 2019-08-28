@@ -2016,6 +2016,11 @@ babel-plugin-named-asset-import@^0.3.0:
   resolved "https://registry.yarnpkg.com/babel-plugin-named-asset-import/-/babel-plugin-named-asset-import-0.3.0.tgz#3289ec622d19cd1cc84df8d784b41f1b048bd524"
   integrity sha512-to6Shd/r8fMRRg/MaOhDNfqpuXfjlQx3ypWDG6jh4ESCVZDJCgdgIalZbrnVlBPGgH/QeyHMjnGb2W+JJiy+NQ==
 
+babel-plugin-prismjs@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/babel-plugin-prismjs/-/babel-plugin-prismjs-1.1.1.tgz#974b2346d6ea8bdb2b16c3fdf1342bbe97fc6f51"
+  integrity sha512-MmwxA//jBpXH0IhJ2FbpBJmd6Bvq5rBe3UD3udUqfkkOdh6lmQeYxoVGpkIvLuuXecrynWjpPqwM0JPxErebpQ==
+
 babel-plugin-react-css-modules@^5.0.0:
   version "5.0.0"
   resolved "https://registry.npmjs.org/babel-plugin-react-css-modules/-/babel-plugin-react-css-modules-5.0.0.tgz#af12602b6b89c617e9d47b00a19116af11f3911f"
@@ -2753,7 +2758,7 @@ cli-width@^2.0.0:
   resolved "https://registry.yarnpkg.com/cli-width/-/cli-width-2.2.0.tgz#ff19ede8a9a5e579324147b0c11f0fbcbabed639"
   integrity sha1-/xnt6Kml5XkyQUewwR8PvLq+1jk=
 
-clipboard@^2.0.4:
+clipboard@^2.0.0, clipboard@^2.0.4:
   version "2.0.4"
   resolved "https://registry.npmjs.org/clipboard/-/clipboard-2.0.4.tgz#836dafd66cf0fea5d71ce5d5b0bf6e958009112d"
   integrity sha512-Vw26VSLRpJfBofiVaFb/I8PVfdI1OxKcYShe6fm0sP/DtmiWQNCjhM/okTvdCo0G+lMMm1rMYbk4IK4x1X+kgQ==
@@ -9429,6 +9434,13 @@ pretty-format@^23.6.0:
   dependencies:
     ansi-regex "^3.0.0"
     ansi-styles "^3.2.0"
+
+prismjs@^1.17.1:
+  version "1.17.1"
+  resolved "https://registry.npmjs.org/prismjs/-/prismjs-1.17.1.tgz#e669fcbd4cdd873c35102881c33b14d0d68519be"
+  integrity sha512-PrEDJAFdUGbOP6xK/UsfkC5ghJsPJviKgnQOoxaDbBjwc8op68Quupwt1DeAFoG8GImPhiKXAvvsH7wDSLsu1Q==
+  optionalDependencies:
+    clipboard "^2.0.0"
 
 private@^0.1.6, private@^0.1.8:
   version "0.1.8"

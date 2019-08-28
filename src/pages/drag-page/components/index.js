@@ -6,6 +6,7 @@ import * as form from './form';
 /**
  * 系统可用组件配置文件
  * 结构为对象，key对应组件type
+ * title: 组件名称，由于左侧组件名
  * tagName: 标签名，一般用于生成源码，获取方式为：tagName component === 'string' key
  * component：组件，用于渲染，一般与key同名
  * dependence：组件涉及到的依赖，可以生成import代码：import {${tagName}} from '${dependence}';
