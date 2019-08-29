@@ -2,6 +2,7 @@ import PageContent from '@/layouts/page-content';
 import {ToolBar, QueryBar, Table} from '@/library/components';
 import uuid from "uuid/v4";
 import {isJson} from "@/library/utils";
+import {INDENT_SPACE, propsToString, valueToString} from '../utils';
 import _ from "lodash";
 
 export const category = '自定义组件';
@@ -190,6 +191,42 @@ export default {
             ],
             dataSource: getTableMockDataSource(),
             total: 50,
+        },
+        toSource: options => {
+            const {
+                tagName,
+                states,
+                initStates,
+                attributes,
+                __indent,
+                props: {
+                    columns,
+                    dataSource,
+                    total,
+                    children,
+                    ...props
+                }
+            } = options;
+
+            const columnsValueStr = valueToString(columns, INDENT_SPACE);
+            const dataSourceValueStr = valueToString(dataSource, INDENT_SPACE * 2);
+            const totalValueStr = valueToString(total, INDENT_SPACE * 2);
+
+            initStates.push(`dataSource: ${dataSourceValueStr}`);
+            initStates.push(`total: ${totalValueStr}`);
+            states.push('dataSource');
+            states.push('total');
+
+            attributes.push(`columns = ${columnsValueStr};`);
+
+            const propsString = propsToString({
+                ...props,
+                columns: 'this.columns',
+                dataSource: 'this.state.dataSource',
+                total: 'this.state.total',
+            }, __indent + INDENT_SPACE, true);
+
+            return `<${tagName}${propsString}/>`
         },
         props: [
             {

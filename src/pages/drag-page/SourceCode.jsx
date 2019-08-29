@@ -37,13 +37,13 @@ export default class SourceCode extends React.Component {
     };
 
     render() {
-        const {code, plugins, language} = this.props;
+        const {code, plugins, language, width = 298} = this.props;
         const {containerHeight} = this.state;
         return (
             <div ref={node => this.container = node}>
                 <pre
                     style={{
-                        width: 298,
+                        width,
                         margin: 0,
                         height: containerHeight,
                         borderRadius: 0,

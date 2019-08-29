@@ -15,12 +15,12 @@ export default {
             content: '纯文本',
         },
         render: props => props.content,
-        toSource: props => props.content,
+        toSource: ({props}) => props.content,
     },
     tip: {
         component: 'pre',
         title: '额外说明',
-        toSource: props => {
+        toSource: ({props}) => {
             const {children: [{content}]} = props;
             return `{/* TODO ${content} */}`;
         },
