@@ -17,7 +17,7 @@ export function canEdit(pageConfig, __id, e) {
 
     if (!com) return null;
 
-    const {tagName} = com;
+    const {tagName, editType} = com;
     const nodeChildren = node.children || [];
 
     // 子节点中只存在一个文本节点
@@ -30,6 +30,7 @@ export function canEdit(pageConfig, __id, e) {
             __id,
             content,
             dom,
+            editType,
         };
     }
 
@@ -42,6 +43,7 @@ export function canEdit(pageConfig, __id, e) {
             __id,
             content,
             dom,
+            editType,
             getNewProps: inputValue => {
                 if (!inputValue) return;
 
@@ -427,7 +429,9 @@ function propsToString(props, indent = INDENT_SPACE) {
                 .map(item => {
                     return item
                         .replace('"', '')
-                        .replace('":', ':');
+                        .replace('":', ':')
+                        .replace('"', "'")
+                        .replace('"', "'");
                 })
                 .join(`\n${indentSpace}`);
             isSingleLine = true;

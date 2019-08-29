@@ -123,17 +123,6 @@ export default {
                         },
                     ],
                 },
-                {
-                    __type: 'div',
-                    __id: '12',
-                    children: [
-                        {
-                            __type: 'text', // 临时容器，元素投放使用，不实际渲染成节点
-                            __id: '121',
-                            content: '文字节点内容',
-                        },
-                    ],
-                },
             ],
         },
         currentId: null, // 当前点击选中的元素id

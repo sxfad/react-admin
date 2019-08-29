@@ -78,18 +78,19 @@ export default class Dnd extends Component {
         const editConfig = canEdit(pageConfig, id, e);
 
         if (!editConfig) return;
-        const {__id, dom, content, getNewProps, getNextEditConfig} = editConfig;
+        const {__id, dom, content, editType, getNewProps, getNextEditConfig} = editConfig;
 
         this.showEdit({
             __id,
             dom,
+            editType,
             content,
             getNewProps,
             getNextEditConfig,
         });
     };
 
-    showEdit({__id, dom, content, getNewProps, getNextEditConfig}) {
+    showEdit({__id, dom, editType, content, getNewProps, getNextEditConfig}) {
         const {x, y, width, height} = dom.getBoundingClientRect();
         const inputWrapperStyle = {
             position: 'fixed',
@@ -100,16 +101,27 @@ export default class Dnd extends Component {
             boxSizing: 'border-box',
         };
 
+        let isTextArea = editType === 'textarea';
+
+        if (!editType) {
+            isTextArea = height > 100 || content.length > 30;
+        }
+
+        let rows = content.split('\n').length;
         this.setState({
-            isTextArea: height > 100 || content.length > 30,
+            isTextArea,
             currentInputId: __id,
             inputWrapperStyle,
-            inputValue: void 0,
+            inputValue: content,
+            rows,
             inputPlaceholder: content,
             editDom: dom,
             getNewProps,
             getNextEditConfig,
-        }, () => this.input.focus());
+        }, () => {
+            this.input.focus();
+            if (!isTextArea) this.input.select();
+        });
     }
 
     handleInputChange = (e) => {
@@ -143,11 +155,12 @@ export default class Dnd extends Component {
 
         if (getNextEditConfig) {
             const editConfig = getNextEditConfig(editDom, (config) => {
-                const {__id, dom, content, getNewProps, getNextEditConfig: gnec} = config;
+                const {__id, dom, content, getNewProps, editType, getNextEditConfig: gnec} = config;
 
                 this.showEdit({
                     __id,
                     dom,
+                    editType,
                     content,
                     getNewProps,
                     getNextEditConfig: gnec,
@@ -313,6 +326,7 @@ export default class Dnd extends Component {
             inputValue,
             inputPlaceholder,
             isTextArea,
+            rows,
         } = this.state;
         const {pageConfig} = this.props;
 
@@ -323,6 +337,7 @@ export default class Dnd extends Component {
             onBlur: this.handleInputBlur,
             onKeyDown: this.handleInputKeyDown,
             placeholder: inputPlaceholder,
+            rows,
             style: {
                 width: '100%',
                 height: '100%',

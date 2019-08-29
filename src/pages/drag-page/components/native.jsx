@@ -18,7 +18,7 @@ export default {
         toSource: props => props.content,
     },
     tip: {
-        component: 'div',
+        component: 'pre',
         title: '额外说明',
         toSource: props => {
             const {children: [{content}]} = props;
@@ -30,6 +30,7 @@ export default {
                 <div>生成代码时，将会转换成注释。</div>
             </div>
         ),
+        editType: 'textarea',
         defaultProps: {
             style: {
                 padding: 8,
@@ -42,7 +43,7 @@ export default {
                 {
                     __type: 'text',
                     __id: uuid(),
-                    content: '额外说明：',
+                    content: '额外说明',
                 },
             ],
         },

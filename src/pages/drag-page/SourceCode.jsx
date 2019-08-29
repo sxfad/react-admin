@@ -43,6 +43,7 @@ export default class SourceCode extends React.Component {
             <div ref={node => this.container = node}>
                 <pre
                     style={{
+                        width: 298,
                         margin: 0,
                         height: containerHeight,
                         borderRadius: 0,
@@ -50,7 +51,7 @@ export default class SourceCode extends React.Component {
                     className={!plugins ? "" : plugins.join(" ")}
                 >
                     <code ref={this.ref} className={`language-${language}`}>
-                      {code.trim()}
+                      {code}
                     </code>
                 </pre>
             </div>
