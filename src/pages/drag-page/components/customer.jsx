@@ -210,9 +210,9 @@ export default {
                     ...props
                 }
             } = options;
-            const indentSpace1 = getIndentSpace(__indent);
-            const indentSpace2 = getIndentSpace(__indent + INDENT_SPACE);
-            const indentSpace3 = getIndentSpace(__indent + INDENT_SPACE * 2);
+            // const __indentSpace = getIndentSpace(__indent);
+            const __indentSpace1 = getIndentSpace(__indent + INDENT_SPACE);
+            const __indentSpace2 = getIndentSpace(__indent + INDENT_SPACE * 2);
 
             const columnsValueStr = valueToString(columns, INDENT_SPACE);
             const dataSourceValueStr = valueToString(dataSource, INDENT_SPACE * 2);
@@ -235,9 +235,9 @@ export default {
                 initStates.push('selectedRowKeys: []');
                 states.push('selectedRowKeys');
                 props.rowSelection = `{
-${indentSpace3}selectedRowKeys,
-${indentSpace3}onChange: selectedRowKeys => this.setState({selectedRowKeys}),
-${indentSpace2}}`
+${__indentSpace2}selectedRowKeys,
+${__indentSpace2}onChange: selectedRowKeys => this.setState({selectedRowKeys}),
+${__indentSpace1}}`
             }
 
             const propsString = propsToString({

@@ -1,7 +1,6 @@
 import React from 'react';
+import './style.less';
 
 export default function (props) {
-    const {style = {}, ...others} = props;
-
-    return (<div style={{display: 'flex', flexWrap: 'wrap', ...style}} {...others}/>);
+    return (<div className="form-row-root" {...props}/>);
 }

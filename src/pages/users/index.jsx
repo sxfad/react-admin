@@ -115,7 +115,6 @@ export default class UserCenter extends Component {
 
         const formElementProps = {
             form,
-            labelWidth: 62,
             width: 300,
             style: {paddingLeft: 16},
         };
@@ -157,7 +156,7 @@ export default class UserCenter extends Component {
                                 />
                             </Fragment>
                         )}
-                        <FormElement {...formElementProps} width="auto" layout>
+                        <FormElement layout>
                             <Button type="primary" onClick={this.handleSearch}>提交</Button>
                             <Button onClick={() => this.props.form.resetFields()}>重置</Button>
                         </FormElement>

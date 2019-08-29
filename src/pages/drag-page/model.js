@@ -29,7 +29,6 @@ export default {
                                     __type: 'FormInput',
                                     __id: uuid(),
                                     label: '输入框',
-                                    style: {paddingLeft: 16},
                                     width: '200px',
                                 },
                                 {
@@ -37,7 +36,6 @@ export default {
                                     __id: uuid(),
                                     type: 'select',
                                     label: '下拉框',
-                                    style: {paddingLeft: 16},
                                     width: '200px',
                                     options: [
                                         {value: '1', label: '下拉项1'},
@@ -48,14 +46,12 @@ export default {
                                     __type: 'FormElement',
                                     __id: uuid(),
                                     layout: true,
-                                    style: {paddingLeft: 16},
                                     width: 'auto',
                                     children: [
                                         {
                                             __type: 'Button',
                                             __id: uuid(),
                                             type: 'primary',
-                                            style: {marginRight: 8},
                                             children: [
                                                 {
                                                     __type: 'text',
@@ -157,6 +153,7 @@ export default {
         updateNode(config, newNode);
 
         return {pageConfig: config, currentNode: newNode};
+        // return {pageConfig: config};
     },
 
     setGuideLine: showGuideLine => ({showGuideLine}),
@@ -227,7 +224,7 @@ export default {
         if (node && node.children && node.children.length === 1 && node.children[0].__type === 'text') {
             node.children[0].content = content;
 
-            return {pageConfig: config};
+            return {pageConfig: config, currentNode: {...node}};
         }
     },
 

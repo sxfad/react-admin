@@ -95,7 +95,8 @@ export default class ComponentSettings extends Component {
                                 ...others
                             } = item;
 
-                            let initialValue = currentNode[attribute] || defaultValue;
+                            let initialValue = defaultValue;
+                            if (currentNode[attribute] !== void 0) initialValue = currentNode[attribute];
 
                             if (formType === 'json' && initialValue) {
                                 initialValue = JSON.stringify(initialValue, null, tabSize);
