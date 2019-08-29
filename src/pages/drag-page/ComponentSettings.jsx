@@ -5,6 +5,7 @@ import DropBox from "./DropBox";
 import ComponentSettingsForm from './ComponentSettingsForm';
 import SourceCode from './SourceCode.jsx';
 import {virtualDomToString} from "./render-utils";
+import PageCodeModal from './PageCodeModal';
 
 @config({
     connect: state => {
@@ -18,6 +19,7 @@ import {virtualDomToString} from "./render-utils";
 export default class ComponentSettings extends Component {
     state = {
         codeVisible: false,
+        pageCodeVisible: false,
     };
 
     handleToggleGuideLine = () => {
@@ -32,7 +34,7 @@ export default class ComponentSettings extends Component {
             pageConfig,
             currentNode,
         } = this.props;
-        const {codeVisible} = this.state;
+        const {codeVisible, pageCodeVisible} = this.state;
 
         const allIds = ['0'];
         const loop = node => {
@@ -78,12 +80,22 @@ export default class ComponentSettings extends Component {
                     </div>
 
                     <div style={{flex: 1, textAlign: 'right', paddingRight: 16}}>
-                        <a onClick={() => this.setState({codeVisible: !codeVisible})}>
-                            <Icon
-                                style={{alignSelf: 'flex-end', fontSize: 20}}
-                                type={codeVisible ? 'form' : 'code'}
-                            />
-                        </a>
+                        <Tooltip title="页面源码">
+                            <a onClick={() => this.setState({pageCodeVisible: true})}>
+                                <Icon
+                                    style={{alignSelf: 'flex-end', fontSize: 20, marginRight: 10}}
+                                    type="code-sandbox"
+                                />
+                            </a>
+                        </Tooltip>
+                        <Tooltip title="当前组件源码" placement="bottom">
+                            <a onClick={() => this.setState({codeVisible: !codeVisible})}>
+                                <Icon
+                                    style={{alignSelf: 'flex-end', fontSize: 20}}
+                                    type={codeVisible ? 'form' : 'code'}
+                                />
+                            </a>
+                        </Tooltip>
                     </div>
                 </div>
                 <div
@@ -102,6 +114,11 @@ export default class ComponentSettings extends Component {
                         <ComponentSettingsForm key={currentNode.__id}/>
                     )}
                 </div>
+                <PageCodeModal
+                    visible={pageCodeVisible}
+                    onOk={() => this.setState({pageCodeVisible: false})}
+                    onCancel={() => this.setState({pageCodeVisible: false})}
+                />
             </div>
         );
     }

@@ -9,6 +9,7 @@ import {
     INDENT_SPACE,
 } from "@/pages/drag-page/utils";
 import uuid from "uuid/v4";
+import {cloneDeep} from 'lodash';
 
 
 /**
@@ -283,7 +284,8 @@ export function renderNode(node, render, __parentId = '0', __parentDirection) {
     return render(resultCom, options);
 }
 
-export function virtualDomToString({virtualDom, path, indent = INDENT_SPACE * 3}) {
+export function virtualDomToString({virtualDom: vd, path, indent = INDENT_SPACE * 3}) {
+    const virtualDom = cloneDeep(vd);
     const imports = [];
     const indentSpace = getIndentSpace(INDENT_SPACE);
     const indentSpace2 = getIndentSpace(INDENT_SPACE * 2);
@@ -387,23 +389,29 @@ ${indentSpace}</${tagName}>`
         });
         Object.keys(tagNameDependence).forEach(key => {
             const tagNames = Array.from(tagNameDependence[key]);
-            importsStrArray.push(`import {${tagNames.join(', ')}} from '${key}';`);
+            if (tagNames.length > 3) {
+                importsStrArray.push(`import {
+${indentSpace}${tagNames.join(', \n' + indentSpace)},
+} from '${key}';`);
+            } else {
+                importsStrArray.push(`import {${tagNames.join(', ')}} from '${key}';`);
+            }
         });
     }
-
 
     return {
         imports: `${importsStrArray.join('\n')}\n`,
         decorators: decorators.join('\n'),
-        initStates: `${indentSpace}state = {\n${indentSpace2}${initStates.join(', \n' + indentSpace2)},\n${indentSpace}};\n`,
+        initStates: initStates?.length ? `${indentSpace}state = {\n${indentSpace2}${initStates.join(', \n' + indentSpace2)},\n${indentSpace}};\n` : '',
         attributes: `${indentSpace}${attributes.join('\n' + indentSpace)}`,
         methods: methods.join('\n'),
-        states: `${indentSpace2}const {\n${indentSpace3}${states.join(', \n' + indentSpace3)},\n${indentSpace2}} = this.state;\n`,
+        states: states?.length ? `${indentSpace2}const {\n${indentSpace3}${states.join(', \n' + indentSpace3)},\n${indentSpace2}} = this.state;\n` : '',
         jsx,
     };
 }
 
-function getClassContent(options) {
+export function getPageSourceCode(options) {
+    const opt = virtualDomToString(options);
     const {
         imports = '',
         decorators = '',
@@ -414,12 +422,12 @@ function getClassContent(options) {
         props = '',
         jsx = '',
         componentName = 'index',
-    } = options;
+    } = opt;
+
     return `${imports}
 ${decorators}
 export default class ${componentName} extends Component {
-${initStates}
-${attributes}
+${initStates}${attributes}
 ${methods}
     render() {
 ${props}${states}
@@ -559,4 +567,4 @@ const testVirtualDom = {
     ],
 };
 
-console.log(getClassContent(virtualDomToString({virtualDom: testVirtualDom, path: '/test', fileName: 'test.jsx'})));
+console.log(getPageSourceCode({virtualDom: testVirtualDom, path: '/test', fileName: 'test.jsx'}));

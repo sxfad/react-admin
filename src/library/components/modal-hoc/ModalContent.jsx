@@ -72,7 +72,7 @@ export default class ModalContent extends Component {
     render() {
         const {
             surplusSpace,
-            loading,
+            loading = false,
             otherHeight,
             style = {},
             footer,
