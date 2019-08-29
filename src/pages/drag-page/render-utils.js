@@ -374,6 +374,8 @@ ${indentSpace}</${tagName}>`
     };
 
     const jsx = loop(virtualDom);
+
+    // 处理import
     let importsStrArray = [
         "import React, {Component} from 'react';",
         "import config from '@/commons/config-hoc';",
