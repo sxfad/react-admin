@@ -156,7 +156,7 @@ export default {
 
         updateNode(config, newNode);
 
-        return {pageConfig: config};
+        return {pageConfig: config, currentNode: newNode};
     },
 
     setGuideLine: showGuideLine => ({showGuideLine}),

@@ -2,7 +2,7 @@ import PageContent from '@/layouts/page-content';
 import {ToolBar, QueryBar, Table} from '@/library/components';
 import uuid from "uuid/v4";
 import {isJson} from "@/library/utils";
-import {INDENT_SPACE, propsToString, valueToString} from '../utils';
+import {getIndentSpace, INDENT_SPACE, propsToString, valueToString} from '../utils';
 import _ from "lodash";
 
 export const category = '自定义组件';
@@ -36,9 +36,11 @@ const columnsValidator = {
 
 function getTableMockDataSource() {
     const dataSource = [];
-    for (let i = 0; i < 20; i++) {
+    const rowCount = 5;
+    const columnCount = 10;
+    for (let i = 0; i < rowCount; i++) {
         const data = {key: `${i}`, name: '张三', age: 23};
-        for (let j = 0; j < 20; j++) {
+        for (let j = 0; j < columnCount; j++) {
             data[`dataIndex${j}`] = j;
         }
         dataSource.push(data)
@@ -204,9 +206,13 @@ export default {
                     dataSource,
                     total,
                     children,
+                    rowSelection,
                     ...props
                 }
             } = options;
+            const indentSpace1 = getIndentSpace(__indent);
+            const indentSpace2 = getIndentSpace(__indent + INDENT_SPACE);
+            const indentSpace3 = getIndentSpace(__indent + INDENT_SPACE * 2);
 
             const columnsValueStr = valueToString(columns, INDENT_SPACE);
             const dataSourceValueStr = valueToString(dataSource, INDENT_SPACE * 2);
@@ -218,6 +224,21 @@ export default {
             states.push('total');
 
             attributes.push(`columns = ${columnsValueStr};`);
+
+            if (rowSelection) {
+                /*
+                * rowSelection={{
+                        selectedRowKeys,
+                        onChange: selectedRowKeys => this.setState({selectedRowKeys}),
+                    }}
+                * */
+                initStates.push('selectedRowKeys: []');
+                states.push('selectedRowKeys');
+                props.rowSelection = `{
+${indentSpace3}selectedRowKeys,
+${indentSpace3}onChange: selectedRowKeys => this.setState({selectedRowKeys}),
+${indentSpace2}}`
+            }
 
             const propsString = propsToString({
                 ...props,
