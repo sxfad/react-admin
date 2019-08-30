@@ -289,11 +289,13 @@ export function virtualDomToString({virtualDom: vd, path, indent = INDENT_SPACE 
     const indentSpace = getIndentSpace(INDENT_SPACE);
     const indentSpace2 = getIndentSpace(INDENT_SPACE * 2);
     const indentSpace3 = getIndentSpace(INDENT_SPACE * 3);
-    // 装饰器
-    const decorators = [
-        `@config({path: '${path}'})`,
+    // 配置装饰器
+    const configDecorators = [
+        'ajax: true',
     ];
-
+    if (path) configDecorators.unshift(`path: '${path}'`);
+    // 其他装饰器
+    const decorators = [];
     // 初始化 state
     const initStates = [];
 
@@ -356,12 +358,14 @@ ${indentSpace}}`,
                 __indent,
                 imports,
                 decorators,
+                configDecorators,
                 initStates,
                 attributes,
                 methods,
                 states,
             });
-            return `${todo}${indentSpace}${componentJsx}`;
+            // 如果返回true 将继续使用默认转换，toSource只是做了一些其他事情
+            if (componentJsx !== true) return `${todo}${indentSpace}${componentJsx}`;
         }
 
         if (children?.length) {
@@ -403,7 +407,7 @@ ${indentSpace}${tagNames.join(', \n' + indentSpace)},
 
     return {
         imports: `${importsStrArray.join('\n')}\n`,
-        decorators: decorators.join('\n'),
+        decorators: `@config({${configDecorators.join(', ')})\n${decorators.join('\n')}`,
         initStates: initStates?.length ? `${indentSpace}state = {\n${indentSpace2}${initStates.join(', \n' + indentSpace2)},\n${indentSpace}};\n` : '',
         attributes: `${indentSpace}${attributes.join('\n' + indentSpace)}`,
         methods: methods.join('\n'),

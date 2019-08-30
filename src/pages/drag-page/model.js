@@ -46,7 +46,6 @@ export default {
                                     __type: 'FormElement',
                                     __id: uuid(),
                                     layout: true,
-                                    width: 'auto',
                                     children: [
                                         {
                                             __type: 'Button',

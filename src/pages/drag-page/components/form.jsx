@@ -152,6 +152,29 @@ const commonProps = [
     },
 ];
 
+const commonConfig = {
+    component: FormElement,
+    tagName: 'FormElement',
+    toSource: options => {
+        const {
+            decorators,
+            imports,
+        } = options;
+
+        if (!imports.find(item => item.tagName === 'Form' && item.dependence === 'antd')) {
+            imports.push({tagName: 'Form', dependence: 'antd'})
+        }
+
+        const formDecorator = '@Form.create()';
+        if (!decorators.find(item => item === formDecorator)) {
+            decorators.push(formDecorator);
+        }
+
+        console.log(imports);
+        return true;
+    },
+};
+
 export default {
     FormRow: {
         component: FormRow,
@@ -167,6 +190,15 @@ export default {
         title: '表单元素',
         visible: false,
         dependence: '@/library/components',
+        props: [
+            {
+                name: '总宽度',
+                attribute: 'width',
+                valueType: 'string',
+                defaultValue: 'auto',
+                placeholder: '比如：200px 或者 auto',
+            },
+        ],
     },
 
     FormInput: {
@@ -187,8 +219,7 @@ export default {
         ],
     },
     FormNumber: {
-        component: FormElement,
-        tagName: 'FormElement',
+        ...commonConfig,
         showTagName: 'Number',
         title: '数字框',
         dependence: '@/library/components',
@@ -203,8 +234,7 @@ export default {
         ],
     },
     FormTextArea: {
-        component: FormElement,
-        tagName: 'FormElement',
+        ...commonConfig,
         showTagName: 'TextArea',
         title: '文本框',
         dependence: '@/library/components',
@@ -223,8 +253,7 @@ export default {
         ],
     },
     FormPassword: {
-        component: FormElement,
-        tagName: 'FormElement',
+        ...commonConfig,
         showTagName: 'Password',
         title: '密码框',
         dependence: '@/library/components',
@@ -239,8 +268,7 @@ export default {
         ],
     },
     FormSelect: {
-        component: FormElement,
-        tagName: 'FormElement',
+        ...commonConfig,
         showTagName: 'Select',
         title: '下拉框',
         dependence: '@/library/components',
@@ -264,8 +292,7 @@ export default {
         ],
     },
     FormSelectTree: {
-        component: FormElement,
-        tagName: 'FormElement',
+        ...commonConfig,
         showTagName: 'SelectTree',
         title: '下拉树',
         dependence: '@/library/components',
@@ -293,8 +320,7 @@ export default {
         ],
     },
     FormCheckbox: {
-        component: FormElement,
-        tagName: 'FormElement',
+        ...commonConfig,
         showTagName: 'Checkbox',
         title: '复选框',
         dependence: '@/library/components',
@@ -309,8 +335,7 @@ export default {
         ],
     },
     FormCheckboxGroup: {
-        component: FormElement,
-        tagName: 'FormElement',
+        ...commonConfig,
         showTagName: 'CheckboxGroup',
         title: '复选组',
         dependence: '@/library/components',
@@ -331,8 +356,7 @@ export default {
     },
 
     FormRadio: {
-        component: FormElement,
-        tagName: 'FormElement',
+        ...commonConfig,
         showTagName: 'Radio',
         title: '单选框',
         dependence: '@/library/components',
@@ -347,8 +371,7 @@ export default {
         ],
     },
     FormRadioGroup: {
-        component: FormElement,
-        tagName: 'FormElement',
+        ...commonConfig,
         showTagName: 'RadioGroup',
         title: '单选框组',
         dependence: '@/library/components',
@@ -368,8 +391,7 @@ export default {
         ],
     },
     FormRadioButton: {
-        component: FormElement,
-        tagName: 'FormElement',
+        ...commonConfig,
         showTagName: 'RadioButton',
         title: '单选按钮',
         dependence: '@/library/components',
@@ -389,8 +411,7 @@ export default {
         ],
     },
     FormCascader: {
-        component: FormElement,
-        tagName: 'FormElement',
+        ...commonConfig,
         showTagName: 'Cascader',
         title: '级联选择',
         dependence: '@/library/components',
@@ -435,8 +456,7 @@ export default {
         ],
     },
     FormSwitch: {
-        component: FormElement,
-        tagName: 'FormElement',
+        ...commonConfig,
         showTagName: 'Switch',
         title: '开关',
         dependence: '@/library/components',
@@ -451,8 +471,7 @@ export default {
         ],
     },
     FormDate: {
-        component: FormElement,
-        tagName: 'FormElement',
+        ...commonConfig,
         showTagName: 'Date',
         title: '日期',
         dependence: '@/library/components',
@@ -478,8 +497,7 @@ export default {
         ],
     },
     FormDateRange: {
-        component: FormElement,
-        tagName: 'FormElement',
+        ...commonConfig,
         showTagName: 'DateRange',
         title: '日期区间',
         dependence: '@/library/components',
@@ -505,8 +523,7 @@ export default {
         ],
     },
     FormMonth: {
-        component: FormElement,
-        tagName: 'FormElement',
+        ...commonConfig,
         showTagName: 'Month',
         title: '月份选择',
         dependence: '@/library/components',
@@ -522,8 +539,7 @@ export default {
         ],
     },
     FormTime: {
-        component: FormElement,
-        tagName: 'FormElement',
+        ...commonConfig,
         showTagName: 'Time',
         title: '时间选择',
         dependence: '@/library/components',
@@ -539,8 +555,7 @@ export default {
         ],
     },
     FormJson: {
-        component: FormElement,
-        tagName: 'FormElement',
+        ...commonConfig,
         showTagName: 'Json',
         title: 'Json编辑器',
         dependence: '@/library/components',
@@ -556,8 +571,7 @@ export default {
         ],
     },
     FormTransfer: {
-        component: FormElement,
-        tagName: 'FormElement',
+        ...commonConfig,
         showTagName: 'Transfer',
         title: '穿梭框',
         dependence: '@/library/components',
