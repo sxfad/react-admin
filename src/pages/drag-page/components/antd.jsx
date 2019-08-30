@@ -1,6 +1,5 @@
 import {
     Button,
-    Input,
     Row,
     Col,
     Tabs,
@@ -100,20 +99,6 @@ export default {
         container: true,
         acceptTypes: 'Col',
         direction: 'horizontal',
-        defaultProps: {
-            children: [
-                {
-                    __type: 'Col',
-                    __id: uuid(),
-                    span: 12,
-                },
-                {
-                    __type: 'Col',
-                    __id: uuid(),
-                    span: 12,
-                }
-            ],
-        }
     },
     Col: {
         component: Col,
@@ -121,7 +106,7 @@ export default {
         dependence: 'antd',
         container: true,
         innerWrapper: true,
-        targetTypes: 'Row',
+        targetTypes: ['Row', 'RowCol1x2', 'RowCol1x3'],
         description: '栅格系统说明啊',
         defaultProps: {
             span: 12,
@@ -161,6 +146,55 @@ export default {
                 ],
             },
         ],
+    },
+    RowCol1x2: {
+        component: Row,
+        title: '栅格1x2',
+        dependence: 'antd',
+        container: true,
+        acceptTypes: 'Col',
+        direction: 'horizontal',
+        defaultProps: {
+            children: [
+                {
+                    __type: 'Col',
+                    __id: uuid(),
+                    span: 12,
+                },
+                {
+                    __type: 'Col',
+                    __id: uuid(),
+                    span: 12,
+                }
+            ],
+        }
+    },
+    RowCol1x3: {
+        component: Row,
+        title: '栅格1x3',
+        dependence: 'antd',
+        container: true,
+        acceptTypes: 'Col',
+        direction: 'horizontal',
+        defaultProps: {
+            children: [
+                {
+                    __type: 'Col',
+                    __id: uuid(),
+                    span: 8,
+                },
+                {
+                    __type: 'Col',
+                    __id: uuid(),
+                    span: 8,
+                },
+                {
+                    __type: 'Col',
+                    __id: uuid(),
+                    span: 8,
+                }
+            ],
+        }
     },
     Tabs: {
         component: Tabs,
@@ -218,15 +252,5 @@ export default {
                 valueType: 'string',
             },
         ],
-    },
-    Input: {
-        component: Input,
-        title: '输入框',
-        dependence: 'antd',
-        container: false,
-        display: 'inline-block',
-        defaultProps: {
-            placeholder: '请输入',
-        },
     },
 };

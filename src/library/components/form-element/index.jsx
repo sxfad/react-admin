@@ -11,7 +11,10 @@ import {
     Switch,
     DatePicker,
     TimePicker,
-    Cascader, Icon, Tooltip,
+    Cascader,
+    Icon,
+    Tooltip,
+    Transfer,
 } from 'antd';
 import JsonEditor from '../json-editor';
 import './index.less';
@@ -105,6 +108,8 @@ function getElement(item) {
     if (type === 'month') return <DatePicker.MonthPicker {...commonProps} {...props}/>;
 
     if (type === 'time') return <TimePicker {...commonProps} {...props}/>;
+
+    if (type === 'transfer') return <Transfer {...commonProps} {...props}/>;
 
     throw new Error(`no such type: ${type}`);
 }
@@ -257,6 +262,10 @@ class FormElement extends Component {
 
         if (type === 'switch') {
             nextDecorator.valuePropName = 'checked';
+        }
+
+        if (type === 'transfer') {
+            nextDecorator.valuePropName = 'targetKeys';
         }
 
         // 删除undefined属性，否则会引发错误

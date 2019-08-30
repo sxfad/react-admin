@@ -224,6 +224,7 @@ export default class Dnd extends Component {
             level,
             tagName,
             container,
+            originSize,
             display,
 
             Component,
@@ -248,8 +249,8 @@ export default class Dnd extends Component {
 
             if (showGuideLine) {
                 dropBoxStyle.border = '1px dashed #d9d9d9';
-                dropBoxStyle.padding = GUIDE_PADDING;
-                dropBoxStyle.margin = GUIDE_MARGIN;
+                dropBoxStyle.padding = originSize ? 0 : GUIDE_PADDING;
+                dropBoxStyle.margin = originSize ? 0 : GUIDE_MARGIN;
 
 
                 if (currentId === __id) {

@@ -11,6 +11,7 @@ import * as form from './form';
  * component：组件，用于渲染，一般与key同名
  * dependence：组件涉及到的依赖，可以生成import代码：import {${tagName}} from '${dependence}';
  * container：是否是容器组件，容器组件内部可以添加其他组件
+ * originSize：是容器组件时，如果现实辅助线，不添加padding margin，保持组件原始大小
  * direction: vertical / horizontal 默认 vertical 子组件排列方式，默认垂直（vertical）排列
  * import：文件头部引入，用于生成源码，
  * display: 用于拖拽包裹显示方式

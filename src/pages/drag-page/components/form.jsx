@@ -162,6 +162,8 @@ export default {
     },
     FormElement: {
         component: FormElement,
+        container: true,
+        originSize: true,
         title: '表单元素',
         visible: false,
         dependence: '@/library/components',
@@ -551,6 +553,40 @@ export default {
         props: [
             ...commonProps,
             allowClear(true),
+        ],
+    },
+    FormTransfer: {
+        component: FormElement,
+        tagName: 'FormElement',
+        showTagName: 'Transfer',
+        title: '穿梭框',
+        dependence: '@/library/components',
+        description: '穿梭框选择器',
+        defaultProps: {
+            type: 'transfer',
+            label: '穿梭框',
+            dataSource: [
+                {key: '1', title: '选项1'},
+                {key: '2', title: '选项2'},
+                {key: '3', title: '选项2'},
+            ],
+            titles: ['未选', '已选'],
+        },
+        props: [
+            ...commonProps,
+            {
+                attribute: 'titles',
+                valueType: 'json',
+                formType: 'json',
+                label: '标题',
+                height: '80px',
+                defaultValue: [
+                    {key: '1', title: '选项1'},
+                    {key: '2', title: '选项2'},
+                    {key: '3', title: '选项2'},
+                ],
+                tabSize: 2,
+            },
         ],
     },
 };
