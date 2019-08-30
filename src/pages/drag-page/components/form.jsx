@@ -148,6 +148,7 @@ const commonProps = [
         formType: 'switch',
         checkedChildren: '是',
         unCheckedChildren: '否',
+        half: true,
     },
 ];
 
@@ -176,10 +177,63 @@ export default {
         defaultProps: {
             label: '输入框',
             width: '200px',
+            allowClear: true,
         },
         props: [
             ...commonProps,
-            allowClear(),
+            allowClear(true),
+        ],
+    },
+    FormNumber: {
+        component: FormElement,
+        tagName: 'FormElement',
+        showTagName: 'Number',
+        title: '数字框',
+        dependence: '@/library/components',
+        description: '数字输入框。',
+        defaultProps: {
+            type: 'number',
+            label: '数字框',
+            width: '200px',
+        },
+        props: [
+            ...commonProps,
+        ],
+    },
+    FormTextArea: {
+        component: FormElement,
+        tagName: 'FormElement',
+        showTagName: 'TextArea',
+        title: '文本框',
+        dependence: '@/library/components',
+        description: '文本输入框。',
+        defaultProps: {
+            type: 'textarea',
+            label: '文本框',
+        },
+        props: [
+            ...commonProps,
+            {
+                name: '行数',
+                attribute: 'rows',
+                valueType: 'number',
+            },
+        ],
+    },
+    FormPassword: {
+        component: FormElement,
+        tagName: 'FormElement',
+        showTagName: 'Password',
+        title: '密码框',
+        dependence: '@/library/components',
+        description: '密码输入框。',
+        defaultProps: {
+            type: 'password',
+            label: '密码框',
+            width: '200px',
+        },
+        props: [
+            ...commonProps,
         ],
     },
     FormSelect: {
@@ -205,6 +259,298 @@ export default {
             showSearch(true),
             allowClear(true),
             optionFilterProp(true),
+        ],
+    },
+    FormSelectTree: {
+        component: FormElement,
+        tagName: 'FormElement',
+        showTagName: 'SelectTree',
+        title: '下拉树',
+        dependence: '@/library/components',
+        description: '下拉树选择。',
+        defaultProps: {
+            type: 'select-tree',
+            label: '下拉树',
+            width: '200px',
+            optionFilterProp: 'children',
+            options: [
+                {
+                    value: '1', label: '选项1',
+                    children: [
+                        {value: '2', label: '选项2'},
+                        {value: '22', label: '选项22'}
+                    ]
+                },
+            ],
+        },
+        props: [
+            ...commonProps,
+            showSearch(true),
+            allowClear(true),
+            optionFilterProp(true),
+        ],
+    },
+    FormCheckbox: {
+        component: FormElement,
+        tagName: 'FormElement',
+        showTagName: 'Checkbox',
+        title: '复选框',
+        dependence: '@/library/components',
+        description: '单个复选框',
+        defaultProps: {
+            type: 'checkbox',
+            label: '复选框',
+            width: '100px',
+        },
+        props: [
+            ...commonProps,
+        ],
+    },
+    FormCheckboxGroup: {
+        component: FormElement,
+        tagName: 'FormElement',
+        showTagName: 'CheckboxGroup',
+        title: '复选框组',
+        dependence: '@/library/components',
+        description: '一组复选框',
+        defaultProps: {
+            type: 'checkbox-group',
+            label: '复选框',
+            width: '400px',
+            options: [
+                {value: '1', label: '选项1'},
+                {value: '2', label: '选项2'},
+            ],
+        },
+        props: [
+            ...commonProps,
+            ...getOptionsAttribute('复选项'),
+        ],
+    },
+
+    FormRadio: {
+        component: FormElement,
+        tagName: 'FormElement',
+        showTagName: 'Radio',
+        title: '单选框',
+        dependence: '@/library/components',
+        description: '单个单选框',
+        defaultProps: {
+            type: 'radio',
+            label: '单选框',
+            width: '100px',
+        },
+        props: [
+            ...commonProps,
+        ],
+    },
+    FormRadioGroup: {
+        component: FormElement,
+        tagName: 'FormElement',
+        showTagName: 'RadioGroup',
+        title: '单选框组',
+        dependence: '@/library/components',
+        description: '一组单选框',
+        defaultProps: {
+            type: 'radio-group',
+            label: '单选框',
+            width: '400px',
+            options: [
+                {value: '1', label: '选项1'},
+                {value: '2', label: '选项2'},
+            ],
+        },
+        props: [
+            ...commonProps,
+            ...getOptionsAttribute('单选项'),
+        ],
+    },
+    FormRadioButton: {
+        component: FormElement,
+        tagName: 'FormElement',
+        showTagName: 'RadioButton',
+        title: '单选按钮',
+        dependence: '@/library/components',
+        description: '单选按钮',
+        defaultProps: {
+            type: 'radio-button',
+            label: '单选按钮',
+            width: '400px',
+            options: [
+                {value: '1', label: '选项1'},
+                {value: '2', label: '选项2'},
+            ],
+        },
+        props: [
+            ...commonProps,
+            ...getOptionsAttribute('单选项'),
+        ],
+    },
+    FormCascader: {
+        component: FormElement,
+        tagName: 'FormElement',
+        showTagName: 'Cascader',
+        title: '级联选择',
+        dependence: '@/library/components',
+        description: '级联选择，适用于省市区选择等场景',
+        defaultProps: {
+            type: 'cascader',
+            label: '级联选择',
+            width: '400px',
+            options: [
+                {
+                    value: 'beijing',
+                    label: '北京',
+                    children: [
+                        {
+                            value: 'shijingshan',
+                            label: '石景山区',
+                            children: [
+                                {
+                                    value: 'pingguoyuan',
+                                    label: '苹果园',
+                                },
+                            ],
+                        },
+                        {
+                            value: 'haidian',
+                            label: '海淀区',
+                            children: [
+                                {
+                                    value: 'zhongguancun',
+                                    label: '中关村',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        },
+        props: [
+            ...commonProps,
+            showSearch(true),
+            allowClear(true),
+        ],
+    },
+    FormSwitch: {
+        component: FormElement,
+        tagName: 'FormElement',
+        showTagName: 'Switch',
+        title: '开关',
+        dependence: '@/library/components',
+        description: '开关',
+        defaultProps: {
+            type: 'switch',
+            label: '开关',
+            width: '100px',
+        },
+        props: [
+            ...commonProps,
+        ],
+    },
+    FormDate: {
+        component: FormElement,
+        tagName: 'FormElement',
+        showTagName: 'Date',
+        title: '日期',
+        dependence: '@/library/components',
+        description: '日期选择',
+        defaultProps: {
+            type: 'date',
+            label: '日期',
+            width: '200px',
+        },
+        props: [
+            ...commonProps,
+            allowClear(true),
+            {
+                name: '显示时间',
+                attribute: 'showTime',
+                valueType: 'boolean',
+                defaultValue: false,
+                formType: 'switch',
+                checkedChildren: '是',
+                unCheckedChildren: '否',
+                half: true,
+            },
+        ],
+    },
+    FormDateRange: {
+        component: FormElement,
+        tagName: 'FormElement',
+        showTagName: 'DateRange',
+        title: '日期区间',
+        dependence: '@/library/components',
+        description: '日期区间',
+        defaultProps: {
+            type: 'date-range',
+            label: '日期区间',
+            width: '300px',
+        },
+        props: [
+            ...commonProps,
+            allowClear(true),
+            {
+                name: '显示时间',
+                attribute: 'showTime',
+                valueType: 'boolean',
+                defaultValue: false,
+                formType: 'switch',
+                checkedChildren: '是',
+                unCheckedChildren: '否',
+                half: true,
+            },
+        ],
+    },
+    FormMonth: {
+        component: FormElement,
+        tagName: 'FormElement',
+        showTagName: 'Month',
+        title: '月份选择',
+        dependence: '@/library/components',
+        description: '月份选择',
+        defaultProps: {
+            type: 'month',
+            label: '月份选择',
+            width: '200px',
+        },
+        props: [
+            ...commonProps,
+            allowClear(true),
+        ],
+    },
+    FormTime: {
+        component: FormElement,
+        tagName: 'FormElement',
+        showTagName: 'Time',
+        title: '时间选择',
+        dependence: '@/library/components',
+        description: '时间选择',
+        defaultProps: {
+            type: 'time',
+            label: '时间选择',
+            width: '200px',
+        },
+        props: [
+            ...commonProps,
+            allowClear(true),
+        ],
+    },
+    FormJson: {
+        component: FormElement,
+        tagName: 'FormElement',
+        showTagName: 'Json',
+        title: 'Json编辑器',
+        dependence: '@/library/components',
+        description: 'Json编辑器',
+        defaultProps: {
+            type: 'json',
+            label: 'Json',
+            elementStyle: {height: 100},
+        },
+        props: [
+            ...commonProps,
+            allowClear(true),
         ],
     },
 };

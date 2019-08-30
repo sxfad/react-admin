@@ -35,6 +35,7 @@ export function isInputLikeElement(type) {
         'password',
         'mobile',
         'email',
+        'json',
     ].includes(type);
 }
 
@@ -58,6 +59,7 @@ function getElement(item) {
         if (type === 'number') return <InputNumber {...commonProps} {...props}/>;
         if (type === 'textarea') return <TextArea {...commonProps} {...props}/>;
         if (type === 'password') return <Password {...commonProps} {...props}/>;
+        if (type === 'json') return <JsonEditor {...commonProps} {...props}/>;
 
         return <Input {...commonProps} type={type} {...props}/>;
     }
@@ -103,8 +105,6 @@ function getElement(item) {
     if (type === 'month') return <DatePicker.MonthPicker {...commonProps} {...props}/>;
 
     if (type === 'time') return <TimePicker {...commonProps} {...props}/>;
-
-    if (type === 'json') return <JsonEditor {...commonProps} {...props}/>;
 
     throw new Error(`no such type: ${type}`);
 }

@@ -25,24 +25,33 @@ export default class ComponentSettings extends Component {
             const propsConfigs = components[currentNode.__type].props || [];
 
             Object.keys(values).forEach(key => {
+                // 获取属性配置
                 const config = propsConfigs.find(item => item.attribute === key);
                 const value = values[key];
 
                 if (config?.formType === 'json' && value) {
                     values[key] = JSON.parse(value);
                 }
-            });
 
-            const {optionsType} = values;
-            if (optionsType) {
-                const optionsConfig = optionsTypes.find(item => item.value === optionsType);
-                const {options} = optionsConfig;
-                if (optionsType === 'customer') {
-                    values.options = values.customerOptions || options;
-                } else {
-                    values.options = options.map(item => ({value: item.value, label: item.label}));
+                // 处理选项
+                if (key === 'optionsType' && values[key]) {
+                    const {optionsType} = values;
+                    const optionsConfig = optionsTypes.find(item => item.value === optionsType);
+                    const {options} = optionsConfig;
+                    if (optionsType === 'customer') {
+                        const customerOptions = JSON.parse(values.customerOptions);
+                        values.options = customerOptions || options;
+                    } else {
+                        values.options = options.map(item => ({value: item.value, label: item.label}));
+                    }
                 }
-            }
+
+                // 删除忽略属性
+                if (config?.ignoreAttribute) {
+                    Reflect.deleteProperty(values, key);
+                }
+
+            });
 
             this.props.action.dragPage.setProps({
                 targetId: currentNode.__id,

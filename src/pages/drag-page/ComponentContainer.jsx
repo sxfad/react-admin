@@ -48,7 +48,7 @@ export default class ComponentContainer extends Component {
 
     render() {
         return (
-            <Collapse defaultActiveKey={categories?.length ? categories[0].category : null}>
+            <Collapse defaultActiveKey={categories?.length ? categories[1].category : null}>
                 {categories.map(item => {
                     const {category, icon = 'code-sandbox', default: components} = item;
                     return (
