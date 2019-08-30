@@ -1,5 +1,6 @@
 import React from 'react';
 import uuid from "uuid/v4";
+import {getIndentSpace, INDENT_SPACE} from "@/pages/drag-page/utils";
 
 export const category = '原生HTML元素';
 
@@ -20,9 +21,12 @@ export default {
     tip: {
         component: 'pre',
         title: '额外说明',
-        toSource: ({props}) => {
+        toSource: ({props, __indent}) => {
             const {children: [{content}]} = props;
-            return `{/* TODO ${content} */}`;
+            const indentSpace = getIndentSpace(__indent);
+            const indentSpace2 = getIndentSpace(__indent + INDENT_SPACE);
+
+            return content ? `{/* TODO\n${indentSpace2}${content.split('\n').join('\n' + indentSpace2)} \n${indentSpace}*/}` : '';
         },
         description: (
             <div>
@@ -43,7 +47,7 @@ export default {
                 {
                     __type: 'text',
                     __id: uuid(),
-                    content: '额外说明',
+                    content: '额外说明：',
                 },
             ],
         },

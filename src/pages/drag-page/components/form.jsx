@@ -310,7 +310,7 @@ export default {
         component: FormElement,
         tagName: 'FormElement',
         showTagName: 'CheckboxGroup',
-        title: '复选框组',
+        title: '复选组',
         dependence: '@/library/components',
         description: '一组复选框',
         defaultProps: {

@@ -336,8 +336,9 @@ ${indentSpace}}`,
         let propsString = propsToString(props, __indent + INDENT_SPACE);
 
         const indentSpace = getIndentSpace(__indent);
+        const indentSpace2 = getIndentSpace(__indent + INDENT_SPACE);
 
-        const todo = __TODO ? `${indentSpace}{/* TODO ${__TODO} */}\n` : '';
+        const todo = __TODO ? `${indentSpace}{/* TODO\n${indentSpace2}${__TODO.split('\n').join('\n' + indentSpace2)} \n${indentSpace}*/}\n` : '';
         let childrenJsx = '';
         if (children?.length) {
             childrenJsx = children.map(item => {
