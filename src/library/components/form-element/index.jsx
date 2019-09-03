@@ -17,6 +17,7 @@ import {
     Transfer,
 } from 'antd';
 import JsonEditor from '../json-editor';
+import IconPicker from '../icon-picker';
 import './index.less';
 
 const {TextArea, Password} = Input;
@@ -110,6 +111,8 @@ function getElement(item) {
     if (type === 'time') return <TimePicker {...commonProps} {...props}/>;
 
     if (type === 'transfer') return <Transfer {...commonProps} {...props}/>;
+
+    if (type === 'icon-picker') return <IconPicker {...commonProps} {...props}/>;
 
     throw new Error(`no such type: ${type}`);
 }

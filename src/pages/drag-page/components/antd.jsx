@@ -3,6 +3,7 @@ import {
     Row,
     Col,
     Tabs,
+    Icon,
 } from 'antd';
 import uuid from "uuid/v4";
 
@@ -42,6 +43,12 @@ export default {
                     {value: 'dashed', label: '虚线按钮'},
                     {value: 'danger', label: '危险按钮'},
                 ],
+            },
+            {
+                name: '图标',
+                attribute: 'icon',
+                valueType: 'string',
+                formType: 'icon-picker',
             },
             {
                 name: '禁用',
@@ -90,6 +97,33 @@ export default {
             //     valueType: 'string',
             //     formType: 'input',
             // },
+        ],
+    },
+    Icon: {
+        component: Icon,
+        title: '图标',
+        dependence: 'antd',
+        container: false,
+        display: 'inline-block',
+        description: '图标',
+        defaultProps: {
+            type: 'user',
+        },
+        props: [
+            {
+                name: '类型',
+                attribute: 'type',
+                valueType: 'string',
+                defaultValue: 'default', // 如果与defaultValue相同，则不需要在组件上添加这个属性
+                formType: 'select',
+                // formType: 'hidden',
+                options: [
+                    {value: 'primary', label: '主要按钮'},
+                    {value: 'default', label: '次要按钮'},
+                    {value: 'dashed', label: '虚线按钮'},
+                    {value: 'danger', label: '危险按钮'},
+                ],
+            },
         ],
     },
     Row: {

@@ -51,7 +51,7 @@ export default (options) => WrappedComponent => {
                 <Modal
                     className={className}
                     destroyOnClose
-                    width="60%"
+                    width="800px"
                     bodyStyle={{padding: 0}}
                     footer={null}
 

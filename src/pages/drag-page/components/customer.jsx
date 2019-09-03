@@ -1,5 +1,11 @@
+import React from 'react';
 import PageContent from '@/layouts/page-content';
-import {ToolBar, QueryBar, Table} from '@/library/components';
+import {
+    ToolBar,
+    QueryBar,
+    Table,
+    Operator,
+} from '@/library/components';
 import uuid from "uuid/v4";
 import {isJson} from "@/library/utils";
 import {getIndentSpace, INDENT_SPACE, propsToString, valueToString} from '../utils';
@@ -180,6 +186,50 @@ export default {
             ],
         },
     },
+    Operator: {
+        component: Operator,
+        title: '操作',
+        visible: false,
+        dependence: '@/library/components',
+        description: '一般用于表格后的操作列。',
+        defaultProps: {
+            items: [
+                {
+                    label: '详情',
+                },
+                {
+                    label: '删除',
+                    color: 'red',
+                    confirm: {
+                        title: '您确定删除此条记录吗？',
+                    }
+                }
+            ],
+        },
+        props: [
+            {
+                name: '操作配置',
+                attribute: 'items',
+                valueType: 'json',
+                formType: 'json',
+                height: '200px',
+                defaultValue: [
+                    {
+                        label: '详情',
+                    },
+                    {
+                        label: '删除',
+                        color: 'red',
+                        confirm: {
+                            title: '您确定删除此条记录吗？',
+                        }
+                    }
+                ],
+                tabSize: 2,
+                labelBlock: true,
+            },
+        ],
+    },
     Table: {
         component: Table,
         title: '表格',
@@ -191,8 +241,29 @@ export default {
                 {title: '年龄', dataIndex: 'age', width: 100},
                 {title: '操作', dataIndex: '__operator'},
             ],
+            items: [
+                {
+                    label: '详情',
+                },
+                {
+                    label: '删除',
+                    color: 'red',
+                    confirm: {
+                        title: '您确定删除此条记录吗？',
+                    }
+                }
+            ],
             dataSource: getTableMockDataSource(),
             total: 50,
+        },
+        render: props => {
+            const {items, columns} = props;
+            const operatorColumn = columns.find(item => item.dataIndex === '__operator');
+            if (operatorColumn) {
+                operatorColumn.render = () => <Operator items={items}/>
+            }
+
+            return <Table {...props}/>;
         },
         toSource: options => {
             const {
@@ -203,6 +274,7 @@ export default {
                 __indent,
                 props: {
                     columns,
+                    items,
                     dataSource,
                     total,
                     children,
@@ -214,7 +286,20 @@ export default {
             const __indentSpace1 = getIndentSpace(__indent + INDENT_SPACE);
             const __indentSpace2 = getIndentSpace(__indent + INDENT_SPACE * 2);
 
-            const columnsValueStr = valueToString(columns, INDENT_SPACE);
+            const operatorColumn = columns.find(item => item.dataIndex === '__operator');
+            let operatorColumnStr = '';
+            if (operatorColumn) {
+                operatorColumnStr = `${getIndentSpace(INDENT_SPACE * 3)}render: () => (<Operator items={
+${getIndentSpace(INDENT_SPACE * 4)}${valueToString(items, INDENT_SPACE * 4)}
+${getIndentSpace(INDENT_SPACE * 3)}/>)`;
+            }
+
+            let columnsValueStr = valueToString(columns, INDENT_SPACE);
+            if (operatorColumnStr) {
+                const cols = columnsValueStr.split("dataIndex: '__operator'");
+                cols.splice(1, 0, "dataIndex: '__operator',\n", operatorColumnStr);
+                columnsValueStr = cols.join('');
+            }
             const dataSourceValueStr = valueToString(dataSource, INDENT_SPACE * 2);
             const totalValueStr = valueToString(total, INDENT_SPACE * 2);
 
@@ -302,6 +387,15 @@ ${__indentSpace1}}`
                 rules: [
                     columnsValidator,
                 ],
+                tabSize: 2,
+                labelBlock: true,
+            },
+            {
+                name: '操作配置',
+                attribute: 'items',
+                valueType: 'json',
+                formType: 'json',
+                height: '200px',
                 tabSize: 2,
                 labelBlock: true,
             },
