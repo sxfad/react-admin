@@ -60,24 +60,8 @@ export default {
         component: PageContent,
         title: '页面容器',
         container: true,
-        visible: false,
         import: 'import PageContent from \'@/layouts/page-content\'',
         description: '页面统一容器。',
-        defaultProps: {
-            children: [
-                {
-                    __type: 'div',
-                    __id: uuid(),
-                    children: [
-                        {
-                            __type: 'text',
-                            __id: uuid(),
-                            content: '页面容器',
-                        }
-                    ],
-                }
-            ],
-        },
     },
     ToolBar: {
         component: ToolBar,

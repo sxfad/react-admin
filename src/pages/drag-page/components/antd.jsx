@@ -4,6 +4,7 @@ import {
     Col,
     Tabs,
     Icon,
+    Steps,
 } from 'antd';
 import uuid from "uuid/v4";
 
@@ -114,15 +115,6 @@ export default {
                 name: '类型',
                 attribute: 'type',
                 valueType: 'string',
-                defaultValue: 'default', // 如果与defaultValue相同，则不需要在组件上添加这个属性
-                formType: 'select',
-                // formType: 'hidden',
-                options: [
-                    {value: 'primary', label: '主要按钮'},
-                    {value: 'default', label: '次要按钮'},
-                    {value: 'dashed', label: '虚线按钮'},
-                    {value: 'danger', label: '危险按钮'},
-                ],
             },
         ],
     },
