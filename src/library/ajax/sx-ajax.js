@@ -79,6 +79,7 @@ export default class SXAjax {
             successTip = false, // 默认false，不展示
             errorTip, //  = method === 'get' ? '获取数据失败！' : '操作失败！', // 默认失败提示
             noEmpty = false,
+            originResponse = false,
         } = options;
 
         // 删除 参数对象中为 null '' undefined 的数据，不发送给后端
@@ -159,7 +160,7 @@ export default class SXAjax {
                 ...options,
             }).then(response => {
                 this.onShowSuccessTip(response, successTip);
-                resolve(response.data, response);
+                resolve(originResponse ? response : response.data);
             }, err => {
                 const isCanceled = err && err.message && err.message.canceled;
                 if (isCanceled) return; // 如果是用户主动cancel，不做任何处理，不会触发任何函数
