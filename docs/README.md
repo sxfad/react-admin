@@ -32,5 +32,4 @@ react-admin是基于基于[React16.x](https://reactjs.org)、[Ant Design3.x](htt
 ├── package.json
 ├── README.md
 └── yarn.lock
-
 ```

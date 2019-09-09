@@ -11,7 +11,6 @@ export modal  from './modal-hoc';
 export ModalContent from './modal-hoc/ModalContent';
 export Operator  from './operator';
 export Pagination from './pagination';
-export Permission  from './permission';
 export QueryBar  from './query-bar';
 export Table  from './table';
 export tableEditable  from './table-editable';

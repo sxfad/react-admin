@@ -14,7 +14,8 @@ export default {
         userPaths: [],              // 当前登录用户可用的路由path，用于过滤前端路由，解决页面越权访问。[path, path, ...]
         primaryColor,               // 主题主颜色
         tabs: [],                   // 所有的tab配置 {path, text, icon, component, active, scrollTop}
-        keepPage: true,             // 页面切换回去之后，保持内容，通过显示隐藏div实现，不知道会有什么坑！！！性能？各个互相干扰？
+        keepPage: false,             // 页面切换回去之后，保持内容，通过显示隐藏div实现，不知道会有什么坑！！！性能？各个互相干扰？
+        noFrame: false,             // 不需要头部、左侧菜单，一般用于将此项目嵌入到其他项目中
     },
 
     syncStorage: {

@@ -78,7 +78,7 @@ export default class SXAjax {
         let {
             successTip = false, // 默认false，不展示
             errorTip, //  = method === 'get' ? '获取数据失败！' : '操作失败！', // 默认失败提示
-            noEmpty = false,
+            noEmpty = false, // 过滤掉 值为 null、''、undefined三种参数，不传递给后端
             originResponse = false,
         } = options;
 
