@@ -6,9 +6,6 @@ import './style.less';
 @config({
     router: true,
     keepAlive: false,
-    connect: state => ({
-        local: state.system.i18n,
-    }),
 })
 export default class Error404 extends Component {
     state = {
@@ -40,17 +37,17 @@ export default class Error404 extends Component {
     }
 
     render() {
-        const {history, local} = this.props;
+        const {history} = this.props;
         const {time} = this.state;
         return (
             <div styleName="root error404">
                 <div styleName="container">
                     <div styleName="header">
-                        <h3>{local.errorPage.pageNotFound}</h3>
+                        <h3>页面不存在</h3>
                     </div>
                     <p styleName="intro">
-                        {local.errorPage.redirectTo}<Link to="/"> {local.menu.home} </Link>
-                        {history.length >= 2 ? <span>{local.errorPage.orReturn} <a onClick={this.handleGoBack}>{local.errorPage.previousStep}（{time}）</a></span> : null}
+                        跳转到<Link to="/"> 首页 </Link>
+                        {history.length >= 2 ? <span>或者返回 <a onClick={this.handleGoBack}>上一步（{time}）</a></span> : null}
                     </p>
                 </div>
             </div>

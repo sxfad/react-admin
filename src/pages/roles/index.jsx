@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Table} from 'antd';
 import PageContent from '@/layouts/page-content';
-import {Operator, ToolBar} from "@/library/antd";
+import {Operator, ToolBar} from "@/library/components";
 import config from '@/commons/config-hoc';
 import RoleEdit from './RoleEdit';
 

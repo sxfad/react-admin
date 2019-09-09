@@ -1,0 +1,26 @@
+@primary-color: #1890ff;
+
+.drag-bar-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px 0;
+    width: 8px;
+    height: 100px;
+    //background: red;
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-left: 0;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    cursor: move;
+
+    span {
+        display: block;
+        width: 2px;
+        height: 2px;
+        background: @primary-color;
+        border-radius: 50%;
+    }
+}

@@ -1,0 +1,30 @@
+.form-element-flex-root {
+    align-items: center;
+
+    .ant-form-item {
+        display: flex;
+        flex: 1;
+        margin-bottom: 4px;
+        font-size: 12px;
+
+        .ant-form-item-label {
+            flex-grow: 0;
+            flex-shrink: 0;
+        }
+
+        .ant-form-item-control-wrapper {
+            flex: 1;
+        }
+    }
+
+    .ant-form-item-children > button:not(:last-child) {
+        margin-right: 8px;
+    }
+
+    .font-element-tip {
+        align-self: flex-start;
+        margin-top: 12px;
+        margin-left: 6px;
+        color: #888;
+    }
+}

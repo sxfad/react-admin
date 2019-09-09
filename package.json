@@ -10,8 +10,10 @@
     },
     "dependencies": {
         "@babel/core": "7.1.6",
+        "@babel/plugin-proposal-export-default-from": "^7.5.2",
         "@babel/plugin-proposal-optional-chaining": "^7.2.0",
         "@svgr/webpack": "4.1.0",
+        "add": "^2.0.6",
         "animate.css": "^3.7.0",
         "antd": "^3.12.4",
         "axios": "^0.18.0",
@@ -69,6 +71,7 @@
         "nprogress": "^0.2.0",
         "optimize-css-assets-webpack-plugin": "5.0.1",
         "path-to-regexp": "^3.0.0",
+        "pg": "^7.9.0",
         "pluralize": "^7.0.0",
         "pnp-webpack-plugin": "1.1.0",
         "postcss-flexbugs-fixes": "4.1.0",
@@ -76,17 +79,20 @@
         "postcss-loader": "3.0.0",
         "postcss-preset-env": "6.3.1",
         "postcss-safe-parser": "4.0.1",
+        "prismjs": "^1.17.1",
         "prop-types": "^15.6.2",
         "pubsub-js": "^1.7.0",
         "qs": "^6.6.0",
-        "react": "^16.7.0",
+        "react": "^16.8.6",
+        "react-ace": "^7.0.2",
         "react-app-polyfill": "^0.2.0",
+        "react-beautiful-dnd": "^11.0.4",
         "react-color": "^2.17.0",
         "react-countup": "^4.0.0",
         "react-dev-utils": "^7.0.1",
-        "react-dnd": "^7.0.2",
-        "react-dnd-html5-backend": "^7.0.2",
-        "react-dom": "^16.7.0",
+        "react-dnd": "^9.0.1",
+        "react-dnd-html5-backend": "^9.0.0",
+        "react-dom": "^16.8.6",
         "react-helmet": "^5.2.0",
         "react-highlight": "^0.12.0",
         "react-loadable": "^5.5.0",
@@ -107,7 +113,7 @@
         "webpack-dev-server": "3.1.14",
         "webpack-manifest-plugin": "2.0.4",
         "workbox-webpack-plugin": "3.6.3",
-        "pg": "^7.9.0"
+        "yarn": "^1.17.3"
     },
     "eslintConfig": {
         "parser": "babel-eslint",
@@ -180,6 +186,7 @@
             "react-app"
         ],
         "plugins": [
+            "@babel/plugin-proposal-export-default-from",
             "@babel/plugin-proposal-optional-chaining",
             [
                 "@babel/plugin-proposal-decorators",
@@ -205,6 +212,24 @@
                             "syntax": "postcss-less"
                         }
                     }
+                }
+            ],
+            [
+                "prismjs",
+                {
+                    "languages": [
+                        "javascript",
+                        "jsx",
+                        "css",
+                        "html"
+                    ],
+                    "plugins": [
+                        "line-numbers",
+                        "copy-to-clipboard",
+                        "show-language"
+                    ],
+                    "theme": "okaidia",
+                    "css": true
                 }
             ]
         ]

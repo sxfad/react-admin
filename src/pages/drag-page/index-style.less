@@ -1,0 +1,42 @@
+.root {
+    display: flex;
+    background: none;
+    padding: 0;
+    margin: 10px;
+
+    .component-container {
+        flex: 0 0 260px;
+        overflow: auto;
+        background: #fff;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+
+        :global {
+            .ant-collapse {
+                border: none;
+            }
+
+            .ant-collapse-item:last-child {
+                border-radius: 0;
+            }
+        }
+    }
+
+    .page-container {
+        flex: 1;
+        padding: 10px;
+        margin: 0 10px;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+        overflow: auto;
+        background: #fff;
+    }
+
+    .component-settings {
+        flex: 0 0 300px;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+        overflow: auto;
+        background: #fff;
+    }
+}

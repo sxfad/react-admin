@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Col, Form, Modal, Row, Button, Spin} from 'antd';
-import {FormElement} from '@/library/antd';
+import {FormElement} from '@/library/components';
 import validationRule from "@/library/utils/validation-rule";
 import PageContent from '@/layouts/page-content';
 

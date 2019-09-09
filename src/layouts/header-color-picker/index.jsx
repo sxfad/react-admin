@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Icon, Tooltip} from 'antd';
 import config from '@/commons/config-hoc';
-import {loadScript} from '@/commons';
-import ColorPicker from '@/components/color-picker';
+import {loadScript} from '@/library/utils';
+import {ColorPicker} from '@/library/components';
 import theme from '@/theme';
 import './style.less';
 
@@ -21,7 +21,6 @@ const LESS_URL = `${ROUTE_BASE_NAME}/less.min.js`;
         return {
             primaryColor: state.system.primaryColor,
             loading: state.system.loading,
-            local: state.system.i18n.setting,
         };
     },
 })
@@ -50,6 +49,10 @@ export default class ThemeColorPicker extends Component {
     state = {
         toolTipVisible: false,
     };
+
+    componentWillUnmount() {
+        if (this.ST) clearTimeout(this.ST);
+    }
 
     handleColorChange = color => {
         const changeColor = () => {
@@ -112,7 +115,6 @@ export default class ThemeColorPicker extends Component {
         const {
             primaryColor = theme['@primary-color'],
             className,
-            local,
         } = this.props;
         const {toolTipVisible} = this.state;
         return (
@@ -120,7 +122,7 @@ export default class ThemeColorPicker extends Component {
                 <Tooltip
                     visible={toolTipVisible}
                     placement="bottom"
-                    title={local.selectPrimaryColor}
+                    title="主颜色"
                 >
                     <div styleName="picker"
                          onMouseEnter={this.handleToolTipShow}
@@ -130,20 +132,19 @@ export default class ThemeColorPicker extends Component {
                             type="sketch"
                             small
                             color={primaryColor}
-                            position="bottom"
                             presetColors={[
+                                '#13C2C2',
+                                '#18BFFF',
+                                '#2F54EB',
+                                '#722ED1',
+                                '#EB2F96',
                                 '#F5222D',
                                 '#FA541C',
                                 '#FA8C16',
                                 '#FAAD14',
-                                '#FADB14',
+                                '#E1C40B',
                                 '#A0D911',
                                 '#52C41A',
-                                '#13C2C2',
-                                '#1890FF',
-                                '#2F54EB',
-                                '#722ED1',
-                                '#EB2F96',
                             ]}
                             onChangeComplete={this.handleColorChange}
                         />

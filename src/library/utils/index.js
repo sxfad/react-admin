@@ -1,5 +1,54 @@
 import {cloneDeep} from 'lodash/lang';
 
+
+/**
+ * 复合函数工具
+ * @param functions
+ * @returns {*}
+ */
+export function compose(functions) {
+    if (functions.length === 0) {
+        return arg => arg
+    }
+
+    if (functions.length === 1) {
+        return functions[0]
+    }
+
+    return functions.reduce((a, b) => (...args) => a(b(...args)))
+}
+
+/**
+ * 加载 JavaScript
+ * @param src
+ * @returns {Promise<any>}
+ */
+export function loadScript(src) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+    });
+}
+
+/**
+ * 判断字符串是否符合json各式
+ * @param str
+ * @returns {boolean}
+ */
+export function isJson(str) {
+    try {
+        if (typeof JSON.parse(str) == "object") {
+            return true;
+        }
+    } catch (e) {
+        return false;
+    }
+}
+
 /**
  * 通用的一些工具方法
  * @module 通用工具方法
@@ -111,6 +160,20 @@ export function getScrollBarWidth() {
 }
 
 /**
+ * 判断是否有滚动条
+ * @param el
+ * @param direction
+ * @returns {boolean}
+ */
+export function hasScrollBar(el, direction = "vertical") {
+    if (direction === "vertical") {
+        return el.scrollHeight > el.clientHeight;
+    } else if (direction === "horizontal") {
+        return el.scrollWidth > el.clientWidth;
+    }
+}
+
+/**
  * 获得一个指定范围内的随机数
  * @param {number} min 最范围
  * @param {number} max 最大范围
@@ -120,6 +183,42 @@ export function getRandomNum(min, max) {
     const range = max - min;
     const rand = Math.random();
     return (min + Math.round(rand * range));
+}
+
+/**
+ * 获取一个元素距离浏览器顶部高度
+ * @param element
+ * @returns {number | Requireable<number>}
+ */
+export function getElementTop(element) {
+    let actualTop = element.offsetTop;
+    let current = element.offsetParent;
+
+    while (current !== null) {
+        actualTop += current.offsetTop;
+        current = current.offsetParent;
+    }
+
+    return actualTop;
+}
+
+/**
+ * 根据className 获取父级元素
+ * @param el
+ * @param parentClassName
+ * @returns {*}
+ */
+export function getParentByClassName(el, parentClassName) {
+    const parentNode = el.parentNode;
+    if (!parentNode) return null;
+
+    const classList = Array.from(parentNode.classList || []);
+
+    if (classList?.length && classList.includes(parentClassName)) {
+        return parentNode;
+    } else {
+        return getParentByClassName(parentNode, parentClassName);
+    }
 }
 
 /**

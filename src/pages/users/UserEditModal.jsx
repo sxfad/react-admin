@@ -1,15 +1,20 @@
-import React, {Component} from 'react';
-import {Form, Row, Col, Button, Spin} from 'antd';
+import React, {Component, Fragment} from 'react';
+import {Form, Button} from 'antd';
 import _ from 'lodash';
-import {FormElement} from '@/library/antd';
+import {FormElement, FormRow} from '@/library/components';
 import PageContent from '@/layouts/page-content';
 import config from '@/commons/config-hoc';
 import validator from '@/library/utils/validation-rule';
-import modal from '@/components/modal-hoc';
+import {ModalContent} from '@/library/components';
 
-@config({ajax: true})
+@config({
+    ajax: true,
+    modal: {
+        title: props => props.id === null ? '添加用户' : '修改用户',
+        fullScreen: false,
+    }
+})
 @Form.create()
-@modal(props => props.id === null ? '添加用户' : '修改用户')
 export default class EditModal extends Component {
     state = {
         loading: false,
@@ -60,11 +65,20 @@ export default class EditModal extends Component {
         });
     };
 
+    // 节流校验写法 如果同一个页面多次调用，必须传递key参数
+    userNameExist = (key = 'userNameExit', prevValue, message = '用户名重复') => {
+        if (!this[key]) this[key] = _.debounce((rule, value, callback) => {
+            if (!value) return callback();
+            if (prevValue && value === prevValue) return callback();
 
-    // 节流校验写法
-    userNameExist = _.debounce((rule, value, callback) => {
-        console.log('节流发请求');
-    }, 500);
+            if (value === '22') return callback(message);
+
+            console.log('组件内节流发请求');
+            return callback();
+        }, 500);
+
+        return {validator: this[key]};
+    };
 
     handleCancel = () => {
         const {onCancel} = this.props;
@@ -75,43 +89,83 @@ export default class EditModal extends Component {
         this.props.form.resetFields();
     };
 
-    // 这样可以保证每次render时，FormElement不是每次都创建，这里可以进行一些共用属性的设置
-    FormElement = (props) => <FormElement form={this.props.form} labelWidth={100} disabled={this.props.isDetail} {...props}/>;
-
     render() {
-        const {id} = this.props;
+        const {id, form} = this.props;
         const isEdit = id !== null;
         const {loading, data} = this.state;
+        const formElementProps = {
+            labelWidth: 100,
+            form,
+        };
 
-        const FormElement = this.FormElement;
         return (
-            <Spin spinning={loading}>
+            <ModalContent
+                loading={loading}
+                footer={
+                    <Fragment>
+                        <Button onClick={this.handleOk} type="primary">保存</Button>
+                        <Button onClick={this.handleReset}>重置</Button>
+                        <Button onClick={this.handleCancel}>取消</Button>
+                    </Fragment>
+                }
+            >
                 <PageContent footer={false}>
                     <Form onSubmit={this.handleSubmit}>
                         {isEdit ? <FormElement type="hidden" field="id" initialValue={data.id}/> : null}
-                        <Row>
-                            <Col span={24}>
-                                <FormElement
-                                    label="名称"
-                                    field="name"
-                                    initialValue={data.name}
-                                    required
-                                    rules={[
-                                        validator.noSpace(),
-                                        validator.userNameExist(),
-                                        {validator: this.userNameExist}
-                                    ]}
-                                />
-                            </Col>
-                        </Row>
+                        <FormRow>
+                            <FormElement
+                                {...formElementProps}
+                                width={300}
+                                label="名称"
+                                labelTip="label中的提示信息"
+                                tip="显示出来的提示信息"
+                                field="name"
+                                initialValue={data.name}
+                                required
+                                rules={[
+                                    validator.noSpace(),
+                                    validator.userNameExist('name1'),
+                                    this.userNameExist('nam2'),
+                                ]}
+                            />
+                            <FormElement
+                                {...formElementProps}
+                                label="年龄"
+                                field="age"
+                                initialValue={data.age}
+                                required
+                            />
+                        </FormRow>
+                        <FormRow>
+                            <FormElement
+                                {...formElementProps}
+                                label="名称"
+                                field="name3"
+                                initialValue={data.name}
+                                required
+                                rules={[
+                                    validator.noSpace(),
+                                    validator.userNameExist('name2'),
+                                    this.userNameExist('name2'),
+                                ]}
+                            />
+                        </FormRow>
+                        <FormElement
+                            {...formElementProps}
+                            label="名称"
+                            field="name4"
+                            initialValue={data.name}
+                            required
+                            rules={[
+                                validator.noSpace(),
+                                // validator.userNameExist(),
+                                // {validator: this.userNameExist}
+                            ]}
+                        />
+                        <div style={{height: 1000, width: 100, background: 'red'}}/>
                     </Form>
                 </PageContent>
-                <div className="ant-modal-footer">
-                    <Button onClick={this.handleOk} type="primary">保存</Button>
-                    <Button onClick={this.handleReset}>重置</Button>
-                    <Button onClick={this.handleCancel}>取消</Button>
-                </div>
-            </Spin>
+            </ModalContent>
         );
     }
 }

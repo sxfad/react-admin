@@ -78,7 +78,8 @@ export default class SXAjax {
         let {
             successTip = false, // 默认false，不展示
             errorTip, //  = method === 'get' ? '获取数据失败！' : '操作失败！', // 默认失败提示
-            noEmpty = false,
+            noEmpty = false, // 过滤掉 值为 null、''、undefined三种参数，不传递给后端
+            originResponse = false,
         } = options;
 
         // 删除 参数对象中为 null '' undefined 的数据，不发送给后端
@@ -99,6 +100,7 @@ export default class SXAjax {
         let cancel;
 
         const isGet = method === 'get';
+        const isDelete = method === 'delete';
         const isMock = this.isMock(url, data, method, options);
 
         let instance = this.instance;
@@ -143,8 +145,8 @@ export default class SXAjax {
         }
 
         let params = {};
-        if (isGet) {
-            params = data; // params 是get请求拼接到url上的
+        if (isGet || isDelete) {
+            params = data; // params 是get或delete请求拼接到url上的
             data = {}; // data 是put、post 等请求发送的数据
         }
 
@@ -158,7 +160,7 @@ export default class SXAjax {
                 ...options,
             }).then(response => {
                 this.onShowSuccessTip(response, successTip);
-                resolve(response.data, response);
+                resolve(originResponse ? response : response.data);
             }, err => {
                 const isCanceled = err && err.message && err.message.canceled;
                 if (isCanceled) return; // 如果是用户主动cancel，不做任何处理，不会触发任何函数

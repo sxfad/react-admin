@@ -1,16 +1,17 @@
 @headerHeight: 50px;
 @transitionDuration: 300ms;
-@layout-header-background : #001529;
+@layout-header-background: #001529;
+@primary-color: #18bfff;
 
 .side {
     position: fixed;
     z-index: 999;
     top: @headerHeight;
     left: 0;
-    bottom: 0;
+    bottom: 8px;
     width: 200px;
-    box-shadow: 2px 0 6px lighten(@layout-header-background, 10%);
-    background: @layout-header-background;
+    //box-shadow: 1px 0 3px lighten(@primary-color, 10%);
+    background: #fff;
     transition: all @transitionDuration;
 
     .outer {
@@ -30,6 +31,11 @@
         transition: all @transitionDuration;
         -webkit-overflow-scrolling: touch;
     }
+    :global {
+        .ant-menu-item-selected {
+            z-index: 1;
+        }
+    }
 
     .drag-bar {
         position: absolute;
@@ -39,5 +45,33 @@
         height: 100%;
         cursor: col-resize;
         z-index: 1;
+    }
+
+    .drag-bar-icon {
+        position: absolute;
+        top: 50%;
+        margin-top: -50px;
+        right: -5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: flex-start;
+        padding: 20px 0;
+        width: 6px;
+        height: 100px;
+        background: #fff;
+        border: 1px solid #e8e8e8;
+        border-left: 0;
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+        cursor: move;
+
+        span {
+            display: block;
+            width: 2px;
+            height: 2px;
+            background: @primary-color;
+            border-radius: 50%;
+        }
     }
 }

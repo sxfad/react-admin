@@ -2,14 +2,12 @@ import React, {Component} from 'react';
 import {Menu, Dropdown, Icon} from 'antd';
 import {Link} from 'react-router-dom';
 import {toLogin, getLoginUser} from '@/commons';
-import {connect} from '@/models';
-import {UserAvatar} from '@/library/antd';
+import {UserAvatar} from '@/library/components';
 import ModifyPassword from './ModifyPassword';
 import './style.less';
 
 const Item = Menu.Item;
 
-@connect(state => ({local: state.system.i18n}))
 export default class HeaderUser extends Component {
     static defaultProps = {
         theme: 'default',
@@ -35,20 +33,20 @@ export default class HeaderUser extends Component {
         const name = user.name;
         const avatar = user.avatar;
 
-        const {className, theme, local} = this.props;
+        const {className, theme} = this.props;
 
         const menu = (
             <Menu styleName="menu" theme={theme} selectedKeys={[]} onClick={this.handleMenuClick}>
-                <Item key="modifyPassword"><Icon type="edit"/>{local.menu.modifyPassword}</Item>
-                <Item><Link to="/settings"><Icon type="setting"/>{local.menu.setting}</Link></Item>
+                <Item key="modifyPassword"><Icon type="edit"/>修改密码</Item>
+                <Item><Link to="/settings"><Icon type="setting"/>设置</Link></Item>
                 {process.env.NODE_ENV === 'development' ? (
-                    <Item><Link to="/menu-permission"><Icon type="lock"/>{local.menu.menus}</Link></Item>
+                    <Item><Link to="/menu-permission"><Icon type="lock"/>菜单</Link></Item>
                 ) : null}
                 {process.env.NODE_ENV === 'development' ? (
-                    <Item><Link to="/admin-crud"><Icon type="code"/>{local.menu.codeGenerator}</Link></Item>
+                    <Item><Link to="/admin-crud"><Icon type="code"/>代码生成</Link></Item>
                 ) : null}
                 <Menu.Divider/>
-                <Item key="logout"><Icon type="logout"/>{local.menu.logout}</Item>
+                <Item key="logout"><Icon type="logout"/>退出登录</Item>
             </Menu>
         );
         return (
@@ -58,7 +56,7 @@ export default class HeaderUser extends Component {
                         {avatar ? (
                             <UserAvatar size="default" styleName="avatar" src={avatar}/>
                         ) : (
-                            <UserAvatar size="default" styleName="avatar" name={name}/>
+                            <UserAvatar size="default" styleName="avatar" icon name={name}/>
                         )}
                         {name}
                         <Icon type="caret-down"/>

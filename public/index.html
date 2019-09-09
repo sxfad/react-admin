@@ -42,15 +42,15 @@
     // dev 模式
     if ('%NODE_ENV%' === 'development') {
         // 解决首次启动，打开浏览器白屏问题
-        let si = 0;
-        setInterval(() => {
-            const root = document.getElementById('root');
-
-            if (root && !root.innerHTML && !document.getElementsByTagName('iframe').length) {
-                window.location.reload();
-                clearInterval(si);
-            }
-        }, 10000)
+        // let si = 0;
+        // setInterval(() => {
+        //     const root = document.getElementById('root');
+        //
+        //     if (root && !root.innerHTML && !document.getElementsByTagName('iframe').length) {
+        //         window.location.reload();
+        //         clearInterval(si);
+        //     }
+        // }, 10000)
     }
 </script>
 </body>

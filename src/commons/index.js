@@ -1,5 +1,5 @@
 import {session} from '@/library/utils/storage';
-import {getNodeByPropertyAndValue, convertToTree, renderNode} from '@/library/utils/tree-utils';
+import {getNodeByPropertyAndValue, convertToTree} from '@/library/utils/tree-utils';
 import pathToRegexp from "path-to-regexp/index";
 import {ROUTE_BASE_NAME} from '@/router/AppRouter';
 
@@ -43,7 +43,6 @@ export function getLoginUser() {
     return loginUser ? JSON.parse(loginUser) : null;
 }
 
-
 /**
  * 判断用户是否登录
  */
@@ -75,24 +74,6 @@ export function toLogin() {
 
     return null;
 }
-
-/**
- * 复合函数工具
- * @param funcs
- * @returns {*}
- */
-export function compose(funcs) {
-    if (funcs.length === 0) {
-        return arg => arg
-    }
-
-    if (funcs.length === 1) {
-        return funcs[0]
-    }
-
-    return funcs.reduce((a, b) => (...args) => a(b(...args)))
-}
-
 
 /**
  * 根据path获取对应的菜单
@@ -192,34 +173,3 @@ export function getMenuTreeDataAndPermissions(menus) {
     return {menuTreeData, permissions}
 }
 
-/**
- * 树形菜单国际化处理
- * @param menuTreeData
- * @param i18n
- */
-export function setMenuI18n(menuTreeData, i18n) {
-    const treeData = [...menuTreeData];
-
-    renderNode(treeData, (item) => {
-        const text = i18n[item.local];
-        if (text) item.text = text;
-    });
-
-    return treeData;
-}
-
-/**
- * 加载 JavaScript
- * @param src
- * @returns {Promise<any>}
- */
-export function loadScript(src) {
-    return new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = src;
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-    });
-}

@@ -3,9 +3,23 @@
 }
 
 .side-menu {
-    :global(.font-icon) {
-        margin-right: 8px;
+    height: 100%;
+    padding-right: 6px;
+
+    & > ul {
+        height: 100%;
     }
+
+    :global {
+        .font-icon {
+            margin-right: 8px;
+        }
+
+        .ant-menu {
+            border-right: 0;
+        }
+    }
+
     .menu-text {
         transition: all 300ms;
     }

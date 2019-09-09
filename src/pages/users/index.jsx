@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Button, Table, Form} from 'antd';
+import React, {Component, Fragment} from 'react';
+import {Button, Form} from 'antd';
 import PageContent from '@/layouts/page-content';
 import {
     QueryBar,
@@ -8,7 +8,8 @@ import {
     ToolBar,
     FormRow,
     FormElement,
-} from "@/library/antd";
+    Table,
+} from "@/library/components";
 import config from '@/commons/config-hoc';
 import UserEditModal from './UserEditModal';
 
@@ -29,12 +30,12 @@ export default class UserCenter extends Component {
     };
 
     columns = [
-        {title: '用户名', dataIndex: 'name', key: 'name'},
-        {title: '年龄', dataIndex: 'age', key: 'age'},
-        {title: '工作', dataIndex: 'job', key: 'job'},
-        {title: '职位', dataIndex: 'position', key: 'position'},
+        {title: '用户名', dataIndex: 'name', width: 100},
+        {title: '年龄', dataIndex: 'age', width: 100},
+        {title: '工作', dataIndex: 'job', width: 100},
+        {title: '职位', dataIndex: 'position', width: 100},
         {
-            title: '操作', dataIndex: 'operator', key: 'operator',
+            title: '操作', dataIndex: 'operator', width: 100,
             render: (value, record) => {
                 const {id, name} = record;
                 const items = [
@@ -59,13 +60,15 @@ export default class UserCenter extends Component {
 
     componentDidMount() {
         this.handleSearch();
+        console.log(this.nameDom);
     }
 
     handleSearch = () => {
+        /*
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (err) return;
-            const {pageNum, pageSize} = this.state;
 
+            const {pageNum, pageSize} = this.state;
             const params = {
                 ...values,
                 pageNum,
@@ -81,9 +84,22 @@ export default class UserCenter extends Component {
                 });
         });
 
-    };
+        */
 
-    FormElement = (props) => <FormElement form={this.props.form} labelWidth={62} width={300} style={{paddingLeft: 16}} {...props}/>;
+        const dataSource = Array.from({length: 20})
+            .map((item, index) => {
+                const n = index + 1;
+                return {
+                    id: n,
+                    name: n,
+                    age: n,
+                    job: n,
+                    position: n,
+                };
+            });
+
+        this.setState({dataSource});
+    };
 
     render() {
         const {
@@ -95,21 +111,28 @@ export default class UserCenter extends Component {
             visible,
             id,
         } = this.state;
+        const {form} = this.props;
 
-        const FormElement = this.FormElement;
+        const formElementProps = {
+            form,
+            width: 300,
+            style: {paddingLeft: 16},
+        };
         return (
             <PageContent>
                 <QueryBar
-                    showCollapsed
                     collapsed={collapsed}
                     onCollapsedChange={collapsed => this.setState({collapsed})}
                 >
                     <FormRow>
                         <FormElement
+                            {...formElementProps}
                             label="名称"
                             field="name"
+                            ref={node => this.nameDom = node}
                         />
                         <FormElement
+                            {...formElementProps}
                             type="select"
                             label="职位"
                             field="job"
@@ -118,18 +141,22 @@ export default class UserCenter extends Component {
                                 {value: 2, label: 2},
                             ]}
                         />
-                    </FormRow>
-                    <FormRow>
-                        <FormElement
-                            type="date"
-                            label="入职时间"
-                            field="time"
-                        />
-                        <FormElement
-                            label="年龄"
-                            field="age"
-                        />
-                        <FormElement layout width="auto">
+                        {collapsed ? null : (
+                            <Fragment>
+                                <FormElement
+                                    {...formElementProps}
+                                    type="date"
+                                    label="入职时间"
+                                    field="time"
+                                />
+                                <FormElement
+                                    {...formElementProps}
+                                    label="年龄"
+                                    field="age"
+                                />
+                            </Fragment>
+                        )}
+                        <FormElement layout>
                             <Button type="primary" onClick={this.handleSearch}>提交</Button>
                             <Button onClick={() => this.props.form.resetFields()}>重置</Button>
                         </FormElement>

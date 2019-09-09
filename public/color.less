@@ -3089,7 +3089,7 @@ a:active {
 .ant-menu-item-selected > a:hover {
     color: @primary-color;
 }
-
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-active,
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
     background-color: color(~`colorPalette("@{primary-color}", 1)`);
 }
@@ -3708,3 +3708,18 @@ a:active {
     color: @primary-color;
 }
 
+#header {
+    background-color: @primary-color;
+}
+
+#logo-container {
+    background: linear-gradient(to right, darken(@primary-color, 20%), @primary-color);
+}
+
+.login-bg {
+    background-color: @primary-color;
+}
+
+.drag-bar-icon span {
+    background: @primary-color !important;
+}

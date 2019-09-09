@@ -8,7 +8,7 @@ import Error404 from '@/pages/error/Error404';
 import config from '@/commons/config-hoc';
 import KeepAuthRoute from './KeepAuthRoute';
 import KeepPage from './KeepPage';
-import routes, {noFrameRoutes, noAuthRoutes} from './routes';
+import routes, {noFrameRoutes, noAuthRoutes, /*commonPaths*/} from './routes';
 
 // 如果项目挂载到网站的子目录下，可以配置ROUTE_BASE_NAME， 开发时拿不到 PUBLIC_URL
 // export const ROUTE_BASE_NAME = '/react-admin-live';
@@ -24,32 +24,39 @@ const allRoutes = routes.map(item => {
     };
 });
 
+
 @config({
     query: true,
+    connect: state => ({userPaths: state.system.userPaths, systemNoFrame: state.system.noFrame})
 })
 export default class AppRouter extends Component {
     render() {
-        const {noFrame, noAuth} = this.props.query;
+        const {noFrame: queryNoFrame, noAuth} = this.props.query;
+        const {systemNoFrame} = this.props;
+
+        // allRoutes为全部路由配置，根据用户可用 菜单 和 功能 的path，对allRoutes进行过滤，可以解决越权访问页面的问题
+        // commonPaths 为所有人都可以访问的路径
+        // const {userPaths} = this.props;
+        // const allPaths = [...userPaths, ...commonPaths];
+        // const userRoutes = allRoutes.filter(item => allPaths.includes(item.path));
+
+        const userRoutes = allRoutes;
+
         return (
             <BrowserRouter basename={ROUTE_BASE_NAME}>
                 <div style={{display: 'flex', flexDirection: 'column', position: 'relative', minHeight: '100vh'}}>
                     <Route path="/" render={props => {
                         // 框架组件单独渲染，与其他页面成为兄弟节点，框架组件和具体页面组件渲染互不影响
 
+                        if (systemNoFrame) return null;
                         // 通过配置，筛选那些页面不需要框架
-                        if (noFrameRoutes.includes(props.location.pathname)) {
-                            return null;
-                        }
+                        if (noFrameRoutes.includes(props.location.pathname)) return null;
 
                         // 框架内容属于登录之后内容，如果未登录，也不显示框架
-                        if (!isAuthenticated()) {
-                            return null;
-                        }
+                        if (!isAuthenticated()) return null;
 
                         // 如果浏览器url中携带了noFrame=true参数，不显示框架
-                        if (noFrame === 'true') {
-                            return null;
-                        }
+                        if (queryNoFrame === 'true') return null;
 
                         return <PageFrame {...props}/>;
                     }}/>
@@ -57,7 +64,7 @@ export default class AppRouter extends Component {
                     <KeepPage/>
 
                     <Switch>
-                        {allRoutes.map(item => {
+                        {userRoutes.map(item => {
                             const {path, component} = item;
                             let isNoAuthRoute = false;
 

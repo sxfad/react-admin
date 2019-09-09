@@ -2,17 +2,17 @@ import {getTopNodeByNode} from '@/library/utils/tree-utils';
 import {uniqueArray} from '@/library/utils';
 import {getMenuTreeDataAndPermissions, getSelectedMenuByPath} from '../commons';
 import getMenus from "@/menus";
-import {getCurrentLocal} from '@/i18n';
 
 export default {
     initialState: {
         loading: false,         // 请求菜单loading
-        menus: [],              // 菜单数据，树状结构
         openKeys: [],           // 当前展开菜单keys
         selectedMenu: null,     // 当前选中菜单
         topMenu: [],            // 当前选中菜单的顶级菜单
         keepOtherOpen: false,   // 点击菜单进入页面时，保持其他菜单打开状态
+        menus: [],              // 菜单数据，树状结构
         mostUsedMenus: [],      // 最常用菜单，使用此时usedTimes降序排列
+        plainMenus: [],         // 菜单数据，扁平化
     },
     syncStorage: {
         openKeys: true,
@@ -31,18 +31,9 @@ export default {
             resolve: (state, {payload: menus}) => {
                 // 重新获取菜单之后，过滤mostUsedMenus，防止脏数据
                 const mostUsedMenus = menus.filter(item => state.mostUsedMenus.find(it => it.key === item.key));
+                const {menuTreeData} = getMenuTreeDataAndPermissions(menus);
 
-                // 首次获取数据之后进行国际化处理
-                const i18n = getCurrentLocal();
-                const localedMenus = menus.map(item => {
-                    const {local} = item;
-                    const text = i18n.menu[local];
-                    if (text) return {...item, text};
-                    return {...item};
-                });
-                const {menuTreeData} = getMenuTreeDataAndPermissions(localedMenus);
-
-                return {menus: menuTreeData, mostUsedMenus};
+                return {menus: menuTreeData, mostUsedMenus, plainMenus: menus};
             },
         },
     },

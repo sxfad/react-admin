@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Modal, Form, Spin, Table, Icon, Row, Col} from 'antd';
 import config from '@/commons/config-hoc';
-import {FormElement} from '@/library/antd';
+import {FormElement} from '@/library/components';
 import localMenus from "@/menus";
 import {convertToTree, getGenerationKeys} from "@/library/utils/tree-utils";
 import {arrayRemove, arrayPush} from '@/library/utils';

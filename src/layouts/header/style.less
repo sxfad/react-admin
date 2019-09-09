@@ -1,0 +1,124 @@
+@headerHeight: 50px;
+@transitionDuration: 300ms;
+@layout-header-background: #001529;
+@primary-color: #1890ff;
+
+.header {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100vw; // 不会因为body出现滚动条而抖动
+    height: @headerHeight;
+    padding-right: 16px;
+    background-color: @primary-color;
+    background-image: url('./topbg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    .logo-container {
+        display: inline-flex;
+        align-items: center;
+        flex-grow: 0;
+        flex-shrink: 0;
+        height: @headerHeight;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(to right, darken(@primary-color, 20%), @primary-color);
+        box-shadow: none;
+
+        h1 {
+            color: #fff;
+        }
+    }
+
+    .trigger {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 0;
+        flex-shrink: 0;
+        height: 100%;
+        font-size: 20px;
+        cursor: pointer;
+        transition: all .3s;
+        padding: 0 5px;
+        color: #fff;
+
+        &:hover {
+            opacity: 0.5;
+        }
+    }
+
+    .center {
+        flex-shrink: 1;
+        flex-grow: 1;
+        overflow: auto;
+
+        :global {
+            .ant-menu {
+                background: none;
+            }
+
+            .ant-breadcrumb a,
+            .ant-breadcrumb .ant-breadcrumb-link,
+            .ant-breadcrumb .ant-breadcrumb-separator {
+                color: #fff;
+            }
+        }
+
+    }
+
+    .right {
+        display: flex;
+        align-items: stretch;
+        flex-grow: 0;
+        flex-shrink: 0;
+        height: 100%;
+
+        .action {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 0 6px;
+            transition: all @transitionDuration;
+            height: 100%;
+            color: #fff;
+
+            > i {
+                font-size: 16px;
+                vertical-align: middle;
+            }
+
+            //&:global(.ant-popover-open),
+            //&:hover {
+            //    background: lighten(@primary-color, 40%);
+            //}
+        }
+
+    }
+
+    &[data-theme=dark] {
+        background: @layout-header-background;
+        box-shadow: 2px 0 6px lighten(@layout-header-background, 10%);
+
+        .logo {
+            background: @layout-header-background;
+            box-shadow: none;
+        }
+
+        .right {
+            color: #fff;
+        }
+
+        .action {
+            &:global(.ant-popover-open),
+            &:hover {
+                background: lighten(@layout-header-background, 10%) !important;
+            }
+        }
+    }
+}
