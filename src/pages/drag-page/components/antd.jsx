@@ -4,7 +4,6 @@ import {
     Col,
     Tabs,
     Icon,
-    Steps,
 } from 'antd';
 import uuid from "uuid/v4";
 
