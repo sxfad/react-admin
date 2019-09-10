@@ -24,6 +24,7 @@
         "babel-loader": "8.0.4",
         "babel-plugin-import": "^1.11.0",
         "babel-plugin-named-asset-import": "^0.3.0",
+        "babel-plugin-prismjs": "^1.1.1",
         "babel-plugin-react-css-modules": "^5.0.0",
         "babel-preset-react-app": "^7.0.0",
         "bfj": "6.1.1",

@@ -15,7 +15,7 @@ import {keepAliveRoutes} from './routes';
             tabs: state.system.tabs,
             title: state.page.title,
             selectedMenu: state.menu.selectedMenu,
-            keepPageSystem: state.system.keepPage,
+            keepAliveSystem: state.system.keepAlive,
             tabsShow: state.settings.tabsShow,
         }
     },
@@ -34,7 +34,7 @@ export default class KeepAuthRoute extends React.Component {
             component: Component,
             noAuth,
             tabs,
-            keepPageSystem,
+            keepAliveSystem,
             tabsShow,
             ...rest
         } = this.props;
@@ -44,13 +44,13 @@ export default class KeepAuthRoute extends React.Component {
                 {...rest}
                 render={props => {
                     const configKeepAlive = keepAliveRoutes.find(item => item.path === rest.path)?.keepAlive;
-                    const keepPage = configKeepAlive === void 0 ? keepPageSystem : configKeepAlive;
+                    const keepAlive = configKeepAlive === void 0 ? keepAliveSystem : configKeepAlive;
                     const {history} = props;
                     const {action: {system}} = this.props;
                     let component = (noAuth || isAuthenticated()) ? <Component {...props}/> : <Error401 {...props}/>;
 
                     // 如果页面现实tabs，或者启用了keep page alive 需要对tabs进行操作
-                    if (tabsShow || keepPage || keepAliveRoutes.length) {
+                    if (tabsShow || keepAlive || keepAliveRoutes.length) {
                         const {pathname, search} = props.location;
                         const currentPath = window.decodeURIComponent(`${pathname}${search}`);
 
@@ -64,11 +64,11 @@ export default class KeepAuthRoute extends React.Component {
                             setTimeout(() => {
                                 history.push(nextActiveTab.path);
                             });
-                            return keepPage ? null : component;
+                            return keepAlive ? null : component;
                         }
 
                         // 获取当前地址对应的标签页
-                        const TabComponent = keepPage ? component : null;
+                        const TabComponent = keepAlive ? component : null;
 
                         // 切换tab页
                         if (currentTab && !currentTab.active) {
@@ -104,7 +104,7 @@ export default class KeepAuthRoute extends React.Component {
                         }
 
                         // 先让 KeepPage.jsx 进行一次 无component渲染，然后再次渲染component达到刷新的目的
-                        if (keepPage && currentTab && !currentTab.component) {
+                        if (keepAlive && currentTab && !currentTab.component) {
                             setTimeout(() => {
                                 currentTab.component = TabComponent;
                                 system.setTabs([...tabs]);
@@ -151,7 +151,7 @@ export default class KeepAuthRoute extends React.Component {
                     }
 
                     // 由KeepPage组件进行页面渲染和切换，这里不需要进行页面渲染
-                    if (keepPage) return null;
+                    if (keepAlive) return null;
 
                     // 页面滚动条滚动到顶部
                     document.body.scrollTop = document.documentElement.scrollTop = 0;

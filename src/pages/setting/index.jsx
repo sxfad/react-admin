@@ -23,14 +23,14 @@ import config from '@/commons/config-hoc';
     connect(state) {
         const {pageFrameLayout, pageHeadFixed, pageHeadShow, tabsShow} = state.settings;
         const {keepOtherOpen} = state.menu;
-        const {keepPage} = state.system;
+        const {keepAlive} = state.system;
         return {
             pageFrameLayout,
             pageHeadFixed,
             pageHeadShow,
             keepOtherMenuOpen: keepOtherOpen,
             tabsShow,
-            keepPage,
+            keepAlive,
         };
     },
 })
@@ -79,7 +79,7 @@ export default class Settings extends Component {
             pageHeadShow,
             keepOtherMenuOpen,
             tabsShow,
-            keepPage,
+            keepAlive,
         } = this.props;
 
         const radioStyle = {
@@ -115,7 +115,7 @@ export default class Settings extends Component {
                             <div style={{marginTop: 8}}>
                                 <Checkbox
                                     onChange={this.handleKeepPageChange}
-                                    checked={keepPage}
+                                    checked={keepAlive}
                                 >
                                     页面保持
                                     <span style={{color: 'red'}}>(Beta)</span>
