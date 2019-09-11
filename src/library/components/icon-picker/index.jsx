@@ -55,7 +55,7 @@ export default class IconPicker extends Component {
                             <Icon type="close-circle" onClick={this.handleClear}/>
                         </Fragment>
                     ) : (
-                        <span>请选择图标</span>
+                        <span style={{color: '#c7c7c7'}}>请选择图标</span>
                     )}
                 </div>
                 <IconModal

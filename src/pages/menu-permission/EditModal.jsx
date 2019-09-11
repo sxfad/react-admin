@@ -55,7 +55,8 @@ export default class EditModal extends Component {
     };
 
     handleCancel = () => {
-        this.setState({visible: false});
+        const {onCancel} = this.props;
+        if (onCancel) onCancel();
     };
 
     render() {
