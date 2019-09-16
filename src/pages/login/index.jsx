@@ -99,8 +99,8 @@ export default class extends Component {
                 </div>
                 <div styleName="right">
                     <div styleName="box">
-                        <div styleName="header">登录</div>
-                        <Form onSubmit={this.handleSubmit}>
+                        <div styleName="header">用户登录</div>
+                        <Form onSubmit={this.handleSubmit} className='inputLine'>
                             <Form.Item
                                 validateStatus={userNameError ? 'error' : ''}
                                 help={userNameError || ''}

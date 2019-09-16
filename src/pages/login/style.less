@@ -8,10 +8,12 @@
     background-image: url("./login-bg.jpg");
     background-size: 100% 100%;
     animation: root-frames 1s;
+    overflow:hidden;
 }
 
 .left {
     display: flex;
+    flex-direction:column;
     justify-content: center;
     align-items: center;
     flex-grow: 2;
@@ -19,33 +21,40 @@
     height: 100%;
 
     .logo {
-        display: none;
-        width: 60%;
+        display: block;
+        width: 65%;
         height: auto;
+        position:relative;
+        animation:myfirst 1s linear 0s 1 forwards;
     }
+
+    @keyframes myfirst
+    {
+        0% {left:0px; bottom:-500px;opacity: 0;}
+        100% {left:0px; bottom:-20px;opacity: 1;}
+    }
+
 }
 
 .right {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    flex-grow: 1;
     flex-basis: 100px;
     height: 100%;
+    background:#f8f8f9;
 
     .box {
-        padding: 16px 32px;
-        width: 360px;
-        height: 320px;
-        border-radius: 15px;
-        background: #f8f8f8;
-        box-shadow: 0 0 100px rgba(0, 0, 0, .08);
+        padding: 16px 40px;
+        width: 300px;
+        border-radius: 0px;
+        background: #f8f8f9;
 
         .header {
-            font-size: 18px;
+            font-size: 20px;
             text-align: center;
-            padding: 16px;
-            color: #808080;
+            padding: 30px;
+            color: #049aef;
         }
 
         .submit-btn {
@@ -68,6 +77,18 @@
             }
         }
 
+    }
+}
+
+:global{
+    .inputLine {
+        .ant-input{
+            height:42px;
+        }
+        .ant-btn{
+            height:42px;
+            font-size:14px;
+        }
     }
 }
 
