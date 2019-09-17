@@ -36,6 +36,74 @@
 
 }
 
+.logo_p{
+    position:absolute;
+    width:35%;
+    left:5%;
+    top:5%;
+    display: flex;
+    align-items: flex-start;
+    animation:logoStart 1s linear 0s 1 forwards;
+    i{
+        font-size:25px;
+        color:#fff;
+        font-style: normal;
+        padding-left:20px;
+        font-weight:bold;
+        opacity: .9;
+    }
+    img{
+        width:40px;
+        height:auto;
+        opacity: .7;
+    }
+}
+
+@keyframes logoStart
+{
+    0% { left:5%;top:-50px;opacity: 0;}
+    100% { left:5%; top:5%;opacity: 1;}
+}
+
+.blink{
+    position:absolute;
+    left: -100px;
+    top: 0;
+    animation:blinkStart 2s linear 0s 1 forwards;
+    img{
+        width:70%;
+    }
+}
+
+@keyframes blinkStart {
+    0% {
+        left: -40px;
+        top: -60px;
+        opacity: 0;
+    }
+    30% {
+        left: -40px;
+        top: -60px;
+        opacity: 0.5;
+    }
+    50% {
+        left: -40px;
+        top: -60px;
+        opacity: 0;
+    }
+    70% {
+        left: -40px;
+        top: -60px;
+        opacity: 0.5;
+    }
+    100% {
+        left: -40px;
+        top: -60px;
+        opacity: 1;
+    }
+}
+
+
 .right {
     display: flex;
     justify-content: flex-start;
