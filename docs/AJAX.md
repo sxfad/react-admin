@@ -73,7 +73,17 @@
 ---|---
 url|请求地址
 params|请求传递给后端的参数
-options|请求配置，即axios的配置，扩展了三个个：successTip errorTip，成功或失败提示；noEmpty过滤掉 ''、null、undefined的参数，不提交给后端
+options|请求配置，即axios的配置，
+
+options配置
+
+参数|说明
+---|---
+axios配置|可以接受axios参数
+successTip|扩展的参数，成功提示
+errorTip|扩展的参数，失败提示
+noEmpty|扩展的参数，过滤掉 ''、null、undefined的参数，不提交给后端
+originResponse|扩展参数，.then中可以拿到完整的response，而不只是response.data
 
 注：全局默认参数可以在src/commons/ajax.js中进行配置，默认baseURL='/api'、timeout=1000 * 60。
 

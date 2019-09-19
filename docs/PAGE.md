@@ -32,8 +32,8 @@ path|string|-|页面路由地址，如果存在path配置，会通过脚本抓�
 noFrame|boolean|false|标记当前页面为不需要导航框架的页面，比如登录页，通过脚本抓取实现
 noAuth|boolean|false|标记当前页面为不需要登录即可访问的页面，通过脚本抓取实现
 keepAlive|boolean|-|标记当前页面内容在页面切换之后是否保持
-title|boolean 或 string 或 ReactNode 或 object 或 function(props)|true|true：当前页面显示通过菜单结构自动生成的title；false：当前页面不显示title；string：自定义title，并不参与国际化；object：{local, text}，local对应国际化menu中的配置，text为国际化失败之后的默认显示；function(props): 返回值作为title
-breadcrumbs|boolean 或 array 或 function(props)|true|true：当前页面显示通过菜单结构自动生成的面包屑；false：当前页面不显示面包屑；object：\[{local, text, ...}\]，local对应国际化menu中的配置，text为国际化失败之后的默认显示；function(props): 返回值作为面包屑
+title|boolean 或 string 或 ReactNode 或 object 或 function(props)|true|true：当前页面显示通过菜单结构自动生成的title；false：当前页面不显示title；string：自定义title，并不参与国际化；object：{icon, text}；function(props): 返回值作为title
+breadcrumbs|boolean 或 array 或 function(props)|true|true：当前页面显示通过菜单结构自动生成的面包屑；false：当前页面不显示面包屑；object：\[{icon, text, ...}\]；function(props): 返回值作为面包屑
 appendBreadcrumbs|array 或 function(props)|\[\]|在当前面包屑基础上添加；function(props): 返回值作为新添加的面包屑
 pageHead|boolean|-|页面头部是否显示
 side|boolean|-|页面左侧是否显示

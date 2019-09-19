@@ -8,101 +8,83 @@
     background-image: url("./login-bg.jpg");
     background-size: 100% 100%;
     animation: root-frames 1s;
-    overflow:hidden;
+    overflow: hidden;
+
+    @keyframes root-frames {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
 }
 
 .left {
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     flex-grow: 2;
     flex-basis: 200px;
     height: 100%;
 
-    .logo {
+    img {
         display: block;
         width: 65%;
         height: auto;
-        position:relative;
-        animation:myfirst 1s linear 0s 1 forwards;
+        transform: translateY(150%);
+        animation: img-up 1s ease 500ms 1 forwards;
     }
 
-    @keyframes myfirst
-    {
-        0% {left:0px; bottom:-500px;opacity: 0;}
-        100% {left:0px; bottom:-20px;opacity: 1;}
+    @keyframes img-up {
+        0% {
+            transform: translateY(150%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
     }
-
 }
 
-.logo_p{
-    position:absolute;
-    width:35%;
-    left:5%;
-    top:5%;
+.logo {
+    position: absolute;
+    left: 5%;
+    top: -50px;
     display: flex;
     align-items: flex-start;
-    animation:logoStart 1s linear 0s 1 forwards;
-    i{
-        font-size:25px;
-        color:#fff;
+    animation: logoStart 1s ease 500ms 1 forwards;
+
+    i {
+        font-size: 25px;
+        color: #fff;
         font-style: normal;
-        padding-left:20px;
-        font-weight:bold;
+        padding-left: 20px;
+        font-weight: bold;
         opacity: .9;
     }
-    img{
-        width:40px;
-        height:auto;
+
+    img {
+        width: 40px;
+        height: auto;
         opacity: .7;
     }
-}
 
-@keyframes logoStart
-{
-    0% { left:5%;top:-50px;opacity: 0;}
-    100% { left:5%; top:5%;opacity: 1;}
-}
-
-.blink{
-    position:absolute;
-    left: -100px;
-    top: 0;
-    animation:blinkStart 2s linear 0s 1 forwards;
-    img{
-        width:70%;
+    @keyframes logoStart {
+        0% {
+            left: 5%;
+            top: -50px;
+            opacity: 0;
+        }
+        100% {
+            left: 5%;
+            top: 5%;
+            opacity: 1;
+        }
     }
 }
-
-@keyframes blinkStart {
-    0% {
-        left: -40px;
-        top: -60px;
-        opacity: 0;
-    }
-    30% {
-        left: -40px;
-        top: -60px;
-        opacity: 0.5;
-    }
-    50% {
-        left: -40px;
-        top: -60px;
-        opacity: 0;
-    }
-    70% {
-        left: -40px;
-        top: -60px;
-        opacity: 0.5;
-    }
-    100% {
-        left: -40px;
-        top: -60px;
-        opacity: 1;
-    }
-}
-
 
 .right {
     display: flex;
@@ -110,7 +92,7 @@
     align-items: center;
     flex-basis: 100px;
     height: 100%;
-    background:#f8f8f9;
+    background: #f8f8f9;
 
     .box {
         padding: 16px 40px;
@@ -148,23 +130,16 @@
     }
 }
 
-:global{
+:global {
     .inputLine {
-        .ant-input{
-            height:42px;
+        .ant-input {
+            height: 42px;
         }
-        .ant-btn{
-            height:42px;
-            font-size:14px;
+
+        .ant-btn {
+            height: 42px;
+            font-size: 14px;
         }
     }
 }
 
-@keyframes root-frames {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}

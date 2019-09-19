@@ -6,7 +6,6 @@ import config from '@/commons/config-hoc';
 import Color from '@/layouts/header-color-picker';
 import {ROUTE_BASE_NAME} from '@/router/AppRouter';
 import loginBanner from './login_banner.png';
-import blink from './blink.png';
 import logo from './logo.png';
 import './style.less'
 
@@ -45,11 +44,11 @@ export default class extends Component {
                 this.setState({loading: true, message: ''});
 
                 /**
-                * 加密传输用户名密码方案：
-                *   1 使用https；
-                *   2 使用非对称加密（RSA），后端提供公钥，前端加密，后端使用私钥解密；
-                * */
-                // TODO 发送请求进行登录，以下为前端硬编码，模拟请求
+                 * 加密传输用户名密码方案：
+                 *   1 使用https；
+                 *   2 使用非对称加密（RSA），后端提供公钥，前端加密，后端使用私钥解密；
+                 * */
+                    // TODO 发送请求进行登录，以下为前端硬编码，模拟请求
                 const {userName, password} = values;
 
                 setTimeout(() => {
@@ -94,17 +93,14 @@ export default class extends Component {
         const passwordError = isFieldTouched('password') && getFieldError('password');
         return (
             <div styleName="root" className="login-bg">
-                {/*<div styleName="blink">*/}
-                    {/*<img  alt="blink" src={blink}/>*/}
-                {/*</div>*/}
                 <Helmet title="欢迎登陆"/>
                 <div style={{position: 'fixed', bottom: -1000}}><Color/></div>
-                <div styleName="logo_p">
-                    <img  alt="logo" src={logo}/>
+                <div styleName="logo">
+                    <img alt="logo" src={logo}/>
                     <i>随行付大前端</i>
                 </div>
                 <div styleName="left">
-                    <img styleName="logo" alt="logo" src={loginBanner}/>
+                    <img alt="宣传图" src={loginBanner}/>
                 </div>
                 <div styleName="right">
                     <div styleName="box">
