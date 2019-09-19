@@ -1,24 +1,22 @@
 import React, {Component} from 'react';
-import {Modal, Form, Spin} from 'antd';
+import {Form} from 'antd';
 import config from '@/commons/config-hoc';
-import {FormElement} from "@/library/components";
+import {FormElement, ModalContent} from "@/library/components";
+import PageContent from '@/layouts/page-content';
 
 @config({
     ajax: true,
     connect: state => ({loginUser: state.system.loginUser}),
+    modal: {
+        title: '修改密码',
+        width: 420,
+    },
 })
 @Form.create()
 export default class ModifyPassword extends Component {
     state = {
         loading: false,
     };
-
-    componentDidUpdate(prevProps) {
-        const {visible, form: {resetFields}} = this.props;
-
-        // 打开弹框 重置表单，接下来填充新的数据
-        if (!prevProps.visible && visible) resetFields();
-    }
 
     handleOk = (e) => {
         e.preventDefault();
@@ -49,7 +47,6 @@ export default class ModifyPassword extends Component {
 
     render() {
         const {
-            visible,
             loginUser,
             form,
         } = this.props;
@@ -58,14 +55,13 @@ export default class ModifyPassword extends Component {
         const labelWidth = 100;
 
         return (
-            <Modal
-                width={420}
-                visible={visible}
-                title="修改密码"
+            <ModalContent
+                loading={loading}
+                surplusSpace={false}
                 onOk={this.handleOk}
                 onCancel={this.handleCancel}
             >
-                <Spin spinning={loading}>
+                <PageContent>
                     <Form>
                         <FormElement form={form} type="hidden" field="id" decorator={{initialValue: id}}/>
                         <FormElement
@@ -115,8 +111,8 @@ export default class ModifyPassword extends Component {
                             }}
                         />
                     </Form>
-                </Spin>
-            </Modal>
+                </PageContent>
+            </ModalContent>
         );
     }
 }

@@ -16,9 +16,6 @@ function getErrorTip({error, errorTip}) {
     if (error && error.response) {
         const {status, message} = error.response;
 
-        // 后端自定义信息
-        if (message) return message;
-
         if (status === 403) {
             return '您无权访问';
         }
@@ -34,6 +31,9 @@ function getErrorTip({error, errorTip}) {
         if (status === 500) {
             return commonTip;
         }
+
+        // 后端自定义信息
+        if (message) return message;
     }
 
     if (error && error.message && error.message.startsWith('timeout of')) return '方位超时';
@@ -56,6 +56,6 @@ export default function handleError({error, errorTip}) {
     notification.error({
         message: '失败',
         description,
-        duration: 1,
+        duration: 2,
     });
 }

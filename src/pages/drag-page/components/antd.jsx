@@ -4,6 +4,7 @@ import {
     Col,
     Tabs,
     Icon,
+    Form,
 } from 'antd';
 import uuid from "uuid/v4";
 
@@ -98,6 +99,11 @@ export default {
             //     formType: 'input',
             // },
         ],
+    },
+    Form: {
+        component: Form,
+        title: '表单',
+        dependence: 'antd',
     },
     Icon: {
         component: Icon,

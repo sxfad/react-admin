@@ -63,7 +63,8 @@ export default class UserCenter extends Component {
         console.log(this.nameDom);
     }
 
-    handleSearch = () => {
+    handleSearch = (e) => {
+        e && e.preventDefault();
         /*
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (err) return;
@@ -124,43 +125,45 @@ export default class UserCenter extends Component {
                     collapsed={collapsed}
                     onCollapsedChange={collapsed => this.setState({collapsed})}
                 >
-                    <FormRow>
-                        <FormElement
-                            {...formElementProps}
-                            label="名称"
-                            field="name"
-                            ref={node => this.nameDom = node}
-                        />
-                        <FormElement
-                            {...formElementProps}
-                            type="select"
-                            label="职位"
-                            field="job"
-                            options={[
-                                {value: 1, label: 1},
-                                {value: 2, label: 2},
-                            ]}
-                        />
-                        {collapsed ? null : (
-                            <Fragment>
-                                <FormElement
-                                    {...formElementProps}
-                                    type="date"
-                                    label="入职时间"
-                                    field="time"
-                                />
-                                <FormElement
-                                    {...formElementProps}
-                                    label="年龄"
-                                    field="age"
-                                />
-                            </Fragment>
-                        )}
-                        <FormElement layout>
-                            <Button type="primary" onClick={this.handleSearch}>提交</Button>
-                            <Button onClick={() => this.props.form.resetFields()}>重置</Button>
-                        </FormElement>
-                    </FormRow>
+                    <Form onSubmit={this.handleSearch}>
+                        <FormRow>
+                            <FormElement
+                                {...formElementProps}
+                                label="名称"
+                                field="name"
+                                ref={node => this.nameDom = node}
+                            />
+                            <FormElement
+                                {...formElementProps}
+                                type="select"
+                                label="职位"
+                                field="job"
+                                options={[
+                                    {value: 1, label: 1},
+                                    {value: 2, label: 2},
+                                ]}
+                            />
+                            {collapsed ? null : (
+                                <Fragment>
+                                    <FormElement
+                                        {...formElementProps}
+                                        type="date"
+                                        label="入职时间"
+                                        field="time"
+                                    />
+                                    <FormElement
+                                        {...formElementProps}
+                                        label="年龄"
+                                        field="age"
+                                    />
+                                </Fragment>
+                            )}
+                            <FormElement layout>
+                                <Button type="primary" htmlType="submit">提交</Button>
+                                <Button onClick={() => this.props.form.resetFields()}>重置</Button>
+                            </FormElement>
+                        </FormRow>
+                    </Form>
                 </QueryBar>
 
                 <ToolBar
