@@ -11,7 +11,7 @@
     height: 30px;
     box-sizing: border-box;
     overflow: hidden;
-    padding-left: 2px;
+    background: @default-color;
 
     &.sorting,
     &.sorting * {
@@ -44,6 +44,7 @@ body > .draggable-tabs-bar-horizontal-item {
             position: relative;
             background: @active-color;
             color: @primary-color;
+            font-weight: bolder;
         }
 
         .tabs-bar-left-corner,
@@ -132,6 +133,7 @@ body > .draggable-tabs-bar-horizontal-item {
         border-top-right-radius: @corner-size/2;
         background-color: @default-color;
         color: #333;
+        transition: 300ms;
 
         &:before {
             content: '';
@@ -185,6 +187,7 @@ body > .draggable-tabs-bar-horizontal-item {
         cursor: pointer;
         opacity: 0;
         z-index: 1;
+        transition: 300ms;
 
         &:hover {
             background: #d9d9d9;

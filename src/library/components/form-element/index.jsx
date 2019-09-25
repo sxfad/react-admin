@@ -339,7 +339,10 @@ class FormElement extends Component {
             ...others, ref: forwardedRef, style: eleStyle
         };
 
-        const childrenWithProps = children ? React.cloneElement(children, elementProps) : null;
+        if (form) {
+            children = children ? React.cloneElement(children, elementProps) : null;
+            children = getFieldDecorator(field, nextDecorator)(children || getElement({type, ...elementProps}));
+        }
 
         return (
             <div
@@ -358,15 +361,7 @@ class FormElement extends Component {
                     validateStatus={validateStatus}
                     wrapperCol={wrapperCol}
                 >
-                    {form ? (
-                        getFieldDecorator(field, nextDecorator)(
-                            children ? (
-                                childrenWithProps
-                            ) : (
-                                getElement({type, ...elementProps})
-                            )
-                        )
-                    ) : children}
+                    {children}
                 </FormItem>
                 {tip ? <div className="font-element-tip">{tip}</div> : null}
             </div>
