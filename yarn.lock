@@ -1515,7 +1515,7 @@ ansi-styles@^3.2.0, ansi-styles@^3.2.1:
   dependencies:
     color-convert "^1.9.0"
 
-antd@^3.12.4:
+antd@^3.23.6:
   version "3.23.6"
   resolved "https://registry.npmjs.org/antd/-/antd-3.23.6.tgz#527733b423a23428d08d8e37a9fca60b6aec1651"
   integrity sha512-pfcg59biySvAOyySq/xBv4dmJDFugxk+APrd0S8K6t2AGaICCtInLJZ1OPUEfwqi+E8LMvINvboT3odZmoWa8w==

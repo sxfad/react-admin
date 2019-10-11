@@ -118,7 +118,7 @@ export default class PageTabs extends Component {
 
             if (tabTitle?.icon) icon = tabTitle.icon;
 
-            if (icon) title = <span><Icon type={icon} style={{marginRight: 4}}/>{title}</span>;
+            if (icon) title = <div style={{flex: 1, textAlign: 'center'}}><Icon type={icon} style={{marginRight: 4}}/>{title}</div>;
 
             return {
                 key: path,
