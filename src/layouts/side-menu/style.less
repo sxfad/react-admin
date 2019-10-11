@@ -4,6 +4,8 @@
 
 .side-menu {
     height: 100%;
+    padding-right: 1px;
+
     & > ul {
         height: 100%;
     }
@@ -17,8 +19,13 @@
             border-right: 0;
         }
 
+        .ant-menu-item::after {
+            display: none;
+        }
+
         .ant-menu-item.ant-menu-item-selected {
             &::after {
+                display: block;
                 left: 0;
                 right: auto;
             }

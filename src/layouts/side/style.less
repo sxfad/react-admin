@@ -31,6 +31,7 @@
         transition: all @transitionDuration;
         -webkit-overflow-scrolling: touch;
     }
+
     :global {
         .ant-menu-item-selected {
             z-index: 1;
@@ -51,7 +52,7 @@
         position: absolute;
         top: 50%;
         margin-top: -50px;
-        right: -6px;
+        right: -9px;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
@@ -59,18 +60,18 @@
         padding: 20px 0;
         width: 6px;
         height: 100px;
-        background: #fff;
-        border: 1px solid #e8e8e8;
+        //background: #fff;
+        //border: 1px solid #e8e8e8;
         border-left: 0;
         border-top-right-radius: 6px;
         border-bottom-right-radius: 6px;
-        cursor: move;
+        cursor: col-resize;
 
         span {
             display: block;
             width: 2px;
             height: 2px;
-            background: @primary-color;
+            background: #bbb;
             border-radius: 50%;
         }
     }
