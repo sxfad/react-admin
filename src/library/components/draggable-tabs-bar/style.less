@@ -85,7 +85,7 @@ body > .draggable-tabs-bar-horizontal-item {
 
         .draggable-tabs-bar-wrapper {
             &:before {
-                //display: none;
+                display: none;
             }
 
             &:after {
@@ -93,11 +93,11 @@ body > .draggable-tabs-bar-horizontal-item {
             }
         }
 
-        //& + .draggable-tabs-bar-horizontal-item {
-        //    .draggable-tabs-bar-wrapper:before {
-        //        display: none;
-        //    }
-        //}
+        & + .draggable-tabs-bar-horizontal-item {
+            .draggable-tabs-bar-wrapper:before {
+                display: none;
+            }
+        }
     }
 
     &:hover {
