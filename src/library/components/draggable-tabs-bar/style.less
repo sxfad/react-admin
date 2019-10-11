@@ -118,7 +118,7 @@ body > .draggable-tabs-bar-horizontal-item {
         height: 100%;
         transition: width 300ms;
         box-sizing: border-box;
-        padding-right: 2px;
+        //padding-right: 2px;
         overflow: hidden;
     }
 
@@ -130,7 +130,7 @@ body > .draggable-tabs-bar-horizontal-item {
         overflow: hidden;
         height: 100%;
         width: 100%;
-        padding: 0 8px;
+        padding: 0 14px;
         //border-top-left-radius: @corner-size/2;
         //border-top-right-radius: @corner-size/2;
         background-color: @default-color;
@@ -139,17 +139,17 @@ body > .draggable-tabs-bar-horizontal-item {
         border-bottom: 2px solid transparent;
         //border-right: 1px solid @border-color;
 
-        //&:before {
-        //    content: '';
-        //    display: block;
-        //    position: absolute;
-        //    top: 5px;
-        //    bottom: 5px;
-        //    left: 0;
-        //    width: 1px;
-        //    border-left: 1px solid @border-color;
-        //    z-index: 10;
-        //}
+        &:before {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 5px;
+            bottom: 5px;
+            left: 0;
+            width: 1px;
+            border-left: 1px solid @border-color;
+            z-index: 10;
+        }
 
         &:after {
             content: '';

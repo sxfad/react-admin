@@ -4,8 +4,6 @@
 
 .side-menu {
     height: 100%;
-    padding-right: 6px;
-
     & > ul {
         height: 100%;
     }
@@ -17,6 +15,13 @@
 
         .ant-menu {
             border-right: 0;
+        }
+
+        .ant-menu-item.ant-menu-item-selected {
+            &::after {
+                left: 0;
+                right: auto;
+            }
         }
     }
 
