@@ -44,7 +44,7 @@ function getErrorTip({error, errorTip}) {
 }
 
 export default function handleError({error, errorTip}) {
-    const {status} = error.response;
+    const {status} = error?.response || {};
 
     // 如果是未登录问题，不显示错误提示
     if (status === 401) return toLogin();

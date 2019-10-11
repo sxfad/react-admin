@@ -8,7 +8,7 @@ import './style.less';
 
 @config({
     path: '/',
-    title: {text: '首页', icon: 'home'},
+    title: {text: '首页首页首页首页首页首页首页首页首页首页首页', icon: 'home'},
     breadcrumbs: [{key: 'home', text: '首页', icon: 'home'}],
 })
 export default class Home extends Component {

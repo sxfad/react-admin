@@ -212,7 +212,8 @@
                         ".less": {
                             "syntax": "postcss-less"
                         }
-                    }
+                    },
+                    "handleMissingStyleName": "throw"
                 }
             ],
             [

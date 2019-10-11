@@ -1,5 +1,6 @@
 @default-color: #fff;
-@active-color: #f0f2f5;
+//@active-color: #f0f2f5;
+@active-color: #fff;
 @primary-color: #1890ff;
 @border-color: #e8e8e8;
 @corner-size: 10px;
@@ -43,8 +44,9 @@ body > .draggable-tabs-bar-horizontal-item {
         .draggable-tabs-bar-wrapper {
             position: relative;
             background: @active-color;
-            color: @primary-color;
+            color: #000;
             font-weight: bolder;
+            border-bottom: 2px solid @primary-color;
         }
 
         .tabs-bar-left-corner,
@@ -83,7 +85,7 @@ body > .draggable-tabs-bar-horizontal-item {
 
         .draggable-tabs-bar-wrapper {
             &:before {
-                display: none;
+                //display: none;
             }
 
             &:after {
@@ -91,11 +93,11 @@ body > .draggable-tabs-bar-horizontal-item {
             }
         }
 
-        & + .draggable-tabs-bar-horizontal-item {
-            .draggable-tabs-bar-wrapper:before {
-                display: none;
-            }
-        }
+        //& + .draggable-tabs-bar-horizontal-item {
+        //    .draggable-tabs-bar-wrapper:before {
+        //        display: none;
+        //    }
+        //}
     }
 
     &:hover {
@@ -129,23 +131,25 @@ body > .draggable-tabs-bar-horizontal-item {
         height: 100%;
         width: 100%;
         padding: 0 8px;
-        border-top-left-radius: @corner-size/2;
-        border-top-right-radius: @corner-size/2;
+        //border-top-left-radius: @corner-size/2;
+        //border-top-right-radius: @corner-size/2;
         background-color: @default-color;
         color: #333;
         transition: 300ms;
+        border-bottom: 2px solid transparent;
+        //border-right: 1px solid @border-color;
 
-        &:before {
-            content: '';
-            display: block;
-            position: absolute;
-            top: 5px;
-            bottom: 5px;
-            left: 0;
-            width: 1px;
-            border-left: 1px solid @border-color;
-            z-index: 10;
-        }
+        //&:before {
+        //    content: '';
+        //    display: block;
+        //    position: absolute;
+        //    top: 5px;
+        //    bottom: 5px;
+        //    left: 0;
+        //    width: 1px;
+        //    border-left: 1px solid @border-color;
+        //    z-index: 10;
+        //}
 
         &:after {
             content: '';
@@ -161,6 +165,7 @@ body > .draggable-tabs-bar-horizontal-item {
 
     .item-inner {
         display: flex;
+        //justify-content: center;
         flex-grow: 1;
         align-items: center;
         position: relative;

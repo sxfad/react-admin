@@ -16,8 +16,8 @@ const SortableItem = SortableElement((props) => {
             className={classNames('draggable-tabs-bar-horizontal-item', props.className)}
             style={props.style}
         >
-            <div className="tabs-bar-left-corner"/>
-            <div className="tabs-bar-right-corner"/>
+            {/*<div className="tabs-bar-left-corner"/>*/}
+            {/*<div className="tabs-bar-right-corner"/>*/}
             {children}
         </div>
     );
