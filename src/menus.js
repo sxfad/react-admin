@@ -1,4 +1,3 @@
-import antdMenus from './menus-ant-design-example';
 /*
 * 菜单数据 返回Promise各式，支持前端硬编码、异步获取菜单数据
 * */
@@ -31,5 +30,5 @@ export default function getMenus(userId) {
         {key: 'page404', text: '404页面不存', icon: 'file-search', path: '/404', order: 700},
         {key: 'user-center', text: '用户中心', icon: 'user', path: '/user-center', order: 600},
         {key: 'component', text: '组件', icon: 'ant-design', order: 700},
-    ].concat(antdMenus));
+    ]);
 }
