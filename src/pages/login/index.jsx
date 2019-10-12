@@ -97,7 +97,7 @@ export default class extends Component {
                 <div style={{position: 'fixed', bottom: -1000}}><Color/></div>
                 <div styleName="logo">
                     <img alt="logo" src={logo}/>
-                    <i>随行付大前端</i>
+                    <i>React Admin</i>
                 </div>
                 <div styleName="left">
                     <img alt="宣传图" src={loginBanner}/>
