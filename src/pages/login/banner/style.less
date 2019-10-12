@@ -6,15 +6,19 @@
     background-image: url("./login-bg.jpg");
     background-color: @primary-color;
     background-size: 100% 100%;
-    animation: root-frames 1s;
+    background-position: center;
+    animation: root-frames 25s infinite linear;
     overflow: hidden;
 
     @keyframes root-frames {
-        from {
-            opacity: 0;
+        0% {
+            background-size: 100% 100%;
         }
-        to {
-            opacity: 1;
+        50% {
+            background-size: 120% 120%;
+        }
+        100% {
+            background-size: 100% 100%;
         }
     }
 }
