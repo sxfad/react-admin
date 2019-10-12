@@ -42,9 +42,6 @@ export default class HeaderUser extends Component {
                 {process.env.NODE_ENV === 'development' ? (
                     <Item><Link to="/menu-permission"><Icon type="lock"/>菜单</Link></Item>
                 ) : null}
-                {process.env.NODE_ENV === 'development' ? (
-                    <Item><Link to="/admin-crud"><Icon type="code"/>代码生成</Link></Item>
-                ) : null}
                 <Menu.Divider/>
                 <Item key="logout"><Icon type="logout"/>退出登录</Item>
             </Menu>

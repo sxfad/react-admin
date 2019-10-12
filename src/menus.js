@@ -25,7 +25,6 @@ export default function getMenus(userId) {
         {key: 'document', text: '文档', icon: 'book', url: 'https://open.vbill.cn/react-admin', target: '_blank', order: 1200},
 
         {key: 'menus', text: '菜单编辑', icon: 'lock', path: '/menu-permission', order: 1000},
-        {key: 'codeGenerator', text: '代码生成', icon: 'code', path: '/admin-crud', order: 999},
         {key: 'ajax', text: 'ajax请求', icon: 'api', path: '/example/ajax', order: 998},
         {key: 'user', text: '用户列表', icon: 'user', path: '/users', order: 900},
         {key: 'role', text: '角色列表 ', icon: 'team', path: '/roles', order: 800},
