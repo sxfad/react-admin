@@ -1,5 +1,8 @@
 @primary-color: #1890ff;
 .root {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
     width: 100%;
     height: 100%;
@@ -19,33 +22,6 @@
         }
         100% {
             background-size: 100% 100%;
-        }
-    }
-}
-
-.banner {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-
-    img {
-        display: block;
-        width: 65%;
-        height: auto;
-        transform: translateY(150%);
-        animation: image-animation 1s ease 500ms 1 forwards;
-    }
-
-    @keyframes image-animation {
-        0% {
-            transform: translateY(150%);
-            opacity: 0;
-        }
-        100% {
-            transform: translateY(0);
-            opacity: 1;
         }
     }
 }
@@ -82,6 +58,34 @@
         100% {
             left: 5%;
             top: 5%;
+            opacity: 1;
+        }
+    }
+}
+
+.banner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    transform: translateY(150%);
+    animation: banner-animation 1s ease 500ms 1 forwards;
+
+    img {
+        display: block;
+        width: 750px;
+        height: 480px;
+    }
+
+    @keyframes banner-animation {
+        0% {
+            transform: translateY(150%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
             opacity: 1;
         }
     }
