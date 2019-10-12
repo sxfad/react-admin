@@ -1,89 +1,11 @@
-@primary-color: #1890ff;
-
 .root {
     display: flex;
     width: 100vw;
     height: 100vh;
-    background-color: @primary-color;
-    background-image: url("./login-bg.jpg");
-    background-size: 100% 100%;
-    animation: root-frames 1s;
-    overflow: hidden;
-
-    @keyframes root-frames {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
 }
 
 .left {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 2;
-    flex-basis: 200px;
-    height: 100%;
-
-    img {
-        display: block;
-        width: 65%;
-        height: auto;
-        transform: translateY(150%);
-        animation: img-up 1s ease 500ms 1 forwards;
-    }
-
-    @keyframes img-up {
-        0% {
-            transform: translateY(150%);
-            opacity: 0;
-        }
-        100% {
-            transform: translateY(0);
-            opacity: 1;
-        }
-    }
-}
-
-.logo {
-    position: absolute;
-    left: 5%;
-    top: -50px;
-    display: flex;
-    align-items: flex-start;
-    animation: logoStart 1s ease 500ms 1 forwards;
-
-    i {
-        font-size: 25px;
-        color: #fff;
-        font-style: normal;
-        padding-left: 20px;
-        font-weight: bold;
-        opacity: .9;
-    }
-
-    img {
-        width: 40px;
-        height: auto;
-        opacity: .7;
-    }
-
-    @keyframes logoStart {
-        0% {
-            left: 5%;
-            top: -50px;
-            opacity: 0;
-        }
-        100% {
-            left: 5%;
-            top: 5%;
-            opacity: 1;
-        }
-    }
+    flex: 1;
 }
 
 .right {
@@ -97,7 +19,7 @@
     .box {
         padding: 16px 40px;
         width: 300px;
-        border-radius: 0px;
+        border-radius: 0;
         background: #f8f8f9;
 
         .header {

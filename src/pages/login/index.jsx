@@ -5,8 +5,7 @@ import {setLoginUser} from '@/commons';
 import config from '@/commons/config-hoc';
 import Color from '@/layouts/header-color-picker';
 import {ROUTE_BASE_NAME} from '@/router/AppRouter';
-import loginBanner from './login_banner.png';
-import logo from './logo.png';
+import Banner from './banner/index';
 import './style.less'
 
 function hasErrors(fieldsError) {
@@ -95,16 +94,12 @@ export default class extends Component {
             <div styleName="root" className="login-bg">
                 <Helmet title="欢迎登陆"/>
                 <div style={{position: 'fixed', bottom: -1000}}><Color/></div>
-                <div styleName="logo">
-                    <img alt="logo" src={logo}/>
-                    <i>React Admin</i>
-                </div>
                 <div styleName="left">
-                    <img alt="宣传图" src={loginBanner}/>
+                    <Banner/>
                 </div>
                 <div styleName="right">
                     <div styleName="box">
-                        <div styleName="header">用户登录</div>
+                        <div styleName="header">欢迎登陆</div>
                         <Form onSubmit={this.handleSubmit} className='inputLine'>
                             <Form.Item
                                 validateStatus={userNameError ? 'error' : ''}

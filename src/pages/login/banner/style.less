@@ -1,0 +1,84 @@
+@primary-color: #1890ff;
+.root {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-image: url("./login-bg.jpg");
+    background-color: @primary-color;
+    background-size: 100% 100%;
+    animation: root-frames 1s;
+    overflow: hidden;
+
+    @keyframes root-frames {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+}
+
+.banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    img {
+        display: block;
+        width: 65%;
+        height: auto;
+        transform: translateY(150%);
+        animation: image-animation 1s ease 500ms 1 forwards;
+    }
+
+    @keyframes image-animation {
+        0% {
+            transform: translateY(150%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+}
+
+.logo {
+    position: absolute;
+    left: 5%;
+    top: -50px;
+    display: flex;
+    align-items: flex-start;
+    animation: logo-animation 1s ease 500ms 1 forwards;
+
+    i {
+        font-size: 25px;
+        color: #fff;
+        font-style: normal;
+        padding-left: 20px;
+        font-weight: bold;
+        opacity: .9;
+    }
+
+    img {
+        width: 40px;
+        height: auto;
+        opacity: .7;
+    }
+
+    @keyframes logo-animation {
+        0% {
+            left: 5%;
+            top: -50px;
+            opacity: 0;
+        }
+        100% {
+            left: 5%;
+            top: 5%;
+            opacity: 1;
+        }
+    }
+}
