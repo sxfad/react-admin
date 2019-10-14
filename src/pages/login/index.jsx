@@ -93,7 +93,7 @@ export default class extends Component {
         return (
             <div styleName="root" className="login-bg">
                 <Helmet title="欢迎登陆"/>
-                <div style={{position: 'fixed', bottom: -1000}}><Color/></div>
+                {/*<div style={{position: 'fixed', bottom: -1000}}><Color/></div>*/}
                 <div styleName="left">
                     <Banner/>
                 </div>
