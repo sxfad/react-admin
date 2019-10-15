@@ -69,14 +69,13 @@ export default class HeaderFullScreen extends Component {
         const {fullScreen, toolTipVisible} = this.state;
         return (
             <div
-                style={{padding: '0 16px'}}
                 className={className}
                 onClick={this.handleFullScreenClick}
                 onMouseEnter={this.handleToolTipShow}
                 onMouseLeave={() => this.handleToolTipHide()}
             >
                 <Tooltip visible={toolTipVisible} placement="bottom" title={fullScreen ? '全屏' : '退出全屏'}>
-                    <div style={{display: 'flex', alignItems: 'center', height: '30px', lineHeight: '30px', fontSize: 18}}>
+                    <div style={{display: 'flex', alignItems: 'center', height: '30px', lineHeight: '30px'}}>
                         {fullScreen ? (
                             <Icon type="fullscreen-exit"/>
                         ) : (

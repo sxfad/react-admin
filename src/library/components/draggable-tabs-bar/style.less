@@ -46,6 +46,9 @@ body > .draggable-tabs-bar-horizontal-item {
             background: @active-color;
             color: #000;
             font-weight: bolder;
+        }
+
+        .item-inner {
             border-bottom: 2px solid @primary-color;
         }
 
@@ -84,20 +87,20 @@ body > .draggable-tabs-bar-horizontal-item {
         }
 
         .draggable-tabs-bar-wrapper {
-            &:before {
-                display: none;
-            }
+            //&:before {
+            //    display: none;
+            //}
 
             &:after {
                 box-shadow: 0 0 10px 20px @active-color;
             }
         }
 
-        & + .draggable-tabs-bar-horizontal-item {
-            .draggable-tabs-bar-wrapper:before {
-                display: none;
-            }
-        }
+        //& + .draggable-tabs-bar-horizontal-item {
+        //    .draggable-tabs-bar-wrapper:before {
+        //        display: none;
+        //    }
+        //}
     }
 
     &:hover {
@@ -136,7 +139,6 @@ body > .draggable-tabs-bar-horizontal-item {
         background-color: @default-color;
         color: #333;
         transition: 300ms;
-        border-bottom: 2px solid transparent;
         //border-right: 1px solid @border-color;
 
         &:before {
@@ -157,7 +159,6 @@ body > .draggable-tabs-bar-horizontal-item {
             position: absolute;
             top: 0;
             right: -2px;
-            height: 100%;
             width: 0;
             box-shadow: 0 0 10px 20px @default-color;
         }
@@ -174,6 +175,7 @@ body > .draggable-tabs-bar-horizontal-item {
         white-space: nowrap;
         cursor: pointer;
         font-size: 12px;
+        border-bottom: 2px solid transparent;
     }
 
     .close-wrapper {

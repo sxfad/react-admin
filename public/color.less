@@ -3702,9 +3702,13 @@ a:active {
 //    background: lighten(@primary-color, 40%) !important;
 //}
 
-.draggable-tabs-bar-horizontal-item.active .draggable-tabs-bar-wrapper,
-.draggable-tabs-bar-horizontal-item:hover .draggable-tabs-bar-wrapper {
-    border-bottom: 2px solid @primary-color;
+.draggable-tabs-bar-horizontal-item{
+    &.active,
+    &:hover{
+        .draggable-tabs-bar-wrapper .item-inner{
+            border-bottom: 2px solid @primary-color;
+        }
+    }
 }
 
 #header {
