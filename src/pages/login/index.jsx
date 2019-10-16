@@ -3,7 +3,6 @@ import {Helmet} from 'react-helmet';
 import {Form, Icon, Input, Button} from 'antd';
 import {setLoginUser} from '@/commons';
 import config from '@/commons/config-hoc';
-import Color from '@/layouts/header-color-picker';
 import {ROUTE_BASE_NAME} from '@/router/AppRouter';
 import Banner from './banner/index';
 import './style.less'

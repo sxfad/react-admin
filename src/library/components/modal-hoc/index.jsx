@@ -53,7 +53,7 @@ export default (options) => WrappedComponent => {
                     destroyOnClose
                     width="800px"
                     bodyStyle={{padding: 0}}
-                    style={{top: 50}}
+                    style={{top: 100}}
                     footer={null}
                     maskClosable={false}
 

@@ -8,7 +8,7 @@ export default {
     initialState: {
         pageFrameLayout: PAGE_FRAME_LAYOUT.SIDE_MENU,
         pageHeadFixed: true,
-        pageHeadShow: true,
+        pageHeadShow: false,
         tabsShow: true,
     },
 
