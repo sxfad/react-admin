@@ -7,8 +7,8 @@
 * 注：此文件修改之后，需要重新启动webpack才能生效：yarn start
 * */
 module.exports = {
-    '@primary-color': '#18bfff',                          // 全局主色
-    '@link-color': '#18bfff',                            // 链接色
+    '@primary-color': '#2F54EB',                         // 全局主色
+    '@link-color': '@primary-color',                     // 链接色
     '@success-color': '#52c41a',                         // 成功色
     '@warning-color': '#faad14',                         // 警告色
     '@error-color': '#f5222d',                           // 错误色
@@ -21,8 +21,7 @@ module.exports = {
     '@border-color-base': '#d9d9d9',                     // 边框色
     '@box-shadow-base': '0 2px 8px rgba(0, 0, 0, .15)',  // 浮层阴影
 
-    // '@layout-header-background': '#001529',                 // 深色主题样式
-    '@layout-header-background': '#000',                 // 深色主题样式
+    '@layout-header-background': '#001529',              // 深色主题样式
     '@menu-dark-submenu-bg': 'lighten(@layout-header-background, 5%)',
 
     '@input-height-base': '28px',
