@@ -51,7 +51,7 @@
         background: @primary-color;
 
         .ant-menu {
-            background-color: rgba(0, 0, 0, 0);
+            background-color: transparent;
 
             span {
                 color: #fff;
@@ -61,6 +61,13 @@
         .ant-menu-item.ant-menu-item-selected,
         .ant-menu-item.ant-menu-item-active {
             background-color: @active-background-color !important;
+        }
+
+        .ant-menu-submenu-arrow {
+            &::before,
+            &::after {
+                background-image: linear-gradient(to right, #fff, #fff) !important;
+            }
         }
     }
 }

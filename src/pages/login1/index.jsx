@@ -107,7 +107,7 @@ export default class extends Component {
                                 {getFieldDecorator('userName', {
                                     rules: [{required: true, message: '请输入用户名'}],
                                 })(
-                                    <Input allowClear autoFocus prefix={<Icon type="user" style={{fontSize: 13}}/>}  placeholder="用户名"/>
+                                    <Input allowClear autoFocus prefix={<Icon type="user" style={{fontSize: 13}}/>} placeholder="用户名"/>
                                 )}
                             </Form.Item>
                             <Form.Item
@@ -117,7 +117,7 @@ export default class extends Component {
                                 {getFieldDecorator('password', {
                                     rules: [{required: true, message: '请输入密码'}],
                                 })(
-                                    <Input.Password prefix={<Icon type="lock" style={{fontSize: 13}}/>}  placeholder="密码"/>
+                                    <Input.Password prefix={<Icon type="lock" style={{fontSize: 13}}/>} placeholder="密码"/>
                                 )}
                             </Form.Item>
                             <Button

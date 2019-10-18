@@ -12,6 +12,7 @@ import './style.less';
     path: '/',
     title: {text: '首页', icon: 'home'},
     breadcrumbs: [{key: 'home', text: '首页', icon: 'home'}],
+    keepAlive: false,
 })
 export default class Home extends Component {
     constructor(...props) {
