@@ -15,30 +15,38 @@ export default class DataBlock extends Component {
 
     render() {
         const {
+            iconBgColor,
             color,
+            color2,
             icon,
             count,
             tip,
         } = this.props;
 
+        // const blockStyle = {
+        //     border: `1px solid ${color}`,
+        // };
+
         const blockStyle = {
-            border: `1px solid ${color}`,
+            background: `linear-gradient(to left,${color},${color2})`,
         };
 
         const iconStyle = {
-            background: color,
+            background: iconBgColor,
         };
 
         return (
             <div className="data-block-root" style={blockStyle}>
-                <div className="icon" style={iconStyle}>
-                    <Icon type={icon}/>
-                </div>
-                <div className="message">
-                    <div className="count">
-                        <CountUp end={count}/>
+                <div className="bgimg">
+                    <div className="icon" style={iconStyle}>
+                        <Icon type={icon}/>
                     </div>
-                    <div className="tip">{tip}</div>
+                    <div className="message">
+                        <div className="count">
+                            <CountUp end={count}/>
+                        </div>
+                        <div className="tip">{tip}</div>
+                    </div>
                 </div>
             </div>
         );

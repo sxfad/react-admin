@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import ReactEchart from 'echarts-for-react';
+import echarts from 'echarts';
 import {Row, Col} from 'antd';
+import Map from './Map';
+import Bar from './Bar';
 import config from '@/commons/config-hoc';
-import PageContent from '@/layouts/page-content';
 import {DataBlock} from '@/library/components';
 import './style.less';
 
@@ -42,226 +44,122 @@ export default class Home extends Component {
         warning: 28,
         start: 168,
     };
-    getPieOption = () => {
-        return {
-            title: {
-                text: '访问来源',
-                left: 'center',
-                top: 20,
-            },
 
-            tooltip: {
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-
-            toolbox: {
-                // y: 'bottom',
-                feature: {
-                    dataView: {},
-                    saveAsImage: {
-                        pixelRatio: 2
-                    }
-                }
-            },
-
-            visualMap: {
-                show: false,
-                min: 80,
-                max: 600,
-                inRange: {
-                    colorLightness: [0, 1]
-                }
-            },
-            series: [
-                {
-                    name: '访问来源',
-                    type: 'pie',
-                    radius: '55%',
-                    center: ['50%', '50%'],
-                    data: [
-                        {value: 335, name: '直接访问'},
-                        {value: 310, name: '邮件营销'},
-                        {value: 274, name: '联盟广告'},
-                        {value: 235, name: '视频广告'},
-                        {value: 400, name: '搜索引擎'}
-                    ].sort(function (a, b) {
-                        return a.value - b.value;
-                    }),
-                    roseType: 'radius',
-                    labelLine: {
-                        normal: {
-                            smooth: 0.2,
-                            length: 10,
-                            length2: 20
-                        }
-                    },
-                    animationType: 'scale',
-                    animationEasing: 'elasticOut',
-                    animationDelay: function (idx) {
-                        return Math.random() * 200;
-                    }
-                }
+    getBar3Option = () => {
+        const charts = {
+            unit: '户数',
+            names: ['新增户数', '注销户数'],
+            lineX: ['2012年', '2013年', '2014年', '2015年', '2016年', '2017年', '2018年'],
+            value: [
+                [451, 352, 303, 534, 95, 236, 217, 328, 159, 151, 231, 192, 453, 524, 165, 236, 527, 328, 129, 530],
+                [360, 545, 80, 192, 330, 580, 192, 80, 250, 453, 352, 28, 625, 345, 65, 325, 468, 108, 253, 98]
             ]
-        };
-    };
 
-    getBarOption = () => {
-        const xAxisData = [];
-        const data1 = [];
-        const data2 = [];
-        for (let i = 0; i < 100; i++) {
-            xAxisData.push('产品' + i);
-            data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
-            data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 5);
         }
-
-        return {
-            title: {
-                text: '月下载量'
-            },
-            legend: {
-                data: ['上个月', '本月'],
-                align: 'left'
-            },
-            toolbox: {
-                // y: 'bottom',
-                feature: {
-                    magicType: {
-                        type: ['stack', 'tiled']
-                    },
-                    dataView: {},
-                    saveAsImage: {
-                        pixelRatio: 2
-                    }
-                }
-            },
-            tooltip: {},
-            xAxis: {
-                data: xAxisData,
-                silent: false,
-                splitLine: {
-                    show: false
-                }
-            },
-            yAxis: {},
-            series: [
-                {
-                    name: '上个月',
-                    type: 'bar',
-                    data: data1,
-                    animationDelay: function (idx) {
-                        return idx * 10;
+        const color = ['rgba(23, 255, 243', 'rgba(119,61,190'];
+        const lineY = [];
+        for (var i = 0; i < charts.names.length; i++) {
+            var x = i
+            if (x > color.length - 1) {
+                x = color.length - 1
+            }
+            var data = {
+                name: charts.names[i],
+                type: 'line',
+                color: color[x] + ')',
+                smooth: true,
+                areaStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: color[x] + ', .4)'
+                        }, {
+                            offset: 0.8,
+                            color: color[x] + ', 0)'
+                        }], false),
+                        shadowColor: 'rgba(0, 0, 0, 0.1)',
+                        shadowBlur: 10
                     }
                 },
-                {
-                    name: '本月',
-                    type: 'bar',
-                    data: data2,
-                    animationDelay: function (idx) {
-                        return idx * 10 + 100;
-                    }
-                }],
-            animationEasing: 'elasticOut',
-            animationDelayUpdate: function (idx) {
-                return idx * 5;
+                symbol: 'circle',
+                symbolSize: 5,
+                data: charts.value[i]
             }
-        };
-    };
-
-    getBar2Option = () => {
+            lineY.push(data)
+        }
+        lineY[0].markLine = {
+            silent: true,
+            data: [{
+                yAxis: 5
+            }, {
+                yAxis: 100
+            }, {
+                yAxis: 200
+            }, {
+                yAxis: 300
+            }, {
+                yAxis: 400
+            }]
+        }
         return {
+            title: {
+                text: '开通户数的统计'
+            },
+
+            backgroundColor: '#fff',
             tooltip: {
-                trigger: 'axis',
-                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                }
+                trigger: 'axis'
             },
             legend: {
-                data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎', '百度', '谷歌', '必应', '其他']
+                data: charts.names,
+                textStyle: {
+                    fontSize: 12,
+                    color: 'rgb(50,50,50,1)'
+                },
+                right: '4%'
             },
             grid: {
-                left: '3%',
+                top: '24%',
+                left: '4%',
                 right: '4%',
-                bottom: '3%',
+                bottom: '12%',
                 containLabel: true
             },
-            xAxis: [
-                {
-                    type: 'category',
-                    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: charts.lineX,
+                axisLabel: {
+                    textStyle: {
+                        color: 'rgb(50,50,50,1)'
+                    },
+                    formatter: function (params) {
+                        return params.split(' ')[0]
+                    }
                 }
-            ],
-            yAxis: [
-                {
-                    type: 'value'
-                }
-            ],
-            series: [
-                {
-                    name: '直接访问',
-                    type: 'bar',
-                    data: [320, 332, 301, 334, 390, 330, 320]
-                },
-                {
-                    name: '邮件营销',
-                    type: 'bar',
-                    stack: '广告',
-                    data: [120, 132, 101, 134, 90, 230, 210]
-                },
-                {
-                    name: '联盟广告',
-                    type: 'bar',
-                    stack: '广告',
-                    data: [220, 182, 191, 234, 290, 330, 310]
-                },
-                {
-                    name: '视频广告',
-                    type: 'bar',
-                    stack: '广告',
-                    data: [150, 232, 201, 154, 190, 330, 410]
-                },
-                {
-                    name: '搜索引擎',
-                    type: 'bar',
-                    data: [862, 1018, 964, 1026, 1679, 1600, 1570],
-                    markLine: {
-                        lineStyle: {
-                            normal: {
-                                type: 'dashed'
-                            }
-                        },
-                        data: [
-                            [{type: 'min'}, {type: 'max'}]
-                        ]
+            },
+            yAxis: {
+                name: charts.unit,
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value}',
+                    textStyle: {
+                        color: 'rgb(50,50,50,1)'
                     }
                 },
-                {
-                    name: '百度',
-                    type: 'bar',
-                    barWidth: 5,
-                    stack: '搜索引擎',
-                    data: [620, 732, 701, 734, 1090, 1130, 1120]
+                splitLine: {
+                    lineStyle: {
+                        color: 'rgb(50,50,50,0.3)'
+                    }
                 },
-                {
-                    name: '谷歌',
-                    type: 'bar',
-                    stack: '搜索引擎',
-                    data: [120, 132, 101, 134, 290, 230, 220]
-                },
-                {
-                    name: '必应',
-                    type: 'bar',
-                    stack: '搜索引擎',
-                    data: [60, 72, 71, 74, 190, 130, 110]
-                },
-                {
-                    name: '其他',
-                    type: 'bar',
-                    stack: '搜索引擎',
-                    data: [62, 82, 91, 84, 109, 110, 120]
+                axisLine: {
+                    lineStyle: {
+                        color: 'rgb(50,50,50,0.6)'
+                    }
                 }
-            ]
+            },
+            series: lineY
+
         };
     };
 
@@ -278,57 +176,65 @@ export default class Home extends Component {
             border: '1px solid #e8e8e8',
             borderRadius: '5px',
             padding: 8,
+            background: '#fff'
         };
         return (
-            <PageContent styleName="root">
+            <div styleName="root" style={{width: '100vw', margin: '10px 20px'}}>
                 <div styleName="statistics">
                     <DataBlock
-                        color="#1890FF"
+                        color="#00dffe"
+                        color2='#029cf5'
                         count={users}
                         tip="新增用户"
                         icon="user-add"
                     />
                     <DataBlock
-                        color="#FAAD14"
+                        color="#ff8a85"
+                        color2='#ff6086'
                         count={read}
                         tip="昨日阅读"
                         icon="area-chart"
                     />
                     <DataBlock
-                        color="#3E8F2D"
+                        color="#fbae52"
+                        color2='#fda33a'
                         count={like}
                         tip="新增点赞"
                         icon="like"
                     />
                     <DataBlock
-                        color="red"
+                        color="#b7a0f9"
+                        color2="#7c69ff"
                         count={warning}
                         tip="报警次数"
                         icon="warning"
                     />
                     <DataBlock
-                        color="#FA541C"
+                        color="#4640ff"
+                        color2="#5ba0f8"
                         count={start}
                         tip="新增收藏"
                         icon="star"
                     />
                 </div>
-                <Row style={{marginTop: 16}}>
-                    <Col span={8} style={{paddingRight: 16}}>
+                <Row style={{marginTop: 10}}>
+                    <Col span={12} style={{paddingRight: 10}}>
                         <div style={colStyle}>
-                            <ReactEchart option={this.getPieOption()}/>
+                            <Map/>
                         </div>
+
                     </Col>
-                    <Col span={16}>
+                    <Col span={12}>
                         <div style={colStyle}>
-                            <ReactEchart option={this.getBarOption()}/>
+                            <Bar/>
                         </div>
                     </Col>
                 </Row>
-                <div style={{...colStyle, marginTop: 16}}>
-                    <ReactEchart option={this.getBar2Option()}/>
+
+                <div style={{...colStyle, marginTop: 10}}>
+                    <ReactEchart option={this.getBar3Option()}/>
                 </div>
-            </PageContent>
+            </div>
         );
     }
 }

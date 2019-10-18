@@ -1,31 +1,42 @@
 .root {
     display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100vw;
     height: 100vh;
+    background: #00021c;
+    overflow: hidden;
 }
 
 .left {
-    flex: 1;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 }
 
 .right {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    flex-basis: 100px;
-    height: 100%;
-    background: #f8f8f9;
+    flex-basis: 350px;
+    height: 350px;
+    z-index: 100;
 
     .box {
         padding: 16px 40px;
-        width: 300px;
+        height: 100%;
+        width: 100%;
         border-radius: 0;
-        background: #f8f8f9;
+        // background: #f8f8f9;
 
         .header {
-            font-size: 20px;
+            font-size: 25px;
             text-align: center;
             padding: 30px;
+            color: #fff;
+            font-weight: bolder;
         }
 
         .submit-btn {
@@ -48,6 +59,19 @@
             }
         }
 
+        .form-item {
+            transition-delay: 5s;
+            transition: 500ms;
+            transform: translateX(100%);
+
+            &:nth-child(2n) {
+                transform: translateX(-100%);
+            }
+
+            &.active {
+                transform: translateX(0);
+            }
+        }
     }
 }
 
