@@ -6,24 +6,6 @@
     position: relative;
     width: 100%;
     height: 100%;
-    //background-image: url("./login-bg.jpg");
-    //background-color: @primary-color;
-    //background-size: 100% 100%;
-    //background-position: center;
-    //animation: root-frames 15s infinite linear;
-    //overflow: hidden;
-    //
-    //@keyframes root-frames {
-    //    0% {
-    //        background-size: 100% 100%;
-    //    }
-    //    50% {
-    //        background-size: 240% 240%;
-    //    }
-    //    100% {
-    //        background-size: 100% 100%;
-    //    }
-    //}
 }
 
 .logo {
@@ -33,22 +15,6 @@
     display: flex;
     align-items: flex-start;
     animation: logo-animation 1s ease 500ms 1 forwards;
-
-    i {
-        font-size: 25px;
-        color: #fff;
-        font-style: normal;
-        padding-left: 20px;
-        font-weight: bold;
-        opacity: .9;
-    }
-
-    img {
-        width: 40px;
-        height: auto;
-        opacity: .7;
-    }
-
     @keyframes logo-animation {
         0% {
             left: 5%;
@@ -61,64 +27,82 @@
             opacity: 1;
         }
     }
+
+    img {
+        width: 40px;
+        opacity: .7;
+    }
+
+    i {
+        padding-left: 20px;
+        font-style: normal;
+        font-size: 25px;
+        font-weight: bold;
+        color: #fff;
+        opacity: .9;
+    }
 }
 
 .banner {
     position: relative;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
     height: 100%;
 
-    .banner-image {
-        display: block;
+    .banner-image-container {
         position: relative;
-        border: 0px solid red;
 
         img {
             width: 750px;
             height: 480px;
             z-index: 20;
         }
+
         .star {
             position: absolute;
             left: 580px;
             top: 280px;
             animation: star-animation 3s infinite linear;
+
             img {
                 width: 12px;
                 height: auto;
                 z-index: 30;
             }
         }
+
         .star2 {
             position: absolute;
             left: 590px;
             top: 290px;
             animation: star2-animation 3s infinite linear;
+
             img {
                 width: 12px;
                 height: auto;
                 z-index: 30;
             }
         }
+
         .text {
             position: absolute;
             left: 95px;
             top: 186px;
             animation: text-animation 15s ease 1ms 1 forwards;
+
             img {
                 width: 22px;
                 height: auto;
                 z-index: 30;
             }
         }
+
         .bar_z {
             position: absolute;
             left: 354px;
             top: 198px;
             perspective: 4px;
+
             img {
                 display: block;
                 width: 152px;
@@ -135,28 +119,33 @@
             left: 244px;
             top: 190px;
             animation: info-animation 10s ease 1ms 1 forwards;
+
             img {
                 width: 158px;
                 height: auto;
                 z-index: 50;
             }
         }
-        .cirle {
+
+        .circle {
             position: absolute;
             left: 255px;
             top: 238px;
-            animation: cirle-animation 10s infinite linear;
+            animation: circle-animation 10s infinite linear;
+
             img {
                 width: 60px;
                 height: auto;
                 z-index: 50;
             }
         }
-        .cirle2 {
+
+        .circle2 {
             position: absolute;
             left: 255px;
             top: 238px;
-            animation: cirle2-animation 10s infinite linear;
+            animation: circle2-animation 10s infinite linear;
+
             img {
                 width: 60px;
                 height: auto;
@@ -164,11 +153,12 @@
             }
         }
 
-        .cirle_b {
+        .circle_b {
             position: absolute;
             left: 255px;
             top: 238px;
-            animation: cirle_b-animation 10s infinite linear;
+            animation: circle_b-animation 10s infinite linear;
+
             img {
                 width: 60px;
                 height: auto;
@@ -181,28 +171,33 @@
             left: 60px;
             top: 193px;
             animation: folder-animation 10s infinite linear;
+
             img {
                 width: 38px;
                 height: auto;
                 z-index: 60;
             }
         }
+
         .folder2 {
             position: absolute;
             left: 60px;
             top: 193px;
             animation: folder2-animation 10s infinite linear;
+
             img {
                 width: 38px;
                 height: auto;
                 z-index: 50;
             }
         }
+
         .folder_grey {
             position: absolute;
             left: 60px;
             top: 193px;
             animation: folder_grey-animation 10s infinite linear;
+
             img {
                 width: 38px;
                 height: auto;
@@ -246,7 +241,7 @@
         }
     }
 
-    @keyframes cirle-animation {
+    @keyframes circle-animation {
         0% {
             transform: translateY(0px);
         }
@@ -259,7 +254,7 @@
 
     }
 
-    @keyframes cirle2-animation {
+    @keyframes circle2-animation {
         0% {
             transform: translateY(0px);
             opacity: .5;
@@ -274,7 +269,7 @@
         }
     }
 
-    @keyframes cirle_b-animation {
+    @keyframes circle_b-animation {
         0% {
             transform: translateY(0px);
             opacity: .3;

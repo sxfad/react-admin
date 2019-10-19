@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import loginBanner from './login_banner.png';
 import logo from './logo.png';
-import cirle from './cirle.png';
+import circle from './circle.png';
 import folder from './folder.png';
 import folder_grey from './folder_grey.png';
 import text from './text.png';
@@ -15,12 +15,12 @@ export default class Banner extends Component {
         return (
             <div styleName="root">
                 <div styleName="logo">
-                        <img alt="logo" src={logo}/>
+                    <img alt="logo" src={logo}/>
                     <i>React Admin</i>
                 </div>
                 <div styleName="banner">
-                    <div styleName="banner-image">
-                        <img alt="宣传图" src={loginBanner}/>
+                    <div styleName="banner-image-container">
+                        <img src={loginBanner} alt="宣传图" />
                         <div styleName="star">
                             <img alt="star" src={star}/>
                         </div>
@@ -43,19 +43,18 @@ export default class Banner extends Component {
                         <div styleName="info">
                             <img alt="info" src={info}/>
                         </div>
-                        <div styleName="cirle_b">
-                            <img alt="cirle" src={cirle}/>
+                        <div styleName="circle_b">
+                            <img alt="circle" src={circle}/>
                         </div>
-                        <div styleName="cirle2">
-                            <img alt="cirle" src={cirle}/>
+                        <div styleName="circle2">
+                            <img alt="circle" src={circle}/>
                         </div>
-                        <div styleName="cirle">
-                            <img alt="cirle" src={cirle}/>
+                        <div styleName="circle">
+                            <img alt="circle" src={circle}/>
                         </div>
                         <div styleName="bar_z">
                             <img alt="bar" src={bar}/>
                         </div>
-
                     </div>
                 </div>
             </div>
