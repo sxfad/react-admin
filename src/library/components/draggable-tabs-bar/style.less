@@ -1,6 +1,6 @@
 @default-color: #fff;
-//@active-color: #f0f2f5;
-@active-color: #fff;
+@active-color: #f0f2f5;
+//@active-color: #fff;
 @primary-color: #1890ff;
 @border-color: #e8e8e8;
 @corner-size: 10px;
@@ -46,10 +46,12 @@ body > .draggable-tabs-bar-horizontal-item {
             background: @active-color;
             color: #000;
             font-weight: bolder;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
         }
 
         .item-inner {
-            border-bottom: 2px solid @primary-color;
+            //border-bottom: 2px solid @primary-color;
         }
 
         .tabs-bar-left-corner,
@@ -87,20 +89,20 @@ body > .draggable-tabs-bar-horizontal-item {
         }
 
         .draggable-tabs-bar-wrapper {
-            //&:before {
-            //    display: none;
-            //}
+            &:before {
+                display: none;
+            }
 
             &:after {
                 box-shadow: 0 0 10px 20px @active-color;
             }
         }
 
-        //& + .draggable-tabs-bar-horizontal-item {
-        //    .draggable-tabs-bar-wrapper:before {
-        //        display: none;
-        //    }
-        //}
+        & + .draggable-tabs-bar-horizontal-item {
+            .draggable-tabs-bar-wrapper:before {
+                display: none;
+            }
+        }
     }
 
     &:hover {
