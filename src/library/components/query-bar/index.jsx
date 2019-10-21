@@ -59,7 +59,6 @@ export default class QueryBar extends React.Component {
                 {
                     showCollapsed ? (
                         <a className="sx-query-bar-collapsed" onClick={this.handleCollapsedChange}>
-                            {collapsed ? '展开' : '收起'}
                             <Icon type={collapsed ? 'down' : 'up'}/>
                         </a>
                     ) : null
