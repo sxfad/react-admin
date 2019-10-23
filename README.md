@@ -25,7 +25,7 @@
     </tr>
     <tr>
         <td><img src="docs/imgs/401.jpg" alt="未登录"/></td>
-        <td><img src="docs/imgs/404.jpg" alt="页面不存在"/></td>
+        <td><img src="docs/imgs/404.png" alt="页面不存在"/></td>
     </tr>
 </table>
 
