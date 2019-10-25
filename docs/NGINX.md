@@ -18,7 +18,7 @@ server {
     }
 
     # 静态文件缓存，启用Cache-Control: max-age、Expires
-    location ~ ^/(css|js|media)/ {
+    location ~ ^/static/(css|js|media)/ {
       expires 10y;
       access_log off;
       add_header Cache-Control "public";

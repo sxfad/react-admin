@@ -24,7 +24,7 @@ react-admin是基于基于[React16.x](https://reactjs.org)、[Ant Design3.x](htt
 │   ├── pages           // 页面组件
 │   ├── router          // 路由
 │   ├── App.js          // 根组件
-│   ├── index.css       // 全局样式
+│   ├── index.css       // 全局样式 慎用
 │   ├── index.js        // 项目入口
 │   ├── menus.js        // 菜单配置
 │   ├── setupProxy.js   // 后端联调代理配置

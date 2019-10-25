@@ -4,10 +4,10 @@
 ## 方法
 基于restful规范，提供了5个方法：
 
-- get 获取服务端数据，参数拼接在url上，以 query string方式发送给后端
+- get 获取服务端数据，参数拼接在url上，以 query string 方式发送给后端
 - post 新增数据，参数以body形式发送给后端
 - put 修改数据，参数以body形式发送给后端
-- del 删除数据，参数拼接在url上，以params方式发送给后端
+- del 删除数据，参数拼接在url上，以 query string 方式发送给后端
 - patch 修改部分数据，参数以body形式发送给后端
 
 ## 调用方式
@@ -51,7 +51,6 @@
     import React, {Component} from 'react';
     import {sxAjax} from '@/commpons/ajax';
     
-    @ajaxHoc()
     export default class SomePage extend Component {
         componentDidMount() {
             sxAjax.post(...).then(...);
