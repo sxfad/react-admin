@@ -2,7 +2,7 @@ export default {
     initialState: {
         breadcrumbs: [],    // 面包屑数据 [{key, text, path}]
         title: '',          // 页面title {text, icon}
-        showHead: true,     // 是否显示/隐藏页面头部
+        showHead: false,     // 是否显示/隐藏页面头部
         loading: false,
     },
 

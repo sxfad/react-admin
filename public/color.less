@@ -1538,9 +1538,7 @@ this.tinycolor = tinycolor;
 @primary-2: color(~`colorPalette('@{primary-color}', 2) `); // replace tint(@primary-color, 80%)
 @primary-3: color(~`colorPalette('@{primary-color}', 3) `); // unused
 @primary-4: color(~`colorPalette('@{primary-color}', 4) `); // unused
-@primary-5: color(
-    ~`colorPalette('@{primary-color}', 5) `
-); // color used to control the text color in many active and hover states, replace tint(@primary-color, 20%)
+@primary-5: color(~`colorPalette('@{primary-color}', 5) `); // color used to control the text color in many active and hover states, replace tint(@primary-color, 20%)
 @primary-6: @primary-color; // color used to control the text color of active buttons, don't use, use @primary-color
 @primary-7: color(~`colorPalette('@{primary-color}', 7) `); // replace shade(@primary-color, 5%)
 @primary-8: color(~`colorPalette('@{primary-color}', 8) `); // unused
@@ -3089,6 +3087,7 @@ a:active {
 .ant-menu-item-selected > a:hover {
     color: @primary-color;
 }
+
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-active,
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
     background-color: color(~`colorPalette("@{primary-color}", 1)`);
@@ -3703,10 +3702,14 @@ a:active {
 //    background: lighten(@primary-color, 40%) !important;
 //}
 
-.draggable-tabs-bar-horizontal-item.active .draggable-tabs-bar-wrapper,
-.draggable-tabs-bar-horizontal-item:hover .draggable-tabs-bar-wrapper {
-    color: @primary-color;
-}
+//.draggable-tabs-bar-horizontal-item {
+//    &.active,
+//    &:hover {
+//        .draggable-tabs-bar-wrapper .item-inner {
+//            border-bottom: 2px solid @primary-color;
+//        }
+//    }
+//}
 
 #header {
     background-color: @primary-color;
@@ -3720,6 +3723,14 @@ a:active {
     background-color: @primary-color;
 }
 
-.drag-bar-icon span {
-    background: @primary-color !important;
+.ant-menu-submenu-popup {
+    //background: #666;
+    background: @primary-color;
+}
+
+//.drag-bar-icon span {
+//    background: @primary-color !important;
+//}
+.ant-menu-submenu-selected {
+    color: @primary-color;
 }

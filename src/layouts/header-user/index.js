@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Menu, Dropdown, Icon} from 'antd';
 import {Link} from 'react-router-dom';
 import {toLogin, getLoginUser} from '@/commons';
-import {UserAvatar} from '@/library/components';
 import ModifyPassword from './ModifyPassword';
 import './style.less';
 
@@ -31,7 +30,6 @@ export default class HeaderUser extends Component {
     render() {
         const user = getLoginUser() || {};
         const name = user.name;
-        const avatar = user.avatar;
 
         const {className, theme} = this.props;
 
@@ -50,12 +48,8 @@ export default class HeaderUser extends Component {
             <div styleName="user-menu" ref={node => this.userMenu = node}>
                 <Dropdown overlay={menu} getPopupContainer={() => (this.userMenu || document.body)}>
                     <span styleName="account" className={className}>
-                        {avatar ? (
-                            <UserAvatar size="default" styleName="avatar" src={avatar}/>
-                        ) : (
-                            <UserAvatar size="default" styleName="avatar" icon name={name}/>
-                        )}
-                        {name}
+                        <Icon type="user"/>
+                        <span style={{fontSize: 14}}>{name}</span>
                         <Icon type="caret-down"/>
                     </span>
                 </Dropdown>

@@ -39,7 +39,7 @@ system model（redux）中提供了如下操作tab页的方法：
 
 API|说明
 ---|---
-setCurrentTabTitle(title)|设置当前激活的 tab 标题 title: stirng 或 {local, text, icon} local对应 i18n.menu中字段
+setCurrentTabTitle(title)|设置当前激活的 tab 标题 title: stirng 或 {text, icon}
 refreshTab(targetPath)|刷新targetPath指定的tab页内容（重新渲染）
 refreshAllTab()|刷新所有tab页内容（重新渲染）
 closeCurrentTab()|关闭当前tab页

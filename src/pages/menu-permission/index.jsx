@@ -135,28 +135,6 @@ export default class index extends Component {
             .finally(() => this.setState({loading: false}));
     };
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        this.props.form.validateFieldsAndScroll((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-
-                // 如果key存在视为修改，其他为添加
-                const {key} = values;
-                const ajax = key ? this.props.ajax.post : this.props.ajax.put;
-
-                // TODO
-                this.setState({loading: true});
-                ajax('/menus', values)
-                    .then(() => {
-                        this.setState({visible: false});
-                        this.handleSearch();
-                    })
-                    .finally(() => this.setState({loading: false}));
-            }
-        });
-    };
-
     render() {
         const {
             menus,

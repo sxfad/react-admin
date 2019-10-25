@@ -150,7 +150,6 @@ export default class ThemeColorPicker extends Component {
                         />
                     </div>
                 </Tooltip>
-                <Icon style={{marginLeft: 4}} type="caret-down"/>
             </div>
         );
     }

@@ -11,6 +11,9 @@ module.exports = function (app) {
             pathRewrite: { // 如果后端接口不是统一以api开头，去掉api
                 '^/api': '',
             },
+            changeOrigin: true,
+            secure: false, // 是否验证证书
+            ws: true, // 启用websocket
         }
     ));
 };

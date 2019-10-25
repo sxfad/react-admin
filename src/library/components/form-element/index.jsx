@@ -164,6 +164,14 @@ class FormElement extends Component {
 
     componentDidMount() {
         this.setStyle();
+        const {layout, field, form} = this.props;
+        if (!layout && !form) {
+            console.error('warning: FormElement 缺少form属性');
+        }
+
+        if (!layout && !field) {
+            console.error('warning: FormElement 缺少Field属性');
+        }
     }
 
     componentDidUpdate() {
@@ -327,6 +335,15 @@ class FormElement extends Component {
             );
         }
 
+        const elementProps = {
+            ...others, ref: forwardedRef, style: eleStyle
+        };
+
+        if (form) {
+            children = children ? React.cloneElement(children, elementProps) : null;
+            children = getFieldDecorator(field, nextDecorator)(children || getElement({type, ...elementProps}));
+        }
+
         return (
             <div
                 style={{display: type === 'hidden' ? 'none' : 'flex', ...wrapperStyle, ...style}}
@@ -344,15 +361,7 @@ class FormElement extends Component {
                     validateStatus={validateStatus}
                     wrapperCol={wrapperCol}
                 >
-                    {form ? (
-                        getFieldDecorator(field, nextDecorator)(
-                            children ? (
-                                children
-                            ) : (
-                                getElement({type, ...others, ref: forwardedRef, style: eleStyle})
-                            )
-                        )
-                    ) : children}
+                    {children}
                 </FormItem>
                 {tip ? <div className="font-element-tip">{tip}</div> : null}
             </div>

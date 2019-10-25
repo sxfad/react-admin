@@ -22,53 +22,66 @@ export default {
                     __id: '01',
                     children: [
                         {
-                            __type: 'FormRow',
+                            __type: 'Form',
                             __id: uuid(),
+                            onSubmit: 'this.handleSearch',
                             children: [
                                 {
-                                    __type: 'FormInput',
+                                    __type: 'FormRow',
                                     __id: uuid(),
-                                    label: '输入框',
-                                    width: '200px',
-                                },
-                                {
-                                    __type: 'FormSelect',
-                                    __id: uuid(),
-                                    type: 'select',
-                                    label: '下拉框',
-                                    width: '200px',
-                                    options: [
-                                        {value: '1', label: '下拉项1'},
-                                        {value: '2', label: '下拉项2'},
-                                    ],
-                                },
-                                {
-                                    __type: 'FormElement',
-                                    __id: uuid(),
-                                    layout: true,
                                     children: [
                                         {
-                                            __type: 'Button',
+                                            __type: 'FormInput',
                                             __id: uuid(),
-                                            type: 'primary',
-                                            children: [
-                                                {
-                                                    __type: 'text',
-                                                    __id: uuid(),
-                                                    content: '查询',
-                                                }
+                                            label: '输入框',
+                                            style: {paddingLeft: 16},
+                                            width: '200px',
+                                        },
+                                        {
+                                            __type: 'FormSelect',
+                                            __id: uuid(),
+                                            type: 'select',
+                                            label: '下拉框',
+                                            style: {paddingLeft: 16},
+                                            width: '200px',
+                                            options: [
+                                                {value: '1', label: '下拉项1'},
+                                                {value: '2', label: '下拉项2'},
                                             ],
                                         },
                                         {
-                                            __type: 'Button',
+                                            __type: 'FormElement',
                                             __id: uuid(),
-                                            type: 'default',
+                                            layout: true,
+                                            style: {paddingLeft: 16},
+                                            width: 'auto',
                                             children: [
                                                 {
-                                                    __type: 'text',
+                                                    __type: 'Button',
                                                     __id: uuid(),
-                                                    content: '重置',
-                                                }
+                                                    type: 'primary',
+                                                    style: {marginRight: 8},
+                                                    children: [
+                                                        {
+                                                            __type: 'text',
+                                                            __id: uuid(),
+                                                            content: '查询',
+                                                            htmlType: 'submit',
+                                                        }
+                                                    ],
+                                                },
+                                                {
+                                                    __type: 'Button',
+                                                    __id: uuid(),
+                                                    type: 'default',
+                                                    children: [
+                                                        {
+                                                            __type: 'text',
+                                                            __id: uuid(),
+                                                            content: '重置',
+                                                        }
+                                                    ],
+                                                },
                                             ],
                                         },
                                     ],

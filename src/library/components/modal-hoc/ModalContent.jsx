@@ -17,14 +17,22 @@ export default class ModalContent extends Component {
         otherHeight: PropTypes.number,  // 除了主体内容之外的其他高度，用于计算主体高度；
         footer: PropTypes.any,          // 底部
         okText: PropTypes.any,          // 确定按钮文案
+        resetText: PropTypes.any,       // 重置按钮文案
         cancelText: PropTypes.any,      // 取消按钮文案
         onOk: PropTypes.func,           // 确定事件
         onCancel: PropTypes.func,       // 取消事件
+        onReset: PropTypes.func,        // 表单重置事件
+        style: PropTypes.object,        // 最外层容器样式
+        bodyStyle: PropTypes.object,    // 内容容器样式
     };
 
     static defaultProps = {
+        loading: false,
+        style: {},
+        bodyStyle: {},
         surplusSpace: true,
         okText: '确定',
+        resetText: '重置',
         cancelText: '取消',
         onOk: () => void 0,
         onCancel: () => void 0,
@@ -37,8 +45,6 @@ export default class ModalContent extends Component {
             this.handleWindowResize();
             window.addEventListener('resize', this.handleWindowResize);
         }
-
-
     }
 
     componentWillUnmount() {
@@ -72,14 +78,17 @@ export default class ModalContent extends Component {
     render() {
         const {
             surplusSpace,
-            loading = false,
+            loading,
             otherHeight,
-            style = {},
+            style,
+            bodyStyle,
             footer,
             okText,
+            resetText,
             cancelText,
             onOk,
             onCancel,
+            onReset,
             children,
             ...others
         } = this.props;
@@ -92,7 +101,7 @@ export default class ModalContent extends Component {
                     style={{display: 'flex', flexDirection: 'column', height, ...style}}
                     {...others}
                 >
-                    <div style={{flex: 1, overflow: surplusSpace ? 'auto' : ''}}>
+                    <div style={{flex: 1, padding: 16, overflow: surplusSpace ? 'auto' : '', ...bodyStyle}}>
                         {children}
                     </div>
                     {footer !== false ? (
@@ -100,7 +109,8 @@ export default class ModalContent extends Component {
                             {footer ? footer : (
                                 <Fragment>
                                     <Button type="primary" onClick={onOk}>{okText}</Button>
-                                    <Button type="default" onClick={onCancel}>{cancelText}</Button>
+                                    {onReset ? <Button onClick={onReset}>{resetText}</Button> : null}
+                                    <Button onClick={onCancel}>{cancelText}</Button>
                                 </Fragment>
                             )}
                         </div>

@@ -1,5 +1,6 @@
 @headerHeight: 50px;
 @primary-color: #1890ff;
+@active-background-color: rgba(0, 0, 0, 0.2);
 
 .header-menu {
     display: block;
@@ -30,8 +31,8 @@
         .ant-menu-item.ant-menu-item-active,
         .ant-menu-submenu-selected,
         .ant-menu-submenu-open {
-            background-color: rgba(255, 255, 255, 0.3);
-            border-bottom: 2px solid rgba(255, 255, 255, 0.3) !important;
+            background-color: @active-background-color;
+            border-bottom: 2px solid rgba(255, 255, 255, 0) !important;
 
             & .ant-menu-submenu-title {
                 color: #fff;
@@ -41,6 +42,32 @@
 }
 
 // 这里用了个全局样式
-:global(.ant-menu-submenu-popup .font-icon) {
-    margin-right: 8px;
+:global {
+    .ant-menu-submenu-popup .font-icon {
+        margin-right: 8px;
+    }
+
+    .ant-menu-submenu-popup {
+        background: @primary-color;
+
+        .ant-menu {
+            background-color: transparent;
+
+            span {
+                color: #fff;
+            }
+        }
+
+        .ant-menu-item.ant-menu-item-selected,
+        .ant-menu-item.ant-menu-item-active {
+            background-color: @active-background-color !important;
+        }
+
+        .ant-menu-submenu-arrow {
+            &::before,
+            &::after {
+                background-image: linear-gradient(to right, #fff, #fff) !important;
+            }
+        }
+    }
 }

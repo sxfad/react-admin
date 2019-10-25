@@ -9,6 +9,7 @@ import './style.less';
     router: true,
     connect: state => ({
         dataSource: state.system.tabs,
+        keepAlive: state.system.keepAlive,
     }),
 })
 export default class PageTabs extends Component {
@@ -56,7 +57,7 @@ export default class PageTabs extends Component {
     };
 
     renderContextMenu = (tab) => {
-        const {dataSource} = this.props;
+        const {dataSource, keepAlive} = this.props;
         const disabledClose = dataSource.length === 1;
         const tabIndex = dataSource.findIndex(item => item.path === tab.path);
         const disabledCloseLeft = tabIndex === 0;
@@ -67,13 +68,17 @@ export default class PageTabs extends Component {
                 selectable={false}
                 onClick={({key: action}) => this.handleMenuClick(action, tab.path)}
             >
-                <Menu.Item key="refresh">
-                    <Icon type="sync"/> 刷新
-                </Menu.Item>
-                <Menu.Item key="refreshAll">
-                    <Icon type="sync"/> 刷新全部
-                </Menu.Item>
-                <Menu.Divider/>
+                {keepAlive ? (
+                    [
+                        <Menu.Item key="refresh">
+                            <Icon type="sync"/> 刷新
+                        </Menu.Item>,
+                        <Menu.Item key="refreshAll">
+                            <Icon type="sync"/> 刷新全部
+                        </Menu.Item>,
+                        <Menu.Divider key="divider"/>
+                    ]
+                ) : null}
                 <Menu.Item key="close" disabled={disabledClose}>
                     <Icon type="close"/> 关闭
                 </Menu.Item>
@@ -118,7 +123,7 @@ export default class PageTabs extends Component {
 
             if (tabTitle?.icon) icon = tabTitle.icon;
 
-            if (icon) title = <span><Icon type={icon} style={{marginRight: 4}}/>{title}</span>;
+            if (icon) title = <div style={{flex: 1, textAlign: 'center'}}><Icon type={icon} style={{marginRight: 4}}/>{title}</div>;
 
             return {
                 key: path,

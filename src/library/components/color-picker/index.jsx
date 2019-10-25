@@ -51,15 +51,16 @@ export default class Index extends Component {
     };
 
     render() {
-        const {small, type, position} = this.props;
+        const {small, type, position, colorStyle = {}} = this.props;
         const {color, displayColorPicker} = this.state;
         const Picker = pickers[type];
         const styles = {
             color: {
-                width: small ? '30px' : '120px',
-                height: small ? '16px' : '24px',
+                width: small ? '18px' : '120px',
+                height: small ? '14px' : '24px',
                 borderRadius: '2px',
                 background: color,
+                ...colorStyle,
             },
             swatch: {
                 padding: '1px',

@@ -1,5 +1,6 @@
 @default-color: #fff;
 @active-color: #f0f2f5;
+//@active-color: #fff;
 @primary-color: #1890ff;
 @border-color: #e8e8e8;
 @corner-size: 10px;
@@ -11,7 +12,7 @@
     height: 30px;
     box-sizing: border-box;
     overflow: hidden;
-    padding-left: 2px;
+    background: @default-color;
 
     &.sorting,
     &.sorting * {
@@ -43,7 +44,14 @@ body > .draggable-tabs-bar-horizontal-item {
         .draggable-tabs-bar-wrapper {
             position: relative;
             background: @active-color;
-            color: @primary-color;
+            color: #000;
+            font-weight: bolder;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        .item-inner {
+            //border-bottom: 2px solid @primary-color;
         }
 
         .tabs-bar-left-corner,
@@ -115,7 +123,7 @@ body > .draggable-tabs-bar-horizontal-item {
         height: 100%;
         transition: width 300ms;
         box-sizing: border-box;
-        padding-right: 2px;
+        //padding-right: 2px;
         overflow: hidden;
     }
 
@@ -127,11 +135,13 @@ body > .draggable-tabs-bar-horizontal-item {
         overflow: hidden;
         height: 100%;
         width: 100%;
-        padding: 0 8px;
-        border-top-left-radius: @corner-size/2;
-        border-top-right-radius: @corner-size/2;
+        padding: 0 14px;
+        //border-top-left-radius: @corner-size/2;
+        //border-top-right-radius: @corner-size/2;
         background-color: @default-color;
         color: #333;
+        transition: 300ms;
+        //border-right: 1px solid @border-color;
 
         &:before {
             content: '';
@@ -151,7 +161,6 @@ body > .draggable-tabs-bar-horizontal-item {
             position: absolute;
             top: 0;
             right: -2px;
-            height: 100%;
             width: 0;
             box-shadow: 0 0 10px 20px @default-color;
         }
@@ -159,6 +168,7 @@ body > .draggable-tabs-bar-horizontal-item {
 
     .item-inner {
         display: flex;
+        //justify-content: center;
         flex-grow: 1;
         align-items: center;
         position: relative;
@@ -167,6 +177,7 @@ body > .draggable-tabs-bar-horizontal-item {
         white-space: nowrap;
         cursor: pointer;
         font-size: 12px;
+        border-bottom: 2px solid transparent;
     }
 
     .close-wrapper {
@@ -185,6 +196,7 @@ body > .draggable-tabs-bar-horizontal-item {
         cursor: pointer;
         opacity: 0;
         z-index: 1;
+        transition: 300ms;
 
         &:hover {
             background: #d9d9d9;

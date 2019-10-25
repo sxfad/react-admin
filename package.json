@@ -15,7 +15,7 @@
         "@svgr/webpack": "4.1.0",
         "add": "^2.0.6",
         "animate.css": "^3.7.0",
-        "antd": "^3.12.4",
+        "antd": "^3.23.6",
         "axios": "^0.18.0",
         "axios-mock-adapter": "^1.16.0",
         "babel-core": "7.0.0-bridge.0",
@@ -212,7 +212,8 @@
                         ".less": {
                             "syntax": "postcss-less"
                         }
-                    }
+                    },
+                    "handleMissingStyleName": "throw"
                 }
             ],
             [

@@ -20,11 +20,10 @@
 key|是|需要唯一
 parentKey|否|用于关联父级
 path|是|菜单对应的路由地址
-text|是|如果local对应的文案有效，将覆盖text，否则菜单默认使用text作为展示内容
+text|是|菜单标题
 icon|否|菜单图标配置
 url|否|菜单对应会打开url对应的iframe页面，如果配置了url，path将无效
 target|否|配合url使用，菜单将为a标签 `<a href={url} target={target}>{text}</a>`
-local|否|国际化配置，系统在i18n.menu中获取对应的文案
 order|否|菜单排序，数值越大越靠前显示
 type|否|如果菜单数据中携带功能权限配置，type==='1' 为菜单，type==='2'为功能
 code|否|功能码，如果是type==='2'，会用到此字段

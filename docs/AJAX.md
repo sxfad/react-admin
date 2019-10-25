@@ -4,10 +4,10 @@
 ## 方法
 基于restful规范，提供了5个方法：
 
-- get 获取服务端数据，参数拼接在url上，以 query string方式发送给后端
+- get 获取服务端数据，参数拼接在url上，以 query string 方式发送给后端
 - post 新增数据，参数以body形式发送给后端
 - put 修改数据，参数以body形式发送给后端
-- del 删除数据，参数拼接在url上，以params方式发送给后端
+- del 删除数据，参数拼接在url上，以 query string 方式发送给后端
 - patch 修改部分数据，参数以body形式发送给后端
 
 ## 调用方式
@@ -51,7 +51,6 @@
     import React, {Component} from 'react';
     import {sxAjax} from '@/commpons/ajax';
     
-    @ajaxHoc()
     export default class SomePage extend Component {
         componentDidMount() {
             sxAjax.post(...).then(...);
@@ -73,7 +72,17 @@
 ---|---
 url|请求地址
 params|请求传递给后端的参数
-options|请求配置，即axios的配置，扩展了三个个：successTip errorTip，成功或失败提示；noEmpty过滤掉 ''、null、undefined的参数，不提交给后端
+options|请求配置，即axios的配置，
+
+options配置
+
+参数|说明
+---|---
+axios配置|可以接受axios参数
+successTip|扩展的参数，成功提示
+errorTip|扩展的参数，失败提示
+noEmpty|扩展的参数，过滤掉 ''、null、undefined的参数，不提交给后端
+originResponse|扩展参数，.then中可以拿到完整的response，而不只是response.data
 
 注：全局默认参数可以在src/commons/ajax.js中进行配置，默认baseURL='/api'、timeout=1000 * 60。
 

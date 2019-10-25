@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Radio, Card, Row, Col, Checkbox} from 'antd';
+import {Radio, Card, Checkbox} from 'antd';
 import PageContent from '@/layouts/page-content';
 import config from '@/commons/config-hoc';
 
@@ -88,67 +88,60 @@ export default class Settings extends Component {
             lineHeight: '30px',
         };
 
-        const colStyle = {
-            padding: '16px',
-            height: '100%',
-        };
-
+        
         return (
-            <PageContent>
-                <Row>
-                    <Col span={12} style={colStyle}>
-                        <Card title="设置" style={{marginBottom: 16}}>
-                            <div>
-                                <Checkbox
-                                    onChange={this.handlePageHeadShowChange}
-                                    checked={pageHeadShow}
-                                >显示头部</Checkbox>
+            <PageContent style={{display: 'flex', paddingTop: 50, justifyContent: 'center'}}>
+                <div style={{width: 500}}>
+                    <Card title="设置" style={{marginBottom: 16}}>
+                        <div style={{display: 'none'}}> {/*暂时先隐藏*/}
+                            <Checkbox
+                                onChange={this.handlePageHeadShowChange}
+                                checked={pageHeadShow}
+                            >显示头部</Checkbox>
 
-                                {pageHeadShow ? (
-                                    <Checkbox
-                                        onChange={this.handlePageHeadFixedChange}
-                                        checked={pageHeadFixed}
-                                    >头部固定</Checkbox>
-                                ) : null}
-                            </div>
-
-                            <div style={{marginTop: 8}}>
+                            {pageHeadShow ? (
                                 <Checkbox
-                                    onChange={this.handleKeepPageChange}
-                                    checked={keepAlive}
-                                >
-                                    页面保持
-                                    <span style={{color: 'red'}}>(Beta)</span>
-                                </Checkbox>
-                            </div>
-                        </Card>
-                        <Card title="菜单设置">
+                                    onChange={this.handlePageHeadFixedChange}
+                                    checked={pageHeadFixed}
+                                >头部固定</Checkbox>
+                            ) : null}
+                        </div>
+
+                        <div style={{marginTop: 8}}>
+                            <Checkbox
+                                onChange={this.handleKeepPageChange}
+                                checked={keepAlive}
+                            >
+                                页面保持
+                                <span style={{color: 'red'}}>(Beta)</span>
+                            </Checkbox>
+                        </div>
+
+                        <div style={{marginTop: 8}}>
+                            <Checkbox
+                                onChange={this.handleTabShowChange}
+                                checked={tabsShow}
+                            >
+                                显示Tab页
+                            </Checkbox>
+                        </div>
+                    </Card>
+                    <Card title="菜单设置">
+                        <div style={{borderBottom: '1px solid #e8e8e8', paddingBottom: 8, marginBottom: 8}}>
                             <Checkbox
                                 onChange={this.handleKeepOtherMenuOpenChange}
                                 checked={keepOtherMenuOpen}
                             >保持菜单展开</Checkbox>
-                        </Card>
-                    </Col>
-                    <Col span={12} style={colStyle}>
-                        <Card title="布局" style={{height: 299}}>
-                            <div style={{borderBottom: '1px solid #e8e8e8', paddingBottom: 8, marginBottom: 8}}>
-                                <Checkbox
-                                    onChange={this.handleTabShowChange}
-                                    checked={tabsShow}
-                                >
-                                    显示Tab页
-                                </Checkbox>
-                            </div>
-                            <div>
-                                <Radio.Group onChange={this.handlePageFrameLayoutChange} value={pageFrameLayout}>
-                                    <Radio style={radioStyle} value="top-side-menu">头部左侧菜单</Radio>
-                                    <Radio style={radioStyle} value="top-menu">头部菜单</Radio>
-                                    <Radio style={radioStyle} value="side-menu">左侧菜单</Radio>
-                                </Radio.Group>
-                            </div>
-                        </Card>
-                    </Col>
-                </Row>
+                        </div>
+                        <div>
+                            <Radio.Group onChange={this.handlePageFrameLayoutChange} value={pageFrameLayout}>
+                                <Radio style={radioStyle} value="top-side-menu">头部左侧菜单</Radio>
+                                <Radio style={radioStyle} value="top-menu">头部菜单</Radio>
+                                <Radio style={radioStyle} value="side-menu">左侧菜单</Radio>
+                            </Radio.Group>
+                        </div>
+                    </Card>
+                </div>
             </PageContent>
         );
     }
