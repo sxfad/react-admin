@@ -24,8 +24,8 @@ export default {
     },
 
     setTabs: (newTabs) => {
-        const tabs = newTabs.filter(item => item.path !== '/login');
-        return {tabs};
+        // const tabs = newTabs.filter(item => item.path !== '/login');
+        return {tabs: newTabs};
     },
     setKeepPage: keepAlive => ({keepAlive}),
 
