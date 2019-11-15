@@ -131,6 +131,8 @@ class FormElement extends Component {
         style: PropTypes.object,
         elementStyle: PropTypes.object,
         layout: PropTypes.bool,
+        noSpace: PropTypes.bool, // 是否允许用户输入空格
+        trim: PropTypes.bool, // 自动去除前后空格
 
         // Form.Item属性
         colon: PropTypes.any,
@@ -160,6 +162,15 @@ class FormElement extends Component {
         style: {},
         elementStyle: {},
         layout: false,
+        noSpace: false,
+        trim: true,
+        getValueFromEvent: e => {
+            if (!e || !e.target) {
+                return e;
+            }
+            const {target} = e;
+            return target.type === 'checkbox' ? target.checked : target.value;
+        },
     };
 
     componentDidMount() {
@@ -205,6 +216,8 @@ class FormElement extends Component {
         }
     };
 
+    trimST = 0;
+
     render() {
         let {
             // 自定义属性
@@ -220,6 +233,8 @@ class FormElement extends Component {
             elementStyle,
             layout,
             forwardedRef,
+            noSpace,
+            trim,
 
             // Form.Item属性
             colon,
@@ -256,8 +271,41 @@ class FormElement extends Component {
 
         const {getFieldDecorator} = form || {};
 
+        const getValueFromEventNoSpace = noSpace ? (e) => {
+            if (isInputLikeElement(type)) {
+                let value = (!e || !e.target) ? e : e.target.value;
+
+                if (value) return value.replace(/\s/g, '');
+
+                return value;
+            } else {
+                return getValueFromEvent(e);
+            }
+        } : getValueFromEvent;
+
+        const getValueFromEventTrim = trim ? (e) => {
+            if (this.trimST) clearTimeout(this.trimST);
+
+            const value = (!e || !e.target) ? e : e.target.value;
+
+            if (
+                form
+                && isInputLikeElement(type)
+                && value
+                && (value.startsWith(' ') || value.endsWith(' '))
+            ) {
+
+                // 延迟去除，否则用户无法输入空格
+                this.trimST = window.setTimeout(() => {
+                    form.setFieldsValue({[field]: value.trim()});
+                }, 1000);
+            }
+
+            return getValueFromEventNoSpace(e);
+        } : getValueFromEventNoSpace;
+
         const nextDecorator = {
-            getValueFromEvent,
+            getValueFromEvent: getValueFromEventTrim,
             initialValue,
             normalize,
             preserve,

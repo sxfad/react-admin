@@ -14,5 +14,6 @@ decorator | Ant Design form.getFieldDecorator所需的第二个参数，所有�
 labelWidth | label宽度 | number 或 string | -
 component | 自定义元素，如果配合Form使用，此组件请提供value onChange属性 | ReactNode 或 function | -
 layout | 用于标记是否用于布局，一般用来布局提交按钮 | boolean | false
+noSpace | 不允许输入空格 | boolean | false
 children | 自定义表单元素，需要有value、onChange属性 | ReactNode | -  
 其他 | 其他属性为Ant Design Form.Item 和表单元素提供的属性 | - | - 
