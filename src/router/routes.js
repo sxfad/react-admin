@@ -1,4 +1,6 @@
 import pageRoutes, {noAuths, noFrames, keepAlives} from '../pages/page-routes';
+import ReactLoadable from "react-loadable";
+import PageLoading from "@/layouts/page-loading";
 
 // 不需要页面框架的页面配置
 export const noFrameRoutes = noFrames;
@@ -19,4 +21,10 @@ export const commonPaths = [
 * */
 export default [
     // {path: '/', component: () => import('../pages/home/index')},
-].concat(pageRoutes);
+].concat(pageRoutes)
+    .map(item => {
+        return {
+            path: item.path,
+            component: ReactLoadable({loader: item.component, loading: PageLoading}),
+        };
+    })

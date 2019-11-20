@@ -1,6 +1,6 @@
 import React from 'react';
 import {Route} from 'react-router-dom';
-import {isAuthenticated} from '@/commons';
+import {isLogin} from '@/commons';
 import Error401 from '@/pages/error/Error401';
 import config from '@/commons/config-hoc';
 import {keepAliveRoutes} from './routes';
@@ -47,7 +47,7 @@ export default class KeepAuthRoute extends React.Component {
                     const keepAlive = configKeepAlive === void 0 ? keepAliveSystem : configKeepAlive;
                     const {history} = props;
                     const {action: {system}} = this.props;
-                    let component = (noAuth || isAuthenticated()) ? <Component {...props}/> : <Error401 {...props}/>;
+                    let component = (noAuth || isLogin()) ? <Component {...props}/> : <Error401 {...props}/>;
 
                     // 如果页面现实tabs，或者启用了keep page alive 需要对tabs进行操作
                     if (tabsShow || keepAlive || keepAliveRoutes.length) {
