@@ -222,7 +222,7 @@ class FormElement extends Component {
         let {
             // 自定义属性
             form,
-            type,
+            type = 'input',
             labelWidth,
             width, // 整体宽度，默认 100%
             labelTip,
