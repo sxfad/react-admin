@@ -15,6 +15,7 @@ import {connect} from '../../models/index';
 export default class PageContent extends Component {
     static propTypes = {
         loading: PropTypes.bool,
+        loadingTip: PropTypes.any,
         pageLoading: PropTypes.bool,
         footer: PropTypes.bool,
     };
@@ -31,6 +32,7 @@ export default class PageContent extends Component {
         const {
             footer,
             loading,
+            loadingTip,
             pageLoading,
             children,
             action,
@@ -41,7 +43,7 @@ export default class PageContent extends Component {
         let hasFixBottom = false;
         React.Children.map(children, item => {
             if (item && item.type && item.type.__FIX_BOTTOM) hasFixBottom = true;
-        });
+        }, null);
 
         const rootStyle = {};
         if (hasFixBottom) {
@@ -51,7 +53,7 @@ export default class PageContent extends Component {
         return (
             <div style={rootStyle} styleName="page-content-root">
                 <div styleName="page-loading" style={{display: loading || pageLoading ? 'block' : 'none'}}>
-                    <Spin spinning size="large"/>
+                    <Spin spinning size="large" tip={loadingTip}/>
                 </div>
                 <div
                     styleName="page-content"

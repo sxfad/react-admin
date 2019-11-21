@@ -14,6 +14,7 @@ export default class ModalContent extends Component {
     static propTypes = {
         surplusSpace: PropTypes.bool,   // 是否使用屏幕剩余空间
         loading: PropTypes.bool,        // 是否加载中
+        loadingTip: PropTypes.any,      // 加载中提示文案
         otherHeight: PropTypes.number,  // 除了主体内容之外的其他高度，用于计算主体高度；
         footer: PropTypes.any,          // 底部
         okText: PropTypes.any,          // 确定按钮文案
@@ -79,6 +80,7 @@ export default class ModalContent extends Component {
         const {
             surplusSpace,
             loading,
+            loadingTip,
             otherHeight,
             style,
             bodyStyle,
@@ -94,7 +96,7 @@ export default class ModalContent extends Component {
         } = this.props;
         const {height} = this.state;
         return (
-            <Spin spinning={loading}>
+            <Spin spinning={loading} tip={loadingTip}>
                 <div
                     className="modal-content"
                     ref={node => this.wrapper = node}
