@@ -4,6 +4,7 @@ export default {
         title: '',          // 页面title {text, icon}
         showHead: false,     // 是否显示/隐藏页面头部
         loading: false,
+        loadingTip: '',
     },
 
     showHead: () => ({showHead: true}),
@@ -18,6 +19,6 @@ export default {
         return {breadcrumbs};
     },
 
-    showLoading: () => ({loading: true}),
-    hideLoading: () => ({loading: false}),
+    showLoading: (loadingTip) => ({loading: true, loadingTip}),
+    hideLoading: () => ({loading: false, loadingTip: ''}),
 }

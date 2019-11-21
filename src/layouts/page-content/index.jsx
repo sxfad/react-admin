@@ -11,7 +11,7 @@ import {connect} from '../../models/index';
  * 1. 自动判断是否含有FixBottom，并为之腾出空间
  * 1. 是否含有公共footer
  */
-@connect(state => ({pageLoading: state.page.loading}))
+@connect(state => ({pageLoading: state.page.loading, pageLoadingTip: state.page.loadingTip}))
 export default class PageContent extends Component {
     static propTypes = {
         loading: PropTypes.bool,
@@ -34,6 +34,7 @@ export default class PageContent extends Component {
             loading,
             loadingTip,
             pageLoading,
+            pageLoadingTip,
             children,
             action,
             className,
@@ -50,10 +51,13 @@ export default class PageContent extends Component {
             rootStyle.marginBottom = '66px';
         }
 
+        const isLoading = loading || pageLoading;
+        const tip = loadingTip || pageLoadingTip;
+
         return (
             <div style={rootStyle} styleName="page-content-root">
-                <div styleName="page-loading" style={{display: loading || pageLoading ? 'block' : 'none'}}>
-                    <Spin spinning size="large" tip={loadingTip}/>
+                <div styleName="page-loading" style={{display: isLoading ? 'block' : 'none'}}>
+                    <Spin spinning size="large" tip={tip}/>
                 </div>
                 <div
                     styleName="page-content"
