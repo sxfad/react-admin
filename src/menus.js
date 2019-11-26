@@ -27,7 +27,7 @@ export default function getMenus(userId) {
         // {key: 'user', text: '用户列表', icon: 'user', path: '/users', order: 900},
         {key: 'role', text: '角色列表 ', icon: 'team', path: '/roles', order: 800},
         {key: 'page404', text: '404页面不存', icon: 'file-search', path: '/404', order: 700},
-        {key: 'user-center', text: '用户中心', icon: 'user', path: '/user-center', order: 600},
+        {key: 'user-center', text: '用户中心', icon: 'user', path: '/users/123', order: 600},
         {key: 'component', text: '组件', icon: 'ant-design', order: 700},
     ]);
 }

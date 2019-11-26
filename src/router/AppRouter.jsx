@@ -55,9 +55,9 @@ export default class AppRouter extends Component {
 
                         return <PageFrame {...props}/>;
                     }}/>
-
-                    <KeepPage/>
-
+                    <Route exact path={userRoutes.map(item => item.path)}>
+                        <KeepPage/>
+                    </Route>
                     <Switch>
                         {userRoutes.map(item => {
                             const {path, component} = item;
