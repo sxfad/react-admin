@@ -49,7 +49,7 @@ export default class KeepAuthRoute extends React.Component {
                     const {action: {system}} = this.props;
                     let component = (noAuth || isLogin()) ? <Component {...props}/> : <Error401 {...props}/>;
 
-                    // 如果页面现实tabs，或者启用了keep page alive 需要对tabs进行操作
+                    // 如果页面现实tabs，或者有页面启用了keepAlive 需要对tabs进行操作
                     if (tabsShow || keepAlive || keepAliveRoutes.length) {
                         const {pathname, search} = props.location;
                         const currentPath = window.decodeURIComponent(`${pathname}${search}`);
