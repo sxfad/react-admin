@@ -45,7 +45,7 @@ export default (options) => WrappedComponent => {
             const {fullScreen} = others;
 
             let className = 'modal-hoc-root';
-            let top = 100;
+            let top = 50;
             if (fullScreen) {
                 className += ' full-screen';
                 top = 0;
