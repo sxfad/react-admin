@@ -77,6 +77,7 @@ export default class TableComponent extends Component {
         if (dataSource?.length) {
             this.tableBody.style.height = `${tableBodyHeight}px`;
         } else {
+            this.tableBody.style.height = '0px';
             this.tablePlaceholder.style.height = `${tableBodyHeight}px`;
         }
 
