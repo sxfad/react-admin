@@ -223,6 +223,7 @@ export default class UserCenter extends Component {
                 <EditModal
                     visible={visible}
                     id={id}
+                    isEdit={id === null}
                     onOk={() => this.setState({visible: false}, this.handleSearch)}
                     onCancel={() => this.setState({visible: false})}
                 />

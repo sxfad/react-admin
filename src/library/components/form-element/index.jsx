@@ -275,7 +275,7 @@ class FormElement extends Component {
             if (isInputLikeElement(type)) {
                 let value = (!e || !e.target) ? e : e.target.value;
 
-                if (value) return value.replace(/\s/g, '');
+                if (value && typeof value === 'string') return value.replace(/\s/g, '');
 
                 return value;
             } else {
@@ -292,6 +292,7 @@ class FormElement extends Component {
                 form
                 && isInputLikeElement(type)
                 && value
+                && typeof value === 'string'
                 && (value.startsWith(' ') || value.endsWith(' '))
             ) {
 
