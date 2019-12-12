@@ -91,8 +91,6 @@ checkBrowsers(paths.appPath, isInteractive)
         );
         const devServer = new WebpackDevServer(compiler, serverConfig);
 
-        devServer.use(require('./generator/routes'));
-
         // Launch WebpackDevServer.
         devServer.listen(port, HOST, err => {
             if (err) {

@@ -5,7 +5,6 @@ import './style.less';
 
 @config({
     router: true,
-    keepAlive: false,
 })
 export default class Error404 extends Component {
     state = {

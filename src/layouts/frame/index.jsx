@@ -17,7 +17,7 @@ import './style.less';
     const {selectedMenu, menus} = state.menu;
     const {title, breadcrumbs, showHead} = state.page;
     const {show: showSide, width, collapsed, collapsedWidth, dragging} = state.side;
-    const {loading} = state.system;
+    const {loading, loadingTip} = state.system;
     const {pageFrameLayout, pageHeadFixed, pageHeadShow, tabsShow} = state.settings;
     return {
         menus,
@@ -31,6 +31,7 @@ import './style.less';
         sideCollapsed: collapsed,
         sideCollapsedWidth: collapsedWidth,
         globalLoading: loading,
+        globalLoadingTip: loadingTip,
         sideDragging: dragging,
         layout: pageFrameLayout,
         pageHeadFixed,
@@ -183,6 +184,7 @@ export default class FrameTopSideMenu extends Component {
             sideCollapsedWidth,
             sideWidth,
             globalLoading,
+            globalLoadingTip,
             sideDragging,
         } = this.props;
 
@@ -244,7 +246,7 @@ export default class FrameTopSideMenu extends Component {
                 {pageHead}
                 {tabsShow ? <div styleName="page-tabs" style={{left: sideWidthSpace, width: windowWidth - sideWidthSpace, transitionDuration}}><PageTabs width={windowWidth - sideWidthSpace}/></div> : null}
                 <div styleName="global-loading" style={{display: globalLoading ? 'block' : 'none'}}>
-                    <Spin spinning size="large"/>
+                    <Spin spinning size="large" tip={globalLoadingTip}/>
                 </div>
             </div>
         );

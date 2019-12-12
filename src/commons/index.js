@@ -46,7 +46,7 @@ export function getLoginUser() {
 /**
  * 判断用户是否登录
  */
-export function isAuthenticated() {
+export function isLogin() {
     // 如果当前用户存在，就认为已经登录了
     return !!getLoginUser();
 }

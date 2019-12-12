@@ -9,6 +9,7 @@ const primaryColor = getItem('primaryColor') || theme['@primary-color'];
 export default {
     initialState: {
         loading: false,             // 全局loading
+        loadingTip: '',             // 全局loading 提示
         loginUser: void 0,          // 当前登录用户
         permissions: [],            // 当前登录用户权限 [code, code, ...]
         userPaths: [],              // 当前登录用户可用的路由path，用于过滤前端路由，解决页面越权访问。[path, path, ...]
@@ -129,9 +130,9 @@ export default {
 
     setUserPaths: userPaths => ({userPaths}),
 
-    showLoading: () => ({loading: true}),
+    showLoading: (loadingTip) => ({loading: true, loadingTip}),
 
-    hideLoading: () => ({loading: false}),
+    hideLoading: () => ({loading: false, loadingTip: ''}),
 }
 
 

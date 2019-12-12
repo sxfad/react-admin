@@ -8,6 +8,7 @@ export default class TableComponent extends Component {
     static propTypes = {
         surplusSpace: PropTypes.bool, // 是否使用剩余空间，如果 true 表格将铺满全屏
         serialNumber: PropTypes.bool, // 是否显示序号
+        serialText: PropTypes.string,
         otherHeight: PropTypes.number,
         pagination: PropTypes.bool,
     };
@@ -17,6 +18,7 @@ export default class TableComponent extends Component {
         pagination: true,
         pageSize: 10,
         pageNum: 1,
+        serialText: '#',
     };
 
     state = {
@@ -75,6 +77,7 @@ export default class TableComponent extends Component {
         if (dataSource?.length) {
             this.tableBody.style.height = `${tableBodyHeight}px`;
         } else {
+            this.tableBody.style.height = '0px';
             this.tablePlaceholder.style.height = `${tableBodyHeight}px`;
         }
 
@@ -87,6 +90,7 @@ export default class TableComponent extends Component {
             pagination,
             surplusSpace,
             serialNumber,
+            serialText,
             // 分页属性
 
             size,
@@ -113,7 +117,7 @@ export default class TableComponent extends Component {
         if (serialNumber) {
             columns = [
                 {
-                    title: '#',
+                    title: serialText,
                     width: 70,
                     dataIndex: '__num',
                     key: '__num',

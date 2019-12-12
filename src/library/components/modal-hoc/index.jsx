@@ -45,7 +45,11 @@ export default (options) => WrappedComponent => {
             const {fullScreen} = others;
 
             let className = 'modal-hoc-root';
-            if (fullScreen) className += ' full-screen';
+            let top = 50;
+            if (fullScreen) {
+                className += ' full-screen';
+                top = 0;
+            }
 
             return (
                 <Modal
@@ -53,7 +57,7 @@ export default (options) => WrappedComponent => {
                     destroyOnClose
                     width="800px"
                     bodyStyle={{padding: 0}}
-                    style={{top: 100}}
+                    style={{top}}
                     footer={null}
                     maskClosable={false}
 
