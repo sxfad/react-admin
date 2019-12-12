@@ -295,7 +295,6 @@ class FormElement extends Component {
                 && typeof value === 'string'
                 && (value.startsWith(' ') || value.endsWith(' '))
             ) {
-
                 // 延迟去除，否则用户无法输入空格
                 this.trimST = window.setTimeout(() => {
                     form.setFieldsValue({[field]: value.trim()});
