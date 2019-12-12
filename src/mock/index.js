@@ -5,5 +5,5 @@ import simplify from './simplify';
 const mock = new MockAdapter(mockInstance);
 
 simplify(mock, [
-    require('./mock-user-center').default,
+    require('./mock-users').default,
 ]);
