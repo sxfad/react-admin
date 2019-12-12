@@ -102,6 +102,7 @@ export default class UserCenter extends Component {
         singleDeleting[id] = true;
         this.setState({singleDeleting});
         this.props.ajax.del(`/users/${id}`, null, {successTip: '删除成功！', errorTip: '删除失败！'})
+            .then(() => this.handleSearch())
             .finally(() => {
                 singleDeleting[id] = false;
                 this.setState({singleDeleting});
