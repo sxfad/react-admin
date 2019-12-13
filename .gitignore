@@ -7,7 +7,6 @@ build-ui/
 .project
 .git/
 .svn*
-.settings/
 catalina*
 /logs/
 
