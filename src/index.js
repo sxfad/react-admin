@@ -8,11 +8,11 @@ import handleSuccess from './commons/handle-success';
 import handleError from './commons/handle-error';
 import {configureStore} from './models';
 import * as serviceWorker from './serviceWorker';
-import {getLoginUser} from "./commons";
+import {getLoginUser} from './commons';
 import './index.css';
 
 // dev 模式开启mock
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development' || process.env.PUBLIC_URL === '/react-admin') {
     require('./mock/index');
     console.log('current mode is development, mock is enabled');
 }

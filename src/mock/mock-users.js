@@ -7,7 +7,7 @@ export default {
             password,
         } = JSON.parse(config.data);
         return new Promise((resolve, reject) => {
-            if (userName !== 'test' || password !== '111') {
+            if (userName !== 'admin' || password !== '111') {
                 setTimeout(() => {
                     reject({
                         code: 1001,
@@ -45,8 +45,9 @@ export default {
             }, 1000);
         });
     },
-    'get re:/mock/users/.+': {id: 1, name: '熊大', age: 22, job: '前端'},
+    'get re:/mock/users/.+': {id: 1, name: '熊大', age: 22, job: '1', position: '1'},
     'post /mock/users': true,
     'put /mock/users': true,
-    'delete re:/mock/users/.+': 'id',
+    'delete /mock/users': true,
+    'delete re:/mock/users/.+': true,
 }

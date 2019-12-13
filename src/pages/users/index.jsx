@@ -10,7 +10,7 @@ import {
     Table,
     Operator,
     Pagination,
-} from "@/library/components";
+} from '@/library/components';
 import EditModal from './EditModal';
 
 @config({
@@ -56,12 +56,12 @@ export default class UserCenter extends Component {
                             title: `您确定删除"${name}"?`,
                             onConfirm: () => this.handleDelete(id),
                         },
-                    }
+                    },
                 ];
 
                 return <Operator items={items}/>
             },
-        }
+        },
     ];
 
     componentDidMount() {
@@ -101,7 +101,7 @@ export default class UserCenter extends Component {
 
         singleDeleting[id] = true;
         this.setState({singleDeleting});
-        this.props.ajax.del(`/users/${id}`, null, {successTip: '删除成功！', errorTip: '删除失败！'})
+        this.props.ajax.del(`/mock/users/${id}`, null, {successTip: '删除成功！', errorTip: '删除失败！'})
             .then(() => this.handleSearch())
             .finally(() => {
                 singleDeleting[id] = false;
@@ -127,10 +127,10 @@ export default class UserCenter extends Component {
             content,
             onOk: () => {
                 this.setState({deleting: true});
-                this.props.ajax.del('/users', {ids: selectedRowKeys}, {successTip: '删除成功！', errorTip: '删除失败！'})
+                this.props.ajax.del('/mock/users', {ids: selectedRowKeys}, {successTip: '删除成功！', errorTip: '删除失败！'})
                     .then(() => this.handleSearch())
                     .finally(() => this.setState({deleting: false}));
-            }
+            },
         })
     };
 
@@ -197,7 +197,7 @@ export default class UserCenter extends Component {
                             loading: deleting,
                             disabled: disabledDelete,
                             onClick: this.handleBatchDelete,
-                        }
+                        },
                     ]}
                 />
 
@@ -223,7 +223,7 @@ export default class UserCenter extends Component {
                 <EditModal
                     visible={visible}
                     id={id}
-                    isEdit={id === null}
+                    isEdit={id !== null}
                     onOk={() => this.setState({visible: false}, this.handleSearch)}
                     onCancel={() => this.setState({visible: false})}
                 />
