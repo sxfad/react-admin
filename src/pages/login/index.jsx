@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
 import {Helmet} from 'react-helmet';
 import {Form, Icon, Input, Button} from 'antd';
-import {setLoginUser} from '@/commons';
+import {setLoginUser, toHome} from '@/commons';
 import config from '@/commons/config-hoc';
-import {ROUTE_BASE_NAME} from '@/router/AppRouter';
 import Color from '@/layouts/header-color-picker'
 import Banner from './banner/index';
 import './style.less'
@@ -60,11 +59,7 @@ export default class extends Component {
                         id,
                         name,
                     });
-                    // 跳转页面，优先跳转上次登出页面
-                    const lastHref = window.sessionStorage.getItem('last-href');
-
-                    // 强制跳转 进入系统之后，需要一些初始化工作，需要所有的js重新加载
-                    window.location.href = lastHref || `${ROUTE_BASE_NAME}/`;
+                    toHome();
                 })
                 .catch(() => {
                     this.setState({message: '用户名或密码错误！'});

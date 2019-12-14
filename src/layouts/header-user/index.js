@@ -3,10 +3,12 @@ import {Menu, Dropdown, Icon} from 'antd';
 import {Link} from 'react-router-dom';
 import {toLogin, getLoginUser} from '@/commons';
 import ModifyPassword from './ModifyPassword';
+import config from '@/commons/config-hoc';
 import './style.less';
 
 const Item = Menu.Item;
 
+@config({ajax: true})
 export default class HeaderUser extends Component {
     static defaultProps = {
         theme: 'default',
@@ -18,8 +20,7 @@ export default class HeaderUser extends Component {
 
     handleMenuClick = ({key}) => {
         if (key === 'logout') {
-            // TODO 发送请求退出登录
-            toLogin();
+            this.props.ajax.post('/mock/logout').then(toLogin);
         }
 
         if (key === 'modifyPassword') {
