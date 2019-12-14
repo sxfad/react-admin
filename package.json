@@ -5,7 +5,7 @@
     "scripts": {
         "start": "node scripts/start.js",
         "build": "node scripts/build.js",
-        "build:pre": "PUBLIC_URL=/react-admin-live yarn build",
+        "build:pre": "BASE_NAME=/react-admin-live yarn build",
         "test": "node scripts/test.js"
     },
     "dependencies": {
