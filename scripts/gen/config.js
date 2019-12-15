@@ -312,7 +312,7 @@ function getQueryConfig(configArr, fromColumn) {
 function getToolConfig(configArr) {
     const defaultProps = [
         '添加', 'handleAdd', 'plus',
-        '批量删除', 'handleBatchDelete', 'delete',
+        '删除', 'handleBatchDelete', 'delete',
         '导入', 'handleImport', 'import',
         '导出', 'handleExport', 'export',
     ];
@@ -329,6 +329,7 @@ function getTableConfig(configArr) {
     const defaultProps = [
         '可选中', 'selectable',
         '分页', 'pagination',
+        '序号', 'serialNumber'
     ];
 
     let result = null;
@@ -449,6 +450,8 @@ module.exports = function (configFileContent) {
         fileTypeName: item.typeName,
         filePath: item.filePath, // 保存文件名，完整的路径
         template: item.template, //  获取文件内容的函数
+        base: baseConfig,
+        pages: pageConfig,
         queries: queryConfig, // 查询条件配置
         tools: toolConfig,  // 工具条配置
         table: tableConfig, // 表格配置

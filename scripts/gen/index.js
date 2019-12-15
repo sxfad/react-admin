@@ -21,5 +21,28 @@ if (configFile) {
 const configFileContent = fs.readFileSync(configFile, 'UTF-8');
 const config = getConfig(configFileContent);
 
-console.log(config);
+config.forEach(cfg => {
+    const {filePath, template} = cfg;
+    const content = require(template)(cfg);
 
+    writeFileSync(filePath, content);
+});
+
+/**
+ * 写文件，如果目录不存在直接创建
+ * @param toFile
+ * @param content
+ */
+function writeFileSync(toFile, content) {
+    const sep = path.sep;
+    const folders = path.dirname(toFile).split(sep);
+    let p = '';
+    while (folders.length) {
+        p += folders.shift() + sep;
+        if (!fs.existsSync(p)) {
+            fs.mkdirSync(p);
+        }
+    }
+
+    fs.writeFileSync(toFile, content);
+}
