@@ -8,7 +8,6 @@ module.exports = function (config) {
         base,
         forms,
     } = config;
-    console.log(forms);
 
     return `import React, {Component} from 'react';
 import {Form} from 'antd';

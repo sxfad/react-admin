@@ -435,7 +435,7 @@ module.exports = function (configFileContent) {
     const operatorConfig = getOperatorConfig(configArray);
 
     const queryConfig = getQueryConfig(configArray, true);
-    const formConfig = getFormConfig(configArray, true);
+    let formConfig = getFormConfig(configArray, true);
 
     // 从数据库表中获取columns form信息
     if (dataBaseConfig && dataBaseConfig.tableName) {
@@ -447,6 +447,11 @@ module.exports = function (configFileContent) {
     if (interfaceConfig && interfaceConfig.ajax) {
         const columnConfigFromInt = getColumnFromInt(interfaceConfig);
         const formConfigFromInt = getFormFromInt(interfaceConfig);
+    }
+
+    // 如果 formConfig 为空，将获取所有的columnConfig作为form表单元素，默认type=input
+    if (!formConfig) {
+        formConfig = columnConfig.map(item => ({type: 'input', label: item.title, field: item.dataIndex}));
     }
 
     return pageConfig.map(item => ({
