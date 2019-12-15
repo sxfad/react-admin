@@ -169,20 +169,23 @@ function getElement(configArr, title, fromColumn) {
 }
 
 // 接口配置
-function getInterface(configArr) {
+function getInterfaceConfig(configArr) {
     const config = getBlockConfig(configArr, '接口配置');
 
     if (!config) return null;
 
     let result = null;
-    [
-        'url',
-        'userName',
-        'password',
+    const methods = [
         'get',
         'post',
         'put',
         'delete',
+    ];
+    [
+        'url',
+        'userName',
+        'password',
+        ...methods,
     ].forEach(key => {
         const cfg = config.find(item => item.length && item[0] === key);
         if (cfg) {
@@ -192,11 +195,22 @@ function getInterface(configArr) {
         }
     });
 
+    Object.keys(result).forEach(key => {
+        if (methods.includes(key)) {
+            const url = result[key];
+            result.ajax = {
+                method: key,
+                url,
+            };
+            Reflect.deleteProperty(result, key);
+        }
+    });
+
     return result;
 }
 
 // 数据库配置
-function getDataBase(configArr) {
+function getDataBaseConfig(configArr) {
     const config = getBlockConfig(configArr, '数据库配置');
 
     if (!config) return null;
@@ -246,7 +260,7 @@ function getBaseConfig(configArr) {
 }
 
 // 获取页面类型配置
-function getPages(configArr, moduleName = '') {
+function getPagesConfig(configArr, moduleName = '') {
     const config = getBlockConfig(configArr, '页面类型配置');
 
     if (!config) return null;
@@ -290,12 +304,12 @@ function getPages(configArr, moduleName = '') {
 }
 
 // 获取查询条件配置
-function getQuery(configArr, fromColumn) {
+function getQueryConfig(configArr, fromColumn) {
     return getElement(configArr, '查询条件配置', fromColumn);
 }
 
 // 获取工具条配置
-function getTools(configArr) {
+function getToolConfig(configArr) {
     const defaultProps = [
         '添加', 'handleAdd', 'plus',
         '批量删除', 'handleBatchDelete', 'delete',
@@ -307,7 +321,7 @@ function getTools(configArr) {
 }
 
 // 获取表格配置
-function getTable(configArr) {
+function getTableConfig(configArr) {
     const config = getBlockConfig(configArr, '表格配置');
 
     if (!config) return null;
@@ -331,7 +345,7 @@ function getTable(configArr) {
 }
 
 // 获取表格列配置
-function getColumns(configArr) {
+function getColumnConfig(configArr) {
     const config = getBlockConfig(configArr, '表格列配置');
 
     if (!config) return null;
@@ -352,7 +366,7 @@ function getColumns(configArr) {
 }
 
 // 获取操作列配置
-function getOperator(configArr) {
+function getOperatorConfig(configArr) {
     const defaultProps = [
         '修改', 'handleEdit', 'form',
         '详情', 'handleEdit', 'detail',
@@ -378,8 +392,28 @@ function getOperator(configArr) {
 }
 
 // 获取表单配置
-function getForm(configArr, fromColumn) {
+function getFormConfig(configArr, fromColumn) {
     return getElement(configArr, '表单元素配置', fromColumn);
+}
+
+// 从数据库配置中获取column配置
+function getColumnFromDB(dataBaseConfig) {
+    // TODO
+}
+
+// 从数据库配置中获取form配置
+function getFormFromDB(dataBaseConfig) {
+    // TODO
+}
+
+// 从接口中获取column配置
+function getColumnFromInt(interfaceConfig) {
+    // TODO
+}
+
+// 从接口中获取form配置
+function getFormFromInt(interfaceConfig) {
+    // TODO
 }
 
 /**
@@ -387,41 +421,39 @@ function getForm(configArr, fromColumn) {
  * */
 module.exports = function (configFileContent) {
     const configArray = configFileContent.split('\n');
-    const dbConfig = getDataBase(configArray);
+    const dataBaseConfig = getDataBaseConfig(configArray);
     const baseConfig = getBaseConfig(configArray);
-    const pages = getPages(configArray, baseConfig.moduleName);
-    const interfaceConfig = getInterface(configArray);
-    const query = getQuery(configArray);
-    const tool = getTools(configArray);
-    const table = getTable(configArray);
-    const columns = getColumns(configArray);
-    const operatorColumn = getOperator(configArray);
-    const form = getForm(configArray);
+    const pageConfig = getPagesConfig(configArray, baseConfig.moduleName);
+    const interfaceConfig = getInterfaceConfig(configArray);
+    const toolConfig = getToolConfig(configArray);
+    const tableConfig = getTableConfig(configArray);
+    const columnConfig = getColumnConfig(configArray);
+    const operatorConfig = getOperatorConfig(configArray);
 
-    console.log(form);
+    const queryConfig = getQueryConfig(configArray, true);
+    const formConfig = getFormConfig(configArray, true);
 
-    return [
-        {
-            fileName: '', // 保存文件名，完整的路径
-            template: '', //  获取文件内容的函数
-            queries: [ // 查询条件配置
+    // 从数据库表中获取columns form信息
+    if (dataBaseConfig && dataBaseConfig.tableName) {
+        const columnConfigFromDB = getColumnFromDB(dataBaseConfig);
+        const formConfigFromDB = getFormFromDB(dataBaseConfig);
+    }
 
-            ],
-            tools: [  // 工具条配置
+    // 从接口中获取columns form信息
+    if (interfaceConfig && interfaceConfig.ajax) {
+        const columnConfigFromInt = getColumnFromInt(interfaceConfig);
+        const formConfigFromInt = getFormFromInt(interfaceConfig);
+    }
 
-            ],
-            table: { // 表格配置
-
-            },
-            columns: [ // 列配置
-
-            ],
-            operators: [ // 操作列配置
-
-            ],
-            forms: [ // 表单元素配置
-
-            ],
-        },
-    ];
+    return pageConfig.map(item => ({
+        fileTypeName: item.typeName,
+        filePath: item.filePath, // 保存文件名，完整的路径
+        template: item.template, //  获取文件内容的函数
+        queries: queryConfig, // 查询条件配置
+        tools: toolConfig,  // 工具条配置
+        table: tableConfig, // 表格配置
+        columns: columnConfig, // 列配置
+        operators: operatorConfig, // 操作列配置
+        forms: formConfig, // 表单元素配置
+    }));
 };

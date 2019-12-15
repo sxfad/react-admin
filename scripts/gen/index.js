@@ -21,5 +21,5 @@ if (configFile) {
 const configFileContent = fs.readFileSync(configFile, 'UTF-8');
 const config = getConfig(configFileContent);
 
-// console.log(config);
+console.log(config);
 
