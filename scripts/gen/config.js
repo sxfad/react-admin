@@ -40,6 +40,7 @@ function getRandomField() {
 
 function arrayRemove(arr, item) {
     const index = arr.indexOf(item);
+    if (index < 0) return;
     arr.splice(index, 1);
 }
 
@@ -48,24 +49,24 @@ function arrayRemove(arr, item) {
  * @param str
  */
 function getFormElement(str) {
-// 用户名 userName input r
+    // 用户名 userName input r
     if (!str) return;
+    let strArr = str;
+    if (typeof str === 'string') strArr = str.split(' ');
 
     // 非表单相关
     const excludes = [' ', 'q', 'f'];
-    const strArr = str
-        .split(' ') // 以空格进行分割
-        .filter(item => !excludes.includes(item)); // 过滤掉不想关配置
+    strArr = strArr.filter(item => !excludes.includes(item)); // 过滤掉不想关配置
 
     if (!strArr.length) return;
 
     // 获取表单类型 默认 input
     const type = strArr.find(item => ELEMENT_TYPES.includes(item)) || 'input';
-    arrayRemove(type);
+    arrayRemove(strArr, type);
 
     // 获取是否必填
     const required = strArr.includes('r');
-    arrayRemove('r');
+    arrayRemove(strArr, 'r');
 
     // 获取 label field
     let [label, field] = strArr;
@@ -81,15 +82,17 @@ function getFormElement(str) {
 
 function getBlockConfig(configArr, title) {
     const startIndex = configArr.findIndex(item => {
-        return item.includes(BLOCK_FLAG)
-            && item.includes(title);
+        return item.replace(/\s/g, '').includes(BLOCK_FLAG + title);
     });
 
     // 没有相关配置
     if (startIndex < 0) return null;
 
-    const endIndex = configArr.slice(startIndex + 1)
-        .findIndex(item => item.includes(BLOCK_FLAG)) + startIndex;
+    let endIndex = configArr.slice(startIndex + 1)
+        .findIndex(item => item.includes(BLOCK_FLAG));
+
+    // 有可能是最后一个配置项
+    endIndex = endIndex < 0 ? configArr.length : endIndex + startIndex;
 
     return configArr
         .slice(startIndex + 1, endIndex + 1)
@@ -112,13 +115,93 @@ function getBlockConfig(configArr, title) {
         })
 }
 
+function getHandle(configArr, title, defaultProps) {
+    const config = getBlockConfig(configArr, title);
+
+    if (!config) return null;
+
+    let result = null;
+
+    config.forEach((item, i) => {
+        let [text, handle, icon] = item;
+        if (!handle) {
+            const index = defaultProps.indexOf(text);
+            handle = index > -1 ? defaultProps[index + 1] : `handle${i}`;
+        }
+        if (!icon) {
+            const index = defaultProps.indexOf(text);
+            icon = index > -1 ? defaultProps[index + 2] : void 0;
+        }
+
+        if (!result) result = [];
+
+        result.push({
+            text,
+            handle,
+            icon,
+        })
+    });
+
+    return result
+}
+
+function getElement(configArr, title, fromColumn) {
+    const config = getBlockConfig(configArr, title) || [];
+    const column = fromColumn ? getBlockConfig(configArr, '表格列配置') : [];
+
+    if (!config.length && !column.length) return null;
+
+    const columnQuery = column.filter(item => item.includes('q'));
+    const resultQuery = config.map(item => getFormElement(item));
+    const resultColumn = columnQuery.map(item => getFormElement(item));
+
+    // 去重
+    const result = [...resultQuery];
+    resultColumn.forEach(item => {
+        if (!result.find(it => it.label === item.label)) {
+            result.push(item);
+        }
+    });
+
+    if (!result.length) return null;
+
+    return result;
+}
+
+// 接口配置
+function getInterface(configArr) {
+    const config = getBlockConfig(configArr, '接口配置');
+
+    if (!config) return null;
+
+    let result = null;
+    [
+        'url',
+        'userName',
+        'password',
+        'get',
+        'post',
+        'put',
+        'delete',
+    ].forEach(key => {
+        const cfg = config.find(item => item.length && item[0] === key);
+        if (cfg) {
+            if (!result) result = {};
+
+            result[key] = cfg[1];
+        }
+    });
+
+    return result;
+}
+
 // 数据库配置
 function getDataBase(configArr) {
     const config = getBlockConfig(configArr, '数据库配置');
 
     if (!config) return null;
 
-    const result = {};
+    let result = null;
     [
         'url',
         'userName',
@@ -126,7 +209,11 @@ function getDataBase(configArr) {
         'tableName',
     ].forEach(key => {
         const cfg = config.find(item => item.length && item[0] === key);
-        if (cfg) result[key] = cfg[1];
+        if (cfg) {
+            if (!result) result = {};
+
+            result[key] = cfg[1];
+        }
     });
 
     return result;
@@ -170,7 +257,7 @@ function getPages(configArr, moduleName = '') {
         '页面编辑', 'edit.js', 'Edit.jsx',
     ];
 
-    const result = [];
+    let result = null;
 
     config.forEach(item => {
         const [typeName, templateAndFilePath] = item;
@@ -180,6 +267,7 @@ function getPages(configArr, moduleName = '') {
             const templateFileName = defaultPages[index + 1];
             const fileName = defaultPages[index + 2];
 
+            if (!result) result = [];
             result.push({
                 typeName,
                 filePath: path.join(PAGES_DIR, moduleName, fileName),
@@ -187,6 +275,7 @@ function getPages(configArr, moduleName = '') {
             })
         } else {
             const [templateFileName, fileName] = templateAndFilePath.split('->');
+            if (!result) result = [];
             result.push({
                 typeName,
                 filePath: path.join(PAGES_DIR, moduleName, fileName),
@@ -201,33 +290,96 @@ function getPages(configArr, moduleName = '') {
 }
 
 // 获取查询条件配置
-function getQuery(configArr) {
-
+function getQuery(configArr, fromColumn) {
+    return getElement(configArr, '查询条件配置', fromColumn);
 }
 
 // 获取工具条配置
 function getTools(configArr) {
+    const defaultProps = [
+        '添加', 'handleAdd', 'plus',
+        '批量删除', 'handleBatchDelete', 'delete',
+        '导入', 'handleImport', 'import',
+        '导出', 'handleExport', 'export',
+    ];
 
+    return getHandle(configArr, '工具条配置', defaultProps);
 }
 
 // 获取表格配置
 function getTable(configArr) {
+    const config = getBlockConfig(configArr, '表格配置');
 
+    if (!config) return null;
+
+    const defaultProps = [
+        '可选中', 'selectable',
+        '分页', 'pagination',
+    ];
+
+    let result = null;
+    config.forEach((item) => {
+        let [text] = item;
+        const index = defaultProps.indexOf(text);
+        if (index > -1) {
+            if (!result) result = {};
+            result[defaultProps[index + 1]] = true;
+        }
+    });
+
+    return result
 }
 
 // 获取表格列配置
 function getColumns(configArr) {
+    const config = getBlockConfig(configArr, '表格列配置');
 
+    if (!config) return null;
+
+    let result = null;
+    config.forEach((item, i) => {
+        let [title, dataIndex = `dataIndex${i}`] = item;
+
+        if (!result) result = [];
+
+        result.push({
+            title,
+            dataIndex,
+        });
+    });
+
+    return result;
 }
 
 // 获取操作列配置
 function getOperator(configArr) {
+    const defaultProps = [
+        '修改', 'handleEdit', 'form',
+        '详情', 'handleEdit', 'detail',
+        '删除', 'handleDelete', 'delete',
+    ];
 
+    const result = getHandle(configArr, '操作列配置', defaultProps);
+    const iconModeIndex = result.findIndex(item => item.text === '图标模式');
+
+    if (iconModeIndex > -1) {
+        result.splice(iconModeIndex, 1);
+        // 默认图标 help
+        result.forEach(item => {
+            item.icon = item.icon || 'help';
+            item.iconMode = true;
+        });
+    } else {
+        // 非图标模式
+        result.forEach(item => item.iconMode = false);
+    }
+
+    return result;
 }
 
 // 获取表单配置
-function getForm(config) {
-
+function getForm(configArr, fromColumn) {
+    return getElement(configArr, '表单元素配置', fromColumn);
 }
 
 /**
@@ -238,6 +390,15 @@ module.exports = function (configFileContent) {
     const dbConfig = getDataBase(configArray);
     const baseConfig = getBaseConfig(configArray);
     const pages = getPages(configArray, baseConfig.moduleName);
+    const interfaceConfig = getInterface(configArray);
+    const query = getQuery(configArray);
+    const tool = getTools(configArray);
+    const table = getTable(configArray);
+    const columns = getColumns(configArray);
+    const operatorColumn = getOperator(configArray);
+    const form = getForm(configArray);
+
+    console.log(form);
 
     return [
         {
