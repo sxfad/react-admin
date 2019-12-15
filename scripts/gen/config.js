@@ -145,18 +145,18 @@ function getHandle(configArr, title, defaultProps) {
     return result
 }
 
-function getElement(configArr, title, fromColumn) {
+function getElement(configArr, title, key, fromColumn) {
     const config = getBlockConfig(configArr, title) || [];
     const column = fromColumn ? getBlockConfig(configArr, '表格列配置') : [];
 
     if (!config.length && !column.length) return null;
 
-    const columnQuery = column.filter(item => item.includes('q'));
-    const resultQuery = config.map(item => getFormElement(item));
-    const resultColumn = columnQuery.map(item => getFormElement(item));
+    const columns = column.filter(item => item.includes(key));
+    const results = config.map(item => getFormElement(item));
+    const resultColumn = columns.map(item => getFormElement(item));
 
     // 去重
-    const result = [...resultQuery];
+    const result = [...results];
     resultColumn.forEach(item => {
         if (!result.find(it => it.label === item.label)) {
             result.push(item);
@@ -256,6 +256,10 @@ function getBaseConfig(configArr) {
                 result[key] = cfg[1];
             }
         });
+
+    if (!result.path) result.path = `/${result.moduleName}`;
+    if (!result.ajaxUrl) result.ajaxUrl = `/${result.moduleName}`;
+
     return result;
 }
 
@@ -305,13 +309,13 @@ function getPagesConfig(configArr, moduleName = '') {
 
 // 获取查询条件配置
 function getQueryConfig(configArr, fromColumn) {
-    return getElement(configArr, '查询条件配置', fromColumn);
+    return getElement(configArr, '查询条件配置', 'q', fromColumn);
 }
 
 // 获取工具条配置
 function getToolConfig(configArr) {
     const defaultProps = [
-        '添加', 'handleAdd', 'plus',
+        '添加', '', 'plus',
         '删除', 'handleBatchDelete', 'delete',
         '导入', 'handleImport', 'import',
         '导出', 'handleExport', 'export',
@@ -329,7 +333,7 @@ function getTableConfig(configArr) {
     const defaultProps = [
         '可选中', 'selectable',
         '分页', 'pagination',
-        '序号', 'serialNumber'
+        '序号', 'serialNumber',
     ];
 
     let result = null;
@@ -369,8 +373,7 @@ function getColumnConfig(configArr) {
 // 获取操作列配置
 function getOperatorConfig(configArr) {
     const defaultProps = [
-        '修改', 'handleEdit', 'form',
-        '详情', 'handleEdit', 'detail',
+        '修改', '', 'form',
         '删除', 'handleDelete', 'delete',
     ];
 
@@ -379,9 +382,9 @@ function getOperatorConfig(configArr) {
 
     if (iconModeIndex > -1) {
         result.splice(iconModeIndex, 1);
-        // 默认图标 help
+        // 默认图标 question-circle
         result.forEach(item => {
-            item.icon = item.icon || 'help';
+            item.icon = item.icon || 'question-circle';
             item.iconMode = true;
         });
     } else {
@@ -394,7 +397,7 @@ function getOperatorConfig(configArr) {
 
 // 获取表单配置
 function getFormConfig(configArr, fromColumn) {
-    return getElement(configArr, '表单元素配置', fromColumn);
+    return getElement(configArr, '表单元素配置', 'f', fromColumn);
 }
 
 // 从数据库配置中获取column配置

@@ -17,6 +17,18 @@ module.exports = function (config) {
     const isEditModal = !!pages.find(item => item.typeName === '弹框编辑');
     const hasDelete = operators && !!operators.find(item => item.text === '删除');
     const hasBatchDelete = tools && !!tools.find(item => item.text === '删除');
+    let handles = null;
+    const excludeHandles = ['handleDelete', 'handleBatchDelete'];
+    [...(tools || []), ...(operators || [])].forEach(item => {
+        const {handle} = item;
+        if (handle && !excludeHandles.includes(handle)) {
+            if (!handles) handles = [];
+            handles.push(handle);
+        }
+    });
+
+    const operatorEdit = operators.find(item => item.text === '修改');
+    const operatorDelete = operators.find(item => item.text === '删除');
 
     return `import React, {Component} from 'react';
 ${tools || queries || hasBatchDelete ? `import {${tools ? 'Button, ' : ''}${queries ? 'Form, ' : ''}${hasBatchDelete ? 'Modal' : ''}} from 'antd';` : DELETE_THIS_LINE}
@@ -58,15 +70,17 @@ export default class UserCenter extends Component {
             title: '操作', dataIndex: 'operator', width: 100,
             render: (value, record) => {
                 const {id, name} = record;
-                const {singleDeleting} = this.state;
-                const deleting = singleDeleting[id];
+                ${hasDelete ? `const {singleDeleting} = this.state;
+                const deleting = singleDeleting[id];` : DELETE_THIS_LINE}
                 const items = [
-                    ${operators.find(item => item.text === '修改') ? `{
+                    ${operatorEdit ? `{
                         label: '修改',
+                        ${operatorEdit.iconMode ? `icon: '${operatorEdit.icon}',` : DELETE_THIS_LINE}
                         onClick: () => this.setState({visible: true, id}),
                     },` : DELETE_THIS_LINE}
-                    ${operators.find(item => item.text === '删除') ? `{
+                    ${operatorDelete ? `{
                         label: '删除',
+                        ${operatorDelete.iconMode ? `icon: '${operatorDelete.icon}',` : DELETE_THIS_LINE}
                         color: 'red',
                         loading: deleting,
                         confirm: {
@@ -76,6 +90,7 @@ export default class UserCenter extends Component {
                     },` : DELETE_THIS_LINE}
                     ${operators.filter(item => !['修改', '删除'].includes(item.text)).map(item => `{
                         label: '${item.text}',
+                        ${item.iconMode ? `icon: '${item.icon}',` : DELETE_THIS_LINE}
                         onClick: this.${item.handle},
                     },`).join('\n                        ')}
                 ];
@@ -122,7 +137,7 @@ export default class UserCenter extends Component {
 
         singleDeleting[id] = true;
         this.setState({singleDeleting});
-        this.props.ajax.del(\`/mock/users/\${id}\`, null, {successTip: '删除成功！', errorTip: '删除失败！'})
+        this.props.ajax.del(\`${base.ajaxUrl}/\${id}\`, null, {successTip: '删除成功！', errorTip: '删除失败！'})
             .then(() => this.handleSearch())
             .finally(() => {
                 singleDeleting[id] = false;
@@ -148,13 +163,17 @@ export default class UserCenter extends Component {
             content,
             onOk: () => {
                 this.setState({deleting: true});
-                this.props.ajax.del('/mock/users', {ids: selectedRowKeys}, {successTip: '删除成功！', errorTip: '删除失败！'})
+                this.props.ajax.del('${base.ajaxUrl}', {ids: selectedRowKeys}, {successTip: '删除成功！', errorTip: '删除失败！'})
                     .then(() => this.handleSearch())
                     .finally(() => this.setState({deleting: false}));
             },
         })
     };` : DELETE_THIS_LINE}
 
+    ${handles ? handles.map(item => `${item} = () => {
+        // TODO
+    };
+    `).join('\n    ') : DELETE_THIS_LINE}
     render() {
         const {
             loading,
@@ -175,6 +194,7 @@ export default class UserCenter extends Component {
             style: {paddingLeft: 16},
         };` : DELETE_THIS_LINE}
         ${hasBatchDelete ? 'const disabledDelete = !selectedRowKeys?.length;' : DELETE_THIS_LINE}
+
         return (
             <PageContent>
                 ${queries ? `<QueryBar>
@@ -185,7 +205,6 @@ export default class UserCenter extends Component {
                                 ${item.type !== 'input' ? `type="${item.type}"` : DELETE_THIS_LINE}
                                 label="${item.label}"
                                 field="${item.field}"
-                                ${item.required ? 'required' : DELETE_THIS_LINE}
                                 ${WITH_OPTIONS_TYPE.includes(item.type) ? `options={[
                                     {value: '1', label: '选项1'},
                                     {value: '2', label: '选项2'},
@@ -257,4 +276,5 @@ export default class UserCenter extends Component {
     }
 }
 `.split('\n').filter(item => item.trim() !== DELETE_THIS_LINE).join('\n');
-};
+
+}
