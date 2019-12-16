@@ -119,7 +119,7 @@ export default class UserCenter extends Component {
             };
 
             this.setState({loading: true});
-            this.props.ajax.get('${base.ajaxUrl}', params)
+            this.props.ajax.${base.ajax.search.method}('${base.ajax.search.url}', params)
                 .then(res => {
                     const dataSource = res?.list || [];
                     const total = res?.total || 0;
@@ -137,7 +137,7 @@ export default class UserCenter extends Component {
 
         singleDeleting[id] = true;
         this.setState({singleDeleting});
-        this.props.ajax.del(\`${base.ajaxUrl}/\${id}\`, null, {successTip: '删除成功！', errorTip: '删除失败！'})
+        this.props.ajax.${base.ajax.delete.method}(\`${base.ajax.delete.url.replace('{id}', '${id}')}\`, null, {successTip: '删除成功！', errorTip: '删除失败！'})
             .then(() => this.handleSearch())
             .finally(() => {
                 singleDeleting[id] = false;
@@ -163,7 +163,7 @@ export default class UserCenter extends Component {
             content,
             onOk: () => {
                 this.setState({deleting: true});
-                this.props.ajax.del('${base.ajaxUrl}', {ids: selectedRowKeys}, {successTip: '删除成功！', errorTip: '删除失败！'})
+                this.props.ajax.${base.ajax.batchDelete.method}('${base.ajax.batchDelete.url}', {ids: selectedRowKeys}, {successTip: '删除成功！', errorTip: '删除失败！'})
                     .then(() => this.handleSearch())
                     .finally(() => this.setState({deleting: false}));
             },

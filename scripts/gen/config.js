@@ -178,34 +178,17 @@ function getInterfaceConfig(configArr) {
     if (!config) return null;
 
     let result = null;
-    const methods = [
-        'get',
-        'post',
-        'put',
-        'delete',
-    ];
+
     [
         'url',
         'userName',
         'password',
-        ...methods,
     ].forEach(key => {
         const cfg = config.find(item => item.length && item[0] === key);
         if (cfg) {
             if (!result) result = {};
 
             result[key] = cfg[1];
-        }
-    });
-
-    Object.keys(result).forEach(key => {
-        if (methods.includes(key)) {
-            const url = result[key];
-            result.ajax = {
-                method: key,
-                url,
-            };
-            Reflect.deleteProperty(result, key);
         }
     });
 
@@ -243,25 +226,72 @@ function getBaseConfig(configArr) {
     if (!config) return null;
 
     let result = null;
+
+    const methodMap = {
+        search: '查询',
+        detail: '详情',
+        modify: '修改',
+        add: '添加',
+        delete: '删除',
+        batchDelete: '批量删除',
+    };
+
+    const methods = Object.values(methodMap);
+
     const keyMap = {
         'moduleName': '目录',
         'path': '路由',
-        'ajaxUrl': '请求',
     };
-    Object.values(keyMap)
-        .forEach(value => {
-            const key = Object.entries(keyMap).find(item => item[1] === value)[0];
-            const cfg = config.find(item => item.length && item[0] === value);
 
-            if (cfg) {
-                if (!result) result = {};
+    const others = Object.values(keyMap);
 
-                result[key] = cfg[1];
+    [
+        ...others,
+        ...methods,
+    ].forEach(key => {
+        const cfg = config.find(item => item.length && item[0] === key);
+        if (cfg) {
+
+            if (methods.includes(key)) {
+                const [name, method, url, ...excludeFields] = cfg;
+                const km = Object.entries(methodMap).find(([, vv]) => vv === key);
+                const k = km ? km[0] : null;
+
+                if (k) {
+                    if (!result) result = {};
+                    if (!result.ajax) result.ajax = {};
+                    result.ajax[k] = {
+                        name,
+                        method,
+                        url,
+                        excludeFields,
+                    }
+                }
             }
-        });
 
-    if (!result.path) result.path = `/${result.moduleName}`;
-    if (!result.ajaxUrl) result.ajaxUrl = `/${result.moduleName}`;
+            if (others.includes(key)) {
+                const [, value] = cfg;
+                const km = Object.entries(keyMap).find(([, vv]) => vv === key);
+                const k = km ? km[0] : null;
+
+                if (!result) result = {};
+                result[k] = value;
+            }
+        }
+    });
+
+    // 处理默认ajax请求url
+    const {moduleName} = result;
+    Object.entries(methodMap).forEach(([method, name]) => {
+        if (!result.ajax[method]) {
+            if (method === 'search') result.ajax[method] = {name, method: 'get', url: `/${moduleName}`};
+            if (method === 'detail') result.ajax[method] = {name, method: 'get', url: `/${moduleName}/{id}`};
+            if (method === 'modify') result.ajax[method] = {name, method: 'put', url: `/${moduleName}`};
+            if (method === 'add') result.ajax[method] = {name, method: 'post', url: `/${moduleName}`};
+            if (method === 'delete') result.ajax[method] = {name, method: 'del', url: `/${moduleName}/{id}`};
+            if (method === 'batchDelete') result.ajax[method] = {name, method: 'del', url: `/${moduleName}`};
+        }
+    });
 
     return result;
 }

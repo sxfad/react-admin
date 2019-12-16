@@ -42,7 +42,7 @@ export default class EditModal extends Component {
         const {id} = this.props;
 
         this.setState({loading: true});
-        this.props.ajax.get(\`${base.ajaxUrl}/\${id}\`)
+        this.props.ajax.${base.ajax.detail.method}(\`${base.ajax.detail.url.replace('{id}', '${id}')}\`)
             .then(res => {
                 this.setState({data: res || {}});
             })
@@ -56,13 +56,12 @@ export default class EditModal extends Component {
             if (err) return;
 
             const {isEdit} = this.props;
-            const ajaxMethod = isEdit ? this.props.ajax.put : this.props.ajax.post;
             const successTip = isEdit ? '修改成功！' : '添加成功！';
-
-            console.log(isEdit);
+            const ajaxMethod = isEdit ? this.props.ajax.${base.ajax.modify.method} : this.props.ajax.${base.ajax.add.method};
+            const ajaxUrl = isEdit ? '${base.ajax.modify.url}' : '${base.ajax.add.url}';
 
             this.setState({loading: true});
-            ajaxMethod('${base.ajaxUrl}', values, {successTip})
+            ajaxMethod(ajaxUrl, values, {successTip})
                 .then(() => {
                     const {onOk} = this.props;
                     onOk && onOk();
