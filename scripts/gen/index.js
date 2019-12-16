@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const program = require('commander');
+const chalk = require('chalk');
 const getConfig = require('./config');
 
 const DEFAULT_CONFIG_FILE = path.join(__dirname, './config.conf');
@@ -28,9 +29,19 @@ async function genFiles() {
 
         writeFileSync(filePath, content);
     });
+
+    return config;
 }
 
-genFiles();
+genFiles().then(data => {
+    data.forEach(({filePath, fileTypeName}) => {
+        const index = filePath.indexOf('/src/');
+        
+        if (index) filePath = filePath.substr(index);
+
+        console.log(chalk.green(`${fileTypeName}: ${filePath}`));
+    });
+});
 
 /**
  * 写文件，如果目录不存在直接创建

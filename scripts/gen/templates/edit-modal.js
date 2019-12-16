@@ -92,6 +92,7 @@ export default class EditModal extends Component {
                         ${item.type !== 'input' ? `type="${item.type}"` : DELETE_THIS_LINE}
                         label="${item.label}"
                         field="${item.field}"
+                        initialValue={data.${item.field}}
                         ${item.required ? 'required' : DELETE_THIS_LINE}
                         ${WITH_OPTIONS_TYPE.includes(item.type) ? `options={[
                             {value: '1', label: '选项1'},

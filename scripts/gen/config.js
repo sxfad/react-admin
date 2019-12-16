@@ -2,6 +2,7 @@ const path = require('path');
 const http = require('http');
 const axios = require('axios');
 const https = require('https');
+const chalk = require('chalk');
 
 // 命令要在项目根目录下执行
 const PAGES_DIR = path.join(process.cwd(), '/src/pages');
@@ -280,7 +281,7 @@ function getBaseConfig(configArr) {
         }
     });
 
-    // 处理默认ajax请求url
+    // 基于RestFul规范，处理默认ajax请求url
     const {moduleName} = result;
     Object.entries(methodMap).forEach(([method, name]) => {
         if (!result.ajax[method]) {
@@ -292,6 +293,9 @@ function getBaseConfig(configArr) {
             if (method === 'batchDelete') result.ajax[method] = {name, method: 'del', url: `/${moduleName}`};
         }
     });
+
+    // 处理页面默认路由地址
+    if (!result.path) result.path = `/${moduleName}`;
 
     return result;
 }
@@ -325,14 +329,13 @@ function getPagesConfig(configArr, moduleName = '') {
                 template: path.join(__dirname, 'templates', templateFileName),
             })
         } else {
-            const [templateFileName, fileName] = templateAndFilePath.split('->');
+            const [templateFilePath, fileName] = templateAndFilePath.split('->');
             if (!result) result = [];
             result.push({
                 typeName,
                 filePath: path.join(PAGES_DIR, moduleName, fileName),
-
-                // TODO 用户自定义模板写在哪儿呢？
-                template: path.join(__dirname, 'templates', templateFileName),
+                // 用户模版要基于项目根目录编写
+                template: path.join(process.cwd(), templateFilePath),
             })
         }
     });
@@ -443,17 +446,7 @@ function getFormFromDB(dataBaseConfig) {
     // TODO
 }
 
-// 从接口中获取column配置
-function getColumnFromInt(interfaceConfig) {
-    // TODO
-}
-
-// 从接口中获取form配置
-function getFormFromInt(interfaceConfig) {
-    // TODO
-}
-
-async function readSwagger(config) {
+async function readSwagger(config, baseConfig) {
     const {url, userName, password} = config;
     const httpInstance = url.startsWith('https') ? https : http;
     const auth = 'Basic ' + Buffer.from(userName + ':' + password).toString('base64');
@@ -468,7 +461,115 @@ async function readSwagger(config) {
 
     return await request.get(url)
         .then((response) => {
-            return response.data;
+            // swagger所能提供的信息 queries columns forms
+            const {
+                search, // 从search 中获取 quires columns
+                modify, // 从modify中获取 forms
+            } = baseConfig.ajax;
+            const apiDocs = response.data;
+            const {paths, definitions} = apiDocs;
+            let queries = null;
+            let columns = null;
+            let forms = null;
+
+            const commonExcludeFields = [
+                'SXF-TRACE-ID',
+                'pageNum',
+                'pageSize',
+                'id',
+                'token',
+            ];
+
+            if (search) {
+                let {method, url, excludeFields = []} = search;
+
+                // 获取查询条件
+                if (paths[url]) { // 接口有可能不存在
+                    excludeFields = [...excludeFields, ...commonExcludeFields];
+                    const {parameters} = paths[url][method];
+
+                    parameters.forEach(item => {
+                        const {name: field, required, description, in: inType} = item;
+                        const label = getShortDescription(description) || field;
+
+                        if (inType === 'query' && !excludeFields.includes(field)) {
+                            if (!queries) queries = [];
+                            queries.push({
+                                field,
+                                label,
+                                required,
+                            })
+                        }
+                    });
+
+                    // 获取表头
+                    const ref = paths[url][method].responses['200'].schema.$ref;
+                    let defKey = ref.split('«')[1]
+                    defKey = defKey.substr(0, defKey.length - 1);
+                    const {properties} = definitions[defKey];
+
+                    Object.entries(properties).forEach(([dataIndex, item]) => {
+                        if (!excludeFields.includes(dataIndex)) {
+                            const {description} = item;
+                            const title = getShortDescription(description) || dataIndex;
+
+                            if (!columns) columns = [];
+                            columns.push({
+                                title,
+                                dataIndex,
+                            });
+                        }
+                    });
+                }
+            }
+
+            if (modify) {
+                // 获取编辑表单信息
+                let {method, url, excludeFields = []} = modify;
+
+                // 获取查询条件
+                if (paths[url]) { // 接口有可能不存在
+                    excludeFields = [...excludeFields, ...commonExcludeFields];
+                    const {parameters} = paths[url][method];
+
+                    parameters.forEach(item => {
+                        const {in: inType, schema} = item;
+
+                        if (inType === 'body') {
+                            const ref = schema.$ref;
+                            const refs = ref.split('/');
+                            let defKey = refs[refs.length - 1];
+                            const {properties} = definitions[defKey];
+
+                            Object.entries(properties).forEach(([field, item]) => {
+                                if (!excludeFields.includes(field)) {
+                                    const {description, type: sType} = item;
+                                    const label = getShortDescription(description) || field;
+
+                                    // FIXME 完善更多类型
+                                    let type = 'input';
+
+                                    if (sType === 'array') type = 'select';
+                                    if (label.startsWith('是否')) type = 'switch';
+
+                                    if (!forms) forms = [];
+                                    forms.push({
+                                        type,
+                                        label,
+                                        field,
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+
+            return {
+                queries,
+                columns,
+                forms,
+            };
         })
         .catch((error) => {
             // handle error
@@ -477,6 +578,19 @@ async function readSwagger(config) {
         .finally(function () {
             // always executed
         });
+}
+
+function getShortDescription(description) {
+    if (!description) return null;
+
+    description = description.trim();
+
+    // FIXME 能否基于第一个特殊字符分割
+    const sd = description.split(' ');
+
+    if (sd && sd.length) return sd[0];
+
+    return null;
 }
 
 /**
@@ -490,30 +604,38 @@ async function getConfig(configFileContent) {
     const interfaceConfig = getInterfaceConfig(configArray);
     const toolConfig = getToolConfig(configArray);
     const tableConfig = getTableConfig(configArray);
-    const columnConfig = getColumnConfig(configArray);
     const operatorConfig = getOperatorConfig(configArray);
 
-    const queryConfig = getQueryConfig(configArray, true);
-    let formConfig = getFormConfig(configArray, true);
+    let columns = getColumnConfig(configArray);
+    let queries = getQueryConfig(configArray, true);
+    let forms = getFormConfig(configArray, true);
 
-    // 从数据库表中获取columns form信息
-    if (dataBaseConfig && dataBaseConfig.tableName) {
+
+    // 从接口中获取先关信息
+    if (interfaceConfig && interfaceConfig.url) {
+        console.log(chalk.green('基于Swagger文档'));
+        const configFromSwagger = await readSwagger(interfaceConfig, baseConfig);
+
+        queries = configFromSwagger.queries;
+
+        if (configFromSwagger.columns) columns = configFromSwagger.columns;
+        if (configFromSwagger.forms) forms = configFromSwagger.forms;
+
+        if (!configFromSwagger.columns) console.log(chalk.yellow('从接口信息中没有获取到表格列配置，将使用配置文件中的《表格列配置》'));
+        if (!configFromSwagger.forms) console.log(chalk.yellow('从接口信息中没有获取到表单配置，将使用配置文件中的《表单配置》'));
+
+    } else if (dataBaseConfig && dataBaseConfig.tableName) {
+        console.log(chalk.green('基于数据库表'));
+        // 从数据库表中获取columns form信息
         const columnConfigFromDB = getColumnFromDB(dataBaseConfig);
         const formConfigFromDB = getFormFromDB(dataBaseConfig);
+    } else {
+        console.log(chalk.green('基于配置文件'));
     }
 
-    // 从接口中获取columns form信息
-    if (interfaceConfig && interfaceConfig.ajax) {
-        const columnConfigFromInt = getColumnFromInt(interfaceConfig);
-        const formConfigFromInt = getFormFromInt(interfaceConfig);
-    }
-
-    // const swaggerDocs = await readSwagger(interfaceConfig);
-    // console.log(swaggerDocs);
-
-    // 如果 formConfig 为空，将获取所有的columnConfig作为form表单元素，默认type=input
-    if (!formConfig) {
-        formConfig = columnConfig.map(item => ({type: 'input', label: item.title, field: item.dataIndex}));
+    // 如果 forms 为空，将获取所有的columnConfig作为form表单元素，默认type=input
+    if (!forms) {
+        forms = columns.map(item => ({type: 'input', label: item.title, field: item.dataIndex}));
     }
 
     return pageConfig.map(item => ({
@@ -522,13 +644,13 @@ async function getConfig(configFileContent) {
         template: item.template, //  获取文件内容的函数
         base: baseConfig,
         pages: pageConfig,
-        queries: queryConfig, // 查询条件配置
+        queries, // 查询条件配置
         tools: toolConfig,  // 工具条配置
         table: tableConfig, // 表格配置
-        columns: columnConfig, // 列配置
+        columns, // 列配置
         operators: operatorConfig, // 操作列配置
-        forms: formConfig, // 表单元素配置
+        forms, // 表单元素配置
     }));
-};
+}
 
 module.exports = getConfig;
