@@ -19,14 +19,18 @@ if (configFile) {
 }
 
 const configFileContent = fs.readFileSync(configFile, 'UTF-8');
-const config = getConfig(configFileContent);
 
-config.forEach(cfg => {
-    const {filePath, template} = cfg;
-    const content = require(template)(cfg);
+async function genFiles() {
+    const config = await getConfig(configFileContent);
+    config.forEach(cfg => {
+        const {filePath, template} = cfg;
+        const content = require(template)(cfg);
 
-    writeFileSync(filePath, content);
-});
+        writeFileSync(filePath, content);
+    });
+}
+
+genFiles();
 
 /**
  * 写文件，如果目录不存在直接创建

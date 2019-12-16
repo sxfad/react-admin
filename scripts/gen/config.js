@@ -1,4 +1,7 @@
 const path = require('path');
+const http = require('http');
+const axios = require('axios');
+const https = require('https');
 
 // 命令要在项目根目录下执行
 const PAGES_DIR = path.join(process.cwd(), '/src/pages');
@@ -420,10 +423,36 @@ function getFormFromInt(interfaceConfig) {
     // TODO
 }
 
+async function readSwagger(config) {
+    const {url, userName, password} = config;
+    const httpInstance = url.startsWith('https') ? https : http;
+    const auth = 'Basic ' + Buffer.from(userName + ':' + password).toString('base64');
+    const request = axios.create({
+        httpsAgent: new httpInstance.Agent({
+            rejectUnauthorized: false,
+        }),
+        headers: {
+            Authorization: auth,
+        },
+    });
+
+    return await request.get(url)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            // handle error
+            console.log(error);
+        })
+        .finally(function () {
+            // always executed
+        });
+}
+
 /**
  * 获取各种配置信息
  * */
-module.exports = function (configFileContent) {
+async function getConfig(configFileContent) {
     const configArray = configFileContent.split('\n');
     const dataBaseConfig = getDataBaseConfig(configArray);
     const baseConfig = getBaseConfig(configArray);
@@ -449,6 +478,9 @@ module.exports = function (configFileContent) {
         const formConfigFromInt = getFormFromInt(interfaceConfig);
     }
 
+    // const swaggerDocs = await readSwagger(interfaceConfig);
+    // console.log(swaggerDocs);
+
     // 如果 formConfig 为空，将获取所有的columnConfig作为form表单元素，默认type=input
     if (!formConfig) {
         formConfig = columnConfig.map(item => ({type: 'input', label: item.title, field: item.dataIndex}));
@@ -468,3 +500,5 @@ module.exports = function (configFileContent) {
         forms: formConfig, // 表单元素配置
     }));
 };
+
+module.exports = getConfig;
