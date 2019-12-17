@@ -471,6 +471,36 @@ async function readSwagger(config, baseConfig) {
         },
     });
 
+    const getProperties = (schema, definitions) => {
+        //
+        // const ref = schema.$ref;
+        // const refs = ref.split('/');
+        // let defKey = refs[refs.length - 1];
+        // const {properties} = definitions[defKey];
+
+        const getDefKey = (ref) => {
+            const refs = ref.split('/');
+            let defKey = refs[refs.length - 1];
+
+            return defKey
+        };
+
+        const ref = schema.$ref || schema.items.$ref;
+        const defKey = getDefKey(ref);
+        const {properties} = definitions[defKey];
+
+        if (!properties) return [];
+
+        const propertiesValue = Object.values(properties);
+        if (propertiesValue[0].items && propertiesValue[0].items.$ref) {
+            const defKey = getDefKey(propertiesValue[0].items.$ref);
+            const {properties} = definitions[defKey];
+            return properties;
+        }
+
+        return properties;
+    };
+
     return await request.get(url)
         .then((response) => {
             // swagger所能提供的信息 queries columns forms
@@ -493,12 +523,14 @@ async function readSwagger(config, baseConfig) {
                     const {parameters} = paths[url][method];
 
                     parameters.forEach(item => {
-                        const {name: field, required, description, in: inType} = item;
+                        const {name: field, required, description, in: inType, type: oType} = item;
                         const label = getTitle(description, field);
+                        let type = getFormElementType({oType, label});
 
                         if (inType === 'query' && !excludeFields.includes(field)) {
                             if (!queries) queries = [];
                             queries.push({
+                                type,
                                 field,
                                 label,
                                 required,
@@ -507,11 +539,8 @@ async function readSwagger(config, baseConfig) {
                     });
 
                     // 获取表头
-                    const ref = paths[url][method].responses['200'].schema.items.$ref;
-                    console.log(paths[url][method].responses['200']);
-                    let defKey = ref.split('«')[1]
-                    defKey = defKey.substr(0, defKey.length - 1);
-                    const {properties} = definitions[defKey];
+                    const schema = paths[url][method].responses['200'].schema;
+                    const properties = getProperties(schema, definitions);
 
                     Object.entries(properties).forEach(([dataIndex, item]) => {
                         if (!excludeFields.includes(dataIndex)) {
@@ -532,7 +561,6 @@ async function readSwagger(config, baseConfig) {
                 // 获取编辑表单信息
                 let {method, url, excludeFields = []} = modify;
 
-                // 获取查询条件
                 if (paths[url]) { // 接口有可能不存在
                     excludeFields = [...excludeFields, ...COMMON_EXCLUDE_FIELDS];
                     const {parameters} = paths[url][method];
@@ -541,10 +569,7 @@ async function readSwagger(config, baseConfig) {
                         const {in: inType, schema} = item;
 
                         if (inType === 'body') {
-                            const ref = schema.$ref;
-                            const refs = ref.split('/');
-                            let defKey = refs[refs.length - 1];
-                            const {properties} = definitions[defKey];
+                            const properties = getProperties(schema, definitions);
 
                             Object.entries(properties).forEach(([field, item]) => {
                                 if (!excludeFields.includes(field)) {

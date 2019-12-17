@@ -35,7 +35,7 @@ module.exports = function (config) {
     const operatorDelete = operators.find(item => item.text === '删除');
 
     return `import React, {Component} from 'react';
-${tools || queries || hasBatchDelete ? `import {Button, ${queries ? 'Form, ' : ''}${hasBatchDelete ? 'Modal' : ''}} from 'antd';` : DELETE_THIS_LINE}
+${tools || queries || hasBatchDelete ? `import {${queries ? 'Button, Form, ' : ''}${hasBatchDelete ? 'Modal' : ''}} from 'antd';` : DELETE_THIS_LINE}
 import PageContent from '@/layouts/page-content';
 import config from '@/commons/config-hoc';
 import {
