@@ -22,7 +22,7 @@ if (configFile) {
 const configFileContent = fs.readFileSync(configFile, 'UTF-8');
 
 async function genFiles() {
-    const config = await getConfig(configFileContent);
+    const config = await getConfig(configFile, configFileContent);
     config.forEach(cfg => {
         const {filePath, template} = cfg;
         const content = require(template)(cfg);
@@ -37,9 +37,7 @@ genFiles().then(data => {
     console.log();
     logSuccess('成功生成页面:');
     data.forEach(({filePath, fileTypeName}) => {
-        const index = filePath.indexOf('/src/');
-
-        if (index) filePath = filePath.substr(index);
+        filePath = filePath.replace(process.cwd(), '');
 
         logSuccess(`${fileTypeName}: ${filePath}`);
     });

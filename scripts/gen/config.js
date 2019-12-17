@@ -474,17 +474,10 @@ async function readSwagger(config, baseConfig) {
     });
 
     const getProperties = (schema, definitions) => {
-        //
-        // const ref = schema.$ref;
-        // const refs = ref.split('/');
-        // let defKey = refs[refs.length - 1];
-        // const {properties} = definitions[defKey];
-
         const getDefKey = (ref) => {
             const refs = ref.split('/');
-            let defKey = refs[refs.length - 1];
 
-            return defKey
+            return refs[refs.length - 1];
         };
 
         const ref = schema.$ref || schema.items.$ref;
@@ -541,7 +534,7 @@ async function readSwagger(config, baseConfig) {
                     });
 
                     // 获取表头
-                    const schema = paths[url][method].responses['200'].schema;
+                    const schema = paths[url][method]['responses']['200'].schema;
                     const properties = getProperties(schema, definitions);
 
                     Object.entries(properties).forEach(([dataIndex, item]) => {
@@ -608,7 +601,7 @@ async function readSwagger(config, baseConfig) {
         });
 }
 
-async function readDataBase(dataBaseConfig, baseConfig) {
+async function readDataBase(dataBaseConfig) {
     const {url, tableName: table, database} = dataBaseConfig;
     const tableColumns = await getTableColumns({url, table, database});
 
@@ -668,7 +661,7 @@ function getFormElementType({oType, label = ''}) {
 /**
  * 获取各种配置信息
  * */
-async function getConfig(configFileContent) {
+async function getConfig(configFilePath, configFileContent) {
     const configArray = configFileContent.split('\n');
     const dataBaseConfig = getDataBaseConfig(configArray);
     const baseConfig = getBaseConfig(configArray);
@@ -685,7 +678,7 @@ async function getConfig(configFileContent) {
 
     // 从接口中获取先关信息
     if (interfaceConfig && interfaceConfig.url) {
-        logSuccess('基于Swagger文档');
+        logSuccess(`基于Swagger文档: ${interfaceConfig.url}`);
         const configFromSwagger = await readSwagger(interfaceConfig, baseConfig);
 
         queries = configFromSwagger.queries;
@@ -698,17 +691,17 @@ async function getConfig(configFileContent) {
 
     } else if (dataBaseConfig && dataBaseConfig.tableName) {
         // 数据库表中获取信息
-        logSuccess('基于数据库表');
+        logSuccess(`基于数据库表: ${dataBaseConfig.database}.${dataBaseConfig.tableName}`);
         const configFromTableName = await readDataBase(dataBaseConfig, baseConfig);
 
         if (configFromTableName.columns) columns = configFromTableName.columns;
         if (configFromTableName.forms) forms = configFromTableName.forms;
 
-        logWarning('查询条件，将使用配置文件中的《查询条件配置》')
+        logWarning('查询条件，将使用配置文件中的《查询条件配置》');
         if (!configFromTableName.columns) logWarning('表格列配置，将使用配置文件中的《表格列配置》');
         if (!configFromTableName.forms) logWarning('表单配置，将使用配置文件中的《表单配置》');
     } else {
-        logSuccess('基于配置文件');
+        logSuccess(`基于配置文件: ${configFilePath.replace(process.cwd(), '')}`);
     }
 
     // 如果 forms 为空，将获取所有的columnConfig作为form表单元素，默认type=input
