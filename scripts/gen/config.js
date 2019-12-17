@@ -284,13 +284,18 @@ function getBaseConfig(configArr) {
     // 基于RestFul规范，处理默认ajax请求url
     const {moduleName} = result;
     Object.entries(methodMap).forEach(([method, name]) => {
+        if (!result.ajax) result.ajax = {};
+
         if (!result.ajax[method]) {
-            if (method === 'search') result.ajax[method] = {name, method: 'get', url: `/${moduleName}`};
-            if (method === 'detail') result.ajax[method] = {name, method: 'get', url: `/${moduleName}/{id}`};
-            if (method === 'modify') result.ajax[method] = {name, method: 'put', url: `/${moduleName}`};
-            if (method === 'add') result.ajax[method] = {name, method: 'post', url: `/${moduleName}`};
-            if (method === 'delete') result.ajax[method] = {name, method: 'del', url: `/${moduleName}/{id}`};
-            if (method === 'batchDelete') result.ajax[method] = {name, method: 'del', url: `/${moduleName}`};
+            // 默认根据"查询"或者"目录"基于RestFul风格生成
+            const baseUrl = result.ajax.search ? result.ajax.search.url : `/${moduleName}`;
+
+            if (method === 'search') result.ajax[method] = {name, method: 'get', url: baseUrl};
+            if (method === 'detail') result.ajax[method] = {name, method: 'get', url: `${baseUrl}/{id}`};
+            if (method === 'modify') result.ajax[method] = {name, method: 'put', url: baseUrl};
+            if (method === 'add') result.ajax[method] = {name, method: 'post', url: baseUrl};
+            if (method === 'delete') result.ajax[method] = {name, method: 'del', url: `${baseUrl}/{id}`};
+            if (method === 'batchDelete') result.ajax[method] = {name, method: 'del', url: baseUrl};
         }
     });
 
@@ -307,9 +312,9 @@ function getPagesConfig(configArr, moduleName = '') {
     if (!config) return null;
 
     const defaultPages = [
-        '列表页', 'list.js', 'index.jsx',
-        '弹框编辑', 'edit-modal.js', 'EditModal.jsx',
-        '页面编辑', 'edit.js', 'Edit.jsx',
+        '列表页面', 'list.js', 'index.jsx',
+        '弹框表单', 'edit-modal.js', 'EditModal.jsx',
+        '页面表单', 'edit.js', 'Edit.jsx',
     ];
 
     let result = null;

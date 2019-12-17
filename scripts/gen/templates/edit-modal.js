@@ -104,6 +104,5 @@ export default class EditModal extends Component {
         );
     }
 }
-
 `.split('\n').filter(item => item.trim() !== DELETE_THIS_LINE).join('\n');
 };

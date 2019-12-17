@@ -190,7 +190,10 @@ class FormElement extends Component {
     }
 
     setStyle = () => {
-        let {labelWidth, label, labelBlock} = this.props;
+        let {labelWidth, label, labelBlock, layout} = this.props;
+
+        if (layout && !label) label = ' ';
+
         const labelDom = this.container.querySelector('.ant-form-item-label');
 
         if (!label) labelWidth = 0;
@@ -267,6 +270,8 @@ class FormElement extends Component {
 
         if (layout) {
             form = null;
+            label = ' ';
+            colon = false;
         }
 
         const {getFieldDecorator} = form || {};
@@ -384,7 +389,7 @@ class FormElement extends Component {
         }
 
         const elementProps = {
-            ...others, ref: forwardedRef, style: eleStyle
+            ...others, ref: forwardedRef, style: eleStyle,
         };
 
         if (form) {

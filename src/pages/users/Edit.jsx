@@ -1,23 +1,11 @@
-const DELETE_THIS_LINE = 'DELETE_THIS_LINE';
-const WITH_OPTIONS_TYPE = ['select', 'radio-group', 'checkbox-group'];
-
-/**
- * 获取编辑页面字符串
- */
-module.exports = function (config) {
-    const {
-        base,
-        forms,
-    } = config;
-
-    return `import React, {Component} from 'react';
+import React, {Component} from 'react';
 import {Form, Button} from 'antd';
 import {FormElement, FormRow} from '@/library/components';
 import config from '@/commons/config-hoc';
 import PageContent from '@/layouts/page-content';
 
 @config({
-    path: '${base.path}/_/edit/:id',
+    path: '/users/_/edit/:id',
     ajax: true,
 })
 @Form.create()
@@ -45,7 +33,7 @@ export default class Edit extends Component {
         const {id} = this.props;
 
         this.setState({loading: true});
-        this.props.ajax.${base.ajax.detail.method}(\`${base.ajax.detail.url.replace('{id}', '${id}')}\`)
+        this.props.ajax.get(`/mock/users/${id}`)
             .then(res => {
                 this.setState({data: res || {}});
             })
@@ -58,13 +46,12 @@ export default class Edit extends Component {
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (err) return;
 
-            const {isEdit} = this.props;
+            const {isEdit} = this.state;
+            const ajaxMethod = isEdit ? this.props.ajax.put : this.props.ajax.post;
             const successTip = isEdit ? '修改成功！' : '添加成功！';
-            const ajaxMethod = isEdit ? this.props.ajax.${base.ajax.modify.method} : this.props.ajax.${base.ajax.add.method};
-            const ajaxUrl = isEdit ? '${base.ajax.modify.url}' : '${base.ajax.add.url}';
 
             this.setState({loading: true});
-            ajaxMethod(ajaxUrl, values, {successTip})
+            ajaxMethod('/mock/users', values, {successTip})
                 .then(() => {
                     const {onOk} = this.props;
                     onOk && onOk();
@@ -89,18 +76,43 @@ export default class Edit extends Component {
                 <Form onSubmit={this.handleSubmit}>
                     {isEdit ? <FormElement {...formProps} type="hidden" field="id" initialValue={data.id}/> : null}
                     <FormRow>
-                        ${forms.map(item => `<FormElement
+                        <FormElement
                             {...formProps}
-                            ${item.type !== 'input' ? `type="${item.type}"` : DELETE_THIS_LINE}
-                            label="${item.label}"
-                            field="${item.field}"
-                            initialValue={data.${item.field}}
-                            ${item.required ? 'required' : DELETE_THIS_LINE}
-                            ${WITH_OPTIONS_TYPE.includes(item.type) ? `options={[
-                                {value: '1', label: '选项1'},
-                                {value: '2', label: '选项2'},
-                            ]}` : DELETE_THIS_LINE}
-                        />`).join('\n                        ')}
+                            label="用户名"
+                            field="name"
+                            initialValue={data.name}
+                            required
+                        />
+                        <FormElement
+                            {...formProps}
+                            type="number"
+                            label="年龄"
+                            field="age"
+                            initialValue={data.age}
+                            required
+                        />
+                        <FormElement
+                            {...formProps}
+                            type="select"
+                            label="工作"
+                            field="job"
+                            initialValue={data.job}
+                            options={[
+                                {value: '1', label: '前端开发'},
+                                {value: '2', label: '后端开发'},
+                            ]}
+                        />
+                        <FormElement
+                            {...formProps}
+                            type="select"
+                            label="职位"
+                            field="position"
+                            initialValue={data.position}
+                            options={[
+                                {value: '1', label: '员工'},
+                                {value: '2', label: 'CEO'},
+                            ]}
+                        />
                     </FormRow>
 
                     <FormElement {...formProps} layout>
@@ -112,5 +124,4 @@ export default class Edit extends Component {
         );
     }
 }
-`.split('\n').filter(item => item.trim() !== DELETE_THIS_LINE).join('\n');
-};
+
