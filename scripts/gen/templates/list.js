@@ -18,7 +18,7 @@ module.exports = function (config) {
     if (!table) table = {};
 
     const isModalEdit = !!pages.find(item => item.typeName === '弹框表单');
-    const isPageEdit = !!pages.find(item => item.typeName === '页面表单');
+    const isPageEdit = !isModalEdit && !!pages.find(item => item.typeName === '页面表单');
     const hasDelete = operators && !!operators.find(item => item.text === '删除');
     const hasBatchDelete = tools && !!tools.find(item => item.text === '删除');
     let handles = null;
@@ -52,6 +52,7 @@ ${isModalEdit ? 'import EditModal from \'./EditModal\';' : DELETE_THIS_LINE}
 @config({
     path: '${base.path}',
     ajax: true,
+    ${isPageEdit ? 'router: true,' : DELETE_THIS_LINE}
 })
 ${queries ? '@Form.create()' : DELETE_THIS_LINE}
 export default class UserCenter extends Component {
@@ -80,7 +81,8 @@ export default class UserCenter extends Component {
                     ${operatorEdit ? `{
                         label: '修改',
                         ${operatorEdit.iconMode ? `icon: '${operatorEdit.icon}',` : DELETE_THIS_LINE}
-                        onClick: () => this.setState({visible: true, id}),
+                        ${isModalEdit ? 'onClick: () => this.setState({visible: true, id}),' : DELETE_THIS_LINE}
+                        ${isPageEdit ? `onClick: () => this.props.history.push(\`${base.path}/_/edit/\${id}\`),` : DELETE_THIS_LINE}
                     },` : DELETE_THIS_LINE}
                     ${operatorDelete ? `{
                         label: '删除',
@@ -228,7 +230,8 @@ export default class UserCenter extends Component {
                             type: 'primary',
                             icon: 'plus',
                             text: '添加',
-                            onClick: () => this.setState({visible: true, id: null}),
+                            ${isModalEdit ? `onClick: () => this.setState({visible: true, id: null}),` : DELETE_THIS_LINE}
+                            ${isPageEdit ? `onClick: () => this.props.history.push('${base.path}/_/edit/:id'),` : DELETE_THIS_LINE}
                         },` : DELETE_THIS_LINE}
                         ${tools.find(item => item.text === '删除') ? `{
                             type: 'danger',

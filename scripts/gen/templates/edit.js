@@ -17,6 +17,7 @@ import config from '@/commons/config-hoc';
 import PageContent from '@/layouts/page-content';
 
 @config({
+    title: props => props.match.params.id === ':id' ? '添加' : '修改',
     path: '${base.path}/_/edit/:id',
     ajax: true,
 })

@@ -494,7 +494,7 @@ async function readSwagger(config, baseConfig) {
 
                     parameters.forEach(item => {
                         const {name: field, required, description, in: inType} = item;
-                        const label = getTitle(description) || field;
+                        const label = getTitle(description, field);
 
                         if (inType === 'query' && !excludeFields.includes(field)) {
                             if (!queries) queries = [];
@@ -516,7 +516,7 @@ async function readSwagger(config, baseConfig) {
                     Object.entries(properties).forEach(([dataIndex, item]) => {
                         if (!excludeFields.includes(dataIndex)) {
                             const {description} = item;
-                            const title = getTitle(description) || dataIndex;
+                            const title = getTitle(description, dataIndex);
 
                             if (!columns) columns = [];
                             columns.push({
@@ -549,7 +549,7 @@ async function readSwagger(config, baseConfig) {
                             Object.entries(properties).forEach(([field, item]) => {
                                 if (!excludeFields.includes(field)) {
                                     const {description, type: oType} = item;
-                                    const label = getTitle(description) || field;
+                                    const label = getTitle(description, field);
 
                                     let type = getFormElementType({oType, label});
 

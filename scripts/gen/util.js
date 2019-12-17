@@ -89,7 +89,7 @@ function getInfoByComment(comment = '') {
     };
 }
 
-function getTitle(description) {
+function getTitle(description, defaultTitle) {
     if (!description) return null;
 
     description = description.trim();
@@ -99,7 +99,7 @@ function getTitle(description) {
 
     if (sd && sd.length) return sd[0];
 
-    return null;
+    return defaultTitle;
 }
 
 function logWarning(text) {
