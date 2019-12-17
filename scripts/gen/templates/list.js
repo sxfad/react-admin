@@ -276,5 +276,4 @@ export default class UserCenter extends Component {
     }
 }
 `.split('\n').filter(item => item.trim() !== DELETE_THIS_LINE).join('\n');
-
-}
+};
