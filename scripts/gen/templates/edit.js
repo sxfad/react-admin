@@ -102,11 +102,12 @@ export default class Edit extends Component {
                             ]}` : DELETE_THIS_LINE}
                         />`).join('\n                        ')}
                     </FormRow>
-
-                    <FormElement {...formProps} layout>
-                        <Button type="primary" onClick={this.handleSubmit}>保存</Button>
-                        <Button onClick={() => form.resetFields()}>重置</Button>
-                    </FormElement>
+                    <FormRow>
+                        <FormElement {...formProps} layout>
+                            <Button type="primary" onClick={this.handleSubmit}>保存</Button>
+                            <Button onClick={() => form.resetFields()}>重置</Button>
+                        </FormElement>
+                    </FormRow>
                 </Form>
             </PageContent>
         );

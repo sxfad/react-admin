@@ -33,10 +33,10 @@ export default class UserCenter extends Component {
     };
 
     columns = [
-        {title: '用户名', dataIndex: 'name', width: 100},
-        {title: '年龄', dataIndex: 'age', width: 100},
-        {title: '工作', dataIndex: 'job', width: 100},
-        {title: '职位', dataIndex: 'position', width: 100},
+        {title: '用户名', dataIndex: 'name', width: 200},
+        {title: '年龄', dataIndex: 'age', width: 200},
+        {title: '工作', dataIndex: 'job', width: 200},
+        {title: '职位', dataIndex: 'position', width: 200},
         {
             title: '操作', dataIndex: 'operator', width: 100,
             render: (value, record) => {

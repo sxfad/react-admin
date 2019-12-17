@@ -65,7 +65,7 @@ export default class UserCenter extends Component {
     };
 
     columns = [
-        ${columns.map(item => `{title: '${item.title}', dataIndex: '${item.dataIndex}', width: 100},`).join('\n        ')}
+        ${columns.map(item => `{title: '${item.title}', dataIndex: '${item.dataIndex}', width: 200},`).join('\n        ')}
         ${operators ? `{
             title: '操作', dataIndex: 'operator', width: 100,
             render: (value, record) => {
