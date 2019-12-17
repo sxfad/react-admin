@@ -2,7 +2,7 @@ const path = require('path');
 const http = require('http');
 const axios = require('axios');
 const https = require('https');
-const chalk = require('chalk');
+const {getTitle, getTableColumns, logWarning, logSuccess} = require('./util');
 
 // 命令要在项目根目录下执行
 const PAGES_DIR = path.join(process.cwd(), '/src/pages');
@@ -33,6 +33,15 @@ const ELEMENT_TYPES = [
     'cascader',
     'json',
     'icon-picker',
+];
+
+// 接口，数据库读取是，忽略的字段
+const COMMON_EXCLUDE_FIELDS = [
+    'SXF-TRACE-ID',
+    'pageNum',
+    'pageSize',
+    'id',
+    'token',
 ];
 
 // 随机生成不重复field字符串
@@ -205,8 +214,6 @@ function getDataBaseConfig(configArr) {
     let result = null;
     [
         'url',
-        'userName',
-        'password',
         'tableName',
     ].forEach(key => {
         const cfg = config.find(item => item.length && item[0] === key);
@@ -477,25 +484,17 @@ async function readSwagger(config, baseConfig) {
             let columns = null;
             let forms = null;
 
-            const commonExcludeFields = [
-                'SXF-TRACE-ID',
-                'pageNum',
-                'pageSize',
-                'id',
-                'token',
-            ];
-
             if (search) {
                 let {method, url, excludeFields = []} = search;
 
                 // 获取查询条件
                 if (paths[url]) { // 接口有可能不存在
-                    excludeFields = [...excludeFields, ...commonExcludeFields];
+                    excludeFields = [...excludeFields, ...COMMON_EXCLUDE_FIELDS];
                     const {parameters} = paths[url][method];
 
                     parameters.forEach(item => {
                         const {name: field, required, description, in: inType} = item;
-                        const label = getShortDescription(description) || field;
+                        const label = getTitle(description) || field;
 
                         if (inType === 'query' && !excludeFields.includes(field)) {
                             if (!queries) queries = [];
@@ -516,7 +515,7 @@ async function readSwagger(config, baseConfig) {
                     Object.entries(properties).forEach(([dataIndex, item]) => {
                         if (!excludeFields.includes(dataIndex)) {
                             const {description} = item;
-                            const title = getShortDescription(description) || dataIndex;
+                            const title = getTitle(description) || dataIndex;
 
                             if (!columns) columns = [];
                             columns.push({
@@ -534,7 +533,7 @@ async function readSwagger(config, baseConfig) {
 
                 // 获取查询条件
                 if (paths[url]) { // 接口有可能不存在
-                    excludeFields = [...excludeFields, ...commonExcludeFields];
+                    excludeFields = [...excludeFields, ...COMMON_EXCLUDE_FIELDS];
                     const {parameters} = paths[url][method];
 
                     parameters.forEach(item => {
@@ -548,14 +547,10 @@ async function readSwagger(config, baseConfig) {
 
                             Object.entries(properties).forEach(([field, item]) => {
                                 if (!excludeFields.includes(field)) {
-                                    const {description, type: sType} = item;
-                                    const label = getShortDescription(description) || field;
+                                    const {description, type: oType} = item;
+                                    const label = getTitle(description) || field;
 
-                                    // FIXME 完善更多类型
-                                    let type = 'input';
-
-                                    if (sType === 'array') type = 'select';
-                                    if (label.startsWith('是否')) type = 'switch';
+                                    let type = getFormElementType({oType, label});
 
                                     if (!forms) forms = [];
                                     forms.push({
@@ -585,17 +580,64 @@ async function readSwagger(config, baseConfig) {
         });
 }
 
-function getShortDescription(description) {
-    if (!description) return null;
+async function readDataBase(dataBaseConfig, baseConfig) {
+    const {url, tableName: table} = dataBaseConfig;
 
-    description = description.trim();
+    // FIXME 有没有更好的方式，从url中读取数据库名
+    const database = url.split('?')[0].split('/')[3];
+    const tableColumns = await getTableColumns({url, table, database});
 
-    // FIXME 能否基于第一个特殊字符分割
-    const sd = description.split(' ');
+    let columns = null;
+    let forms = null;
 
-    if (sd && sd.length) return sd[0];
+    if (tableColumns && tableColumns.length) {
+        tableColumns.forEach(item => {
+            const {name: field, chinese, isNullable, type: oType} = item;
+            const label = chinese || field;
 
-    return null;
+            if (!COMMON_EXCLUDE_FIELDS.includes(field)) {
+                if (!columns) columns = [];
+                columns.push({
+                    title: label,
+                    dataIndex: field,
+                });
+
+                const required = !isNullable;
+                let type = getFormElementType({oType, label});
+                if (!forms) forms = [];
+                forms.push({
+                    type,
+                    label,
+                    field,
+                    required,
+                });
+            }
+        });
+    }
+    return {
+        columns,
+        forms,
+    };
+}
+
+// 获取表单label类型
+function getFormElementType({oType, label = ''}) {
+    let type = 'input';
+
+    // FIXME 完善更多类型
+    if (oType === 'array') type = 'select';
+
+    if (label.startsWith('是否')) type = 'switch';
+
+    if (label.startsWith('密码') || label.endsWith('密码')) type = 'password';
+
+    if (label.includes('电话') || label.includes('手机')) type = 'mobile';
+
+    if (label.includes('邮箱')) type = 'email';
+
+    if (label.includes('时间') || label.includes('日期')) type = 'date';
+
+    return type;
 }
 
 /**
@@ -618,7 +660,7 @@ async function getConfig(configFileContent) {
 
     // 从接口中获取先关信息
     if (interfaceConfig && interfaceConfig.url) {
-        console.log(chalk.green('基于Swagger文档'));
+        logSuccess('基于Swagger文档');
         const configFromSwagger = await readSwagger(interfaceConfig, baseConfig);
 
         queries = configFromSwagger.queries;
@@ -626,16 +668,22 @@ async function getConfig(configFileContent) {
         if (configFromSwagger.columns) columns = configFromSwagger.columns;
         if (configFromSwagger.forms) forms = configFromSwagger.forms;
 
-        if (!configFromSwagger.columns) console.log(chalk.yellow('从接口信息中没有获取到表格列配置，将使用配置文件中的《表格列配置》'));
-        if (!configFromSwagger.forms) console.log(chalk.yellow('从接口信息中没有获取到表单配置，将使用配置文件中的《表单配置》'));
+        if (!configFromSwagger.columns) logWarning('表格列配置，将使用配置文件中的《表格列配置》');
+        if (!configFromSwagger.forms) logWarning('表单配置，将使用配置文件中的《表单配置》');
 
     } else if (dataBaseConfig && dataBaseConfig.tableName) {
-        console.log(chalk.green('基于数据库表'));
-        // 从数据库表中获取columns form信息
-        const columnConfigFromDB = getColumnFromDB(dataBaseConfig);
-        const formConfigFromDB = getFormFromDB(dataBaseConfig);
+        // 数据库表中获取信息
+        logSuccess('基于数据库表');
+        const configFromTableName = await readDataBase(dataBaseConfig, baseConfig);
+
+        if (configFromTableName.columns) columns = configFromTableName.columns;
+        if (configFromTableName.forms) forms = configFromTableName.forms;
+
+        logWarning('查询条件，将使用配置文件中的《查询条件配置》')
+        if (!configFromTableName.columns) logWarning('表格列配置，将使用配置文件中的《表格列配置》');
+        if (!configFromTableName.forms) logWarning('表单配置，将使用配置文件中的《表单配置》');
     } else {
-        console.log(chalk.green('基于配置文件'));
+        logSuccess('基于配置文件');
     }
 
     // 如果 forms 为空，将获取所有的columnConfig作为form表单元素，默认type=input

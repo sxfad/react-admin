@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const program = require('commander');
-const chalk = require('chalk');
+const {logSuccess} = require('./util');
 const getConfig = require('./config');
 
 const DEFAULT_CONFIG_FILE = path.join(__dirname, './config.conf');
@@ -34,12 +34,14 @@ async function genFiles() {
 }
 
 genFiles().then(data => {
+    console.log();
+    logSuccess('成功生成页面:');
     data.forEach(({filePath, fileTypeName}) => {
         const index = filePath.indexOf('/src/');
-        
+
         if (index) filePath = filePath.substr(index);
 
-        console.log(chalk.green(`${fileTypeName}: ${filePath}`));
+        logSuccess(`${fileTypeName}: ${filePath}`);
     });
 });
 
