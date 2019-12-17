@@ -5,7 +5,7 @@ const WITH_OPTIONS_TYPE = ['select', 'radio-group', 'checkbox-group'];
  * 获取列表页字符串
  */
 module.exports = function (config) {
-    const {
+    let {
         base,
         pages,
         queries,
@@ -14,7 +14,11 @@ module.exports = function (config) {
         table,
         columns,
     } = config;
-    const isEditModal = !!pages.find(item => item.typeName === '弹框编辑');
+
+    if (!table) table = {};
+
+    const isModalEdit = !!pages.find(item => item.typeName === '弹框表单');
+    const isPageEdit = !!pages.find(item => item.typeName === '页面表单');
     const hasDelete = operators && !!operators.find(item => item.text === '删除');
     const hasBatchDelete = tools && !!tools.find(item => item.text === '删除');
     let handles = null;
@@ -31,7 +35,7 @@ module.exports = function (config) {
     const operatorDelete = operators.find(item => item.text === '删除');
 
     return `import React, {Component} from 'react';
-${tools || queries || hasBatchDelete ? `import {${tools ? 'Button, ' : ''}${queries ? 'Form, ' : ''}${hasBatchDelete ? 'Modal' : ''}} from 'antd';` : DELETE_THIS_LINE}
+${tools || queries || hasBatchDelete ? `import {Button, ${queries ? 'Form, ' : ''}${hasBatchDelete ? 'Modal' : ''}} from 'antd';` : DELETE_THIS_LINE}
 import PageContent from '@/layouts/page-content';
 import config from '@/commons/config-hoc';
 import {
@@ -41,9 +45,9 @@ import {
     ${tools ? 'ToolBar,' : DELETE_THIS_LINE}
     Table,
     ${operators ? 'Operator,' : DELETE_THIS_LINE}
-    ${table && table.pagination ? 'Pagination,' : DELETE_THIS_LINE}
+    ${table.pagination ? 'Pagination,' : DELETE_THIS_LINE}
 } from '@/library/components';
-${isEditModal ? 'import EditModal from \'./EditModal\';' : DELETE_THIS_LINE}
+${isModalEdit ? 'import EditModal from \'./EditModal\';' : DELETE_THIS_LINE}
 
 @config({
     path: '${base.path}',
@@ -60,8 +64,8 @@ export default class UserCenter extends Component {
         ${table.pagination ? 'pageSize: 10,       // 分页每页显示条数' : DELETE_THIS_LINE}
         ${hasDelete ? 'deleting: false,    // 批量删除中loading' : DELETE_THIS_LINE}
         ${hasBatchDelete ? 'singleDeleting: {}, // 操作列删除loading' : DELETE_THIS_LINE}
-        ${isEditModal ? 'visible: false,     // 添加、修改弹框' : DELETE_THIS_LINE}
-        ${isEditModal ? 'id: null,           // 需要修改的数据id' : DELETE_THIS_LINE}
+        ${isModalEdit ? 'visible: false,     // 添加、修改弹框' : DELETE_THIS_LINE}
+        ${isModalEdit ? 'id: null,           // 需要修改的数据id' : DELETE_THIS_LINE}
     };
 
     columns = [
@@ -177,14 +181,14 @@ export default class UserCenter extends Component {
     render() {
         const {
             loading,
-            ${hasDelete || hasBatchDelete ? 'deleting,' : DELETE_THIS_LINE}
+            ${hasBatchDelete ? 'deleting,' : DELETE_THIS_LINE}
             dataSource,
             ${table.selectable ? 'selectedRowKeys,' : DELETE_THIS_LINE}
             ${table.pagination ? 'total,' : DELETE_THIS_LINE}
             ${table.pagination ? 'pageNum,' : DELETE_THIS_LINE}
             ${table.pagination ? 'pageSize,' : DELETE_THIS_LINE}
-            ${isEditModal ? 'visible,' : DELETE_THIS_LINE}
-            ${isEditModal ? 'id,' : DELETE_THIS_LINE}
+            ${isModalEdit ? 'visible,' : DELETE_THIS_LINE}
+            ${isModalEdit ? 'id,' : DELETE_THIS_LINE}
         } = this.state;
 
         ${queries ? `const {form} = this.props;
@@ -193,7 +197,7 @@ export default class UserCenter extends Component {
             width: 300,
             style: {paddingLeft: 16},
         };` : DELETE_THIS_LINE}
-        ${hasBatchDelete ? 'const disabledDelete = !selectedRowKeys?.length;' : DELETE_THIS_LINE}
+        ${hasBatchDelete && table.selectable ? 'const disabledDelete = !selectedRowKeys?.length;' : DELETE_THIS_LINE}
 
         return (
             <PageContent>
@@ -231,7 +235,7 @@ export default class UserCenter extends Component {
                             icon: 'delete',
                             text: '删除',
                             loading: deleting,
-                            disabled: disabledDelete,
+                            ${table.selectable ? 'disabled: disabledDelete,' : DELETE_THIS_LINE}
                             onClick: this.handleBatchDelete,
                         },` : DELETE_THIS_LINE}
                         ${tools.filter(item => !['添加', '删除'].includes(item.text)).map(item => `{
@@ -264,7 +268,7 @@ export default class UserCenter extends Component {
                     onPageSizeChange={pageSize => this.setState({pageSize, pageNum: 1}, this.handleSearch)}
                 />` : DELETE_THIS_LINE}
 
-                ${isEditModal ? `<EditModal
+                ${isModalEdit ? `<EditModal
                     visible={visible}
                     id={id}
                     isEdit={id !== null}

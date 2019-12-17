@@ -507,7 +507,8 @@ async function readSwagger(config, baseConfig) {
                     });
 
                     // 获取表头
-                    const ref = paths[url][method].responses['200'].schema.$ref;
+                    const ref = paths[url][method].responses['200'].schema.items.$ref;
+                    console.log(paths[url][method].responses['200']);
                     let defKey = ref.split('«')[1]
                     defKey = defKey.substr(0, defKey.length - 1);
                     const {properties} = definitions[defKey];
