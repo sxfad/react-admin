@@ -2,6 +2,7 @@ const path = require('path');
 const http = require('http');
 const axios = require('axios');
 const https = require('https');
+const urlParse = require('url').parse;
 const {getTitle, getTableColumns, logWarning, logSuccess} = require('./util');
 
 // 命令要在项目根目录下执行
@@ -223,6 +224,17 @@ function getDataBaseConfig(configArr) {
             result[key] = cfg[1];
         }
     });
+
+    if (result && result.url) {
+        const urlObj = urlParse(result.url, true);
+
+        result = {
+            host: urlObj.hostname,
+            port: urlObj.port,
+            database: urlObj.pathname.substr(1),
+            ...result,
+        };
+    }
 
     return result;
 }
@@ -448,16 +460,6 @@ function getFormConfig(configArr, fromColumn) {
     return getElement(configArr, '表单元素配置', 'f', fromColumn);
 }
 
-// 从数据库配置中获取column配置
-function getColumnFromDB(dataBaseConfig) {
-    // TODO
-}
-
-// 从数据库配置中获取form配置
-function getFormFromDB(dataBaseConfig) {
-    // TODO
-}
-
 async function readSwagger(config, baseConfig) {
     const {url, userName, password} = config;
     const httpInstance = url.startsWith('https') ? https : http;
@@ -607,10 +609,7 @@ async function readSwagger(config, baseConfig) {
 }
 
 async function readDataBase(dataBaseConfig, baseConfig) {
-    const {url, tableName: table} = dataBaseConfig;
-
-    // FIXME 有没有更好的方式，从url中读取数据库名
-    const database = url.split('?')[0].split('/')[3];
+    const {url, tableName: table, database} = dataBaseConfig;
     const tableColumns = await getTableColumns({url, table, database});
 
     let columns = null;
