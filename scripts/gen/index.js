@@ -48,6 +48,7 @@ async function genFiles() {
     }
 
     if (successFile && successFile.length) {
+        console.log();
         logSuccess('成功生成文件：');
         successFile.forEach(item => {
             const {name, path} = item;

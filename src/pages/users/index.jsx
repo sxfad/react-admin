@@ -174,7 +174,7 @@ export default class UserCenter extends Component {
                                     {value: 2, label: 2},
                                 ]}
                             />
-                            <FormElement layout>
+                            <FormElement layout width="auto">
                                 <Button type="primary" htmlType="submit">提交</Button>
                                 <Button onClick={() => form.resetFields()}>重置</Button>
                             </FormElement>

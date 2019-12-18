@@ -196,7 +196,7 @@ export default class UserCenter extends Component {
         ${queries ? `const {form} = this.props;
         const formProps = {
             form,
-            width: 300,
+            width: 220,
             style: {paddingLeft: 16},
         };` : DELETE_THIS_LINE}
         ${hasBatchDelete && table.selectable ? 'const disabledDelete = !selectedRowKeys?.length;' : DELETE_THIS_LINE}
@@ -216,7 +216,7 @@ export default class UserCenter extends Component {
                                     {value: '2', label: '选项2'},
                                 ]}` : DELETE_THIS_LINE}
                             />`).join('\n                            ')}
-                            <FormElement layout>
+                            <FormElement layout width="auto">
                                 <Button type="primary" htmlType="submit">提交</Button>
                                 <Button onClick={() => form.resetFields()}>重置</Button>
                             </FormElement>

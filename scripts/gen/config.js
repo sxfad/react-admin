@@ -75,24 +75,76 @@ function getFormElement(str) {
     if (!strArr.length) return;
 
     // 获取表单类型 默认 input
-    const type = strArr.find(item => ELEMENT_TYPES.includes(item)) || 'input';
+    let type = strArr.find(item => ELEMENT_TYPES.includes(item));
     arrayRemove(strArr, type);
 
     // 获取是否必填
     const required = strArr.includes('r');
     arrayRemove(strArr, 'r');
 
+    // 最大可输入字符数
+    let maxLength = strArr.find(item => !!Number(item));
+    arrayRemove(strArr, maxLength);
+    if (maxLength) maxLength = Number(maxLength);
+
+
     // 获取 label field
     let [label, field] = strArr;
     if (!field) field = getRandomField();
+
+    // type 如果不存在 尝试获取
+    if (!type) type = getFormElementType({label});
 
     return {
         type,
         label,
         field,
         required,
+        maxLength,
     }
 }
+
+// 获取表单label类型
+function getFormElementType({oType, label = ''}) {
+    let type = 'input';
+
+    // FIXME 完善更多类型
+    if (oType === 'array') type = 'select';
+
+    if (label.startsWith('是否')) type = 'switch';
+
+    if (label.startsWith('密码') || label.endsWith('密码')) type = 'password';
+
+    if (label.includes('电话') || label.includes('手机')) type = 'mobile';
+
+    if (label.includes('邮箱')) type = 'email';
+
+    if (label.includes('时间') || label.includes('日期')) type = 'date';
+
+    return type;
+}
+
+function getElement(configArr, title, key, fromColumn) {
+    const config = getBlockConfig(configArr, title) || [];
+    const column = fromColumn ? getBlockConfig(configArr, '表格列配置') : [];
+
+    const columns = column.filter(item => item.includes(key));
+    const results = config.map(item => getFormElement(item));
+    const resultColumn = columns.map(item => getFormElement(item));
+
+    // 去重
+    const result = [...results];
+    resultColumn.forEach(item => {
+        if (!result.find(it => it.label === item.label)) {
+            result.push(item);
+        }
+    });
+
+    if (!result.length) return null;
+
+    return result;
+}
+
 
 function getBlockConfig(configArr, title) {
     const startIndex = configArr.findIndex(item => {
@@ -157,29 +209,6 @@ function getHandle(configArr, title, defaultProps) {
     });
 
     return result
-}
-
-function getElement(configArr, title, key, fromColumn) {
-    const config = getBlockConfig(configArr, title) || [];
-    const column = fromColumn ? getBlockConfig(configArr, '表格列配置') : [];
-
-    if (!config.length && !column.length) return null;
-
-    const columns = column.filter(item => item.includes(key));
-    const results = config.map(item => getFormElement(item));
-    const resultColumn = columns.map(item => getFormElement(item));
-
-    // 去重
-    const result = [...results];
-    resultColumn.forEach(item => {
-        if (!result.find(it => it.label === item.label)) {
-            result.push(item);
-        }
-    });
-
-    if (!result.length) return null;
-
-    return result;
 }
 
 // 接口配置
@@ -519,6 +548,7 @@ async function readSwagger(config, baseConfig) {
             const {parameters} = paths[url][method];
 
             parameters.forEach(item => {
+                console.log(item);
                 const {name: field, required, description, in: inType, type: oType} = item;
                 const label = getTitle(description, field);
                 let type = getFormElementType({oType, label});
@@ -603,7 +633,7 @@ async function readDataBase(dataBaseConfig) {
 
     if (tableColumns && tableColumns.length) {
         tableColumns.forEach(item => {
-            const {name: field, chinese, isNullable, type: oType} = item;
+            const {name: field, chinese, isNullable, type: oType, length: maxLength} = item;
             const label = chinese || field;
 
             if (!COMMON_EXCLUDE_FIELDS.includes(field)) {
@@ -621,6 +651,7 @@ async function readDataBase(dataBaseConfig) {
                     label,
                     field,
                     required,
+                    maxLength,
                 });
             }
         });
@@ -629,26 +660,6 @@ async function readDataBase(dataBaseConfig) {
         columns,
         forms,
     };
-}
-
-// 获取表单label类型
-function getFormElementType({oType, label = ''}) {
-    let type = 'input';
-
-    // FIXME 完善更多类型
-    if (oType === 'array') type = 'select';
-
-    if (label.startsWith('是否')) type = 'switch';
-
-    if (label.startsWith('密码') || label.endsWith('密码')) type = 'password';
-
-    if (label.includes('电话') || label.includes('手机')) type = 'mobile';
-
-    if (label.includes('邮箱')) type = 'email';
-
-    if (label.includes('时间') || label.includes('日期')) type = 'date';
-
-    return type;
 }
 
 /**

@@ -94,6 +94,7 @@ export default class EditModal extends Component {
                         field="${item.field}"
                         initialValue={data.${item.field}}
                         ${item.required ? 'required' : DELETE_THIS_LINE}
+                        ${item.maxLength ? `maxLength={${item.maxLength}}` : DELETE_THIS_LINE}
                         ${WITH_OPTIONS_TYPE.includes(item.type) ? `options={[
                             {value: '1', label: '选项1'},
                             {value: '2', label: '选项2'},
