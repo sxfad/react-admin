@@ -460,6 +460,30 @@ function getFormConfig(configArr, fromColumn) {
     return getElement(configArr, '表单元素配置', 'f', fromColumn);
 }
 
+// 获取swagger文档中的数据对象，不同的swagger可能有所不同
+function getProperties(schema, definitions) {
+    const getDefKey = (ref) => {
+        const refs = ref.split('/');
+
+        return refs[refs.length - 1];
+    };
+
+    const ref = schema.$ref || schema.items.$ref;
+    const defKey = getDefKey(ref);
+    const {properties} = definitions[defKey];
+
+    if (!properties) return [];
+
+    const propertiesValue = Object.values(properties);
+    if (propertiesValue[0].items && propertiesValue[0].items.$ref) {
+        const defKey = getDefKey(propertiesValue[0].items.$ref);
+        const {properties} = definitions[defKey];
+        return properties;
+    }
+
+    return properties;
+}
+
 async function readSwagger(config, baseConfig) {
     const {url, userName, password} = config;
     const httpInstance = url.startsWith('https') ? https : http;
@@ -472,133 +496,102 @@ async function readSwagger(config, baseConfig) {
             Authorization: auth,
         },
     });
+    const response = await request.get(url);
 
-    const getProperties = (schema, definitions) => {
-        const getDefKey = (ref) => {
-            const refs = ref.split('/');
+    // swagger所能提供的信息 queries columns forms
+    const {
+        search, // 从search 中获取 quires columns
+        modify, // 从modify中获取 forms
+    } = baseConfig.ajax;
+    const apiDocs = response.data;
+    const {paths, definitions} = apiDocs;
 
-            return refs[refs.length - 1];
-        };
+    let queries = null;
+    let columns = null;
+    let forms = null;
 
-        const ref = schema.$ref || schema.items.$ref;
-        const defKey = getDefKey(ref);
-        const {properties} = definitions[defKey];
+    if (search) {
+        let {method, url, excludeFields = []} = search;
 
-        if (!properties) return [];
+        // 获取查询条件
+        if (paths[url]) { // 接口有可能不存在
+            excludeFields = [...excludeFields, ...COMMON_EXCLUDE_FIELDS];
+            const {parameters} = paths[url][method];
 
-        const propertiesValue = Object.values(properties);
-        if (propertiesValue[0].items && propertiesValue[0].items.$ref) {
-            const defKey = getDefKey(propertiesValue[0].items.$ref);
-            const {properties} = definitions[defKey];
-            return properties;
-        }
+            parameters.forEach(item => {
+                const {name: field, required, description, in: inType, type: oType} = item;
+                const label = getTitle(description, field);
+                let type = getFormElementType({oType, label});
 
-        return properties;
-    };
+                if (inType === 'query' && !excludeFields.includes(field)) {
+                    if (!queries) queries = [];
+                    queries.push({
+                        type,
+                        field,
+                        label,
+                        required,
+                    })
+                }
+            });
 
-    return await request.get(url)
-        .then((response) => {
-            // swagger所能提供的信息 queries columns forms
-            const {
-                search, // 从search 中获取 quires columns
-                modify, // 从modify中获取 forms
-            } = baseConfig.ajax;
-            const apiDocs = response.data;
-            const {paths, definitions} = apiDocs;
-            let queries = null;
-            let columns = null;
-            let forms = null;
+            // 获取表头
+            const schema = paths[url][method]['responses']['200'].schema;
+            const properties = getProperties(schema, definitions);
 
-            if (search) {
-                let {method, url, excludeFields = []} = search;
+            Object.entries(properties).forEach(([dataIndex, item]) => {
+                if (!excludeFields.includes(dataIndex)) {
+                    const {description} = item;
+                    const title = getTitle(description, dataIndex);
 
-                // 获取查询条件
-                if (paths[url]) { // 接口有可能不存在
-                    excludeFields = [...excludeFields, ...COMMON_EXCLUDE_FIELDS];
-                    const {parameters} = paths[url][method];
-
-                    parameters.forEach(item => {
-                        const {name: field, required, description, in: inType, type: oType} = item;
-                        const label = getTitle(description, field);
-                        let type = getFormElementType({oType, label});
-
-                        if (inType === 'query' && !excludeFields.includes(field)) {
-                            if (!queries) queries = [];
-                            queries.push({
-                                type,
-                                field,
-                                label,
-                                required,
-                            })
-                        }
+                    if (!columns) columns = [];
+                    columns.push({
+                        title,
+                        dataIndex,
                     });
+                }
+            });
+        }
+    }
 
-                    // 获取表头
-                    const schema = paths[url][method]['responses']['200'].schema;
+    if (modify) {
+        // 获取编辑表单信息
+        let {method, url, excludeFields = []} = modify;
+
+        if (paths[url]) { // 接口有可能不存在
+            excludeFields = [...excludeFields, ...COMMON_EXCLUDE_FIELDS];
+            const {parameters} = paths[url][method];
+
+            parameters.forEach(item => {
+                const {in: inType, schema} = item;
+
+                if (inType === 'body') {
                     const properties = getProperties(schema, definitions);
 
-                    Object.entries(properties).forEach(([dataIndex, item]) => {
-                        if (!excludeFields.includes(dataIndex)) {
-                            const {description} = item;
-                            const title = getTitle(description, dataIndex);
+                    Object.entries(properties).forEach(([field, item]) => {
+                        if (!excludeFields.includes(field)) {
+                            const {description, type: oType} = item;
+                            const label = getTitle(description, field);
 
-                            if (!columns) columns = [];
-                            columns.push({
-                                title,
-                                dataIndex,
+                            let type = getFormElementType({oType, label});
+
+                            if (!forms) forms = [];
+                            forms.push({
+                                type,
+                                label,
+                                field,
                             });
                         }
                     });
                 }
-            }
+            });
+        }
+    }
 
-            if (modify) {
-                // 获取编辑表单信息
-                let {method, url, excludeFields = []} = modify;
-
-                if (paths[url]) { // 接口有可能不存在
-                    excludeFields = [...excludeFields, ...COMMON_EXCLUDE_FIELDS];
-                    const {parameters} = paths[url][method];
-
-                    parameters.forEach(item => {
-                        const {in: inType, schema} = item;
-
-                        if (inType === 'body') {
-                            const properties = getProperties(schema, definitions);
-
-                            Object.entries(properties).forEach(([field, item]) => {
-                                if (!excludeFields.includes(field)) {
-                                    const {description, type: oType} = item;
-                                    const label = getTitle(description, field);
-
-                                    let type = getFormElementType({oType, label});
-
-                                    if (!forms) forms = [];
-                                    forms.push({
-                                        type,
-                                        label,
-                                        field,
-                                    });
-                                }
-                            });
-                        }
-                    });
-                }
-            }
-
-            return {
-                queries,
-                columns,
-                forms,
-            };
-        })
-        .catch((error) => {
-            // handle error
-            console.log(error);
-        })
-        .finally(function () {
-            // always executed
-        });
+    return {
+        queries,
+        columns,
+        forms,
+    };
 }
 
 async function readDataBase(dataBaseConfig) {
