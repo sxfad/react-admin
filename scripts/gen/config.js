@@ -452,7 +452,7 @@ function getOperatorConfig(configArr) {
         result.forEach(item => item.iconMode = false);
     }
 
-    return result;
+    return result.length ? result : null;
 }
 
 // 获取表单配置

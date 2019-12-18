@@ -31,8 +31,8 @@ module.exports = function (config) {
         }
     });
 
-    const operatorEdit = operators.find(item => item.text === '修改');
-    const operatorDelete = operators.find(item => item.text === '删除');
+    const operatorEdit = operators && operators.find(item => item.text === '修改');
+    const operatorDelete = operators && operators.find(item => item.text === '删除');
 
     return `import React, {Component} from 'react';
 ${tools || queries || hasBatchDelete ? `import {${queries ? 'Button, Form, ' : ''}${hasBatchDelete ? 'Modal' : ''}} from 'antd';` : DELETE_THIS_LINE}
@@ -223,7 +223,6 @@ export default class UserCenter extends Component {
                         </FormRow>
                     </Form>
                 </QueryBar>` : DELETE_THIS_LINE}
-
                 ${tools ? `<ToolBar
                     items={[
                         ${tools.find(item => item.text === '添加') ? `{
@@ -249,7 +248,6 @@ export default class UserCenter extends Component {
                         },`).join('\n                        ')}
                     ]}
                 />` : DELETE_THIS_LINE}
-
                 <Table
                     ${table.serialNumber ? 'serialNumber' : DELETE_THIS_LINE}
                     ${table.selectable ? `rowSelection={{
@@ -262,7 +260,6 @@ export default class UserCenter extends Component {
                     rowKey="id"
                     ${table.pagination ? 'pagination={false}' : DELETE_THIS_LINE}
                 />
-
                 ${table.pagination ? `<Pagination
                     total={total}
                     pageNum={pageNum}
@@ -270,7 +267,6 @@ export default class UserCenter extends Component {
                     onPageNumChange={pageNum => this.setState({pageNum}, this.handleSearch)}
                     onPageSizeChange={pageSize => this.setState({pageSize, pageNum: 1}, this.handleSearch)}
                 />` : DELETE_THIS_LINE}
-
                 ${isModalEdit ? `<EditModal
                     visible={visible}
                     id={id}
