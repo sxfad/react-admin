@@ -53,9 +53,13 @@ export default class TableComponent extends Component {
         this.tableBody = this.wrapper.querySelector('.ant-table-body');
         this.tablePlaceholder = this.wrapper.querySelector('.ant-table-placeholder');
         this.tableHead = this.wrapper.querySelector('.ant-table-thead');
-        this.pagination = document.querySelector('.pagination-wrap');
 
-        let {tableBodyHeight} = this.state;
+        const {pathname, search} = window.location;
+        const currentPath = window.decodeURIComponent(`${pathname}${search}`);
+        const activeTab = document.getElementById(currentPath);
+        this.pagination = (activeTab ? activeTab : document).querySelector('.pagination-wrap');
+
+        let tableBodyHeight;
         const {dataSource} = this.props;
         const windowHeight = document.documentElement.clientHeight;
 
