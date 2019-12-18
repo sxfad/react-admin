@@ -302,7 +302,7 @@ function getBaseConfig(configArr) {
         if (cfg) {
 
             if (methods.includes(key)) {
-                const [name, method, url, ...excludeFields] = cfg;
+                const [name, method, url, dataPath] = cfg;
                 const km = Object.entries(methodMap).find(([, vv]) => vv === key);
                 const k = km ? km[0] : null;
 
@@ -313,7 +313,7 @@ function getBaseConfig(configArr) {
                         name,
                         method,
                         url,
-                        excludeFields,
+                        dataPath,
                     }
                 }
             }
@@ -540,7 +540,7 @@ async function readSwagger(config, baseConfig) {
     let forms = null;
 
     if (search) {
-        let {method, url, excludeFields = []} = search;
+        let {method, url, excludeFields = [], dataPath} = search;
 
         // 获取查询条件
         if (paths[url]) { // 接口有可能不存在
@@ -548,7 +548,6 @@ async function readSwagger(config, baseConfig) {
             const {parameters} = paths[url][method];
 
             parameters.forEach(item => {
-                console.log(item);
                 const {name: field, required, description, in: inType, type: oType} = item;
                 const label = getTitle(description, field);
                 let type = getFormElementType({oType, label});
@@ -565,8 +564,15 @@ async function readSwagger(config, baseConfig) {
             });
 
             // 获取表头
-            const schema = paths[url][method]['responses']['200'].schema;
-            const properties = getProperties(schema, definitions);
+            let schema = paths[url][method]['responses']['200'].schema;
+
+            let properties = getProperties(schema, definitions);
+            if (dataPath) {
+                dataPath.split('.').forEach(key => {
+                    schema = properties[key];
+                    properties = getProperties(schema, definitions);
+                });
+            }
 
             Object.entries(properties).forEach(([dataIndex, item]) => {
                 if (!excludeFields.includes(dataIndex)) {

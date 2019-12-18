@@ -89,8 +89,9 @@ function getInfoByComment(comment = '') {
     };
 }
 
+
 function getTitle(description, defaultTitle) {
-    if (!description) return null;
+    if (!description) return defaultTitle;
 
     description = description.trim();
 
@@ -100,6 +101,11 @@ function getTitle(description, defaultTitle) {
     if (sd && sd.length) return sd[0];
 
     return defaultTitle;
+}
+
+// TODO 根据field获取title，需要有个词库，从词库里查找
+function getTitleByField(field) {
+    console.log(field);
 }
 
 function logWarning(text) {
