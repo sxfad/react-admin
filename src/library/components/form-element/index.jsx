@@ -164,6 +164,8 @@ class FormElement extends Component {
         onChange: PropTypes.any,
         onClick: PropTypes.any,
         onBlur: PropTypes.any,
+        autoFocus: PropTypes.any,
+        htmlType: PropTypes.any,
     };
 
     static defaultProps = {
