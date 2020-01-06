@@ -25,6 +25,8 @@ catalina*
 /build
 /dist
 
+/local
+
 # misc
 .DS_Store
 .env.local
