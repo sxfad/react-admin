@@ -5,8 +5,9 @@
     "scripts": {
         "start": "node scripts/start.js",
         "build": "node scripts/build.js",
-        "build:pre": "PUBLIC_URL=/react-admin-live yarn build",
-        "test": "node scripts/test.js"
+        "build:pre": "BASE_NAME=/react-admin-live yarn build",
+        "test": "node scripts/test.js",
+        "gen": "node scripts/gen/index.js"
     },
     "dependencies": {
         "@babel/core": "7.1.6",

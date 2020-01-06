@@ -6,13 +6,13 @@ import {ColorPicker} from '@/library/components';
 import theme from '@/theme';
 import './style.less';
 
-const ROUTE_BASE_NAME = process.env.PUBLIC_URL || '';
+const PUBLIC_URL = process.env.PUBLIC_URL || '';
 
-const BASE_NAME = ROUTE_BASE_NAME ? ROUTE_BASE_NAME.replace('/', '') : '';
+const P_URL = PUBLIC_URL ? PUBLIC_URL.replace('/', '') : '';
 
-const OLD_LESS_ID = `less:${BASE_NAME ? BASE_NAME + '-' : ''}color:old`;
-const LESS_ID = `less:${BASE_NAME ? BASE_NAME + '-' : ''}color`;
-const LESS_URL = `${ROUTE_BASE_NAME}/less.min.js`;
+const OLD_LESS_ID = `less:${P_URL ? P_URL + '-' : ''}color:old`;
+const LESS_ID = `less:${P_URL ? P_URL + '-' : ''}color`;
+const LESS_URL = `${PUBLIC_URL}/less.min.js`;
 
 @config({
     ajax: true,

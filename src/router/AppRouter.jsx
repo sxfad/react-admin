@@ -6,17 +6,14 @@ import Error404 from '@/pages/error/Error404';
 import config from '@/commons/config-hoc';
 import KeepAuthRoute from './KeepAuthRoute';
 import KeepPage from './KeepPage';
-import routes, {noFrameRoutes, noAuthRoutes, /*commonPaths*/} from './routes';
-
-// 如果项目挂载到网站的子目录下，可以配置ROUTE_BASE_NAME， 开发时拿不到 PUBLIC_URL
-// export const ROUTE_BASE_NAME = '/react-admin-live';
+import routes, {noFrameRoutes, noAuthRoutes /*commonPaths*/} from './routes';
 
 // 直接挂载到域名根目录
-export const ROUTE_BASE_NAME = '';
+export const ROUTE_BASE_NAME = process.env.BASE_NAME || '';
 
 @config({
     query: true,
-    connect: state => ({userPaths: state.system.userPaths, systemNoFrame: state.system.noFrame})
+    connect: state => ({userPaths: state.system.userPaths, systemNoFrame: state.system.noFrame}),
 })
 export default class AppRouter extends Component {
 

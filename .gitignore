@@ -7,7 +7,6 @@ build-ui/
 .project
 .git/
 .svn*
-.settings/
 catalina*
 /logs/
 
@@ -38,6 +37,7 @@ yarn-debug.log*
 yarn-error.log*
 /src/pages/page-routes.js
 /src/models/all-models.js
+/src/pages/local
 /suixingpay-fe/
 /server/
 /docs/_book

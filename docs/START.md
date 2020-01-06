@@ -42,21 +42,12 @@ $ yarn build
 注：构建生成的文件在 `/react-admin/build` 目录下；[nginx配置参考](NGINX.md)。
 
 ## 域名子目录发布项目
-如果项目需要挂载到域名的一个子目录下，比如 `http://xxx.com/react-admin`，
-可以修改`src/router/AppRouter.jsx`中的`ROUTE_BASE_NAME`常量。
-生产构建时添加PUBLIC_URL参数（开发时不需要）。
-
-修改`src/router/AppRouter.jsx`：
-```
-...
-export const ROUTE_BASE_NAME = '/react-admin';
-...
-```
+如果项目需要挂载到域名的一个子目录下，比如 `http://xxx.com/react-admin`。添加BASE_NAME=/react-admin参数即可
 
 ### 开发
 启动：
 ```bash
-$ yarn start
+$ BASE_NAME=/react-admin yarn start
 ```
 访问：
 ```
@@ -67,10 +58,12 @@ http://localhost:4001/react-admin/
 
 构建：
 ```bash
-$ PUBLIC_URL=/react-admin yarn build
+$ BASE_NAME=/react-admin yarn build
 ```
 
 访问：
 ```
 http://xxx.com/react-admin
 ```
+
+注：windows环境下，使用git bash 要对/进行转义： `BASE_NAME=//react-admin yarn build`

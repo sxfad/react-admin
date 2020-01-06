@@ -1,6 +1,6 @@
 import {session} from '@/library/utils/storage';
 import {getNodeByPropertyAndValue, convertToTree} from '@/library/utils/tree-utils';
-import pathToRegexp from "path-to-regexp/index";
+import pathToRegexp from 'path-to-regexp/index';
 import {ROUTE_BASE_NAME} from '@/router/AppRouter';
 
 const CURRENT_USER_KEY = 'current-user';
@@ -49,6 +49,17 @@ export function getLoginUser() {
 export function isLogin() {
     // 如果当前用户存在，就认为已经登录了
     return !!getLoginUser();
+}
+
+/**
+ * 进入首页
+ */
+export function toHome() {
+    // 跳转页面，优先跳转上次登出页面
+    const lastHref = window.sessionStorage.getItem('last-href');
+
+    // 强制跳转 进入系统之后，需要一些初始化工作，需要所有的js重新加载
+    window.location.href = lastHref || `${ROUTE_BASE_NAME}/`;
 }
 
 /**
