@@ -33,3 +33,21 @@ react-admin是基于基于[React16.x](https://reactjs.org)、[Ant Design3.x](htt
 ├── README.md
 └── yarn.lock
 ```
+## 预览
+
+部分页面截图，完整项目预览地址[戳这里](https://open.vbill.cn/react-admin-live/)
+
+<table>
+    <tr>
+        <td><img src="imgs/login.jpg" alt="登录"/></td>
+        <td><img src="imgs/home.jpg" alt="首页"/></td>
+    </tr>
+    <tr>
+        <td><img src="imgs/users.jpg" alt="用户"/></td>
+        <td><img src="imgs/menu.jpg" alt="菜单&权限"/></td>
+    </tr>
+    <tr>
+        <td><img src="imgs/401.jpg" alt="未登录"/></td>
+        <td><img src="imgs/404.png" alt="页面不存在"/></td>
+    </tr>
+</table>

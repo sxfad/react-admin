@@ -1,5 +1,3 @@
-# Summary
-
 * [简介](README.md)
 * [快速开始](START.md)
 * [菜单配置](MENU.md)
