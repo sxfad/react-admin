@@ -1,11 +1,11 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 import {Helmet} from 'react-helmet';
 import {Form, Icon, Input, Button} from 'antd';
 import {setLoginUser, toHome} from '@/commons';
 import config from '@/commons/config-hoc';
-import Color from '@/layouts/header-color-picker'
+import Color from '@/layouts/header-color-picker';
 import Banner from './banner/index';
-import './style.less'
+import './style.less';
 
 function hasErrors(fieldsError) {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -32,7 +32,7 @@ export default class extends Component {
         validateFields(() => void 0);
 
         // 开发时方便测试，填写表单
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.NODE_ENV === 'development' || process.env.BASE_NAME === '/react-admin-live') {
             setFieldsValue({userName: 'admin', password: '111'});
         }
 
