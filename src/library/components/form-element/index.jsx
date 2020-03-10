@@ -239,18 +239,18 @@ class FormElement extends Component {
             minLength,
         } = this.props;
 
-        const rules = [];
+        const rules = [...decoratorRues];
 
         // 如果存在required属性，自动添加必填校验
-        if (required && !decoratorRues.find(item => 'required' in item)) {
+        if (required && !rules.find(item => 'required' in item)) {
             rules.push({required: true, message: `${placeholder}!`});
         }
 
-        if (maxLength !== void 0 && !decoratorRues.find(item => 'max' in item)) {
+        if (maxLength !== void 0 && !rules.find(item => 'max' in item)) {
             rules.push({max: maxLength, message: `最大长度不能超过 ${maxLength} 个字符！`});
         }
 
-        if (minLength !== void 0 && !decoratorRues.find(item => 'min' in item)) {
+        if (minLength !== void 0 && !rules.find(item => 'min' in item)) {
             rules.push({min: minLength, message: `最小长度不能低于 ${minLength} 个字符！`});
         }
 
