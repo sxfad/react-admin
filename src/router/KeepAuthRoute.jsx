@@ -17,7 +17,7 @@ import {keepAliveRoutes} from './routes';
             selectedMenu: state.menu.selectedMenu,
             keepAliveSystem: state.system.keepAlive,
             tabsShow: state.settings.tabsShow,
-        }
+        };
     },
 })
 export default class KeepAuthRoute extends React.Component {
@@ -108,7 +108,7 @@ export default class KeepAuthRoute extends React.Component {
                             setTimeout(() => {
                                 currentTab.component = TabComponent;
                                 system.setTabs([...tabs]);
-                            })
+                            });
                         }
 
                         // 添加一个标签 当前地址对应的tab页不存在，进行添加
@@ -146,7 +146,7 @@ export default class KeepAuthRoute extends React.Component {
                                 newAddTab.text = this.props.title;
                                 newAddTab.icon = this.props.selectedMenu?.icon;
                                 system.setTabs([...tabs]);
-                            })
+                            });
                         }
                     }
 
