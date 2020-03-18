@@ -16,7 +16,6 @@ import {
     Tooltip,
     Transfer,
 } from 'antd';
-import JsonEditor from '../json-editor';
 import IconPicker from '../icon-picker';
 import './index.less';
 
@@ -63,7 +62,6 @@ function getElement(item) {
         if (type === 'number') return <InputNumber {...commonProps} {...props}/>;
         if (type === 'textarea') return <TextArea {...commonProps} {...props}/>;
         if (type === 'password') return <Password {...commonProps} {...props}/>;
-        if (type === 'json') return <JsonEditor {...commonProps} {...props}/>;
 
         return <Input {...commonProps} type={type} {...props}/>;
     }

@@ -6,7 +6,6 @@ export DraggableTabsBar from './draggable-tabs-bar';
 export FormElement from './form-element';
 export FormRow from './form-row';
 export IconPicker from './icon-picker';
-export JsonEditor  from './json-editor';
 export modal  from './modal-hoc';
 export ModalContent from './modal-hoc/ModalContent';
 export Operator  from './operator';

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import Example from './Example';
-import config from "@/commons/config-hoc";
+import config from '@/commons/config-hoc';
+import PageContent from '@/layouts/page-content';
 
 @config({
     path: '/',
@@ -11,6 +11,10 @@ import config from "@/commons/config-hoc";
 export default class Home extends Component {
 
     render() {
-        return <Example/>
+        return (
+            <PageContent>
+                <h1>首页</h1>
+            </PageContent>
+        );
     }
 }

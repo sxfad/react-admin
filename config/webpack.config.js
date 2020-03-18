@@ -24,6 +24,8 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt')
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const ConfigGrabWebpackPlugin = require('./webpack-plugin/config-grab-webpack-plugin');
 const ModelGrabWebpackPlugin = require('./webpack-plugin/model-grab-webpack-plugin');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const theme = require('../src/theme');
 
@@ -459,6 +461,14 @@ module.exports = function (webpackEnv) {
             ],
         },
         plugins: [
+            process.env.ANALYZ ? new BundleAnalyzerPlugin() : undefined,
+
+            new webpack.DllReferencePlugin({
+                manifest: require(path.join(__dirname, 'dll', 'vendor-manifest.json')),
+            }),
+            new webpack.DllReferencePlugin({
+                manifest: require(path.join(__dirname, 'dll', 'reactVendor-manifest.json')),
+            }),
             new ModelGrabWebpackPlugin({
                 paths: [
                     path.resolve(__dirname, '../src/models/**/*.js'),
@@ -487,6 +497,7 @@ module.exports = function (webpackEnv) {
                 output: path.resolve(__dirname, '../src/pages/page-routes.js'),
                 watch: isEnvDevelopment,
             }),
+
             // Generates an `index.html` file with the <script> injected.
             new HtmlWebpackPlugin(
                 Object.assign(
@@ -513,6 +524,11 @@ module.exports = function (webpackEnv) {
                         : undefined,
                 ),
             ),
+
+            new AddAssetHtmlPlugin({
+                filepath: path.resolve(__dirname, './dll/*.dll.js'),
+            }),
+
             // Inlines the webpack runtime script. This script is too small to warrant
             // a network request.
             isEnvProduction &&
