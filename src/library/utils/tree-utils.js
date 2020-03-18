@@ -3,7 +3,7 @@
  * @module 树操作工具
  */
 
-import {cloneDeep} from 'lodash/lang';
+import {cloneDeep} from 'lodash';
 import {uniqueArray, arrayRemoveAll, arrayRemove} from './index';
 
 /**

@@ -1,5 +1,5 @@
 import {createAction, handleActions} from 'redux-actions';
-import {identity} from 'lodash/util';
+import {identity} from 'lodash';
 import actionUtils from './action-utils';
 import checkAction from './check-action';
 import _handleAsyncReducer from './handle-async-reducer';

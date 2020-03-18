@@ -1,4 +1,4 @@
-import {cloneDeep} from 'lodash/lang';
+import {cloneDeep} from 'lodash';
 
 
 /**

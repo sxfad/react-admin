@@ -16,6 +16,7 @@ module.exports = {
             'uuid',
             'pubsub-js',
             'lodash',
+            'qs',
         ],
         reactVendor: [
             'react',

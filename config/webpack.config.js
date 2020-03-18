@@ -26,6 +26,10 @@ const ConfigGrabWebpackPlugin = require('./webpack-plugin/config-grab-webpack-pl
 const ModelGrabWebpackPlugin = require('./webpack-plugin/model-grab-webpack-plugin');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const os = require('os');
+// 开辟一个线程池
+// 拿到系统CPU的最大核数，happypack 将编译工作灌满所有线程
+const cupCount = os.cpus().length;
 
 const theme = require('../src/theme');
 
@@ -302,21 +306,27 @@ module.exports = function (webpackEnv) {
 
                 // First, run the linter.
                 // It's important to do this before Babel processes the JS.
-                {
+                // 生产构建不是用eslint
+                !isEnvProduction ? {
                     test: /\.(js|mjs|jsx)$/,
                     enforce: 'pre',
                     use: [
                         {
+                            loader: 'thread-loader',
+                            options: {
+                                workers: cupCount,
+                            },
+                        },
+                        {
+                            loader: require.resolve('eslint-loader'),
                             options: {
                                 formatter: require.resolve('react-dev-utils/eslintFormatter'),
                                 eslintPath: require.resolve('eslint'),
-
                             },
-                            loader: require.resolve('eslint-loader'),
                         },
                     ],
                     include: paths.appSrc,
-                },
+                } : {},
                 {
                     // "oneOf" will traverse all following loaders until one will
                     // match the requirements. When no loader matches it will fall
@@ -338,32 +348,42 @@ module.exports = function (webpackEnv) {
                         {
                             test: /\.(js|mjs|jsx|ts|tsx)$/,
                             include: paths.appSrc,
-                            loader: require.resolve('babel-loader'),
-                            options: {
-                                customize: require.resolve(
-                                    'babel-preset-react-app/webpack-overrides',
-                                ),
+                            use: [
+                                {
+                                    loader: 'thread-loader',
+                                    options: {
+                                        workers: cupCount,
+                                    },
+                                },
+                                {
+                                    loader: require.resolve('babel-loader'),
+                                    options: {
+                                        customize: require.resolve(
+                                            'babel-preset-react-app/webpack-overrides',
+                                        ),
 
-                                plugins: [
-                                    [
-                                        require.resolve('babel-plugin-named-asset-import'),
-                                        {
-                                            loaderMap: {
-                                                svg: {
-                                                    ReactComponent:
-                                                        '@svgr/webpack?-prettier,-svgo![path]',
+                                        plugins: [
+                                            [
+                                                require.resolve('babel-plugin-named-asset-import'),
+                                                {
+                                                    loaderMap: {
+                                                        svg: {
+                                                            ReactComponent:
+                                                                '@svgr/webpack?-prettier,-svgo![path]',
+                                                        },
+                                                    },
                                                 },
-                                            },
-                                        },
-                                    ],
-                                ],
-                                // This is a feature of `babel-loader` for webpack (not Babel itself).
-                                // It enables caching results in ./node_modules/.cache/babel-loader/
-                                // directory for faster rebuilds.
-                                cacheDirectory: true,
-                                cacheCompression: isEnvProduction,
-                                compact: isEnvProduction,
-                            },
+                                            ],
+                                        ],
+                                        // This is a feature of `babel-loader` for webpack (not Babel itself).
+                                        // It enables caching results in ./node_modules/.cache/babel-loader/
+                                        // directory for faster rebuilds.
+                                        cacheDirectory: true,
+                                        cacheCompression: isEnvProduction,
+                                        compact: isEnvProduction,
+                                    },
+                                },
+                            ],
                         },
                         // Process any JS outside of the app with Babel.
                         // Unlike the application JS, we only compile the standard ES features.
@@ -430,6 +450,8 @@ module.exports = function (webpackEnv) {
                         {
                             test: lessRegex,
                             exclude: lessModulePaths,
+                            // include: paths.appSrc,
+                            include: [paths.appSrc, /node_modules\/antd/],
                             use: getStyleLoaders(
                                 {
                                     importLoaders: 2,
