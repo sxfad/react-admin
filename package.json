@@ -5,7 +5,7 @@
     "scripts": {
         "start": "node scripts/start.js",
         "build": "node scripts/build.js",
-        "build:pre": "cross-env BASE_NAME=/react-admin-live  cross-env MOCK=true yarn build",
+        "build:pre": "cross-env PUBLIC_URL=/react-admin-live BASE_NAME=/react-admin-live  cross-env MOCK=true yarn build",
         "build:dll": "rimraf config/dll && webpack --config config/webpack.dll.config.js",
         "build:analyz": "cross-env ANALYZ=true yarn build",
         "test": "node scripts/test.js",

@@ -42,7 +42,9 @@ $ yarn build
 注：构建生成的文件在 `/react-admin/build` 目录下；[nginx配置参考](NGINX.md)。
 
 ## 域名子目录发布项目
-如果项目需要挂载到域名的一个子目录下，比如 `http://xxx.com/react-admin`。添加BASE_NAME=/react-admin参数即可
+如果项目需要挂载到域名的一个子目录下，比如 `http://xxx.com/react-admin`。添加命令行参数 BASE_NAME=/react-admin
+
+注：如果前端构建完成的静态页面，放在nginx静态目录的react-admin目录下，添加命令行参数 PUBLIC_URL=/react-admin;
 
 ### 开发
 启动：
