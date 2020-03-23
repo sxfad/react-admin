@@ -10,6 +10,7 @@ export default class TableComponent extends Component {
         serialNumber: PropTypes.bool, // 是否显示序号
         serialText: PropTypes.string,
         otherHeight: PropTypes.number,
+        offsetHeight: PropTypes.number,
         pagination: PropTypes.bool,
     };
 
@@ -76,6 +77,8 @@ export default class TableComponent extends Component {
             const otherHeight = tableOffsetTop + tableHeadHeight + bottomHeight;
 
             tableBodyHeight = windowHeight - otherHeight;
+
+            if ('offsetHeight' in this.props) tableBodyHeight = tableBodyHeight - this.props.offsetHeight;
         }
 
         if (dataSource?.length) {

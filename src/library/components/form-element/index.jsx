@@ -395,7 +395,8 @@ class FormElement extends Component {
         eleStyle = {...eleStyle, ...elementStyle};
 
         // 处理placeholder
-        if (others.placeholder === void 0) {
+        // 处理placeholder
+        if (!('placeholder' in others)) {
             if (isInputLikeElement(type)) {
                 others.placeholder = `请输入${label}`;
             } else if (type === 'date-range') {
@@ -403,6 +404,10 @@ class FormElement extends Component {
             } else {
                 others.placeholder = `请选择${label}`;
             }
+        }
+
+        if (!('allowClear' in others)) {
+            others.allowClear = true;
         }
 
         nextDecorator.rules = this.getRules(nextDecorator, others.placeholder);
