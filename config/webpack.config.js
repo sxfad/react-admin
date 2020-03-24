@@ -451,7 +451,7 @@ module.exports = function (webpackEnv) {
                             test: lessRegex,
                             exclude: lessModulePaths,
                             // include: paths.appSrc,
-                            include: [paths.appSrc, /node_modules\/antd/],
+                            // include: [paths.appSrc, /node_modules\/antd/],
                             use: getStyleLoaders(
                                 {
                                     importLoaders: 2,
