@@ -34,10 +34,8 @@ export default class Some extends React.Component {
 ### 编写主题
 - less文件中使用主题相关变量；
 - 编写`/src/theme.js`通过[less-loader](https://github.com/webpack-contrib/less-loader)的`modifyVars`覆盖less中的变量；
-- 自定义的颜色元素，如果参与主题，不能使用Css Module（无法样式覆盖），同时需要修改`/public/color.less`；
 
 注：目前每次修改了theme.js 需要重新yarn start 才能生效
 
 ### 参考
 - Ant Design 主题 参考：https://ant-design.gitee.io/docs/react/customize-theme-cn
-- `/public/color.less` 来自于 https://ant-design.gitee.io/color.less （经过整理）  

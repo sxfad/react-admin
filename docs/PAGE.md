@@ -6,7 +6,7 @@
 
 ```jsx
 import React, {Component} from 'react';
-import config from '@/commons/config-hoc';
+import config from 'src/commons/config-hoc';
 
 @config({
     path: '/page/path',
@@ -38,7 +38,7 @@ appendBreadcrumbs|array 或 function(props)|\[\]|在当前面包屑基础上添�
 pageHead|boolean|-|页面头部是否显示
 side|boolean|-|页面左侧是否显示
 sideCollapsed|boolean|-|左侧是否收起
-ajax|boolean|false|是否添加ajax高阶组件，内部可以通过this.props.ajax使用ajax API，组件卸载时，会自动打断未完成的请求
+ajax|boolean|true|是否添加ajax高阶组件，内部可以通过this.props.ajax使用ajax API，组件卸载时，会自动打断未完成的请求
 router|boolean|false|是否添加withRouter装饰器，组件内部可以使用this.props.history等API
 query|boolean|false|是否添加地址查询字符串转换高阶组件，内部可以通过this.props.query访问查询字符串
 connect|boolean 或 function(state)|false|是否与redux进行连接，true：只注入了this.props.action相关方法；false：不与redux进行连接；(state) => ({title: state.page.title})：将函数返回的数据注入this.props

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Icon} from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
 import {
     SortableContainer,
     SortableElement
@@ -50,7 +50,7 @@ const SortableContainerList = SortableContainer(props => {
                     (
                         closable ? (
                             <div key="close" className="close-wrapper" onClick={(e) => onClose && onClose(item, e)}>
-                                <Icon type="close"/>
+                                <CloseOutlined />
                             </div>
                         ) : null
                     )

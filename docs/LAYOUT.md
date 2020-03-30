@@ -51,7 +51,7 @@ closeRightTabs(targetPath)|关闭targetPath对应的tab页右侧所有的tab页
 
 使用方式：
 ```jsx
-import config from '@/commons/config-hoc';
+import config from 'src/commons/config-hoc';
 
 @config({
     connect: true,

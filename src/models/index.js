@@ -8,7 +8,7 @@ import {
     getActionsAndReducers,
     middlewareAsyncActionCallback,
     middlewareSyncReducerToLocalStorage,
-} from '@/library/redux';
+} from 'src/library/redux';
 import * as models from './all-models';
 
 const {actions, reducers} = getActionsAndReducers({models});

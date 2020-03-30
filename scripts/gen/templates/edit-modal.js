@@ -11,9 +11,9 @@ module.exports = function (config) {
 
     return `import React, {Component} from 'react';
 import {Form} from 'antd';
-import {FormElement} from '@/library/components';
-import config from '@/commons/config-hoc';
-import {ModalContent} from '@/library/components';
+import {FormElement} from 'src/library/components';
+import config from 'src/commons/config-hoc';
+import {ModalContent} from 'src/library/components';
 
 @config({
     ajax: true,
@@ -21,7 +21,6 @@ import {ModalContent} from '@/library/components';
         title: props => props.isEdit ? '修改' : '添加',
     },
 })
-@Form.create()
 export default class EditModal extends Component {
     state = {
         loading: false, // 页面加载loading
@@ -49,50 +48,48 @@ export default class EditModal extends Component {
             .finally(() => this.setState({loading: false}));
     };
 
-    handleSubmit = () => {
+    handleSubmit = (values) => {
         if (this.state.loading) return;
 
-        this.props.form.validateFieldsAndScroll((err, values) => {
-            if (err) return;
+        const {isEdit} = this.props;
+        const successTip = isEdit ? '修改成功！' : '添加成功！';
+        const ajaxMethod = isEdit ? this.props.ajax.${base.ajax.modify.method} : this.props.ajax.${base.ajax.add.method};
+        const ajaxUrl = isEdit ? '${base.ajax.modify.url}' : '${base.ajax.add.url}';
 
-            const {isEdit} = this.props;
-            const successTip = isEdit ? '修改成功！' : '添加成功！';
-            const ajaxMethod = isEdit ? this.props.ajax.${base.ajax.modify.method} : this.props.ajax.${base.ajax.add.method};
-            const ajaxUrl = isEdit ? '${base.ajax.modify.url}' : '${base.ajax.add.url}';
-
-            this.setState({loading: true});
-            ajaxMethod(ajaxUrl, values, {successTip})
-                .then(() => {
-                    const {onOk} = this.props;
-                    onOk && onOk();
-                })
-                .finally(() => this.setState({loading: false}));
-        });
+        this.setState({loading: true});
+        ajaxMethod(ajaxUrl, values, {successTip})
+            .then(() => {
+                const {onOk} = this.props;
+                onOk && onOk();
+            })
+            .finally(() => this.setState({loading: false}));
     };
 
     render() {
-        const {isEdit, form} = this.props;
+        const {isEdit} = this.props;
         const {loading, data} = this.state;
         const formProps = {
             labelWidth: 100,
-            form,
         };
         return (
             <ModalContent
                 loading={loading}
                 okText="保存"
                 cancelText="重置"
-                onOk={this.handleSubmit}
-                onCancel={() => form.resetFields()}
+                onOk={() => this.form.submit()}
+                onCancel={() => this.form.resetFields()}
             >
-                <Form onSubmit={this.handleSubmit}>
-                    {isEdit ? <FormElement {...formProps} type="hidden" field="id" initialValue={data.id}/> : null}
+                <Form
+                    ref={form => this.form = form}
+                    onFinish={this.handleSubmit}
+                    initialValues={data}
+                >
+                    {isEdit ? <FormElement {...formProps} type="hidden" name="id"/> : null}
                     ${forms.map(item => `<FormElement
                         {...formProps}
                         ${item.type !== 'input' ? `type="${item.type}"` : DELETE_THIS_LINE}
                         label="${item.label}"
-                        field="${item.field}"
-                        initialValue={data.${item.field}}
+                        name="${item.field}"
                         ${item.required ? 'required' : DELETE_THIS_LINE}
                         ${item.maxLength ? `maxLength={${item.maxLength}}` : DELETE_THIS_LINE}
                         ${WITH_OPTIONS_TYPE.includes(item.type) ? `options={[

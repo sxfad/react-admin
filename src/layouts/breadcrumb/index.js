@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Breadcrumb, Icon} from 'antd';
+import {Icon} from 'src/library/components';
+import { Breadcrumb } from 'antd';
 import Link from '../page-link';
 import './style.less';
 
@@ -36,7 +37,7 @@ export default class BreadcrumbComponent extends Component {
                         {text}
                     </Item>
                 );
-            })
+            });
         }
         return null;
     }

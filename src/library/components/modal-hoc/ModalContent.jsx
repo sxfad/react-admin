@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {Button, Spin} from 'antd';
-import PropTypes from "prop-types";
-import {getElementTop, getParentByClassName} from '@/library/utils';
+import PropTypes from 'prop-types';
+import {getElementTop, getParentByClassName} from 'src/library/utils';
 
 /**
  * Modal 的内容容器，默认会使用屏幕剩余空间，内部内容滚动
@@ -18,6 +18,7 @@ export default class ModalContent extends Component {
         otherHeight: PropTypes.number,  // 除了主体内容之外的其他高度，用于计算主体高度；
         footer: PropTypes.any,          // 底部
         okText: PropTypes.any,          // 确定按钮文案
+        okHtmlType: PropTypes.any,      // 确定按钮类型
         resetText: PropTypes.any,       // 重置按钮文案
         cancelText: PropTypes.any,      // 取消按钮文案
         onOk: PropTypes.func,           // 确定事件
@@ -31,8 +32,9 @@ export default class ModalContent extends Component {
         loading: false,
         style: {},
         bodyStyle: {},
-        surplusSpace: true,
+        surplusSpace: false,
         okText: '确定',
+        okHtmlType: '',
         resetText: '重置',
         cancelText: '取消',
         onOk: () => void 0,
@@ -51,7 +53,7 @@ export default class ModalContent extends Component {
     componentWillUnmount() {
         const {surplusSpace} = this.props;
 
-        if (surplusSpace) window.removeEventListener('resize', this.handleWindowResize)
+        if (surplusSpace) window.removeEventListener('resize', this.handleWindowResize);
     }
 
     handleWindowResize = () => {
@@ -85,6 +87,7 @@ export default class ModalContent extends Component {
             style,
             bodyStyle,
             footer,
+            okHtmlType,
             okText,
             resetText,
             cancelText,
@@ -110,7 +113,7 @@ export default class ModalContent extends Component {
                         <div className="ant-modal-footer" style={{flex: 0}}>
                             {footer ? footer : (
                                 <Fragment>
-                                    <Button type="primary" onClick={onOk}>{okText}</Button>
+                                    <Button type="primary" onClick={onOk} htmlType={okHtmlType}>{okText}</Button>
                                     {onReset ? <Button onClick={onReset}>{resetText}</Button> : null}
                                     <Button onClick={onCancel}>{cancelText}</Button>
                                 </Fragment>

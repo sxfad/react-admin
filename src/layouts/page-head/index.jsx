@@ -23,9 +23,7 @@ export default class PageHead extends Component {
                 <h1>{title}</h1>
 
                 <div styleName="breadcrumb">
-                    <Breadcrumb
-                        dataSource={breadcrumbs}
-                    />
+                    <Breadcrumb dataSource={breadcrumbs}/>
                 </div>
             </div>
         );

@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {getScrollBarWidth} from '@/library/utils';
-import SideMenu from '../side-menu';
+import {getScrollBarWidth} from 'src/library/utils';
+import SideMenu from './side-menu';
 import {connect} from '../../models/index';
-import {PAGE_FRAME_LAYOUT} from '@/models/settings';
+import {PAGE_FRAME_LAYOUT} from 'src/models/settings';
 import DragBar from './DragBar';
 import './style.less';
 

@@ -1,24 +1,22 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Table} from 'antd';
-import {Pagination} from '@/library/components';
-import {getElementTop} from '@/library/utils';
+import {getElementTop} from 'src/library/utils';
 
 export default class TableComponent extends Component {
     static propTypes = {
         surplusSpace: PropTypes.bool, // 是否使用剩余空间，如果 true 表格将铺满全屏
         serialNumber: PropTypes.bool, // 是否显示序号
+        pageSize: PropTypes.number,
+        pageNum: PropTypes.number,
         serialText: PropTypes.string,
         otherHeight: PropTypes.number,
         offsetHeight: PropTypes.number,
-        pagination: PropTypes.bool,
     };
 
     static defaultProps = {
         surplusSpace: true,
-        pagination: true,
-        pageSize: 10,
-        pageNum: 1,
+        pagination: false,
         serialText: '#',
     };
 
@@ -51,9 +49,9 @@ export default class TableComponent extends Component {
     }
 
     setTableBodyHeight = () => {
-        this.tableBody = this.wrapper.querySelector('.ant-table-body');
+        this.tableBody = this.wrapper.querySelector('.ant-table-tbody');
         this.tablePlaceholder = this.wrapper.querySelector('.ant-table-placeholder');
-        this.tableHead = this.wrapper.querySelector('.ant-table-thead');
+        this.tableHead = this.wrapper.querySelector('.ant-table-header');
 
         const {pathname, search} = window.location;
         const currentPath = window.decodeURIComponent(`${pathname}${search}`);
@@ -69,7 +67,7 @@ export default class TableComponent extends Component {
             const {otherHeight} = this.props;
             tableBodyHeight = windowHeight - otherHeight;
         } else {
-            const tableHeadHeight = this.tableHead.offsetHeight + 1;
+            const tableHeadHeight = this.tableHead?.offsetHeight + 1 || 0;
             const paginationHeight = this.pagination ? this.pagination.offsetHeight + 8 : 0;
             const bottomHeight = paginationHeight + 10 + 10;
 
@@ -85,7 +83,7 @@ export default class TableComponent extends Component {
             this.tableBody.style.height = `${tableBodyHeight}px`;
         } else {
             this.tableBody.style.height = '0px';
-            this.tablePlaceholder.style.height = `${tableBodyHeight}px`;
+            this.tablePlaceholder.style.height = `${tableBodyHeight - 36}px`;
         }
 
         this.setState({tableBodyHeight});
@@ -100,15 +98,8 @@ export default class TableComponent extends Component {
             serialText,
             // 分页属性
 
-            size,
-            showSizeChanger,
-            showQuickJumper,
-            showMessage,
             pageSize,
             pageNum,
-            total,
-            onPageNumChange,
-            onPageSizeChange,
 
             rowSelection,
             columns,
@@ -122,13 +113,24 @@ export default class TableComponent extends Component {
         if (!rowSelection) rowSelection = void 0;
 
         if (serialNumber) {
+            if (this.pagination) {
+                if (!('pageNum' in this.props)) console.error('分页表格如果显示序号，需要传递pageNum属性');
+                if (!('pageSize' in this.props)) console.error('分页表格如果显示序号，需要传递pageSize属性');
+            }
+
             columns = [
                 {
                     title: serialText,
                     width: 70,
                     dataIndex: '__num',
                     key: '__num',
-                    render: (value, record, index) => (index + 1) + pageSize * (pageNum - 1),
+                    render: (value, record, index) => {
+                        if (this.pagination) {
+                            return (index + 1) + pageSize * (pageNum - 1);
+                        } else {
+                            return index + 1;
+                        }
+                    },
                 },
                 ...columns,
             ];
@@ -143,19 +145,6 @@ export default class TableComponent extends Component {
                     {...others}
                     columns={columns}
                 />
-                {pagination ? (
-                    <Pagination
-                        size={size}
-                        showSizeChanger={showSizeChanger}
-                        showQuickJumper={showQuickJumper}
-                        showMessage={showMessage}
-                        pageSize={pageSize}
-                        pageNum={pageNum}
-                        total={total}
-                        onPageNumChange={onPageNumChange}
-                        onPageSizeChange={onPageSizeChange}
-                    />
-                ) : null}
             </div>
         );
     }

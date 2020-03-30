@@ -12,16 +12,15 @@ module.exports = function (config) {
 
     return `import React, {Component} from 'react';
 import {Form, Button} from 'antd';
-import {FormElement, FormRow} from '@/library/components';
-import config from '@/commons/config-hoc';
-import PageContent from '@/layouts/page-content';
+import {FormElement, FormRow} from 'src/library/components';
+import config from 'src/commons/config-hoc';
+import PageContent from 'src/layouts/page-content';
 
 @config({
     title: props => props.match.params.id === ':id' ? '添加' : '修改',
     path: '${base.path}/_/edit/:id',
     ajax: true,
 })
-@Form.create()
 export default class Edit extends Component {
     state = {
         loading: false, // 页面加载loading
@@ -53,49 +52,44 @@ export default class Edit extends Component {
             .finally(() => this.setState({loading: false}));
     };
 
-    handleSubmit = () => {
+    handleSubmit = (values) => {
         if (this.state.loading) return;
 
-        this.props.form.validateFieldsAndScroll((err, values) => {
-            if (err) return;
+        const {isEdit} = this.props;
+        const successTip = isEdit ? '修改成功！' : '添加成功！';
+        const ajaxMethod = isEdit ? this.props.ajax.${base.ajax.modify.method} : this.props.ajax.${base.ajax.add.method};
+        const ajaxUrl = isEdit ? '${base.ajax.modify.url}' : '${base.ajax.add.url}';
 
-            const {isEdit} = this.props;
-            const successTip = isEdit ? '修改成功！' : '添加成功！';
-            const ajaxMethod = isEdit ? this.props.ajax.${base.ajax.modify.method} : this.props.ajax.${base.ajax.add.method};
-            const ajaxUrl = isEdit ? '${base.ajax.modify.url}' : '${base.ajax.add.url}';
-
-            this.setState({loading: true});
-            ajaxMethod(ajaxUrl, values, {successTip})
-                .then(() => {
-                    const {onOk} = this.props;
-                    onOk && onOk();
-                })
-                .finally(() => this.setState({loading: false}));
-        });
+        this.setState({loading: true});
+        ajaxMethod(ajaxUrl, values, {successTip})
+            .then(() => {
+                const {onOk} = this.props;
+                onOk && onOk();
+            })
+            .finally(() => this.setState({loading: false}));
     };
 
     render() {
-        const {form} = this.props;
         const {loading, data, isEdit} = this.state;
         const formProps = {
             labelWidth: 100,
-            form,
             width: '50%',
         };
 
         return (
-            <PageContent
-                loading={loading}
-            >
-                <Form onSubmit={this.handleSubmit}>
-                    {isEdit ? <FormElement {...formProps} type="hidden" field="id" initialValue={data.id}/> : null}
+            <PageContent loading={loading}>
+                <Form
+                    ref={form => this.form = form}
+                    onFinish={this.handleSubmit}
+                    initialValues={data}
+                >
+                    {isEdit ? <FormElement {...formProps} type="hidden" name="id"/> : null}
                     <FormRow>
                         ${forms.map(item => `<FormElement
                             {...formProps}
                             ${item.type !== 'input' ? `type="${item.type}"` : DELETE_THIS_LINE}
                             label="${item.label}"
-                            field="${item.field}"
-                            initialValue={data.${item.field}}
+                            name="${item.field}"
                             ${item.required ? 'required' : DELETE_THIS_LINE}
                             ${item.maxLength ? `maxLength={${item.maxLength}}` : DELETE_THIS_LINE}
                             ${WITH_OPTIONS_TYPE.includes(item.type) ? `options={[
@@ -105,9 +99,9 @@ export default class Edit extends Component {
                         />`).join('\n                        ')}
                     </FormRow>
                     <FormRow>
-                        <FormElement {...formProps} layout>
-                            <Button type="primary" onClick={this.handleSubmit}>保存</Button>
-                            <Button onClick={() => form.resetFields()}>重置</Button>
+                        <FormElement {...formProps} layout label=" ">
+                            <Button type="primary" htmlType="submit">保存</Button>
+                            <Button onClick={() => this.form.resetFields()}>重置</Button>
                         </FormElement>
                     </FormRow>
                 </Form>

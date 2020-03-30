@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import PubSub from 'pubsub-js';
-import {compose} from '@/library/utils';
-import queryHoc from '@/library/utils/query-hoc';
-import {connect as reduxConnect} from '@/models';
-import {ajaxHoc} from '@/commons/ajax';
-import pubSubHoc from '@/library/utils/pub-sub-hoc';
-import eventHoc from '@/library/utils/dom-event-hoc';
-import {modal as modalHoc} from '@/library/components';
-import {ROUTE_BASE_NAME} from '@/router/AppRouter';
+import {compose} from 'src/library/utils';
+import queryHoc from 'src/library/utils/query-hoc';
+import {connect as reduxConnect} from 'src/models';
+import {ajaxHoc} from 'src/commons/ajax';
+import pubSubHoc from 'src/library/utils/pub-sub-hoc';
+import eventHoc from 'src/library/utils/dom-event-hoc';
+import {modal as modalHoc} from 'src/library/components';
+import {ROUTE_BASE_NAME} from 'src/router/AppRouter';
 
 /**
  * 页面配置高阶组件，整合了多个高阶组件
@@ -30,7 +30,7 @@ export default (options) => {
             sideCollapsed,          // 左侧是否收起
             router = false,         // 是否添加withRouter装饰器，如果设置了path，将自动使用了withRouter，组件内部可以使用history等API
             query = false,          // 是否添加地址查询字符串转换高阶组件，内部可以通过this.props.query访问查询字符串
-            ajax = false,           // 是否添加ajax高阶组件，内部可以通过this.props.ajax使用ajax API
+            ajax = true,           // 是否添加ajax高阶组件，内部可以通过this.props.ajax使用ajax API
             connect = false,        // 是否与redux进行连接，true：只注入了this.props.action相关方法；false：不与redux进行连接；(state) => ({title: state.page.title})：将函数返回的数据注入this.props
             event = false,          // 是否添加event高阶组件，可以使用this.props.addEventListener添加dom事件，并在组件卸载时会自动清理；通过this.props.removeEventListener移出dom事件
             pubSub = false,         // 是否添加发布订阅高阶组件，可以使用this.props.subscribe(topic, (msg, data) => {...})订阅事件，并在组件卸载时，会自动取消订阅; 通过this.props.publish(topic, data)发布事件

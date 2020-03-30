@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Radio, Card, Checkbox} from 'antd';
-import PageContent from '@/layouts/page-content';
-import config from '@/commons/config-hoc';
+import PageContent from 'src/layouts/page-content';
+import config from 'src/commons/config-hoc';
 
 @config({
     path: '/settings',
@@ -88,7 +88,7 @@ export default class Settings extends Component {
             lineHeight: '30px',
         };
 
-        
+
         return (
             <PageContent style={{display: 'flex', paddingTop: 50, justifyContent: 'center'}}>
                 <div style={{width: 500}}>
@@ -127,7 +127,7 @@ export default class Settings extends Component {
                         </div>
                     </Card>
                     <Card title="菜单设置">
-                        <div style={{borderBottom: '1px solid #e8e8e8', paddingBottom: 8, marginBottom: 8}}>
+                        <div style={{borderBottom: '1px solid #d9d9d9', paddingBottom: 8, marginBottom: 8}}>
                             <Checkbox
                                 onChange={this.handleKeepOtherMenuOpenChange}
                                 checked={keepOtherMenuOpen}

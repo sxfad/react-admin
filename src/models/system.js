@@ -1,4 +1,4 @@
-import theme from '@/theme';
+import theme from 'src/theme';
 
 // 进行本地存储同步，syncState中的同步是区分用户的，会导致未登录的页面与登录的页面有差异
 const getItem = (key) => window.localStorage.getItem(key);

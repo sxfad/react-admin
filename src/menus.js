@@ -19,11 +19,12 @@ export default function getMenus(userId) {
         {key: '1-4-3-4', parentKey: '1-4-3', text: 'level-1-4-3-4', icon: 'align-left'},
 
         {key: 'antDesign', text: 'Ant Design 官网', icon: 'ant-design', url: 'https://ant-design.gitee.io', target: '', order: 2000},
-        {key: 'document', text: '文档', icon: 'book', url: 'https://open.vbill.cn/react-admin', target: '_blank', order: 1200},
+        {key: 'document', text: '文档', icon: 'book', url: 'https://open.vbill.cn/react-admin', target: '', order: 1200},
 
-        {key: 'ajax', text: 'ajax请求', icon: 'api', path: '/example/ajax', order: 998},
         {key: 'customer-header', text: '自定义头部', icon: 'api', path: '/example/customer-header', order: 998},
-        {key: 'user', text: '用户列表', icon: 'user', path: '/users', order: 900},
+        {key: 'user', text: '用户管理', icon: 'user', path: '/users', order: 900},
+        {key: 'role', text: '角色管理', icon: 'lock', path: '/roles', order: 900},
+        {key: 'menu', text: '菜单管理', icon: 'align-left', path: '/menu-permission', order: 900},
         {key: 'page404', text: '404页面不存在', icon: 'file-search', path: '/404', order: 700},
     ]);
 }

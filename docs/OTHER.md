@@ -17,7 +17,7 @@
 
 
 ## Webpack
-### 使用了alias @: /path/to/src
+### 使用了alias {'@': '/path/to/src', src:'/path/to/src'}
 
 - 方便路径书写，不必关心相对路径结构
 - 复制粘贴到其他文件，不必修改路径

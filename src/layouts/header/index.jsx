@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Icon} from 'antd';
+import {MenuFoldOutlined, MenuUnfoldOutlined} from '@ant-design/icons';
 import Link from '../page-link';
-import Logo from '../logo';
-import HeaderUser from '../header-user';
-import HeaderMenu from '../header-menu';
-import HeaderFullScreen from '../header-full-screen';
-import ThemeColorPicker from '../header-color-picker';
-import {connect} from '../../models/index';
-import {PAGE_FRAME_LAYOUT} from '@/models/settings';
+import Logo from './logo';
+import HeaderUser from './header-user';
+import HeaderMenu from './header-menu';
+import HeaderFullScreen from './header-full-screen';
+import {connect} from 'src/models/index';
+import {PAGE_FRAME_LAYOUT} from 'src/models/settings';
 import Breadcrumb from '../breadcrumb';
 import './style.less';
 
@@ -46,6 +45,17 @@ export default class Header extends Component {
     handleToggle = () => {
         const {sideCollapsed} = this.props;
         this.props.action.side.setCollapsed(!sideCollapsed);
+    };
+
+    renderToggle = (showToggle, sideCollapsed, theme) => {
+        if (!showToggle) return null;
+
+        const props = {
+            onClick: this.handleToggle,
+            style: theme === 'dark' ? {color: '#fff', backgroundColor: '#222'} : null,
+        };
+
+        return sideCollapsed ? <MenuUnfoldOutlined {...props} styleName="trigger"/> : <MenuFoldOutlined {...props} styleName="trigger"/>;
     };
 
     render() {
@@ -91,17 +101,7 @@ export default class Header extends Component {
                         />
                     </Link>
                 </div>
-                {
-                    showToggle ? (
-                        <Icon
-                            className="header-trigger"
-                            styleName="trigger"
-                            type={sideCollapsed ? 'menu-unfold' : 'menu-fold'}
-                            onClick={this.handleToggle}
-                            style={theme === 'dark' ? {color: '#fff', backgroundColor: '#222'} : null}
-                        />
-                    ) : null
-                }
+                {this.renderToggle(showToggle, sideCollapsed, theme)}
                 {children ? (
                     <div styleName="center">{children}</div>
                 ) : (
@@ -119,7 +119,6 @@ export default class Header extends Component {
 
                 <div styleName="right">
                     <HeaderFullScreen styleName="action" className="header-action"/>
-                    <ThemeColorPicker styleName="action" className="header-action"/>
                     <HeaderUser styleName="action" className="header-action" theme={theme}/>
                 </div>
             </div>

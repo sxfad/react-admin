@@ -1,8 +1,17 @@
 import React, {Component} from 'react';
-import {Menu, Icon} from 'antd';
-import {DraggableTabsBar} from '@/library/components';
-import config from '@/commons/config-hoc';
-import {ContextMenu} from '@/library/components';
+import {
+    CloseCircleOutlined,
+    CloseOutlined,
+    CloseSquareOutlined,
+    SyncOutlined,
+    VerticalLeftOutlined,
+    VerticalRightOutlined,
+} from '@ant-design/icons';
+import {Icon} from 'src/library/components';
+import {Menu} from 'antd';
+import {DraggableTabsBar} from 'src/library/components';
+import config from 'src/commons/config-hoc';
+import {ContextMenu} from 'src/library/components';
 import './style.less';
 
 @config({
@@ -71,28 +80,28 @@ export default class PageTabs extends Component {
                 {keepAlive ? (
                     [
                         <Menu.Item key="refresh">
-                            <Icon type="sync"/> 刷新
+                            <SyncOutlined/> 刷新
                         </Menu.Item>,
                         <Menu.Item key="refreshAll">
-                            <Icon type="sync"/> 刷新全部
+                            <SyncOutlined/> 刷新全部
                         </Menu.Item>,
-                        <Menu.Divider key="divider"/>
+                        <Menu.Divider key="divider"/>,
                     ]
                 ) : null}
                 <Menu.Item key="close" disabled={disabledClose}>
-                    <Icon type="close"/> 关闭
+                    <CloseOutlined/> 关闭
                 </Menu.Item>
                 <Menu.Item key="closeOthers" disabled={disabledClose}>
-                    <Icon type="close-circle"/> 关闭其他
+                    <CloseCircleOutlined/> 关闭其他
                 </Menu.Item>
                 <Menu.Item key="closeAll" disabled={disabledClose}>
-                    <Icon type="close-square"/> 关闭所有
+                    <CloseSquareOutlined/> 关闭所有
                 </Menu.Item>
                 <Menu.Item key="closeLeft" disabled={disabledCloseLeft}>
-                    <Icon type="vertical-left"/> 关闭左侧
+                    <VerticalLeftOutlined/> 关闭左侧
                 </Menu.Item>
                 <Menu.Item key="closeRight" disabled={disabledCloseRight}>
-                    <Icon type="vertical-right"/> 关闭右侧
+                    <VerticalRightOutlined/> 关闭右侧
                 </Menu.Item>
             </Menu>
         );
@@ -130,7 +139,7 @@ export default class PageTabs extends Component {
                 title,
                 closable: true,
                 ...item,
-            }
+            };
         });
 
         return (

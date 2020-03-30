@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Spin} from "antd";
+import {Spin} from 'antd';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 
@@ -26,7 +26,7 @@ export default class Index extends Component {
         };
         return (
             <div style={style}>
-                <Spin spinning size="large"/>
+                <Spin spinning/>
             </div>
         );
     }

@@ -5,7 +5,7 @@
     .ant-form-item {
         display: flex;
         flex: 1;
-        margin-bottom: 8px;
+        margin-bottom: 18px;
         font-size: 12px;
 
         .ant-form-item-label {
@@ -13,17 +13,18 @@
             flex-shrink: 0;
         }
 
-        .ant-form-item-control-wrapper {
+        .ant-form-item-control {
             flex: 1;
         }
-    }
 
-    .ant-form-explain {
-        margin-bottom: -15px;
-    }
+        .ant-form-item-explain {
+            position: absolute;
+            bottom: -22px;
+        }
 
-    .ant-form-item-children > button:not(:last-child) {
-        margin-right: 8px;
+        .ant-form-item-required.ant-form-item-no-colon[title=" "]::after {
+            display: none;
+        }
     }
 
     .font-element-tip {
@@ -32,7 +33,6 @@
         margin-left: 6px;
         color: #888;
     }
-
 
     .ant-transfer {
         display: flex;

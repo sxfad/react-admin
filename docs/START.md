@@ -14,6 +14,8 @@ $ git clone https://github.com/sxfad/react-admin.git
 ```bash
 $ cd react-admin
 $ yarn
+// 使用国内淘宝镜像镜像
+$ yarn --registry https://registry.npm.taobao.org
 ```
 注：首次使用yarn安装依赖可能比较慢，可以切换到国内镜像，或者翻墙。
 

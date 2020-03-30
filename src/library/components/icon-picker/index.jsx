@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
-import {Icon} from 'antd'
+import {Icon} from 'src/library/components';
+import {CloseCircleOutlined} from '@ant-design/icons';
 import IconModal from './IconModal';
 
 export default class IconPicker extends Component {
@@ -42,7 +43,6 @@ export default class IconPicker extends Component {
                         justifyContent: 'space-between',
                         height: 28,
                         padding: '0 10px',
-                        marginTop: 6,
                         border: '1px solid #d9d9d9',
                         borderRadius: 4,
                         cursor: 'pointer',
@@ -52,7 +52,7 @@ export default class IconPicker extends Component {
                     {type ? (
                         <Fragment>
                             <Icon type={type}/>
-                            <Icon type="close-circle" onClick={this.handleClear}/>
+                            <CloseCircleOutlined onClick={this.handleClear}/>
                         </Fragment>
                     ) : (
                         <span style={{color: '#c7c7c7'}}>请选择图标</span>

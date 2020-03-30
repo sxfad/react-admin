@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {BrowserRouter, Route, Switch} from 'react-router-dom'
-import {isLogin} from '@/commons';
-import PageFrame from '@/layouts/frame';
-import Error404 from '@/pages/error/Error404';
-import config from '@/commons/config-hoc';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {isLogin} from 'src/commons';
+import PageFrame from 'src/layouts/frame';
+import Error404 from 'src/components/error/Error404';
+import config from 'src/commons/config-hoc';
 import KeepAuthRoute from './KeepAuthRoute';
 import KeepPage from './KeepPage';
 import routes, {noFrameRoutes, noAuthRoutes /*commonPaths*/} from './routes';

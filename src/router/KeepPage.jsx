@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import config from '@/commons/config-hoc';
+import config from 'src/commons/config-hoc';
 
 /**
  * 通过div的显示隐藏，来保存tab页面状态

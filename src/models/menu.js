@@ -1,7 +1,7 @@
-import {getTopNodeByNode} from '@/library/utils/tree-utils';
-import {uniqueArray} from '@/library/utils';
+import {getTopNodeByNode} from 'src/library/utils/tree-utils';
+import {uniqueArray} from 'src/library/utils';
 import {getMenuTreeDataAndPermissions, getSelectedMenuByPath} from '../commons';
-import getMenus from "@/menus";
+import getMenus from "src/menus";
 
 export default {
     initialState: {

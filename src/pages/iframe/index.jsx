@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import config from '@/commons/config-hoc';
+import config from 'src/commons/config-hoc';
 import './style.less';
 
 @config({

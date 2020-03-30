@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Icon} from 'antd';
+import {DownCircleOutlined, UpCircleOutlined} from '@ant-design/icons';
 import classNames from 'classnames';
 import './index.less';
 
@@ -59,7 +59,7 @@ export default class QueryBar extends React.Component {
                 {
                     showCollapsed ? (
                         <a className="sx-query-bar-collapsed" onClick={this.handleCollapsedChange}>
-                            <Icon type={collapsed ? 'down' : 'up'}/>
+                            {collapsed ? <DownCircleOutlined/> : <UpCircleOutlined/>}
                         </a>
                     ) : null
                 }

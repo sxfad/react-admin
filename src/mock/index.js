@@ -6,4 +6,5 @@ const mock = new MockAdapter(mockInstance);
 
 simplify(mock, [
     require('./mock-users').default,
+    require('./mock-roles').default,
 ]);

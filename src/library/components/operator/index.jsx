@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Icon, Popconfirm, Dropdown, Menu, Tooltip} from 'antd';
+import { DownOutlined, LoadingOutlined } from '@ant-design/icons';
+import {Icon} from 'src/library/components';
+import { Popconfirm, Dropdown, Menu, Tooltip } from 'antd';
 import './index.less';
 
 /**
@@ -34,12 +36,12 @@ export default class Operator extends Component {
 
     static defaultProps = {
         items: [],
-        moreText: <span>更多<Icon type="down"/></span>,
+        moreText: <span>更多<DownOutlined /></span>,
         moreContentWidth: 'auto',
         moreTrigger: 'click',
     };
 
-    loadingIcon = <Icon type="loading"/>;
+    loadingIcon = <LoadingOutlined />;
 
     label = {};
 

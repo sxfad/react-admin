@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import * as storage from '@/library/utils/storage';
-import * as sxRedux from '@/library/redux';
+import * as storage from 'src/library/utils/storage';
+import * as sxRedux from 'src/library/redux';
 import App from './App';
 import handleSuccess from './commons/handle-success';
 import handleError from './commons/handle-error';

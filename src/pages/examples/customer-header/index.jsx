@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import config from '@/commons/config-hoc';
-import PageContent from '@/layouts/page-content';
-import Header from '@/layouts/header';
+import config from 'src/commons/config-hoc';
+import PageContent from 'src/layouts/page-content';
+import Header from 'src/layouts/header';
 
 @config({
     path: '/example/customer-header',

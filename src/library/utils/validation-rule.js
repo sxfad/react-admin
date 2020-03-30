@@ -1,6 +1,5 @@
 import {getStringByteLength, stringFormat} from './index';
 import * as regexps from './regexp';
-import _ from "lodash";
 
 export default {
     ip(message = '请输入正确的IP地址！') {
@@ -17,9 +16,9 @@ export default {
     },
     noSpace(message = '不能含有空格！') {
         return {
-            validator: (rule, value, callback) => {
-                if (/\s/g.test(value)) return callback(message);
-                return callback();
+            validator: (rule, value) => {
+                if (/\s/g.test(value)) return Promise.reject(message);
+                return Promise.resolve();
             },
         };
     },
@@ -85,96 +84,80 @@ export default {
     },
     numberRange(min, max, message = '请输入{min}到{max}之间的值.') {
         return {
-            validator(rule, value, callback) {
-                if (!value) return callback();
+            validator(rule, value) {
+                if (!value) return Promise.resolve();
 
                 value = Number(value);
 
-                if (!value && value !== 0) return callback();
+                if (!value && value !== 0) return Promise.resolve();
 
-                (value < min || value > max) ? callback(stringFormat(message, {min, max})) : callback();
+                (value < min || value > max) ? Promise.reject(stringFormat(message, {min, max})) : Promise.resolve();
             },
         };
     },
     numberMaxRange(max, message = '不能大于{max}') {
         return {
-            validator(rule, value, callback) {
-                if (!value) return callback();
+            validator(rule, value) {
+                if (!value) return Promise.resolve();
 
                 value = Number(value);
 
-                if (!value && value !== 0) return callback();
+                if (!value && value !== 0) return Promise.resolve();
 
-                value > max ? callback(stringFormat(message, {max})) : callback();
+                value > max ? Promise.reject(stringFormat(message, {max})) : Promise.resolve();
             },
         };
     },
     numberMinRange(min, message = '不能小于{min}') {
         return {
-            validator(rule, value, callback) {
-                if (!value) return callback();
+            validator(rule, value) {
+                if (!value) return Promise.resolve();
 
                 value = Number(value);
 
-                if (!value && value !== 0) return callback();
+                if (!value && value !== 0) return Promise.resolve();
 
-                value < min ? callback(stringFormat(message, {min})) : callback();
+                value < min ? Promise.reject(stringFormat(message, {min})) : Promise.resolve();
             },
         };
     },
 
     stringByteRangeLength(min, max, message = '请输入 {min}-{max} 个字符(汉字算2个字符).') {
         return {
-            validator(rule, value, callback) {
-                if (!value) return callback();
+            validator(rule, value) {
+                if (!value) return Promise.resolve();
 
                 let length = getStringByteLength(value);
-                (length < min || length > max) ? callback(stringFormat(message, {min, max})) : callback();
+                (length < min || length > max) ? Promise.reject(stringFormat(message, {min, max})) : Promise.resolve();
             },
         };
     },
     stringByteMinLength(min, message = '最少输入{min}个字符(汉字算2个字符).') {
         return {
-            validator(rule, value, callback) {
-                if (!value) return callback();
+            validator(rule, value) {
+                if (!value) return Promise.resolve();
                 let length = getStringByteLength(value);
-                length < min ? callback(stringFormat(message, {min})) : callback();
+                length < min ? Promise.reject(stringFormat(message, {min})) : Promise.resolve();
             },
         };
     },
     stringByteMaxLength(max, message = '最多输入{max}个字符(汉字算2个字符).') {
         return {
-            validator(rule, value, callback) {
-                if (!value) return callback();
+            validator(rule, value) {
+                if (!value) return Promise.resolve();
                 let length = getStringByteLength(value);
-                length > max ? callback(stringFormat(message, {max})) : callback();
+                length > max ? Promise.reject(stringFormat(message, {max})) : Promise.resolve();
             },
         };
     },
 
     arrayMaxLength(max, message = '最多{max}个值') {
         return {
-            validator(rule, value, callback) {
-                if (!value || !Array.isArray(value)) return callback();
+            validator(rule, value) {
+                if (!value || !Array.isArray(value)) return Promise.resolve();
                 let length = value.length;
-                length > max ? callback(stringFormat(message, {max})) : callback();
+                length > max ? Promise.reject(stringFormat(message, {max})) : Promise.resolve();
             },
         };
-    },
-
-    // 截流校验写法，如果同一个页面多次使用，必须使用不同的key进行区分
-    userNameExist(key = '_userNameExit', prevValue, message = '用户名重复') {
-        if (!this[key]) this[key] = _.debounce((rule, value, callback) => {
-            if (!value) return callback();
-
-            if (prevValue && value === prevValue) return callback();
-            console.log('发请求');
-            if (value === '1') return callback(message);
-
-            callback();
-        }, 500);
-        return {
-            validator: this[key]
-        }
     },
 };

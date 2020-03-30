@@ -1,7 +1,7 @@
-import {session} from '@/library/utils/storage';
-import {getNodeByPropertyAndValue, convertToTree} from '@/library/utils/tree-utils';
-import pathToRegexp from 'path-to-regexp/index';
-import {ROUTE_BASE_NAME} from '@/router/AppRouter';
+import {session} from 'src/library/utils/storage';
+import {getNodeByPropertyAndValue, convertToTree} from 'src/library/utils/tree-utils';
+import {pathToRegexp} from 'path-to-regexp';
+import {ROUTE_BASE_NAME} from 'src/router/AppRouter';
 
 const CURRENT_USER_KEY = 'current-user';
 

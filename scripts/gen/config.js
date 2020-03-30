@@ -43,6 +43,11 @@ const COMMON_EXCLUDE_FIELDS = [
     'pageSize',
     'id',
     'token',
+    'updatedAt',
+    'createdAt',
+    'created_at',
+    'updated_at',
+    'is_deleted',
 ];
 
 // 随机生成不重复field字符串
@@ -101,10 +106,10 @@ function getFormElement(str) {
         field,
         required,
         maxLength,
-    }
+    };
 }
 
-// 获取表单label类型
+// 获取表单类型
 function getFormElementType({oType, label = ''}) {
     let type = 'input';
 
@@ -167,7 +172,7 @@ function getBlockConfig(configArr, title) {
                 // 都是被注释掉的行
                 && !item.startsWith('//')
                 && !item.startsWith('#')
-                && !item.startsWith(';')
+                && !item.startsWith(';');
         })
         .map(item => {
             // 将一行文本进行空格拆分 并去掉空元素
@@ -178,7 +183,7 @@ function getBlockConfig(configArr, title) {
             if (index !== -1) lineArr.splice(index);
 
             return lineArr;
-        })
+        });
 }
 
 function getHandle(configArr, title, defaultProps) {
@@ -205,10 +210,10 @@ function getHandle(configArr, title, defaultProps) {
             text,
             handle,
             icon,
-        })
+        });
     });
 
-    return result
+    return result;
 }
 
 // 接口配置
@@ -314,7 +319,7 @@ function getBaseConfig(configArr) {
                         method,
                         url,
                         dataPath,
-                    }
+                    };
                 }
             }
 
@@ -380,7 +385,7 @@ function getPagesConfig(configArr, moduleName = '') {
                 typeName,
                 filePath: path.join(PAGES_DIR, moduleName, fileName),
                 template: path.join(__dirname, 'templates', templateFileName),
-            })
+            });
         } else {
             const [templateFilePath, fileName] = templateAndFilePath.split('->');
             if (!result) result = [];
@@ -389,11 +394,11 @@ function getPagesConfig(configArr, moduleName = '') {
                 filePath: path.join(PAGES_DIR, moduleName, fileName),
                 // 用户模版要基于项目根目录编写
                 template: path.join(process.cwd(), templateFilePath),
-            })
+            });
         }
     });
 
-    return result
+    return result;
 }
 
 // 获取查询条件配置
@@ -435,7 +440,7 @@ function getTableConfig(configArr) {
         }
     });
 
-    return result
+    return result;
 }
 
 // 获取表格列配置
@@ -559,7 +564,7 @@ async function readSwagger(config, baseConfig) {
                         field,
                         label,
                         required,
-                    })
+                    });
                 }
             });
 

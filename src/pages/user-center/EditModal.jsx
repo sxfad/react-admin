@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Form} from 'antd';
-import {FormElement} from '@/library/components';
-import config from '@/commons/config-hoc';
-import {ModalContent} from '@/library/components';
+import {FormElement} from 'src/library/components';
+import config from 'src/commons/config-hoc';
+import {ModalContent} from 'src/library/components';
 
 @config({
     ajax: true,
@@ -10,7 +10,6 @@ import {ModalContent} from '@/library/components';
         title: props => props.isEdit ? '修改' : '添加',
     },
 })
-@Form.create()
 export default class EditModal extends Component {
     state = {
         loading: false, // 页面加载loading
@@ -38,49 +37,47 @@ export default class EditModal extends Component {
             .finally(() => this.setState({loading: false}));
     };
 
-    handleSubmit = () => {
+    handleSubmit = (values) => {
         if (this.state.loading) return;
 
-        this.props.form.validateFieldsAndScroll((err, values) => {
-            if (err) return;
+        const {isEdit} = this.props;
+        const successTip = isEdit ? '修改成功！' : '添加成功！';
+        const ajaxMethod = isEdit ? this.props.ajax.put : this.props.ajax.post;
+        const ajaxUrl = isEdit ? '/user-center' : '/user-center';
 
-            const {isEdit} = this.props;
-            const successTip = isEdit ? '修改成功！' : '添加成功！';
-            const ajaxMethod = isEdit ? this.props.ajax.put : this.props.ajax.post;
-            const ajaxUrl = isEdit ? '/user' : '/user-center';
-
-            this.setState({loading: true});
-            ajaxMethod(ajaxUrl, values, {successTip})
-                .then(() => {
-                    const {onOk} = this.props;
-                    onOk && onOk();
-                })
-                .finally(() => this.setState({loading: false}));
-        });
+        this.setState({loading: true});
+        ajaxMethod(ajaxUrl, values, {successTip})
+            .then(() => {
+                const {onOk} = this.props;
+                onOk && onOk();
+            })
+            .finally(() => this.setState({loading: false}));
     };
 
     render() {
-        const {isEdit, form} = this.props;
+        const {isEdit} = this.props;
         const {loading, data} = this.state;
         const formProps = {
             labelWidth: 100,
-            form,
         };
         return (
             <ModalContent
                 loading={loading}
                 okText="保存"
                 cancelText="重置"
-                onOk={this.handleSubmit}
-                onCancel={() => form.resetFields()}
+                onOk={() => this.form.submit()}
+                onCancel={() => this.form.resetFields()}
             >
-                <Form onSubmit={this.handleSubmit}>
-                    {isEdit ? <FormElement {...formProps} type="hidden" field="id" initialValue={data.id}/> : null}
+                <Form
+                    ref={form => this.form = form}
+                    onFinish={this.handleSubmit}
+                    initialValues={data}
+                >
+                    {isEdit ? <FormElement {...formProps} type="hidden" name="id"/> : null}
                     <FormElement
                         {...formProps}
                         label="account"
-                        field="account"
-                        initialValue={data.account}
+                        name="account"
                         required
                         maxLength={255}
                     />
@@ -88,32 +85,28 @@ export default class EditModal extends Component {
                         {...formProps}
                         type="password"
                         label="密码"
-                        field="password"
-                        initialValue={data.password}
+                        name="password"
                         required
                         maxLength={255}
                     />
                     <FormElement
                         {...formProps}
                         label="用户名"
-                        field="name"
-                        initialValue={data.name}
+                        name="name"
                         maxLength={20}
                     />
                     <FormElement
                         {...formProps}
                         type="mobile"
                         label="手机"
-                        field="mobile"
-                        initialValue={data.mobile}
+                        name="mobile"
                         maxLength={20}
                     />
                     <FormElement
                         {...formProps}
                         type="email"
                         label="邮箱"
-                        field="email"
-                        initialValue={data.email}
+                        name="email"
                         required
                         maxLength={50}
                     />
@@ -121,32 +114,7 @@ export default class EditModal extends Component {
                         {...formProps}
                         type="switch"
                         label="是否启用"
-                        field="enabled"
-                        initialValue={data.enabled}
-                    />
-                    <FormElement
-                        {...formProps}
-                        type="switch"
-                        label="是否删除"
-                        field="is_deleted"
-                        initialValue={data.is_deleted}
-                        required
-                    />
-                    <FormElement
-                        {...formProps}
-                        type="date"
-                        label="创建时间"
-                        field="created_at"
-                        initialValue={data.created_at}
-                        required
-                    />
-                    <FormElement
-                        {...formProps}
-                        type="date"
-                        label="更新时间"
-                        field="updated_at"
-                        initialValue={data.updated_at}
-                        required
+                        name="enabled"
                     />
                 </Form>
             </ModalContent>

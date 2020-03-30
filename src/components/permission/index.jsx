@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import config from '@/commons/config-hoc';
+import config from 'src/commons/config-hoc';
 
 /**
  * 根据hasPermission 和code 来判断children是否显示

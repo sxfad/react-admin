@@ -7,9 +7,9 @@ import PageHead from '../page-head';
 import Header from '../header';
 import Side from '../side';
 import PageTabs from '../page-tabs';
-import {connect} from '@/models/index';
-import {getLoginUser, getSelectedMenuByPath, setLoginUser} from '@/commons';
-import {PAGE_FRAME_LAYOUT} from '@/models/settings';
+import {connect} from 'src/models/index';
+import {getLoginUser, getSelectedMenuByPath, setLoginUser} from 'src/commons';
+import {PAGE_FRAME_LAYOUT} from 'src/models/settings';
 import './style.less';
 
 @withRouter
@@ -133,7 +133,7 @@ export default class FrameTopSideMenu extends Component {
                         icon: item.icon,
                         text: item.text,
                         path: item.path,
-                    }
+                    };
                 });
             }
 

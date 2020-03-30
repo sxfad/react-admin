@@ -1,6 +1,6 @@
 # 简介
 
-react-admin是基于基于[React16.x](https://reactjs.org)、[Ant Design3.x](https://ant.design/)的管理系统架构。
+react-admin是基于基于[React16.x](https://reactjs.org)、[Ant Design4.x](https://ant.design/)的管理系统架构。
 采用前后端分离，内置了许多管理系统常用功能，通过一些脚本、封装帮助开发人员快速开发管理系统，集中精力处理业务逻辑。
 
 ## 项目结构

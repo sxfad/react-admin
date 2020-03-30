@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Spin} from 'antd';
 import PropTypes from 'prop-types';
-import './style.less';
 import Footer from '../footer';
-import {connect} from '../../models/index';
+import {connect} from 'src/models/index';
+import './style.less';
 
 /**
  * 页面内容 容器
@@ -60,8 +60,8 @@ export default class PageContent extends Component {
                     <Spin spinning size="large" tip={tip}/>
                 </div>
                 <div
-                    styleName="page-content"
                     className={`${className} page-content`}
+                    styleName="page-content"
                     {...others}
                 >
                     {children}

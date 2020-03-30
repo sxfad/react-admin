@@ -16,7 +16,7 @@
 - config装饰器ajax属性
     ```js
     import React, {Component} from 'react';
-    import config from '@/commons/config-hoc';
+    import config from 'src/commons/config-hoc';
     
     @config({
         ajax: true,
@@ -34,7 +34,7 @@
 - ajax装饰器
     ```js
     import React, {Component} from 'react';
-    import {ajaxHoc} from '@/commpons/ajax';
+    import {ajaxHoc} from 'src/commpons/ajax';
     
     @ajaxHoc()
     export default class SomePage extend Component {
@@ -49,7 +49,7 @@
 - 直接引入ajax对象
     ```js
     import React, {Component} from 'react';
-    import {sxAjax} from '@/commpons/ajax';
+    import {sxAjax} from 'src/commpons/ajax';
     
     export default class SomePage extend Component {
         componentDidMount() {
