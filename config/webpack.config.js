@@ -23,6 +23,7 @@ const getClientEnvironment = require('./env');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const postcssNormalize = require('postcss-normalize');
 const appPackageJson = require(paths.appPackageJson);
 const theme = require('../src/theme');
@@ -526,6 +527,12 @@ module.exports = function (webpackEnv) {
         },
         plugins: [
             process.env.ANALYZ ? new BundleAnalyzerPlugin() : undefined,
+            new webpack.DllReferencePlugin({
+                manifest: require(path.join(__dirname, 'dll', 'vendor-manifest.json')),
+            }),
+            new webpack.DllReferencePlugin({
+                manifest: require(path.join(__dirname, 'dll', 'reactVendor-manifest.json')),
+            }),
             new ModelGrabWebpackPlugin({
                 paths: [
                     path.resolve(__dirname, '../src/models/**/*.js'),
@@ -580,6 +587,11 @@ module.exports = function (webpackEnv) {
                         : undefined,
                 ),
             ),
+            new AddAssetHtmlPlugin({
+                filepath: path.resolve(__dirname, './dll/*.dll.js'),
+                publicPath: path.join(paths.publicUrlOrPath, 'static', 'js'),
+                outputPath: path.join('static', 'js'),
+            }),
             // Inlines the webpack runtime script. This script is too small to warrant
             // a network request.
             // https://github.com/facebook/create-react-app/issues/5358
