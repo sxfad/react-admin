@@ -12,7 +12,7 @@
 注：由于是存静态发布，所有涉及到ajax请求的功能都会报404错误，属于正常现象。
 
 ## 项目截图
-这里只提供了部分页面截图，根据文档[快速开始](https://open.vbill.cn/react-admin/START.html)进行项目的搭建，浏览项目丰富功能！
+这里只提供了部分页面截图，根据文档[快速开始](https://open.vbill.cn/react-admin/#/START)进行项目的搭建，浏览项目丰富功能！
 
 <table>
     <tr>
