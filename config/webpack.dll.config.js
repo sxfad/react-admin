@@ -5,8 +5,6 @@ module.exports = {
     mode: 'production',
     entry: {
         vendor: [
-            'antd',
-            '@ant-design/icons',
             'axios',
             'axios-mock-adapter',
             'classnames',
@@ -31,6 +29,8 @@ module.exports = {
             'redux-thunk',
             'prop-types',
             '@loadable/component',
+            'antd',
+            '@ant-design/icons',
         ],
     },
     devtool: '#source-map',

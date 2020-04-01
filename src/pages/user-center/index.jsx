@@ -127,7 +127,7 @@ export default class UserCenter extends Component {
     handle2 = () => {
         // TODO
     };
-
+    
     render() {
         const {
             loading,
@@ -185,14 +185,14 @@ export default class UserCenter extends Component {
                     total={total}
                     pageNum={pageNum}
                     pageSize={pageSize}
-                    onPageNumChange={pageNum => this.setState({pageNum}, this.form.submit)}
-                    onPageSizeChange={pageSize => this.setState({pageSize, pageNum: 1}, this.form.submit)}
+                    onPageNumChange={pageNum => this.setState({pageNum}, () => this.form.submit())}
+                    onPageSizeChange={pageSize => this.setState({pageSize, pageNum: 1}, () => this.form.submit())}
                 />
                 <EditModal
                     visible={visible}
                     id={id}
                     isEdit={id !== null}
-                    onOk={() => this.setState({visible: false}, this.form.submit)}
+                    onOk={() => this.setState({visible: false}, () => this.form.submit())}
                     onCancel={() => this.setState({visible: false})}
                 />
             </PageContent>
