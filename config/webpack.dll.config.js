@@ -29,8 +29,6 @@ module.exports = {
             'redux-thunk',
             'prop-types',
             '@loadable/component',
-            'antd',
-            '@ant-design/icons',
         ],
     },
     devtool: '#source-map',

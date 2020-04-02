@@ -127,7 +127,7 @@ export default class UserCenter extends Component {
     handle2 = () => {
         // TODO
     };
-    
+
     render() {
         const {
             loading,
@@ -146,7 +146,6 @@ export default class UserCenter extends Component {
             style: {paddingLeft: 16},
         };
         const disabledDelete = !selectedRowKeys?.length;
-
         return (
             <PageContent>
                 <QueryBar>

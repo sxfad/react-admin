@@ -121,6 +121,7 @@ class FormElement extends Component {
         form: PropTypes.object,
         type: PropTypes.string.isRequired,
         labelWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        showLabel: PropTypes.bool,
         width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         labelTip: PropTypes.any,
         tip: PropTypes.any,
@@ -173,6 +174,7 @@ class FormElement extends Component {
         layout: false,
         noSpace: false,
         trim: true,
+        showLabel: true,
         getValueFromEvent: e => {
             if (!e || !e.target) {
                 return e;
@@ -211,6 +213,7 @@ class FormElement extends Component {
             // 自定义属性
             type = 'input',
             labelWidth,
+            showLabel,
             width, // 整体宽度，默认 100%
             labelTip,
             tip,
@@ -343,7 +346,8 @@ class FormElement extends Component {
         }
 
         // 不处理不显示红色星号
-        if (!formLabel && required) formLabel = ' ';
+        if ((!formLabel && required) || !showLabel) formLabel = ' ';
+
         return (
             <div
                 style={{display: type === 'hidden' ? 'none' : 'flex', ...wrapperStyle, ...style}}
