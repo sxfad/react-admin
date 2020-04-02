@@ -6,7 +6,6 @@ import {
     QueryBar,
     FormRow,
     FormElement,
-    ToolBar,
     Table,
     Operator,
     Pagination,
@@ -132,7 +131,7 @@ export default class UserCenter extends Component {
         } = this.state;
 
         const formProps = {
-            width: 300,
+            width: 200,
         };
         const disabledDelete = !selectedRowKeys?.length;
         return (
@@ -155,18 +154,15 @@ export default class UserCenter extends Component {
                                     {value: 2, label: 2},
                                 ]}
                             />
-                            <FormElement layout width="auto">
+                            <FormElement layout>
                                 <Button type="primary" htmlType="submit">提交</Button>
                                 <Button onClick={() => this.form.resetFields()}>重置</Button>
                             </FormElement>
+                            <Button type="primary" onClick={() => this.setState({visible: true, id: null})}>添加</Button>
+                            <Button danger loading={deleting} disabled={disabledDelete} onClick={this.handleBatchDelete}>删除</Button>
                         </FormRow>
                     </Form>
                 </QueryBar>
-
-                <ToolBar>
-                    <Button type="primary" onClick={() => this.setState({visible: true, id: null})}>添加</Button>
-                    <Button danger loading={deleting} disabled={disabledDelete} onClick={this.handleBatchDelete}>删除</Button>
-                </ToolBar>
 
                 <Table
                     rowSelection={{

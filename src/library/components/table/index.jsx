@@ -68,7 +68,7 @@ export default class TableComponent extends Component {
             tableBodyHeight = windowHeight - otherHeight;
         } else {
             const tableHeadHeight = this.tableHead?.offsetHeight + 1 || 0;
-            const paginationHeight = this.pagination ? this.pagination.offsetHeight + 8 : 0;
+            const paginationHeight = this.pagination ? this.pagination.offsetHeight : 0;
             const bottomHeight = paginationHeight + 10 + 10;
 
             const tableOffsetTop = getElementTop(this.wrapper);

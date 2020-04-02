@@ -6,7 +6,6 @@ import {
     QueryBar,
     FormRow,
     FormElement,
-    ToolBar,
     Table,
     Operator,
     Pagination,
@@ -60,7 +59,7 @@ export default class UserCenter extends Component {
                     },
                 ];
 
-                return <Operator items={items}/>
+                return <Operator items={items}/>;
             },
         },
     ];
@@ -91,7 +90,7 @@ export default class UserCenter extends Component {
     };
 
     handleDelete = (id) => {
-        if(this.state.deleting) return;
+        if (this.state.deleting) return;
 
         this.setState({deleting: true});
         this.props.ajax.del(`/user-center/${id}`, null, {successTip: '删除成功！', errorTip: '删除失败！'})
@@ -121,7 +120,11 @@ export default class UserCenter extends Component {
                     .then(() => this.form.submit())
                     .finally(() => this.setState({deleting: false}));
             },
-        })
+        });
+    };
+
+    handleImport = () => {
+        // TODO
     };
 
     handle2 = () => {
@@ -146,6 +149,7 @@ export default class UserCenter extends Component {
             style: {paddingLeft: 16},
         };
         const disabledDelete = !selectedRowKeys?.length;
+
         return (
             <PageContent>
                 <QueryBar>
@@ -156,17 +160,16 @@ export default class UserCenter extends Component {
                                 label="用户名"
                                 field="name"
                             />
-                            <FormElement layout width="auto">
+                            <FormElement layout>
                                 <Button type="primary" htmlType="submit">提交</Button>
                                 <Button onClick={() => this.form.resetFields()}>重置</Button>
                             </FormElement>
+                            <Button type="primary" onClick={() => this.setState({visible: true, id: null})}>添加</Button>
+                            <Button danger loading={deleting} disabled={disabledDelete} onClick={this.handleBatchDelete}>删除</Button>
+                            <Button type="primary" onClick={this.handleImport}>导入</Button>
                         </FormRow>
                     </Form>
                 </QueryBar>
-                <ToolBar>
-                    <Button type="primary" onClick={() => this.setState({visible: true, id: null})}>添加</Button>
-                    <Button danger loading={deleting} disabled={disabledDelete} onClick={this.handleBatchDelete}>删除</Button>
-                </ToolBar>
                 <Table
                     serialNumber
                     rowSelection={{

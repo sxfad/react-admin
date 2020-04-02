@@ -42,7 +42,6 @@ import {
     ${queries ? 'QueryBar,' : DELETE_THIS_LINE}
     ${queries ? 'FormRow,' : DELETE_THIS_LINE}
     ${queries ? 'FormElement,' : DELETE_THIS_LINE}
-    ${tools ? 'ToolBar,' : DELETE_THIS_LINE}
     Table,
     ${operators ? 'Operator,' : DELETE_THIS_LINE}
     ${table.pagination ? 'Pagination,' : DELETE_THIS_LINE}
@@ -198,18 +197,16 @@ export default class UserCenter extends Component {
                                     {value: '2', label: '选项2'},
                                 ]}` : DELETE_THIS_LINE}
                             />`).join('\n                            ')}
-                            <FormElement layout width="auto">
+                            <FormElement layout>
                                 <Button type="primary" htmlType="submit">提交</Button>
                                 <Button onClick={() => this.form.resetFields()}>重置</Button>
                             </FormElement>
+                            ${tools ? `${tools.find(item => item.text === '添加') ? `<Button type="primary" onClick={() => ${isModalEdit ? `this.setState({visible: true, id: null})` : `this.props.history.push('${base.path}/_/edit/:id')`}}>添加</Button>` : DELETE_THIS_LINE}
+                            ${tools.find(item => item.text === '删除') ? `<Button danger loading={deleting} ${table.selectable ? 'disabled={disabledDelete} ' : ''}onClick={this.handleBatchDelete}>删除</Button>` : DELETE_THIS_LINE}
+                            ${tools.filter(item => !['添加', '删除'].includes(item.text)).length ? tools.filter(item => !['添加', '删除'].includes(item.text)).map(item => `<Button type="primary" onClick={this.${item.handle}}>${item.text}</Button>`).join('\n                             ') : DELETE_THIS_LINE}` : DELETE_THIS_LINE}
                         </FormRow>
                     </Form>
                 </QueryBar>` : DELETE_THIS_LINE}
-                ${tools ? `<ToolBar>
-                    ${tools.find(item => item.text === '添加') ? `<Button type="primary" onClick={() => ${isModalEdit ? `this.setState({visible: true, id: null})` : `this.props.history.push('${base.path}/_/edit/:id')`}}>添加</Button>` : DELETE_THIS_LINE}
-                    ${tools.find(item => item.text === '删除') ? `<Button danger loading={deleting} ${table.selectable ? 'disabled={disabledDelete} ' : ''}onClick={this.handleBatchDelete}>删除</Button>` : DELETE_THIS_LINE}
-                    ${tools.filter(item => !['添加', '删除'].includes(item.text)).length ? tools.filter(item => !['添加', '删除'].includes(item.text)).map(item => `<Button type="primary" onClick={this.${item.handle}}>${item.text}</Button>`).join('\n                        ') : DELETE_THIS_LINE}
-                </ToolBar>` : DELETE_THIS_LINE}
                 <Table
                     ${table.serialNumber ? 'serialNumber' : DELETE_THIS_LINE}
                     ${table.selectable ? `rowSelection={{

@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
-import {Button, Form, } from 'antd';
+import {Button, Form} from 'antd';
 import PageContent from 'src/layouts/page-content';
 import config from 'src/commons/config-hoc';
 import {
     QueryBar,
     FormRow,
     FormElement,
-    ToolBar,
     Table,
     Operator,
     Pagination,
@@ -55,7 +54,7 @@ export default class UserCenter extends Component {
                     },
                 ];
 
-                return <Operator items={items}/>
+                return <Operator items={items}/>;
             },
         },
     ];
@@ -86,7 +85,7 @@ export default class UserCenter extends Component {
     };
 
     handleDelete = (id) => {
-        if(this.state.deleting) return;
+        if (this.state.deleting) return;
 
         this.setState({deleting: true});
         this.props.ajax.del(`/role/${id}`, null, {successTip: '删除成功！', errorTip: '删除失败！'})
@@ -127,24 +126,14 @@ export default class UserCenter extends Component {
                                 label="角色名"
                                 field="name"
                             />
-                            <FormElement layout width="auto">
+                            <FormElement layout>
                                 <Button type="primary" htmlType="submit">提交</Button>
                                 <Button onClick={() => form.resetFields()}>重置</Button>
                             </FormElement>
+                            <Button type="primary" onClick={() => this.setState({visible: true, id: null})}>添加</Button>
                         </FormRow>
                     </Form>
                 </QueryBar>
-                <ToolBar
-                    items={[
-                        {
-                            type: 'primary',
-                            icon: 'plus',
-                            text: '添加',
-                            onClick: () => this.setState({visible: true, id: null}),
-                        },
-
-                    ]}
-                />
                 <Table
                     serialNumber
                     loading={loading}
