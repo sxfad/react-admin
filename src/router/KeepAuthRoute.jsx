@@ -24,7 +24,7 @@ export default class KeepAuthRoute extends React.Component {
         if (this.tabsChange) {
             this.tabsChange = false;
             this.props.action.system.setTabs(this.tabs);
-            console.timeEnd('active');
+            // console.timeEnd('active');
         }
     }
 
@@ -100,7 +100,7 @@ export default class KeepAuthRoute extends React.Component {
 
                             this.props.publish('tab-show', currentTab.path);
 
-                            console.time('active');
+                            // console.time('active');
 
                             // 在componentWillUpdate中执行 system.setTabs
                             // 加快tab页切换，开发：80ms左右，生产：10ms左右
