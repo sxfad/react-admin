@@ -39,7 +39,11 @@ windows环境下可以使用 [cross-env](https://www.npmjs.com/package/cross-env
 ## 生产构建
 ```bash
 $ cd react-admin
+
 $ yarn build
+
+# 构建输入到指定目录
+$ BUILD_PATH=../dist yarn build
 ```
 注：构建生成的文件在 `/react-admin/build` 目录下；[nginx配置参考](NGINX.md)。
 
