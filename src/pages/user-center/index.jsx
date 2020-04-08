@@ -158,7 +158,7 @@ export default class UserCenter extends Component {
                             <FormElement
                                 {...formProps}
                                 label="用户名"
-                                field="name"
+                                name="name"
                             />
                             <FormElement layout>
                                 <Button type="primary" htmlType="submit">提交</Button>
