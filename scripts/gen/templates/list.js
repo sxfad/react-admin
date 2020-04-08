@@ -191,7 +191,7 @@ export default class UserCenter extends Component {
                                 {...formProps}
                                 ${item.type !== 'input' ? `type="${item.type}"` : DELETE_THIS_LINE}
                                 label="${item.label}"
-                                field="${item.field}"
+                                name="${item.field}"
                                 ${WITH_OPTIONS_TYPE.includes(item.type) ? `options={[
                                     {value: '1', label: '选项1'},
                                     {value: '2', label: '选项2'},
