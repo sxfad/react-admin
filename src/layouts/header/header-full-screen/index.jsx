@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons';
-import { Tooltip } from 'antd';
+import {FullscreenExitOutlined, FullscreenOutlined} from '@ant-design/icons';
+import {Tooltip} from 'antd';
 import config from 'src/commons/config-hoc';
 
 @config({
@@ -13,7 +13,7 @@ export default class HeaderFullScreen extends Component {
     };
 
     componentDidMount() {
-        let fullScreen = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen
+        let fullScreen = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
 
         this.props.addEventListener(document, 'fullscreenchange', this.handleFullScreenChange);
         this.props.addEventListener(document, 'mozfullscreenchange', this.handleFullScreenChange);
@@ -61,7 +61,7 @@ export default class HeaderFullScreen extends Component {
 
     handleToolTipHide = (time = 300) => {
         this.ST = setTimeout(() => {
-            this.setState({toolTipVisible: false})
+            this.setState({toolTipVisible: false});
         }, time);
     };
 
@@ -76,11 +76,11 @@ export default class HeaderFullScreen extends Component {
                 onMouseLeave={() => this.handleToolTipHide()}
             >
                 <Tooltip visible={toolTipVisible} placement="bottom" title={fullScreen ? '退出全屏' : '全屏'}>
-                    <div style={{display: 'flex', alignItems: 'center', height: '30px', lineHeight: '30px'}}>
+                    <div style={{display: 'flex', alignItems: 'center', height: '30px', lineHeight: '30px', fontSize: 14}}>
                         {fullScreen ? (
-                            <FullscreenExitOutlined />
+                            <FullscreenExitOutlined/>
                         ) : (
-                            <FullscreenOutlined />
+                            <FullscreenOutlined/>
                         )}
                     </div>
                 </Tooltip>
