@@ -42,7 +42,7 @@ export default class Edit extends Component {
     fetchData = () => {
         if (this.state.loading) return;
 
-        const {id} = this.props;
+        const {id} = this.props.match.params;
 
         this.setState({loading: true});
         this.props.ajax.${base.ajax.detail.method}(\`${base.ajax.detail.url.replace('{id}', '${id}')}\`)
