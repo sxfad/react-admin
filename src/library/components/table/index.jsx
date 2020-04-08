@@ -74,7 +74,7 @@ export default class TableComponent extends Component {
             const tableOffsetTop = getElementTop(this.wrapper);
             const otherHeight = tableOffsetTop + tableHeadHeight + bottomHeight;
 
-            tableBodyHeight = windowHeight - otherHeight;
+            tableBodyHeight = windowHeight - otherHeight + 4;
 
             if ('offsetHeight' in this.props) tableBodyHeight = tableBodyHeight - this.props.offsetHeight;
         }
