@@ -24,7 +24,6 @@ import PageContent from 'src/layouts/page-content';
 export default class Edit extends Component {
     state = {
         loading: false, // 页面加载loading
-        data: {},       // 表单回显数据
         isEdit: false,  // 是否是编辑页面
     };
 
@@ -47,7 +46,7 @@ export default class Edit extends Component {
         this.setState({loading: true});
         this.props.ajax.${base.ajax.detail.method}(\`${base.ajax.detail.url.replace('{id}', '${id}')}\`)
             .then(res => {
-                this.setState({data: res || {}});
+                this.form.setFieldsValue(res);
             })
             .finally(() => this.setState({loading: false}));
     };
@@ -70,7 +69,7 @@ export default class Edit extends Component {
     };
 
     render() {
-        const {loading, data, isEdit} = this.state;
+        const {loading, isEdit} = this.state;
         const formProps = {
             labelWidth: 100,
             width: '50%',
@@ -81,7 +80,6 @@ export default class Edit extends Component {
                 <Form
                     ref={form => this.form = form}
                     onFinish={this.handleSubmit}
-                    initialValues={data}
                 >
                     {isEdit ? <FormElement {...formProps} type="hidden" name="id"/> : null}
                     <FormRow>
