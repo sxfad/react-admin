@@ -1,6 +1,19 @@
 const DELETE_THIS_LINE = 'DELETE_THIS_LINE';
 const WITH_OPTIONS_TYPE = ['select', 'radio-group', 'checkbox-group'];
 
+function renderTime(item) {
+    const {title, dataIndex} = item;
+    const timeStr = `, render: value => value ? moment(value).format('YYYY-MM-DD HH:mm') : null`;
+    const dateStr = `, render: value => value ? moment(value).format('YYYY-MM-DD') : null`;
+
+    if (title && title.includes('日期')) return dateStr;
+    if (title && title.includes('时间')) return timeStr;
+    if (dataIndex && dataIndex.toLowerCase().endsWith('time')) return timeStr;
+    if (dataIndex && dataIndex.toLowerCase().endsWith('date')) return dateStr;
+
+    return '';
+}
+
 /**
  * 获取列表页字符串
  */
@@ -36,6 +49,7 @@ module.exports = function (config) {
 
     return `import React, {Component} from 'react';
 ${tools || queries || hasBatchDelete ? `import {${queries ? 'Button, Form, ' : ''}${hasBatchDelete ? 'Modal' : ''}} from 'antd';` : DELETE_THIS_LINE}
+${columns.find(renderTime) ? `import moment from 'moment';` : DELETE_THIS_LINE}
 import PageContent from 'src/layouts/page-content';
 import config from 'src/commons/config-hoc';
 import {
@@ -67,7 +81,7 @@ export default class UserCenter extends Component {
     };
 
     columns = [
-        ${columns.map(item => `{title: '${item.title}', dataIndex: '${item.dataIndex}', width: 200},`).join('\n        ')}
+        ${columns.map(item => `{title: '${item.title}', dataIndex: '${item.dataIndex}', width: 200${renderTime(item)}},`).join('\n        ')}
         ${operators ? `{
             title: '操作', dataIndex: 'operator', width: 100,
             render: (value, record) => {
