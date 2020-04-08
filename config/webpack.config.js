@@ -589,7 +589,7 @@ module.exports = function (webpackEnv) {
             ),
             new AddAssetHtmlPlugin({
                 filepath: path.resolve(__dirname, './dll/*.dll.js'),
-                publicPath: path.join(paths.publicUrlOrPath, 'static', 'js'),
+                publicPath: paths.publicUrlOrPath + 'static/js',
                 outputPath: path.join('static', 'js'),
             }),
             // Inlines the webpack runtime script. This script is too small to warrant
