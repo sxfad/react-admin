@@ -12,6 +12,32 @@ export default class TableComponent extends Component {
         serialText: PropTypes.string,
         otherHeight: PropTypes.number,
         offsetHeight: PropTypes.number,
+
+        // 其他antd属性列出便于IDE提示
+        tableLayout: PropTypes.any,
+        bordered: PropTypes.any,
+        columns: PropTypes.any,
+        components: PropTypes.any,
+        dataSource: PropTypes.any,
+        expandable: PropTypes.any,
+        footer: PropTypes.any,
+        loading: PropTypes.any,
+        locale: PropTypes.any,
+        pagination: PropTypes.any,
+        rowClassName: PropTypes.any,
+        rowKey: PropTypes.any,
+        rowSelection: PropTypes.any,
+        scroll: PropTypes.any,
+        showHeader: PropTypes.any,
+        size: PropTypes.any,
+        summary: PropTypes.any,
+        title: PropTypes.any,
+        onChange: PropTypes.any,
+        onHeaderRow: PropTypes.any,
+        onRow: PropTypes.any,
+        getPopupContainer: PropTypes.any,
+        sortDirections: PropTypes.any,
+        showSorterTooltip: PropTypes.any,
     };
 
     static defaultProps = {
