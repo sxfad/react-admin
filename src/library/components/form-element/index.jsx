@@ -258,7 +258,7 @@ class FormElement extends Component {
         } = this.props;
 
 
-        if (type === 'switch') {
+        if (type === 'switch' || type === 'checkbox') {
             valuePropName = 'checked';
         }
 

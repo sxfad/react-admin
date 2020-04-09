@@ -1,0 +1,533 @@
+[
+    {
+        "fileTypeName": "列表页面",
+        "filePath": "/Users/wangshubin/workspace/suixingpay/react-admin/src/pages/user-center/index.jsx",
+        "template": "/Users/wangshubin/workspace/suixingpay/react-admin/scripts/gen/templates/list.js",
+        "base": {
+            "moduleName": "user-center",
+            "ajax": {
+                "search": {
+                    "name": "查询",
+                    "method": "get",
+                    "url": "/user-center"
+                },
+                "detail": {
+                    "name": "详情",
+                    "method": "get",
+                    "url": "/user-center/{id}"
+                },
+                "modify": {
+                    "name": "修改",
+                    "method": "put",
+                    "url": "/user-center"
+                },
+                "add": {
+                    "name": "添加",
+                    "method": "post",
+                    "url": "/user-center"
+                },
+                "delete": {
+                    "name": "删除",
+                    "method": "del",
+                    "url": "/user-center/{id}"
+                },
+                "batchDelete": {
+                    "name": "批量删除",
+                    "method": "del",
+                    "url": "/user-center"
+                }
+            },
+            "path": "/user-center"
+        },
+        "pages": [
+            {
+                "typeName": "列表页面",
+                "filePath": "/Users/wangshubin/workspace/suixingpay/react-admin/src/pages/user-center/index.jsx",
+                "template": "/Users/wangshubin/workspace/suixingpay/react-admin/scripts/gen/templates/list.js"
+            },
+            {
+                "typeName": "弹框表单",
+                "filePath": "/Users/wangshubin/workspace/suixingpay/react-admin/src/pages/user-center/EditModal.jsx",
+                "template": "/Users/wangshubin/workspace/suixingpay/react-admin/scripts/gen/templates/edit-modal.js"
+            },
+            {
+                "typeName": "页面表单",
+                "filePath": "/Users/wangshubin/workspace/suixingpay/react-admin/src/pages/user-center/Edit.jsx",
+                "template": "/Users/wangshubin/workspace/suixingpay/react-admin/scripts/gen/templates/edit.js"
+            }
+        ],
+        "queries": [
+            {
+                "type": "input",
+                "label": "用户名",
+                "field": "name",
+                "required": false
+            }
+        ],
+        "tools": [
+            {
+                "text": "添加",
+                "handle": "",
+                "icon": "plus"
+            },
+            {
+                "text": "删除",
+                "handle": "handleBatchDelete",
+                "icon": "delete"
+            },
+            {
+                "text": "导入",
+                "handle": "handleImport",
+                "icon": "import"
+            }
+        ],
+        "table": {
+            "selectable": true,
+            "pagination": true,
+            "serialNumber": true
+        },
+        "columns": [
+            {
+                "title": "account",
+                "dataIndex": "account"
+            },
+            {
+                "title": "密码",
+                "dataIndex": "password"
+            },
+            {
+                "title": "用户名",
+                "dataIndex": "name"
+            },
+            {
+                "title": "手机",
+                "dataIndex": "mobile"
+            },
+            {
+                "title": "邮箱",
+                "dataIndex": "email"
+            },
+            {
+                "title": "是否启用",
+                "dataIndex": "enabled"
+            }
+        ],
+        "operators": [
+            {
+                "text": "修改",
+                "handle": "",
+                "icon": "form",
+                "iconMode": false
+            },
+            {
+                "text": "删除",
+                "handle": "handleDelete",
+                "icon": "delete",
+                "iconMode": false
+            },
+            {
+                "text": "权限",
+                "handle": "handle2",
+                "iconMode": false
+            }
+        ],
+        "forms": [
+            {
+                "type": "input",
+                "label": "account",
+                "field": "account",
+                "required": true,
+                "maxLength": 255
+            },
+            {
+                "type": "password",
+                "label": "密码",
+                "field": "password",
+                "required": true,
+                "maxLength": 255
+            },
+            {
+                "type": "input",
+                "label": "用户名",
+                "field": "name",
+                "required": false,
+                "maxLength": 20
+            },
+            {
+                "type": "mobile",
+                "label": "手机",
+                "field": "mobile",
+                "required": false,
+                "maxLength": 20
+            },
+            {
+                "type": "email",
+                "label": "邮箱",
+                "field": "email",
+                "required": true,
+                "maxLength": 50
+            },
+            {
+                "type": "switch",
+                "label": "是否启用",
+                "field": "enabled",
+                "required": false,
+                "maxLength": null
+            }
+        ]
+    },
+    {
+        "fileTypeName": "弹框表单",
+        "filePath": "/Users/wangshubin/workspace/suixingpay/react-admin/src/pages/user-center/EditModal.jsx",
+        "template": "/Users/wangshubin/workspace/suixingpay/react-admin/scripts/gen/templates/edit-modal.js",
+        "base": {
+            "moduleName": "user-center",
+            "ajax": {
+                "search": {
+                    "name": "查询",
+                    "method": "get",
+                    "url": "/user-center"
+                },
+                "detail": {
+                    "name": "详情",
+                    "method": "get",
+                    "url": "/user-center/{id}"
+                },
+                "modify": {
+                    "name": "修改",
+                    "method": "put",
+                    "url": "/user-center"
+                },
+                "add": {
+                    "name": "添加",
+                    "method": "post",
+                    "url": "/user-center"
+                },
+                "delete": {
+                    "name": "删除",
+                    "method": "del",
+                    "url": "/user-center/{id}"
+                },
+                "batchDelete": {
+                    "name": "批量删除",
+                    "method": "del",
+                    "url": "/user-center"
+                }
+            },
+            "path": "/user-center"
+        },
+        "pages": [
+            {
+                "typeName": "列表页面",
+                "filePath": "/Users/wangshubin/workspace/suixingpay/react-admin/src/pages/user-center/index.jsx",
+                "template": "/Users/wangshubin/workspace/suixingpay/react-admin/scripts/gen/templates/list.js"
+            },
+            {
+                "typeName": "弹框表单",
+                "filePath": "/Users/wangshubin/workspace/suixingpay/react-admin/src/pages/user-center/EditModal.jsx",
+                "template": "/Users/wangshubin/workspace/suixingpay/react-admin/scripts/gen/templates/edit-modal.js"
+            },
+            {
+                "typeName": "页面表单",
+                "filePath": "/Users/wangshubin/workspace/suixingpay/react-admin/src/pages/user-center/Edit.jsx",
+                "template": "/Users/wangshubin/workspace/suixingpay/react-admin/scripts/gen/templates/edit.js"
+            }
+        ],
+        "queries": [
+            {
+                "type": "input",
+                "label": "用户名",
+                "field": "name",
+                "required": false
+            }
+        ],
+        "tools": [
+            {
+                "text": "添加",
+                "handle": "",
+                "icon": "plus"
+            },
+            {
+                "text": "删除",
+                "handle": "handleBatchDelete",
+                "icon": "delete"
+            },
+            {
+                "text": "导入",
+                "handle": "handleImport",
+                "icon": "import"
+            }
+        ],
+        "table": {
+            "selectable": true,
+            "pagination": true,
+            "serialNumber": true
+        },
+        "columns": [
+            {
+                "title": "account",
+                "dataIndex": "account"
+            },
+            {
+                "title": "密码",
+                "dataIndex": "password"
+            },
+            {
+                "title": "用户名",
+                "dataIndex": "name"
+            },
+            {
+                "title": "手机",
+                "dataIndex": "mobile"
+            },
+            {
+                "title": "邮箱",
+                "dataIndex": "email"
+            },
+            {
+                "title": "是否启用",
+                "dataIndex": "enabled"
+            }
+        ],
+        "operators": [
+            {
+                "text": "修改",
+                "handle": "",
+                "icon": "form",
+                "iconMode": false
+            },
+            {
+                "text": "删除",
+                "handle": "handleDelete",
+                "icon": "delete",
+                "iconMode": false
+            },
+            {
+                "text": "权限",
+                "handle": "handle2",
+                "iconMode": false
+            }
+        ],
+        "forms": [
+            {
+                "type": "input",
+                "label": "account",
+                "field": "account",
+                "required": true,
+                "maxLength": 255
+            },
+            {
+                "type": "password",
+                "label": "密码",
+                "field": "password",
+                "required": true,
+                "maxLength": 255
+            },
+            {
+                "type": "input",
+                "label": "用户名",
+                "field": "name",
+                "required": false,
+                "maxLength": 20
+            },
+            {
+                "type": "mobile",
+                "label": "手机",
+                "field": "mobile",
+                "required": false,
+                "maxLength": 20
+            },
+            {
+                "type": "email",
+                "label": "邮箱",
+                "field": "email",
+                "required": true,
+                "maxLength": 50
+            },
+            {
+                "type": "switch",
+                "label": "是否启用",
+                "field": "enabled",
+                "required": false,
+                "maxLength": null
+            }
+        ]
+    },
+    {
+        "fileTypeName": "页面表单",
+        "filePath": "/Users/wangshubin/workspace/suixingpay/react-admin/src/pages/user-center/Edit.jsx",
+        "template": "/Users/wangshubin/workspace/suixingpay/react-admin/scripts/gen/templates/edit.js",
+        "base": {
+            "moduleName": "user-center",
+            "ajax": {
+                "search": {
+                    "name": "查询",
+                    "method": "get",
+                    "url": "/user-center"
+                },
+                "detail": {
+                    "name": "详情",
+                    "method": "get",
+                    "url": "/user-center/{id}"
+                },
+                "modify": {
+                    "name": "修改",
+                    "method": "put",
+                    "url": "/user-center"
+                },
+                "add": {
+                    "name": "添加",
+                    "method": "post",
+                    "url": "/user-center"
+                },
+                "delete": {
+                    "name": "删除",
+                    "method": "del",
+                    "url": "/user-center/{id}"
+                },
+                "batchDelete": {
+                    "name": "批量删除",
+                    "method": "del",
+                    "url": "/user-center"
+                }
+            },
+            "path": "/user-center"
+        },
+        "pages": [
+            {
+                "typeName": "列表页面",
+                "filePath": "/Users/wangshubin/workspace/suixingpay/react-admin/src/pages/user-center/index.jsx",
+                "template": "/Users/wangshubin/workspace/suixingpay/react-admin/scripts/gen/templates/list.js"
+            },
+            {
+                "typeName": "弹框表单",
+                "filePath": "/Users/wangshubin/workspace/suixingpay/react-admin/src/pages/user-center/EditModal.jsx",
+                "template": "/Users/wangshubin/workspace/suixingpay/react-admin/scripts/gen/templates/edit-modal.js"
+            },
+            {
+                "typeName": "页面表单",
+                "filePath": "/Users/wangshubin/workspace/suixingpay/react-admin/src/pages/user-center/Edit.jsx",
+                "template": "/Users/wangshubin/workspace/suixingpay/react-admin/scripts/gen/templates/edit.js"
+            }
+        ],
+        "queries": [
+            {
+                "type": "input",
+                "label": "用户名",
+                "field": "name",
+                "required": false
+            }
+        ],
+        "tools": [
+            {
+                "text": "添加",
+                "handle": "",
+                "icon": "plus"
+            },
+            {
+                "text": "删除",
+                "handle": "handleBatchDelete",
+                "icon": "delete"
+            },
+            {
+                "text": "导入",
+                "handle": "handleImport",
+                "icon": "import"
+            }
+        ],
+        "table": {
+            "selectable": true,
+            "pagination": true,
+            "serialNumber": true
+        },
+        "columns": [
+            {
+                "title": "account",
+                "dataIndex": "account"
+            },
+            {
+                "title": "密码",
+                "dataIndex": "password"
+            },
+            {
+                "title": "用户名",
+                "dataIndex": "name"
+            },
+            {
+                "title": "手机",
+                "dataIndex": "mobile"
+            },
+            {
+                "title": "邮箱",
+                "dataIndex": "email"
+            },
+            {
+                "title": "是否启用",
+                "dataIndex": "enabled"
+            }
+        ],
+        "operators": [
+            {
+                "text": "修改",
+                "handle": "",
+                "icon": "form",
+                "iconMode": false
+            },
+            {
+                "text": "删除",
+                "handle": "handleDelete",
+                "icon": "delete",
+                "iconMode": false
+            },
+            {
+                "text": "权限",
+                "handle": "handle2",
+                "iconMode": false
+            }
+        ],
+        "forms": [
+            {
+                "type": "input",
+                "label": "account",
+                "field": "account",
+                "required": true,
+                "maxLength": 255
+            },
+            {
+                "type": "password",
+                "label": "密码",
+                "field": "password",
+                "required": true,
+                "maxLength": 255
+            },
+            {
+                "type": "input",
+                "label": "用户名",
+                "field": "name",
+                "required": false,
+                "maxLength": 20
+            },
+            {
+                "type": "mobile",
+                "label": "手机",
+                "field": "mobile",
+                "required": false,
+                "maxLength": 20
+            },
+            {
+                "type": "email",
+                "label": "邮箱",
+                "field": "email",
+                "required": true,
+                "maxLength": 50
+            },
+            {
+                "type": "switch",
+                "label": "是否启用",
+                "field": "enabled",
+                "required": false,
+                "maxLength": null
+            }
+        ]
+    }
+]
