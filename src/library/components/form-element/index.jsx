@@ -38,7 +38,6 @@ export function isInputLikeElement(type) {
         'password',
         'mobile',
         'email',
-        'json',
     ].includes(type);
 }
 
