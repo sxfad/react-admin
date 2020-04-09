@@ -151,7 +151,7 @@ export default class UserCenter extends Component {
         const disabledDelete = !selectedRowKeys?.length;
 
         return (
-            <PageContent>
+            <PageContent loading={loading || deleting}>
                 <QueryBar>
                     <Form onFinish={this.handleSubmit} ref={form => this.form = form}>
                         <FormRow>
@@ -165,7 +165,7 @@ export default class UserCenter extends Component {
                                 <Button onClick={() => this.form.resetFields()}>重置</Button>
                             </FormElement>
                             <Button type="primary" onClick={() => this.setState({visible: true, id: null})}>添加</Button>
-                            <Button danger loading={deleting} disabled={disabledDelete} onClick={this.handleBatchDelete}>删除</Button>
+                            <Button danger disabled={disabledDelete} onClick={this.handleBatchDelete}>删除</Button>
                             <Button type="primary" onClick={this.handleImport}>导入</Button>
                         </FormRow>
                     </Form>
@@ -176,7 +176,6 @@ export default class UserCenter extends Component {
                         selectedRowKeys,
                         onChange: selectedRowKeys => this.setState({selectedRowKeys}),
                     }}
-                    loading={loading}
                     columns={this.columns}
                     dataSource={dataSource}
                     rowKey="id"

@@ -180,7 +180,7 @@ export default class UserCenter extends Component {
     render() {
         const {
             loading,
-            ${hasBatchDelete ? 'deleting,' : DELETE_THIS_LINE}
+            ${hasBatchDelete || hasDelete ? 'deleting,' : DELETE_THIS_LINE}
             dataSource,
             ${table.selectable ? 'selectedRowKeys,' : DELETE_THIS_LINE}
             ${table.pagination ? 'total,' : DELETE_THIS_LINE}
@@ -197,7 +197,7 @@ export default class UserCenter extends Component {
         ${hasBatchDelete && table.selectable ? 'const disabledDelete = !selectedRowKeys?.length;' : DELETE_THIS_LINE}
 
         return (
-            <PageContent>
+            <PageContent loading={loading${hasBatchDelete || hasDelete ? ' || deleting' : ''}}>
                 ${queries ? `<QueryBar>
                     <Form onFinish={this.handleSubmit} ref={form => this.form = form}>
                         <FormRow>
@@ -216,7 +216,7 @@ export default class UserCenter extends Component {
                                 <Button onClick={() => this.form.resetFields()}>重置</Button>
                             </FormElement>
                             ${tools ? `${tools.find(item => item.text === '添加') ? `<Button type="primary" onClick={() => ${isModalEdit ? `this.setState({visible: true, id: null})` : `this.props.history.push('${base.path}/_/edit/:id')`}}>添加</Button>` : DELETE_THIS_LINE}
-                            ${tools.find(item => item.text === '删除') ? `<Button danger loading={deleting} ${table.selectable ? 'disabled={disabledDelete} ' : ''}onClick={this.handleBatchDelete}>删除</Button>` : DELETE_THIS_LINE}
+                            ${tools.find(item => item.text === '删除') ? `<Button danger ${table.selectable ? 'disabled={disabledDelete} ' : ''}onClick={this.handleBatchDelete}>删除</Button>` : DELETE_THIS_LINE}
                             ${tools.filter(item => !['添加', '删除'].includes(item.text)).length ? tools.filter(item => !['添加', '删除'].includes(item.text)).map(item => `<Button type="primary" onClick={this.${item.handle}}>${item.text}</Button>`).join('\n                             ') : DELETE_THIS_LINE}` : DELETE_THIS_LINE}
                         </FormRow>
                     </Form>
@@ -227,7 +227,6 @@ export default class UserCenter extends Component {
                         selectedRowKeys,
                         onChange: selectedRowKeys => this.setState({selectedRowKeys}),
                     }}` : DELETE_THIS_LINE}
-                    loading={loading}
                     columns={this.columns}
                     dataSource={dataSource}
                     rowKey="id"
