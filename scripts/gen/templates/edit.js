@@ -54,7 +54,7 @@ export default class Edit extends Component {
     handleSubmit = (values) => {
         if (this.state.loading) return;
 
-        const {isEdit} = this.props;
+        const {isEdit} = this.state;
         const successTip = isEdit ? '修改成功！' : '添加成功！';
         const ajaxMethod = isEdit ? this.props.ajax.${base.ajax.modify.method} : this.props.ajax.${base.ajax.add.method};
         const ajaxUrl = isEdit ? '${base.ajax.modify.url}' : '${base.ajax.add.url}';
