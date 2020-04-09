@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {Form, Button} from 'antd';
-import {FormElement, FormRow, Operator, Table, tableEditable} from 'src/library/components';
+import {Form, Button, Tag} from 'antd';
+import {FormElement, FormRow, Table, tableEditable} from 'src/library/components';
 import config from 'src/commons/config-hoc';
 import PageContent from 'src/layouts/page-content';
+import './style.less';
 
 const EditTable = tableEditable(Table);
 
@@ -13,7 +14,7 @@ const renderContent = (value, record) => {
         children: value,
         props: {},
     };
-    if ('children' in record) {
+    if (record.isTable) {
         obj.props.colSpan = 0;
     }
     return obj;
@@ -24,143 +25,96 @@ export default class Fast extends Component {
     state = {
         loading: false,
         selectedRowKeys: [],
-        dataSource: [
-            {
-                id: '1',
-                tableName: 'user_center',
-                children: [
-                    {
-                        id: '11',
-                        tableName: '测试',
-                        field: 'name11',
-                        comment: '用户名 唯一不可重复',
-                        simpleComment: '用户名',
-                    },
-                    {
-                        id: '22',
-                        tableName: '测试',
-                        field: 'name22',
-                        comment: '用户名 唯一不可重复',
-                        simpleComment: '用户名',
-                    },
-                ],
-            },
-            {
-                id: '21',
-                tableName: 'role',
-                children: [
-                    {
-                        id: '211',
-                        tableName: '测试',
-                        field: 'name211',
-                        comment: '用户名 唯一不可重复',
-                        simpleComment: '用户名',
-                    },
-                    {
-                        id: '222',
-                        tableName: '测试',
-                        field: 'name222',
-                        comment: '用户名 唯一不可重复',
-                        simpleComment: '用户名',
-                    },
-                ],
-            },
-        ],
+        dataSource: [],
     };
 
     columns = [
+        {title: '表名', dataIndex: 'tableName', width: 200},
+        {title: '数据库注释', dataIndex: 'comment', width: 250},
         {
-            title: '表名', dataIndex: 'tableName',
+            title: '中文名', dataIndex: 'chinese', width: 250,
+            elementProps: record => {
+                return {
+                    required: true,
+                    onBlur: (e) => {
+                        record.chinese = e.target.value;
+                    },
+                };
+            },
+            render: renderContent,
         },
         {
             title: '列名', dataIndex: 'field',
+            elementProps: record => {
+                if (record.isTable) return null;
+
+                return {
+                    required: true,
+                    onBlur: (e) => {
+                        record.field = e.target.value;
+                    },
+                };
+            },
             render: (value, record) => {
-                if ('children' in record) {
-                    const {tableName} = record;
-                    return {
-                        children: (
-                            <Form
-                                style={{
-                                    display: 'inline-block',
-                                }}
-                                ref={form => record.form = form}
-                                name={tableName}
-                                initialValues={{
-                                    listPage: true,
-                                    selectable: true,
-                                    pagination: true,
-                                    serialNumber: true,
-                                    editPage: true,
-                                    editType: 'modalEdit',
+                if (record.isTable) {
+                    const configMap = {
+                        listPage: '列表页 orange',
+                        query: '查询条件 gold',
+                        selectable: '可选中 lime',
+                        pagination: '分页 green',
+                        serialNumber: '序号 cyan',
+                        add: '添加 blue',
+                        operatorEdit: '编辑 geekblue',
+                        operatorDelete: '删除 red',
+                        batchDelete: '批量删除 red',
+                        modalEdit: '弹框编辑 purple',
+                        pageEdit: '页面编辑 purple',
+                    };
+
+                    const tags = Object.entries(configMap).map(([key, value]) => {
+                        const enabled = record[key];
+                        let [label, color] = value.split(' ');
+                        if (!enabled) color = 'gray';
+
+                        return (
+                            <Tag
+                                key={label}
+                                color={color}
+                                styleName="tag"
+                                onClick={() => {
+                                    let nextEnabled = !record[key];
+                                    if (key === 'listPage') {
+                                        Object.keys(configMap).forEach(k => {
+                                            if (k !== 'modalEdit' && k !== 'pageEdit') {
+                                                record[k] = nextEnabled;
+                                            }
+                                        });
+
+                                    } else if (key === 'modalEdit' && nextEnabled) {
+                                        record.modalEdit = true;
+                                        record.pageEdit = false;
+                                    } else if (key === 'pageEdit' && nextEnabled) {
+                                        record.pageEdit = true;
+                                        record.modalEdit = false;
+                                    } else {
+                                        record[key] = nextEnabled;
+                                        if (key !== 'modalEdit' && key !== 'pageEdit' && nextEnabled) {
+                                            record.listPage = true;
+                                        }
+                                    }
+                                    this.setState({dataSource: [...this.state.dataSource]});
                                 }}
                             >
-                                <FormRow>
-                                    <FormElement
-                                        type="checkbox"
-                                        label="列表页"
-                                        name="listPage"
-                                        width={80}
-                                        style={{paddingLeft: 0}}
-                                    />
-                                    <Form.Item shouldUpdate={(prevValues, curValues) => prevValues.listPage !== curValues.listPage}>
-                                        {({getFieldValue}) => {
-                                            const listPage = getFieldValue('listPage');
-                                            if (listPage) return (
-                                                <FormRow>
-                                                    <FormElement
-                                                        type="switch"
-                                                        name="selectable"
-                                                        checkedChildren="有选中"
-                                                        unCheckedChildren="无选中"
-                                                    />
-                                                    <FormElement
-                                                        type="switch"
-                                                        name="pagination"
-                                                        checkedChildren="有分页"
-                                                        unCheckedChildren="无分页"
-                                                    />
-                                                    <FormElement
-                                                        type="switch"
-                                                        name="serialNumber"
-                                                        checkedChildren="有序号"
-                                                        unCheckedChildren="无序号"
-                                                    />
-                                                </FormRow>
-                                            );
+                                {label}
+                            </Tag>
+                        );
 
-                                            return null;
-                                        }}
-                                    </Form.Item>
-                                    <FormElement
-                                        type="checkbox"
-                                        label="编辑页"
-                                        name="editPage"
-                                        width={80}
-                                        style={{marginLeft: 50}}
-                                    />
-                                    <Form.Item shouldUpdate={(prevValues, curValues) => prevValues.editPage !== curValues.editPage}>
-                                        {({getFieldValue}) => {
-                                            const editPage = getFieldValue('editPage');
-                                            if (editPage) return (
-                                                <FormElement
-                                                    type="radio-group"
-                                                    name="editType"
-                                                    width={200}
-                                                    options={[
-                                                        {value: 'pageEdit', label: '页面'},
-                                                        {value: 'modalEdit', label: '弹框'},
-                                                    ]}
-                                                />
-                                            );
+                    });
 
-                                            return null;
-                                        }}
-                                    </Form.Item>
-                                </FormRow>
-                            </Form>
-                        ),
+                    return {
+                        children: tags,
                         props: {
-                            colSpan: 3,
+                            colSpan: 2,
                         },
                     };
                 }
@@ -169,41 +123,66 @@ export default class Fast extends Component {
         },
         // {title: '长度', dataIndex: 'length'},
         // {title: '是否为空', dataIndex: 'nullable'},
-        {title: '数据库注释', dataIndex: 'comment', render: renderContent},
-        {title: '简化注释', dataIndex: 'simpleComment', render: renderContent},
-        {
-            title: '操作', dataIndex: 'operator', width: 100,
-            render: (value, record) => {
-                const {id, name} = record;
-                const items = [
-                    {
-                        label: '删除',
-                        color: 'red',
-                        confirm: {
-                            title: `您确定删除"${name}"?`,
-                            onConfirm: () => this.handleDelete(id),
-                        },
-                    },
-                ];
-
-                return {
-                    children: <Operator items={items}/>,
-                    props: {colSpan: 1},
-                };
-            },
-        },
     ];
 
     componentDidMount() {
         const dbUrl = window.localStorage.getItem(DB_URL_STORE_KEY);
-        if (dbUrl) this.form.setFieldsValue({dbUrl});
+        if (dbUrl) {
+            this.form.setFieldsValue({dbUrl});
+            // 初始化查询
+            this.form.submit();
+        }
     }
 
     handleSubmit = (values) => {
         this.setState({loading: true});
         this.props.ajax.get('/gen/tables', values, {baseURL: '/'})
             .then(res => {
-                console.log(res);
+                const tables = res.tables || {};
+                const ignoreFields = res.ignoreFields || [];
+                const selectedRowKeys = [];
+
+                const dataSource = tables.map(({name: tableName, comment, columns}) => {
+                    const id = tableName;
+                    selectedRowKeys.push(id);
+                    return {
+                        id,
+                        isTable: true,
+                        tableName,
+                        comment,
+                        listPage: true,
+                        query: true,
+                        selectable: true,
+                        pagination: true,
+                        serialNumber: true,
+                        add: true,
+                        operatorEdit: true,
+                        operatorDelete: true,
+                        batchDelete: true,
+
+                        modalEdit: true,
+                        pageEdit: false,
+                        children: columns.map(it => {
+                            const {camelCaseName, name, type, isNullable, comment, chinese, length} = it;
+                            const id = `${tableName}-${name}`;
+
+                            if (!ignoreFields.includes(name)) selectedRowKeys.push(id);
+
+                            return {
+                                id,
+                                tableName,
+                                field: camelCaseName,
+                                comment: comment,
+                                chinese: chinese || camelCaseName,
+                                name,
+                                length,
+                                type,
+                                isNullable,
+                            };
+                        }),
+                    };
+                });
+                this.setState({dataSource, selectedRowKeys});
             })
             .finally(() => this.setState({loading: false}));
     };
@@ -215,14 +194,35 @@ export default class Fast extends Component {
         window.localStorage.setItem(DB_URL_STORE_KEY, dbUrl);
     };
 
-    handleDelete = (id) => {
-        // TODO
-    };
-
     handleGen = () => {
-        const {selectedRowKeys} = this.state;
-        console.log(selectedRowKeys);
-        // TODO
+        const {selectedRowKeys, dataSource} = this.state;
+        const tables = dataSource.filter(item => selectedRowKeys.includes(item.id));
+        const result = tables.map(item => {
+            const children = item.children
+                .filter(it => selectedRowKeys.includes(it.id))
+                .map(it => ({
+                    field: it.field,
+                    chinese: it.chinese,
+                    name: it.name,
+                    type: it.type,
+                    length: it.length,
+                    isNullable: it.isNullable,
+                }));
+
+            return {
+                ...item,
+                children,
+            };
+        });
+        const params = {
+            tables: result,
+        };
+        this.setState({loading: true});
+        this.props.ajax.post('/gen/tables', params, {baseURL: '/'})
+            .then(res => {
+                console.log(res);
+            })
+            .finally(() => this.setState({loading: false}));
     };
 
     render() {

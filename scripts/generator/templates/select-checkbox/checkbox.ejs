@@ -1,0 +1,73 @@
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {Checkbox} from 'antd';
+import {FontIcon} from 'zk-tookit/antd';
+import service from '../../../services/service-hoc';
+
+const CheckboxGroup = Checkbox.Group;
+
+@service()
+export class <%= capitalName %>Checkbox extends Component {
+    static defaultProps = {
+        layout: 'inline',
+        showDisabled: false,
+        onLoaded: () => {
+        },
+    };
+
+    static propTypes = {
+        layout: PropTypes.string, // 'horizontal'|'inline'
+        showDisabled: PropTypes.bool,
+        onLoaded: PropTypes.func,
+    };
+
+    state = {
+        options: [],
+    };
+
+    componentWillMount() {
+        this.props.$service.<%= lowercaseName %>Service
+            .getAll()
+            .then(list => {
+                let options = [];
+                if (list && list.length) {
+                    // TODO 修改item.id item.name item.isEnable
+                    options = list.map(item => {
+                        const disabled = item.isEnable !== 1;
+                        const value = item.id;
+                        const name = item.name;
+                        const label = disabled ?
+                            (
+                                <span>
+                                    {name}
+                                    <FontIcon style={{marginLeft: 8, color: 'red'}} type="fa-ban"/>
+                                </span>
+                            )
+                            : name;
+                        return {
+                            label,
+                            value,
+                            disabled,
+                        };
+                    });
+                }
+                this.props.onLoaded(options, list);
+                this.setState({options});
+            });
+    }
+
+    render() {
+        const {layout} = this.props;
+        const {options} = this.state;
+        if (layout === 'horizontal') {
+            return (
+                <CheckboxGroup {...this.props}>
+                    {options.map(item => <div key={item.value}><Checkbox value={item.value} disabled={item.disabled}>{item.label}</Checkbox></div>)}
+                </CheckboxGroup>
+            );
+        }
+        return (
+            <CheckboxGroup options={options} {...this.props}/>
+        );
+    }
+}

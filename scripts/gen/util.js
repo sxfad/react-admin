@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const chalk = require('chalk');
+const path = require('path');
 
 function testConnection(url) {
     return new Promise(function (resolve, reject) {
@@ -110,12 +111,233 @@ function getTitleByField(field) {
 
 function logWarning(text) {
     const icon = '️️⚡️';
-    console.log(chalk.yellow(icon + text))
+    console.log(chalk.yellow(icon + text));
 }
 
 function logSuccess(text) {
     const icon = '✨  ';
-    console.log(chalk.green(icon + text))
+    console.log(chalk.green(icon + text));
+}
+
+
+// 接口，数据库读取时，忽略的字段
+const COMMON_EXCLUDE_FIELDS = [
+    'SXF-TRACE-ID',
+    'pageNum',
+    'pageSize',
+    'id',
+    'token',
+    'updatedAt',
+    'createdAt',
+    'created_at',
+    'updated_at',
+    'is_deleted',
+];
+
+function getConfigFromDbTable(options) {
+    const {
+        tableName,
+        listPage,
+        selectable,
+        pagination,
+        serialNumber,
+        query,
+        add,
+        operatorEdit,
+        operatorDelete,
+        batchDelete,
+        modalEdit,
+        pageEdit,
+        children,
+    } = options;
+
+    // 下划线转连字符
+    const moduleName = tableName.replace(/_/g, '-');
+    const base = {
+        moduleName,
+        path: `/${moduleName}`,
+        ajax: {
+            search: {
+                name: '查询',
+                method: 'get',
+                url: `/${moduleName}`,
+            },
+            detail: {
+                name: '详情',
+                method: 'get',
+                url: `/${moduleName}/{id}`,
+            },
+            modify: {
+                name: '修改',
+                method: 'put',
+                url: `/${moduleName}`,
+            },
+            add: {
+                name: '添加',
+                method: 'post',
+                url: `/${moduleName}`,
+            },
+            delete: {
+                name: '删除',
+                method: 'del',
+                url: `/${moduleName}/{id}`,
+            },
+            batchDelete: {
+                name: '批量删除',
+                method: 'del',
+                url: `/${moduleName}`,
+            },
+        },
+    };
+
+    let pages = null;
+    if (listPage || modalEdit || pageEdit) {
+        pages = [];
+        if (listPage) {
+            pages.push({
+                typeName: '列表页面',
+                filePath: path.join(__dirname, '../../src/pages', moduleName, 'index.jsx'),
+                template: path.join(__dirname, 'templates', 'list.js'),
+            });
+        }
+        if (modalEdit) {
+            pages.push({
+                typeName: '弹框表单',
+                filePath: path.join(__dirname, '../../src/pages', moduleName, 'EditModal.jsx'),
+                template: path.join(__dirname, 'templates', 'edit-modal.js'),
+            });
+        }
+        if (pageEdit) {
+            pages.push({
+                typeName: '页面表单',
+                filePath: path.join(__dirname, '../../src/pages', moduleName, 'Edit.jsx'),
+                template: path.join(__dirname, 'templates', 'edit.js'),
+            });
+        }
+    }
+
+    let queries = null;
+    if (query) {
+        queries = [
+            {
+                type: 'input',
+                label: '条件1',
+                field: 'field1',
+            },
+            {
+                type: 'select',
+                label: '条件2',
+                field: 'field1',
+            },
+        ];
+    }
+    let tools = null;
+
+    if (add || batchDelete) {
+        tools = [];
+        if (add) {
+            tools.push({
+                text: '添加',
+                handle: '',
+            });
+        }
+
+        if (batchDelete) {
+            tools.push(
+                {
+                    text: '删除',
+                    handle: 'handleBatchDelete',
+                },
+            );
+        }
+    }
+
+    const table = {
+        selectable,
+        pagination,
+        serialNumber,
+    };
+
+    const columns = children.map(item => {
+        const {chinese: title, field: dataIndex} = item;
+        return {
+            title,
+            dataIndex,
+        };
+    });
+
+    let operators = null;
+    if (operatorEdit || operatorDelete) {
+        operators = [];
+        if (operatorEdit) {
+            operators.push({
+                text: '修改',
+                handle: '',
+            });
+        }
+        if (operatorDelete) {
+            operators.push({
+                text: '删除',
+                handle: 'handleDelete',
+            });
+        }
+    }
+
+    let forms = null;
+
+    if (modalEdit || pageEdit) {
+        forms = [];
+        // TODO
+    }
+
+    const listPageConfig = {
+        fileTypeName: '列表页面',
+        filePath: path.join(__dirname, '../../src/pages', moduleName, 'index.jsx'),
+        template: path.join(__dirname, 'templates', 'list.js'),
+        base,
+        pages,
+        queries,
+        tools,
+        table,
+        columns,
+        operators,
+        forms,
+    };
+
+    const modalEditConfig = {
+        fileTypeName: '弹框表单',
+        filePath: path.join(__dirname, '../../src/pages', moduleName, 'EditModal.jsx'),
+        template: path.join(__dirname, 'templates', 'edit-modal.js'),
+        base,
+        pages,
+        queries,
+        tools,
+        table,
+        columns,
+        operators,
+        forms,
+    };
+
+    const pageEditConfig = {
+        fileTypeName: '页面表单',
+        filePath: path.join(__dirname, '../../src/pages', moduleName, 'edit.jsx'),
+        template: path.join(__dirname, 'templates', 'edit.js'),
+        base,
+        pages,
+        queries,
+        tools,
+        table,
+        columns,
+        operators,
+        forms,
+    };
+
+    const configs = [];
+    if (listPage) configs.push(listPageConfig);
+    if (modalEdit) configs.push(modalEditConfig);
+    if (pageEdit) configs.push(pageEditConfig);
+
+    return configs;
 }
 
 module.exports = {
@@ -125,5 +347,7 @@ module.exports = {
     getTitle,
     logWarning,
     logSuccess,
+    COMMON_EXCLUDE_FIELDS,
+    getConfigFromDbTable,
 };
 

@@ -3,7 +3,7 @@ const http = require('http');
 const axios = require('axios');
 const https = require('https');
 const urlParse = require('url').parse;
-const {getTitle, getTableColumns, logWarning, logSuccess} = require('./util');
+const {getTitle, getTableColumns, logWarning, logSuccess, COMMON_EXCLUDE_FIELDS} = require('./util');
 
 // 命令要在项目根目录下执行
 const PAGES_DIR = path.join(process.cwd(), '/src/pages');
@@ -34,20 +34,6 @@ const ELEMENT_TYPES = [
     'cascader',
     'json',
     'icon-picker',
-];
-
-// 接口，数据库读取是，忽略的字段
-const COMMON_EXCLUDE_FIELDS = [
-    'SXF-TRACE-ID',
-    'pageNum',
-    'pageSize',
-    'id',
-    'token',
-    'updatedAt',
-    'createdAt',
-    'created_at',
-    'updated_at',
-    'is_deleted',
 ];
 
 // 随机生成不重复field字符串
