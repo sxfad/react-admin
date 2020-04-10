@@ -8,12 +8,9 @@ function testConnection(url) {
         const connection = mysql.createConnection(url);
 
         connection.connect(function (err) {
-            if (err) {
-                console.error(err);
-                reject(err);
-            } else {
-                resolve(true);
-            }
+            if (err) return reject(err);
+
+            resolve(true);
         });
 
         connection.end();
@@ -26,24 +23,22 @@ function getTableNames(options) {
         const {url, database} = options;
         const connection = mysql.createConnection(url);
 
-        // url: jdbc:mysql://172.16.60.247:3306/code_generate?useUnicode=true&characterEncoding=UTF-8&useSSL=false
-        // username: fd
-        // password: 123456
+        connection.connect(err => {
+            if (err) return reject(err);
+            const tableInfoSql = `select table_name from information_schema.tables where table_schema='${database}' and table_type='base table'`;
 
-        connection.connect();
+            connection.query(tableInfoSql, function (error, results, fields) {
+                if (error) return reject(error);
 
-        const tableInfoSql = `select table_name from information_schema.tables where table_schema='${database}' and table_type='base table'`;
-
-        connection.query(tableInfoSql, function (error, results, fields) {
-            if (error) return reject(error);
-
-            const result = results.map(item => {
-                return item.table_name;
+                const result = results.map(item => {
+                    return item.table_name;
+                });
+                resolve(result);
             });
-            resolve(result);
-        });
 
-        connection.end();
+            connection.end();
+
+        });
     });
 }
 
@@ -52,34 +47,36 @@ function getTableColumns(options) {
         const {url, database, table} = options;
         const connection = mysql.createConnection(url);
 
-        connection.connect();
+        connection.connect(err => {
+            if (err) return reject(err);
 
-        const tableInfoSql = `select * from information_schema.columns where table_schema = "${database}" and table_name = "${table}"`;
+            const tableInfoSql = `select * from information_schema.columns where table_schema = "${database}" and table_name = "${table}"`;
 
-        connection.query(tableInfoSql, function (error, results, fields) {
-            if (error) return reject(error);
+            connection.query(tableInfoSql, function (error, results, fields) {
+                if (error) return reject(error);
 
-            const result = results.map(item => {
-                const name = item.COLUMN_NAME;
-                const camelCaseName = name.replace(/_(\w)/g, (a, b) => b.toUpperCase());
-                const comment = item.COLUMN_COMMENT;
-                const commentInfo = getInfoByComment(comment);
-                const {chinese} = commentInfo;
+                const result = results.map(item => {
+                    const name = item.COLUMN_NAME;
+                    const camelCaseName = name.replace(/_(\w)/g, (a, b) => b.toUpperCase());
+                    const comment = item.COLUMN_COMMENT;
+                    const commentInfo = getInfoByComment(comment);
+                    const {chinese} = commentInfo;
 
-                return {
-                    camelCaseName,
-                    name,
-                    type: item.DATA_TYPE, // COLUMN_TYPE
-                    isNullable: item.IS_NULLABLE === 'YES',
-                    comment,
-                    chinese,
-                    length: item.CHARACTER_MAXIMUM_LENGTH, // CHARACTER_OCTET_LENGTH
-                };
+                    return {
+                        camelCaseName,
+                        name,
+                        type: item.DATA_TYPE, // COLUMN_TYPE
+                        isNullable: item.IS_NULLABLE === 'YES',
+                        comment,
+                        chinese,
+                        length: item.CHARACTER_MAXIMUM_LENGTH, // CHARACTER_OCTET_LENGTH
+                    };
+                });
+                resolve(result);
             });
-            resolve(result);
-        });
 
-        connection.end();
+            connection.end();
+        });
     });
 }
 
