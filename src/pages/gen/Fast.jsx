@@ -45,7 +45,7 @@ export default class Fast extends Component {
             render: renderContent,
         },
         {
-            title: '列名', dataIndex: 'field',
+            title: '列名', dataIndex: 'field', align: 'right',
             elementProps: (record, index) => {
                 if (record.isTable) return null;
 
@@ -76,7 +76,7 @@ export default class Fast extends Component {
                     const tags = Object.entries(configMap).map(([key, value]) => {
                         const enabled = record[key];
                         let [label, color] = value.split(' ');
-                        if (!enabled) color = 'gray';
+                        if (!enabled) color = '#ccc';
 
                         return (
                             <Tag
@@ -124,7 +124,7 @@ export default class Fast extends Component {
             },
         },
         {
-            title: '选项', dataIndex: 'options',
+            title: '选项', dataIndex: 'options', width: 160, align: 'right',
             render: (value, record) => {
                 const {isColumn, isForm, isQuery} = record;
                 const labelMap = {
@@ -138,7 +138,7 @@ export default class Fast extends Component {
                     return (
                         <Tag
                             key={key}
-                            color={val ? color : 'gray'}
+                            color={val ? color : '#ccc'}
                             styleName="tag"
                             onClick={() => {
                                 record[key] = !record[key];
