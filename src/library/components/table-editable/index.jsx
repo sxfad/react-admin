@@ -27,13 +27,13 @@ const EditableCell = (options) => {
     } = options;
 
     record._form = useContext(EditableContext);
-    const {title, dataIndex, elementProps} = col;
+    const {title, dataIndex, formProps} = col;
 
     let childNode = children;
-    let eleProps = elementProps;
+    let eleProps = formProps;
 
-    if (typeof elementProps === 'function') {
-        eleProps = elementProps(record, rowIndex);
+    if (typeof formProps === 'function') {
+        eleProps = formProps(record, rowIndex);
     }
 
     // eleProps 存在，即表示可编辑
@@ -66,7 +66,7 @@ export default function editTable(OriTable) {
             };
 
             const newColumns = columns.map(col => {
-                if (!col.elementProps) {
+                if (!col.formProps) {
                     return col;
                 }
 

@@ -23,7 +23,7 @@ export default class EditableTable extends Component {
             title: '姓名',
             dataIndex: 'name',
             width: 300,
-            elementProps: {
+            formProps: {
                 required: true,
             },
         },
@@ -31,7 +31,7 @@ export default class EditableTable extends Component {
             title: '语言',
             dataIndex: 'lang',
             width: 300,
-            elementProps: {
+            formProps: {
                 type: 'select',
                 required: true,
                 options: [
@@ -43,7 +43,7 @@ export default class EditableTable extends Component {
         {
             title: '地址',
             dataIndex: 'address',
-            elementProps: record => {
+            formProps: record => {
                 const {address} = record;
                 if (address.includes('no. 0')) return {};
 

@@ -33,7 +33,7 @@ export default class Fast extends Component {
         {title: '数据库注释', dataIndex: 'comment', width: 200},
         {
             title: <span style={{paddingLeft: 10}}>中文名</span>, dataIndex: 'chinese', width: 250,
-            elementProps: (record, index) => {
+            formProps: (record, index) => {
                 return {
                     required: true,
                     tabIndex: index + 1, // index * 2 + 1
@@ -46,7 +46,7 @@ export default class Fast extends Component {
         },
         {
             title: <span style={{paddingLeft: 10}}>列名</span>, dataIndex: 'field',
-            elementProps: (record, index) => {
+            formProps: (record, index) => {
                 if (record.isTable) return null;
 
                 return {

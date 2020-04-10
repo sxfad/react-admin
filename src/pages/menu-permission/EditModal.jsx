@@ -55,7 +55,7 @@ export default class EditModal extends Component {
         const {type} = data;
         const isMenu = type === '1';
 
-        const formElementProps = {
+        const formProps = {
             labelWidth: 70,
         };
         return (
@@ -73,19 +73,19 @@ export default class EditModal extends Component {
                     style={{padding: 16}}
                     initialValues={data}
                 >
-                    <FormElement {...formElementProps} type="hidden" name="key"/>
-                    <FormElement {...formElementProps} type="hidden" name="parentKey"/>
-                    <FormElement {...formElementProps} type="hidden" name="type"/>
+                    <FormElement {...formProps} type="hidden" name="key"/>
+                    <FormElement {...formProps} type="hidden" name="parentKey"/>
+                    <FormElement {...formProps} type="hidden" name="type"/>
                     <FormRow>
                         <FormElement
-                            {...formElementProps}
+                            {...formProps}
                             label="名称"
                             name="text"
                             required
                         />
                         {isMenu ? (
                             <FormElement
-                                {...formElementProps}
+                                {...formProps}
                                 label="图标"
                                 name="icon"
                             >
@@ -93,7 +93,7 @@ export default class EditModal extends Component {
                             </FormElement>
                         ) : (
                             <FormElement
-                                {...formElementProps}
+                                {...formProps}
                                 label="编码"
                                 name="code"
                                 required
@@ -103,14 +103,14 @@ export default class EditModal extends Component {
                     </FormRow>
                     <FormRow>
                         <FormElement
-                            {...formElementProps}
+                            {...formProps}
                             label="path"
                             name="path"
                             labelTip="菜单对应的页面地址，或者功能对应的页面地址。前端会基于用户所拥有的path，对路由进行过滤。"
                         />
                         {isMenu ? (
                             <FormElement
-                                {...formElementProps}
+                                {...formProps}
                                 label="排序"
                                 type="number"
                                 name="order"
@@ -122,12 +122,12 @@ export default class EditModal extends Component {
                     {isMenu ? (
                         <FormRow>
                             <FormElement
-                                {...formElementProps}
+                                {...formProps}
                                 label="url"
                                 name="url"
                             />
                             <FormElement
-                                {...formElementProps}
+                                {...formProps}
                                 type="select"
                                 label="target"
                                 name="target"
