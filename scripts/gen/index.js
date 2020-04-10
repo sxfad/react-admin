@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const program = require('commander');
 const inquirer = require('inquirer');
-const {logSuccess} = require('./util');
+const {logSuccess, writeFileSync} = require('./util');
 const getConfig = require('./config');
 
 const DEFAULT_CONFIG_FILE = path.join(__dirname, './config.conf');
@@ -71,22 +71,3 @@ async function prompt(message) {
 }
 
 genFiles();
-
-/**
- * 写文件，如果目录不存在直接创建
- * @param toFile
- * @param content
- */
-function writeFileSync(toFile, content) {
-    const sep = path.sep;
-    const folders = path.dirname(toFile).split(sep);
-    let p = '';
-    while (folders.length) {
-        p += folders.shift() + sep;
-        if (!fs.existsSync(p)) {
-            fs.mkdirSync(p);
-        }
-    }
-
-    fs.writeFileSync(toFile, content);
-}

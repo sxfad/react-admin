@@ -33,9 +33,10 @@ export default class Fast extends Component {
         {title: '数据库注释', dataIndex: 'comment', width: 250},
         {
             title: '中文名', dataIndex: 'chinese', width: 250,
-            elementProps: record => {
+            elementProps: (record, index) => {
                 return {
                     required: true,
+                    tabIndex: index + 1, // index * 2 + 1
                     onBlur: (e) => {
                         record.chinese = e.target.value;
                     },
@@ -45,11 +46,12 @@ export default class Fast extends Component {
         },
         {
             title: '列名', dataIndex: 'field',
-            elementProps: record => {
+            elementProps: (record, index) => {
                 if (record.isTable) return null;
 
                 return {
                     required: true,
+                    tabIndex: index  + 100, // index * 2 + 2
                     onBlur: (e) => {
                         record.field = e.target.value;
                     },
@@ -173,7 +175,7 @@ export default class Fast extends Component {
                                 tableName,
                                 field: camelCaseName,
                                 comment: comment,
-                                chinese: chinese || camelCaseName,
+                                chinese: (chinese || camelCaseName).trim(),
                                 name,
                                 length,
                                 type,

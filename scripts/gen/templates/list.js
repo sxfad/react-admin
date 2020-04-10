@@ -199,7 +199,11 @@ export default class UserCenter extends Component {
         return (
             <PageContent loading={loading${hasBatchDelete || hasDelete ? ' || deleting' : ''}}>
                 ${queries ? `<QueryBar>
-                    <Form onFinish={this.handleSubmit} ref={form => this.form = form}>
+                    <Form
+                        name="${base.moduleName}-query"
+                        ref={form => this.form = form}
+                        onFinish={this.handleSubmit}
+                    >
                         <FormRow>
                             ${queries.map(item => `<FormElement
                                 {...formProps}

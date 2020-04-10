@@ -1,6 +1,7 @@
 const mysql = require('mysql');
 const chalk = require('chalk');
 const path = require('path');
+const fs = require('fs');
 
 function testConnection(url) {
     return new Promise(function (resolve, reject) {
@@ -286,8 +287,29 @@ function getConfigFromDbTable(options) {
     let forms = null;
 
     if (modalEdit || pageEdit) {
-        forms = [];
-        // TODO
+        forms = children.map(item => {
+            const {
+                field,
+                chinese: label,
+                length: maxLength,
+                type: oType,
+                isNullable,
+            } = item;
+
+            const type = getFormElementType(oType, label);
+            const required = !isNullable;
+
+            const options = {
+                type,
+                label,
+                field,
+                required,
+            };
+
+            if (maxLength) options.maxLength = maxLength;
+
+            return options;
+        });
     }
 
     const listPageConfig = {
@@ -340,6 +362,64 @@ function getConfigFromDbTable(options) {
     return configs;
 }
 
+
+// 获取表单类型
+function getFormElementType({oType, label = ''}) {
+    let type = 'input';
+
+    // FIXME 完善更多类型
+    if (oType === 'array') type = 'select';
+
+    if (label.startsWith('是否')) type = 'switch';
+
+    if (label.startsWith('密码') || label.endsWith('密码')) type = 'password';
+
+    if (label.includes('电话') || label.includes('手机')) type = 'mobile';
+
+    if (label.includes('邮箱')) type = 'email';
+
+    if (label.includes('时间') || label.includes('日期')) type = 'date';
+
+    return type;
+}
+
+
+async function writeFiles(configs) {
+    const successFile = [];
+
+    for (let cfg of configs) {
+        let {filePath, template, fileTypeName} = cfg;
+        const fp = filePath.replace(process.cwd(), '');
+        const content = require(template)(cfg);
+
+        writeFileSync(filePath, content);
+        successFile.push({name: fileTypeName, path: fp});
+    }
+
+    return successFile;
+}
+
+
+/**
+ * 写文件，如果目录不存在直接创建
+ * @param toFile
+ * @param content
+ */
+function writeFileSync(toFile, content) {
+    const sep = path.sep;
+    const folders = path.dirname(toFile).split(sep);
+    let p = '';
+    while (folders.length) {
+        p += folders.shift() + sep;
+        if (!fs.existsSync(p)) {
+            fs.mkdirSync(p);
+        }
+    }
+
+    fs.writeFileSync(toFile, content);
+}
+
+
 module.exports = {
     testConnection,
     getTableColumns,
@@ -349,5 +429,8 @@ module.exports = {
     logSuccess,
     COMMON_EXCLUDE_FIELDS,
     getConfigFromDbTable,
+    writeFiles,
+    getFormElementType,
+    writeFileSync,
 };
 

@@ -3,7 +3,14 @@ const http = require('http');
 const axios = require('axios');
 const https = require('https');
 const urlParse = require('url').parse;
-const {getTitle, getTableColumns, logWarning, logSuccess, COMMON_EXCLUDE_FIELDS} = require('./util');
+const {
+    getTitle,
+    getTableColumns,
+    logWarning,
+    logSuccess,
+    COMMON_EXCLUDE_FIELDS,
+    getFormElementType
+} = require('./util');
 
 // 命令要在项目根目录下执行
 const PAGES_DIR = path.join(process.cwd(), '/src/pages');
@@ -93,26 +100,6 @@ function getFormElement(str) {
         required,
         maxLength,
     };
-}
-
-// 获取表单类型
-function getFormElementType({oType, label = ''}) {
-    let type = 'input';
-
-    // FIXME 完善更多类型
-    if (oType === 'array') type = 'select';
-
-    if (label.startsWith('是否')) type = 'switch';
-
-    if (label.startsWith('密码') || label.endsWith('密码')) type = 'password';
-
-    if (label.includes('电话') || label.includes('手机')) type = 'mobile';
-
-    if (label.includes('邮箱')) type = 'email';
-
-    if (label.includes('时间') || label.includes('日期')) type = 'date';
-
-    return type;
 }
 
 function getElement(configArr, title, key, fromColumn) {

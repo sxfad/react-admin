@@ -79,6 +79,7 @@ export default class EditModal extends Component {
                 onCancel={() => this.form.resetFields()}
             >
                 <Form
+                    name="${base.moduleName}-modal-edit"
                     ref={form => this.form = form}
                     onFinish={this.handleSubmit}
                 >

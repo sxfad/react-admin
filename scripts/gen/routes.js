@@ -1,6 +1,10 @@
 const express = require('express');
 const {getTableNames, getTableColumns} = require('./my-sql');
-const {COMMON_EXCLUDE_FIELDS} = require('./util');
+const {
+    COMMON_EXCLUDE_FIELDS,
+    getConfigFromDbTable,
+    writeFiles,
+} = require('./util');
 
 const router = express.Router();
 router.use(require('body-parser').json());
@@ -21,7 +25,13 @@ router.get('/gen/tables', async (req, res, next) => {
 router.post('/gen/tables', async (req, res, next) => {
     const {tables} = req.body;
 
-    console.log(tables);
-    res.send(true);
+    let configs = [];
+    tables.map(getConfigFromDbTable).forEach(item => {
+        configs = configs.concat(item);
+    });
+
+    const result = writeFiles(configs);
+
+    res.send(result);
 });
 module.exports = router;

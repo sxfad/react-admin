@@ -21,6 +21,7 @@ const EditableCell = (options) => {
     const {
         children,
         record = {},
+        rowIndex,
         col = {},
         ...restProps
     } = options;
@@ -32,7 +33,7 @@ const EditableCell = (options) => {
     let eleProps = elementProps;
 
     if (typeof elementProps === 'function') {
-        eleProps = elementProps(record);
+        eleProps = elementProps(record, rowIndex);
     }
 
     // eleProps 存在，即表示可编辑
@@ -71,8 +72,9 @@ export default function editTable(OriTable) {
 
                 return {
                     ...col,
-                    onCell: record => ({
+                    onCell: (record, rowIndex) => ({
                         record,
+                        rowIndex,
                         col,
                     }),
                 };

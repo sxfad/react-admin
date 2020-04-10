@@ -78,6 +78,7 @@ export default class Edit extends Component {
         return (
             <PageContent loading={loading}>
                 <Form
+                    name="${base.moduleName}-edit"
                     ref={form => this.form = form}
                     onFinish={this.handleSubmit}
                 >
