@@ -9,6 +9,7 @@ import './style.less';
 const {TabPane} = Tabs;
 
 export const DB_URL_STORE_KEY = 'GEN_DB_URL';
+export const SWAGGER_URL_STORE_KEY = 'GEN_SWAGGER_URL';
 
 export function getTables(res) {
     const tables = res.tables || {};

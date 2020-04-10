@@ -28,6 +28,8 @@ module.exports = function (config) {
         columns,
     } = config;
 
+    if (queries && !queries.length) queries = null;
+
     if (!table) table = {};
 
     const isModalEdit = !!pages.find(item => item.typeName === '弹框表单');
@@ -48,12 +50,13 @@ module.exports = function (config) {
     const operatorDelete = operators && operators.find(item => item.text === '删除');
 
     return `import React, {Component} from 'react';
-${tools || queries || hasBatchDelete ? `import {${queries ? 'Button, Form, ' : ''}${hasBatchDelete ? 'Modal' : ''}} from 'antd';` : DELETE_THIS_LINE}
+${tools || queries || hasBatchDelete ? `import {${(queries || tools) ? 'Button, ' : ''}${queries ? 'Form, ' : ''}${hasBatchDelete ? 'Modal' : ''}} from 'antd';` : DELETE_THIS_LINE}
 ${columns.find(renderTime) ? `import moment from 'moment';` : DELETE_THIS_LINE}
 import PageContent from 'src/layouts/page-content';
 import config from 'src/commons/config-hoc';
 import {
     ${queries ? 'QueryBar,' : DELETE_THIS_LINE}
+    ${(!queries && tools) ? 'ToolBar,' : DELETE_THIS_LINE}
     ${queries ? 'FormRow,' : DELETE_THIS_LINE}
     ${queries ? 'FormElement,' : DELETE_THIS_LINE}
     Table,
@@ -225,6 +228,11 @@ export default class UserCenter extends Component {
                         </FormRow>
                     </Form>
                 </QueryBar>` : DELETE_THIS_LINE}
+                ${(!queries && tools) ? `<ToolBar>
+                    ${tools ? `${tools.find(item => item.text === '添加') ? `<Button type="primary" onClick={() => ${isModalEdit ? `this.setState({visible: true, id: null})` : `this.props.history.push('${base.path}/_/edit/:id')`}}>添加</Button>` : DELETE_THIS_LINE}
+                    ${tools.find(item => item.text === '删除') ? `<Button danger ${table.selectable ? 'disabled={disabledDelete} ' : ''}onClick={this.handleBatchDelete}>删除</Button>` : DELETE_THIS_LINE}
+                    ${tools.filter(item => !['添加', '删除'].includes(item.text)).length ? tools.filter(item => !['添加', '删除'].includes(item.text)).map(item => `<Button type="primary" onClick={this.${item.handle}}>${item.text}</Button>`).join('\n                     ') : DELETE_THIS_LINE}` : DELETE_THIS_LINE}
+                </ToolBar>` : DELETE_THIS_LINE}
                 <Table
                     ${table.serialNumber ? 'serialNumber' : DELETE_THIS_LINE}
                     ${table.selectable ? `rowSelection={{

@@ -4,12 +4,13 @@ const {
     COMMON_EXCLUDE_FIELDS,
     getConfigFromDbTable,
     writeFiles,
+    readSwagger,
 } = require('./util');
 
 const router = express.Router();
 router.use(require('body-parser').json());
 
-router.get('/gen/tables', async (req, res, next) => {
+router.get('/gen/tables', async (req, res) => {
     const {dbUrl} = req.query;
     try {
         const tables = await getTableNames(dbUrl);
@@ -26,7 +27,7 @@ router.get('/gen/tables', async (req, res, next) => {
     }
 });
 
-router.post('/gen/tables', async (req, res, next) => {
+router.post('/gen/tables', async (req, res) => {
     try {
         const {tables} = req.body;
 
@@ -36,6 +37,48 @@ router.post('/gen/tables', async (req, res, next) => {
         });
 
         const result = writeFiles(configs);
+
+        res.send(result);
+    } catch (e) {
+        res.status(400).send(e);
+    }
+});
+
+router.get('/gen/swagger', async (req, res, next) => {
+    const {swaggerUrl, method, userName, password} = req.query;
+    try {
+        const {origin, pathname} = new URL(swaggerUrl);
+        const url = `${origin}/v2/api-docs`; // TODO swagger版本是啥？
+
+        const config = {
+            url,
+            userName,
+            password,
+        };
+        const search = method === 'get' ? {
+            method,
+            url: pathname,
+            dataPath: '', // TODO
+            excludeFields: COMMON_EXCLUDE_FIELDS,
+        } : null;
+
+        const modify = method !== 'get' ? {
+            method,
+            url: pathname,
+            dataPath: '', // TODO
+            excludeFields: COMMON_EXCLUDE_FIELDS,
+        } : null;
+
+        const baseConfig = {
+            ajax: {
+                search,
+                modify,
+            },
+        };
+
+        const result = await readSwagger(config, baseConfig);
+        result.moduleName = pathname.replace(/\//g, '-');
+        if (result.moduleName.startsWith('-')) result.moduleName = result.moduleName.replace('-', '');
 
         res.send(result);
     } catch (e) {

@@ -22,7 +22,7 @@ import './index.less';
 const {TextArea, Password} = Input;
 const FormItem = Form.Item;
 
-// input hidden number textarea password mobile email select select-tree checkbox checkbox-group radio radio-group switch date time date-time date-range cascader
+// input hidden number textarea password mobile email select select-tree checkbox checkbox-group radio radio-button radio-group switch date time date-time date-range cascader
 
 /**
  * 类似 input 元素
