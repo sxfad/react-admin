@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Form, Button, Tag} from 'antd';
+import {Form, Button, Tag, Modal} from 'antd';
+import {ExclamationCircleOutlined} from '@ant-design/icons';
 import {FormElement, FormRow, Table, tableEditable} from 'src/library/components';
 import config from 'src/commons/config-hoc';
 import PageContent from 'src/layouts/page-content';
@@ -239,36 +240,43 @@ export default class Fast extends Component {
     };
 
     handleGen = () => {
-        const {selectedRowKeys, dataSource} = this.state;
-        const tables = dataSource.filter(item => selectedRowKeys.includes(item.id));
-        const result = tables.map(item => {
-            const children = item.children
-                .map(it => ({
-                    field: it.field,
-                    chinese: it.chinese,
-                    name: it.name,
-                    type: it.type,
-                    length: it.length,
-                    isNullable: it.isNullable,
-                    isForm: it.isForm,
-                    isColumn: it.isColumn,
-                    isQuery: it.isQuery,
-                }));
+        Modal.confirm({
+            icon: <ExclamationCircleOutlined/>,
+            title: '同名文件将被覆盖，是否继续？',
+            content: '代码文件直接生成到项目目录中，会引起webpack的热更新，当前页面有可能会重新加载。',
+            onOk: () => {
+                const {selectedRowKeys, dataSource} = this.state;
+                const tables = dataSource.filter(item => selectedRowKeys.includes(item.id));
+                const result = tables.map(item => {
+                    const children = item.children
+                        .map(it => ({
+                            field: it.field,
+                            chinese: it.chinese,
+                            name: it.name,
+                            type: it.type,
+                            length: it.length,
+                            isNullable: it.isNullable,
+                            isForm: it.isForm,
+                            isColumn: it.isColumn,
+                            isQuery: it.isQuery,
+                        }));
 
-            return {
-                ...item,
-                children,
-            };
+                    return {
+                        ...item,
+                        children,
+                    };
+                });
+                const params = {
+                    tables: result,
+                };
+                this.setState({loading: true});
+                this.props.ajax.post('/gen/tables', params, {baseURL: '/'})
+                    .then(res => {
+                        console.log(res);
+                    })
+                    .finally(() => this.setState({loading: false}));
+            },
         });
-        const params = {
-            tables: result,
-        };
-        this.setState({loading: true});
-        this.props.ajax.post('/gen/tables', params, {baseURL: '/'})
-            .then(res => {
-                console.log(res);
-            })
-            .finally(() => this.setState({loading: false}));
     };
 
     render() {
