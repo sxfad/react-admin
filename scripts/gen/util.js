@@ -216,18 +216,21 @@ function getConfigFromDbTable(options) {
 
     let queries = null;
     if (query) {
-        queries = [
-            {
-                type: 'input',
-                label: '条件1',
-                field: 'field1',
-            },
-            {
-                type: 'select',
-                label: '条件2',
-                field: 'field1',
-            },
-        ];
+        queries = children.filter(item => item.isQuery).map(item => {
+            const {
+                field,
+                chinese: label,
+                type: oType,
+            } = item;
+
+            const type = getFormElementType(oType, label);
+
+            return {
+                type,
+                label,
+                field,
+            };
+        });
     }
     let tools = null;
 
@@ -256,7 +259,7 @@ function getConfigFromDbTable(options) {
         serialNumber,
     };
 
-    const columns = children.map(item => {
+    const columns = children.filter(item => item.isColumn).map(item => {
         const {chinese: title, field: dataIndex} = item;
         return {
             title,
@@ -284,7 +287,7 @@ function getConfigFromDbTable(options) {
     let forms = null;
 
     if (modalEdit || pageEdit) {
-        forms = children.map(item => {
+        forms = children.filter(item => item.isForm).map(item => {
             const {
                 field,
                 chinese: label,

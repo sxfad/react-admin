@@ -30,7 +30,7 @@ export default class Fast extends Component {
 
     columns = [
         {title: '表名', dataIndex: 'tableName', width: 200},
-        {title: '数据库注释', dataIndex: 'comment', width: 250},
+        {title: '数据库注释', dataIndex: 'comment', width: 200},
         {
             title: '中文名', dataIndex: 'chinese', width: 250,
             elementProps: (record, index) => {
@@ -51,7 +51,7 @@ export default class Fast extends Component {
 
                 return {
                     required: true,
-                    tabIndex: index  + 100, // index * 2 + 2
+                    tabIndex: index + 100, // index * 2 + 2
                     onBlur: (e) => {
                         record.field = e.target.value;
                     },
@@ -116,14 +116,45 @@ export default class Fast extends Component {
                     return {
                         children: tags,
                         props: {
-                            colSpan: 2,
+                            colSpan: 3,
                         },
                     };
                 }
                 return value;
             },
         },
-        // {title: '长度', dataIndex: 'length'},
+        {
+            title: '选项', dataIndex: 'options',
+            render: (value, record) => {
+                const {isColumn, isForm, isQuery} = record;
+                const labelMap = {
+                    isColumn: '表格 orange',
+                    isQuery: '条件 green',
+                    isForm: '表单 purple',
+                };
+                const children = Object.entries({isColumn, isQuery, isForm}).map(([key, val]) => {
+                    const [label, color] = labelMap[key].split(' ');
+
+                    return (
+                        <Tag
+                            key={key}
+                            color={val ? color : 'gray'}
+                            styleName="tag"
+                            onClick={() => {
+                                record[key] = !record[key];
+                                this.setState({dataSource: [...this.state.dataSource]});
+                            }}
+                        >
+                            {label}
+                        </Tag>
+                    );
+                });
+                return {
+                    children,
+                    props: {colSpan: record.isTable ? 0 : 1},
+                };
+            },
+        },
         // {title: '是否为空', dataIndex: 'nullable'},
     ];
 
@@ -147,6 +178,7 @@ export default class Fast extends Component {
                 const dataSource = tables.map(({name: tableName, comment, columns}) => {
                     const id = tableName;
                     selectedRowKeys.push(id);
+                    let queryCount = 0;
                     return {
                         id,
                         isTable: true,
@@ -167,8 +199,14 @@ export default class Fast extends Component {
                         children: columns.map(it => {
                             const {camelCaseName, name, type, isNullable, comment, chinese, length} = it;
                             const id = `${tableName}-${name}`;
+                            selectedRowKeys.push(id);
 
-                            if (!ignoreFields.includes(name)) selectedRowKeys.push(id);
+                            const isIgnore = ignoreFields.includes(name);
+
+                            // 初始化时 默认选中两个作为条件
+                            let isQuery = !isIgnore;
+                            if (isQuery) queryCount++;
+                            if (queryCount > 2) isQuery = false;
 
                             return {
                                 id,
@@ -180,6 +218,10 @@ export default class Fast extends Component {
                                 length,
                                 type,
                                 isNullable,
+                                isColumn: !isIgnore,
+                                isQuery,
+                                isForm: !isIgnore,
+                                isIgnore,
                             };
                         }),
                     };
@@ -201,7 +243,6 @@ export default class Fast extends Component {
         const tables = dataSource.filter(item => selectedRowKeys.includes(item.id));
         const result = tables.map(item => {
             const children = item.children
-                .filter(it => selectedRowKeys.includes(it.id))
                 .map(it => ({
                     field: it.field,
                     chinese: it.chinese,
@@ -209,6 +250,9 @@ export default class Fast extends Component {
                     type: it.type,
                     length: it.length,
                     isNullable: it.isNullable,
+                    isForm: it.isForm,
+                    isColumn: it.isColumn,
+                    isQuery: it.isQuery,
                 }));
 
             return {
@@ -255,6 +299,7 @@ export default class Fast extends Component {
                     rowSelection={{
                         selectedRowKeys,
                         onChange: selectedRowKeys => this.setState({selectedRowKeys}),
+                        renderCell: (checked, record, index, originNode) => record.isTable ? originNode : null,
                     }}
                     dataSource={dataSource}
                     columns={this.columns}
