@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
-import {Form, Button, Tag, Modal} from 'antd';
+import {Form, Button, Modal} from 'antd';
 import {ExclamationCircleOutlined} from '@ant-design/icons';
 import {FormElement, FormRow, Table, tableEditable} from 'src/library/components';
 import config from 'src/commons/config-hoc';
 import PageContent from 'src/layouts/page-content';
+import {DB_URL_STORE_KEY, renderTags, renderFieldTags, getTables} from './index';
 import './style.less';
 
 const EditTable = tableEditable(Table);
-
-const DB_URL_STORE_KEY = 'GEN_DB_URL';
 
 const renderContent = (value, record) => {
     const obj = {
@@ -60,60 +59,7 @@ export default class Fast extends Component {
             },
             render: (value, record) => {
                 if (record.isTable) {
-                    const configMap = {
-                        listPage: '列表页 orange',
-                        query: '查询条件 gold',
-                        selectable: '可选中 lime',
-                        pagination: '分页 green',
-                        serialNumber: '序号 cyan',
-                        add: '添加 blue',
-                        operatorEdit: '编辑 geekblue',
-                        operatorDelete: '删除 red',
-                        batchDelete: '批量删除 red',
-                        modalEdit: '弹框编辑 purple',
-                        pageEdit: '页面编辑 purple',
-                    };
-
-                    const tags = Object.entries(configMap).map(([key, value]) => {
-                        const enabled = record[key];
-                        let [label, color] = value.split(' ');
-                        if (!enabled) color = '#ccc';
-
-                        return (
-                            <Tag
-                                key={label}
-                                color={color}
-                                styleName="tag"
-                                onClick={() => {
-                                    let nextEnabled = !record[key];
-                                    if (key === 'listPage') {
-                                        Object.keys(configMap).forEach(k => {
-                                            if (k !== 'modalEdit' && k !== 'pageEdit') {
-                                                record[k] = nextEnabled;
-                                            }
-                                        });
-
-                                    } else if (key === 'modalEdit' && nextEnabled) {
-                                        record.modalEdit = true;
-                                        record.pageEdit = false;
-                                    } else if (key === 'pageEdit' && nextEnabled) {
-                                        record.pageEdit = true;
-                                        record.modalEdit = false;
-                                    } else {
-                                        record[key] = nextEnabled;
-                                        if (key !== 'modalEdit' && key !== 'pageEdit' && nextEnabled) {
-                                            record.listPage = true;
-                                        }
-                                    }
-                                    this.setState({dataSource: [...this.state.dataSource]});
-                                }}
-                            >
-                                {label}
-                            </Tag>
-                        );
-
-                    });
-
+                    const tags = renderTags(record, () => this.setState({dataSource: [...this.state.dataSource]}));
                     return {
                         children: <div style={{textAlign: 'right'}}>{tags}</div>,
                         props: {
@@ -127,29 +73,7 @@ export default class Fast extends Component {
         {
             title: '选项', dataIndex: 'options', width: 160, align: 'right',
             render: (value, record) => {
-                const {isColumn, isForm, isQuery} = record;
-                const labelMap = {
-                    isColumn: '表格 orange',
-                    isQuery: '条件 green',
-                    isForm: '表单 purple',
-                };
-                const children = Object.entries({isColumn, isQuery, isForm}).map(([key, val]) => {
-                    const [label, color] = labelMap[key].split(' ');
-
-                    return (
-                        <Tag
-                            key={key}
-                            color={val ? color : '#ccc'}
-                            styleName="tag"
-                            onClick={() => {
-                                record[key] = !record[key];
-                                this.setState({dataSource: [...this.state.dataSource]});
-                            }}
-                        >
-                            {label}
-                        </Tag>
-                    );
-                });
+                const children = renderFieldTags(record, () => this.setState({dataSource: [...this.state.dataSource]}));
                 return {
                     children,
                     props: {colSpan: record.isTable ? 0 : 1},
@@ -172,61 +96,8 @@ export default class Fast extends Component {
         this.setState({loading: true});
         this.props.ajax.get('/gen/tables', values, {baseURL: '/'})
             .then(res => {
-                const tables = res.tables || {};
-                const ignoreFields = res.ignoreFields || [];
-                const selectedRowKeys = [];
+                const {dataSource, selectedRowKeys} = getTables(res);
 
-                const dataSource = tables.map(({name: tableName, comment, columns}) => {
-                    const id = tableName;
-                    selectedRowKeys.push(id);
-                    let queryCount = 0;
-                    return {
-                        id,
-                        isTable: true,
-                        tableName,
-                        comment,
-                        listPage: true,
-                        query: true,
-                        selectable: true,
-                        pagination: true,
-                        serialNumber: true,
-                        add: true,
-                        operatorEdit: true,
-                        operatorDelete: true,
-                        batchDelete: true,
-
-                        modalEdit: true,
-                        pageEdit: false,
-                        children: columns.map(it => {
-                            const {camelCaseName, name, type, isNullable, comment, chinese, length} = it;
-                            const id = `${tableName}-${name}`;
-                            selectedRowKeys.push(id);
-
-                            const isIgnore = ignoreFields.includes(name);
-
-                            // 初始化时 默认选中两个作为条件
-                            let isQuery = !isIgnore;
-                            if (isQuery) queryCount++;
-                            if (queryCount > 2) isQuery = false;
-
-                            return {
-                                id,
-                                tableName,
-                                field: camelCaseName,
-                                comment: comment,
-                                chinese: (chinese || camelCaseName).trim(),
-                                name,
-                                length,
-                                type,
-                                isNullable,
-                                isColumn: !isIgnore,
-                                isQuery,
-                                isForm: !isIgnore,
-                                isIgnore,
-                            };
-                        }),
-                    };
-                });
                 this.setState({dataSource, selectedRowKeys});
             })
             .finally(() => this.setState({loading: false}));
@@ -270,7 +141,7 @@ export default class Fast extends Component {
                     tables: result,
                 };
                 this.setState({loading: true});
-                this.props.ajax.post('/gen/tables', params, {baseURL: '/'})
+                this.props.ajax.post('/gen/tables', params, {baseURL: '/', successTip: '生成成功！'})
                     .then(res => {
                         console.log(res);
                     })

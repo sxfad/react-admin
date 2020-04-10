@@ -270,6 +270,10 @@ class FormElement extends Component {
             labelCol = {flex: `0 0 ${labelWidth}px`};
         }
 
+        if (type === 'select' && ('showSearch' in others) && !('optionFilterProp' in others)) {
+            others.optionFilterProp = 'children';
+        }
+
         // 处理整体样式
         const wrapperStyle = {};
         if (width !== void 0) {

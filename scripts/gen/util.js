@@ -364,7 +364,7 @@ function getConfigFromDbTable(options) {
 
 
 // 获取表单类型
-function getFormElementType({oType, label = ''}) {
+function getFormElementType({oType = 'string', label = ''}) {
     let type = 'input';
 
     // FIXME 完善更多类型
