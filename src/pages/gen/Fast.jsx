@@ -32,7 +32,7 @@ export default class Fast extends Component {
         {title: '表名', dataIndex: 'tableName', width: 200},
         {title: '数据库注释', dataIndex: 'comment', width: 200},
         {
-            title: '中文名', dataIndex: 'chinese', width: 250,
+            title: <span style={{paddingLeft: 10}}>中文名</span>, dataIndex: 'chinese', width: 250,
             elementProps: (record, index) => {
                 return {
                     required: true,
@@ -45,7 +45,7 @@ export default class Fast extends Component {
             render: renderContent,
         },
         {
-            title: '列名', dataIndex: 'field', align: 'right',
+            title: <span style={{paddingLeft: 10}}>列名</span>, dataIndex: 'field',
             elementProps: (record, index) => {
                 if (record.isTable) return null;
 
@@ -114,7 +114,7 @@ export default class Fast extends Component {
                     });
 
                     return {
-                        children: tags,
+                        children: <div style={{textAlign: 'right'}}>{tags}</div>,
                         props: {
                             colSpan: 3,
                         },
