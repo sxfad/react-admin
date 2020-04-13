@@ -351,40 +351,49 @@ export default class UserCenter extends Component {
         this.setState({table: {...table}});
     };
 
-    handleGen = () => {
-        Modal.confirm({
-            icon: <ExclamationCircleOutlined/>,
-            title: '同名文件将被覆盖，是否继续？',
-            content: '代码文件直接生成到项目目录中，会引起webpack的热更新，当前页面有可能会重新加载。',
-            onOk: () => {
-                const {table} = this.state;
-                const children = table.children
-                    .map(it => ({
-                        field: it.field,
-                        chinese: it.chinese,
-                        name: it.name,
-                        type: it.type,
-                        length: it.length,
-                        isNullable: it.isNullable,
-                        isForm: it.isForm,
-                        isColumn: it.isColumn,
-                        isQuery: it.isQuery,
-                    }));
+    handleGen = async () => {
+        this.form.validateFields()
+            .then(() => {
+                if (!this.state.table?.children?.length) {
+                    return Modal.error({
+                        icon: <ExclamationCircleOutlined/>,
+                        title: '温馨提示',
+                        content: '字段配置为空，无法生成，请添加字段信息！',
+                    });
+                }
 
-                const params = {
-                    tables: [{
-                        ...table,
-                        children,
-                    }],
-                };
-                this.setState({loading: true});
-                this.props.ajax.post('/gen/tables', params, {baseURL: '/', successTip: '生成成功！'})
-                    .then(res => {
-                        console.log(res);
-                    })
-                    .finally(() => this.setState({loading: false}));
-            },
-        });
+                Modal.confirm({
+                    icon: <ExclamationCircleOutlined/>,
+                    title: '同名文件将被覆盖，是否继续？',
+                    content: '代码文件直接生成到项目目录中，会引起webpack的热更新，当前页面有可能会重新加载。',
+                    onOk: () => {
+                        const {table} = this.state;
+                        const children = table.children
+                            .map(it => ({
+                                field: it.field,
+                                chinese: it.chinese,
+                                name: it.name,
+                                type: it.type,
+                                length: it.length,
+                                isNullable: it.isNullable,
+                                isForm: it.isForm,
+                                isColumn: it.isColumn,
+                                isQuery: it.isQuery,
+                            }));
+
+                        const params = {
+                            tables: [{
+                                ...table,
+                                children,
+                            }],
+                        };
+                        this.setState({loading: true});
+                        this.props.ajax.post('/gen/tables', params, {baseURL: '/', successTip: '生成成功！'})
+                            .finally(() => this.setState({loading: false}));
+                    },
+                });
+            })
+            .catch(console.log);
     };
 
     render() {
@@ -493,6 +502,7 @@ export default class UserCenter extends Component {
                                                     label="模块名"
                                                     name="moduleName"
                                                     placeholder="比如：user-center"
+                                                    rules={[{required: true, message: '请输入模块名！'}]}
                                                     onChange={this.handleModuleNameChange}
                                                 />
                                             </FormRow>

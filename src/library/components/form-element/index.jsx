@@ -306,6 +306,10 @@ class FormElement extends Component {
 
         rules = this.getRules(rules, others.placeholder);
 
+        if (rules.find(item => ('required' in item) && item.required)) {
+            required = true;
+        }
+
         let formLabel = label;
         if (labelTip) {
             formLabel = (
