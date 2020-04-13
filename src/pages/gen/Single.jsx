@@ -93,28 +93,25 @@ export default class UserCenter extends Component {
         if (dbUrl) {
             this.form.setFieldsValue({dbUrl});
             // 初始化查询
-            this.handleDbUrlChange({target: {value: dbUrl}});
+            this.handleDbUrlChange();
         }
     }
 
     handleTypeChange = (e) => {
         const type = e.target.value;
         if (type === 'mysql') {
-            const value = this.form.getFieldValue('dbUrl');
-            this.handleDbUrlChange({target: {value}});
+            this.handleDbUrlChange();
         }
         if (type === 'customer') {
-            const value = this.form.getFieldValue('moduleName');
-            this.handleModuleNameChange({target: {value}});
+            this.handleModuleNameChange();
         }
         if (type === 'swagger') {
-            const value = this.form.getFieldValue('swaggerUrl');
-            this.handleSwaggerChange({target: {value}});
+            this.handleSwaggerChange();
         }
     };
 
     handleDbUrlChange = (e) => {
-        const dbUrl = e.target.value;
+        const dbUrl = this.form.getFieldValue('dbUrl');
         window.localStorage.setItem(DB_URL_STORE_KEY, dbUrl);
 
         // 清空数据
@@ -139,8 +136,8 @@ export default class UserCenter extends Component {
             .finally(() => this.setState({loading: false}));
     };
 
-    handleSwaggerChange = (e) => {
-        const swaggerUrl = e.target.value;
+    handleSwaggerChange = () => {
+        const swaggerUrl = this.form.getFieldValue('swaggerUrl');
         window.localStorage.setItem(SWAGGER_URL_STORE_KEY, swaggerUrl);
 
         // 清空数据
@@ -228,7 +225,7 @@ export default class UserCenter extends Component {
                             isNullable: true,
 
                             isColumn: true,
-                            isQuery: true,
+                            isQuery: false,
                             isForm: true,
                             isIgnore: false,
                         });
@@ -261,11 +258,11 @@ export default class UserCenter extends Component {
             .finally(() => this.setState({loading: false}));
     };
 
-    handleModuleNameChange = (e) => {
+    handleModuleNameChange = () => {
         // 清空数据
         this.setState({tables: [], table: {}});
 
-        const moduleName = e.target.value;
+        const moduleName = this.form.getFieldValue('moduleName');
         if (!moduleName) return;
 
         const tableName = moduleName;
@@ -466,6 +463,7 @@ export default class UserCenter extends Component {
                                                         {value: 'post', label: 'POST'},
                                                         {value: 'put', label: 'PUT'},
                                                     ]}
+                                                    onChange={this.handleSwaggerChange}
                                                 />
                                                 <FormElement
                                                     {...formProps}
