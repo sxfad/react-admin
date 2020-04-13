@@ -11,6 +11,7 @@ export default function getMenus(userId) {
         {key: 'user', text: '用户管理', icon: 'user', path: '/users', order: 900},
         {key: 'role', text: '角色管理', icon: 'lock', path: '/roles', order: 900},
         {key: 'menu', text: '菜单管理', icon: 'align-left', path: '/menu-permission', order: 900},
+        {key: 'gen', text: '代码生成', icon: 'code', path: '/gen', order: 900},
         {key: 'page404', text: '404页面不存在', icon: 'file-search', path: '/404', order: 700},
         {key: 'example', text: '示例', icon: 'align-left', order: 600},
         {key: 'table-editable', parentKey: 'example', text: '可编辑表格', icon: 'align-left', path: '/example/table-editable', order: 600},

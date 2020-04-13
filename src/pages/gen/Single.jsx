@@ -324,6 +324,7 @@ export default class UserCenter extends Component {
 
     handleAdd = () => {
         const {table} = this.state;
+        if (!table.children) table.children = [];
         const length = table.children.length;
         const {tableName, children} = table;
         const field = `field${length + 1}`;
