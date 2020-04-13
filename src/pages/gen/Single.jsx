@@ -427,6 +427,7 @@ export default class UserCenter extends Component {
                                                     width={500}
                                                     label="数据库地址"
                                                     name="dbUrl"
+                                                    placeholder="mysql://username:password@host:port/database"
                                                     onChange={this.handleDbUrlChange}
                                                 />
                                                 <FormElement
@@ -450,6 +451,7 @@ export default class UserCenter extends Component {
                                                     width={400}
                                                     label="接口地址"
                                                     name="swaggerUrl"
+                                                    placeholder="http(s)://host:port/path"
                                                     onChange={this.handleSwaggerChange}
                                                 />
                                                 <FormElement

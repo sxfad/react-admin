@@ -167,6 +167,7 @@ export default class Fast extends Component {
                             {...formProps}
                             label="数据库地址"
                             name="dbUrl"
+                            placeholder="mysql://username:password@host:port/database"
                             required
                             onChange={this.handleDbUrlChange}
                         />
