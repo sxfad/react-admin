@@ -224,9 +224,10 @@ function getConfigFromDbTable(options) {
                 field,
                 chinese: label,
                 type: oType,
+                formType,
             } = item;
 
-            const type = getFormElementType(oType, label);
+            const type = formType || getFormElementType({oType, label});
 
             return {
                 type,
@@ -291,15 +292,17 @@ function getConfigFromDbTable(options) {
 
     if (modalEdit || pageEdit) {
         forms = children.filter(item => item.isForm).map(item => {
+
             const {
                 field,
                 chinese: label,
                 length: maxLength,
                 type: oType,
+                formType,
                 isNullable,
             } = item;
 
-            const type = getFormElementType(oType, label);
+            const type = formType || getFormElementType({oType, label});
             const required = !isNullable;
 
             const options = {
@@ -368,6 +371,7 @@ function getConfigFromDbTable(options) {
 
 // 获取表单类型
 function getFormElementType({oType = 'string', label = ''}) {
+
     let type = 'input';
 
     // FIXME 完善更多类型

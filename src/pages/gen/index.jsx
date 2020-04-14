@@ -19,6 +19,27 @@ export function getLabel(str) {
     return str;
 }
 
+export function getFormElementType({oType = 'string', label = ''}) {
+    let type = 'input';
+
+    // FIXME 完善更多类型
+    if (oType === 'array') type = 'select';
+
+    if (label.startsWith('是否')) type = 'switch';
+
+    if (label.startsWith('密码') || label.endsWith('密码')) type = 'password';
+
+    if (label.includes('电话') || label.includes('手机')) type = 'mobile';
+
+    if (label.includes('邮箱')) type = 'email';
+
+    if (label.includes('时间') || label.includes('日期')) type = 'date';
+
+    if (label.includes('描述') || label.includes('备注') || label.includes('详情')) type = 'textarea';
+
+    return type;
+}
+
 export function getTables(res) {
     const tables = res.tables || {};
     const ignoreFields = res.ignoreFields || [];
@@ -57,6 +78,8 @@ export function getTables(res) {
                 if (isQuery) queryCount++;
                 if (queryCount > 2) isQuery = false;
 
+                const formType = getFormElementType({oType: type, label: chinese});
+
                 return {
                     id,
                     tableName,
@@ -66,6 +89,7 @@ export function getTables(res) {
                     name,
                     length,
                     type,
+                    formType,
                     isNullable,
                     isColumn: !isIgnore,
                     isQuery,

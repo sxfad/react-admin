@@ -34,10 +34,11 @@ const ELEMENT_TYPES = [
     'switch',
     'date',
     'time',
+    'month',
     'date-time',
     'date-range',
     'cascader',
-    'json',
+    'transfer',
     'icon-picker',
 ];
 

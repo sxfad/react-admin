@@ -7,9 +7,11 @@ import {
     FormRow,
     FormElement,
     Table,
-    tableEditable, Operator,
+    tableEditable,
+    Operator,
 } from 'src/library/components';
-import {DB_URL_STORE_KEY, SWAGGER_URL_STORE_KEY, renderTags, renderFieldTags, getTables, getLabel} from './index';
+import {isInputLikeElement} from 'src/library/components/form-element';
+import {DB_URL_STORE_KEY, SWAGGER_URL_STORE_KEY, renderTags, renderFieldTags, getTables, getLabel, getFormElementType} from './index';
 import uuid from 'uuid/v4';
 import './style.less';
 import {ExclamationCircleOutlined} from '@ant-design/icons';
@@ -64,6 +66,44 @@ export default class UserCenter extends Component {
                         record.field = e.target.value;
                     },
                     onKeyDown: (e) => this.handleKeyDown(e, tabIndex),
+                };
+            },
+        },
+        {
+            title: '表单类型', dataIndex: 'formType',
+            formProps: (record) => {
+                if (record.isTable) return null;
+
+                return {
+                    type: 'select',
+                    showSearch: true,
+                    options: [
+                        {value: 'input', label: '输入框'},
+                        {value: 'hidden', label: '隐藏框'},
+                        {value: 'number', label: '数字框'},
+                        {value: 'textarea', label: '文本框'},
+                        {value: 'password', label: '密码框'},
+                        {value: 'mobile', label: '手机输入框'},
+                        {value: 'email', label: '邮箱输入框'},
+                        {value: 'select', label: '下拉框'},
+                        {value: 'select-tree', label: '下拉树'},
+                        {value: 'checkbox', label: '复选框'},
+                        {value: 'checkbox-group', label: '复选框组'},
+                        {value: 'radio', label: '单选框'},
+                        {value: 'radio-group', label: '单选框组'},
+                        {value: 'radio-button', label: '单选按钮组'},
+                        {value: 'switch', label: '切换按钮'},
+                        {value: 'date', label: '日期选择框'},
+                        {value: 'time', label: '时间选择框'},
+                        {value: 'moth', label: '月份选择框'},
+                        {value: 'date-time', label: '日期+时间选择框'},
+                        {value: 'date-range', label: '日期区间选择框'},
+                        {value: 'cascader', label: '级联下拉框'},
+                        {value: 'transfer', label: '穿梭框'},
+                    ],
+                    onChange: (formType) => {
+                        record.formType = formType;
+                    },
                 };
             },
         },
@@ -244,15 +284,19 @@ export default class UserCenter extends Component {
                 const children = [];
                 (queries || []).forEach(item => {
                     const {type, field, label, required} = item;
+                    const chinese = getLabel(label);
+                    const formType = getFormElementType({oType: type, label: chinese});
+
                     children.push({
                         id: uuid(),
                         tableName,
                         field,
                         comment: label,
-                        chinese: getLabel(label),
+                        chinese,
                         name: field,
 
                         type,
+                        formType,
                         length: 0,
                         isNullable: !required,
 
@@ -374,6 +418,7 @@ export default class UserCenter extends Component {
                         name: field,
 
                         type: 'string',
+                        formType: 'input',
                         length: 0,
                         isNullable: true,
 
@@ -418,6 +463,7 @@ export default class UserCenter extends Component {
             name: field,
 
             type: 'string',
+            formType: 'input',
             length: 0,
             isNullable: true,
 
@@ -455,7 +501,8 @@ export default class UserCenter extends Component {
                                 chinese: getLabel(it.chinese),
                                 name: it.name,
                                 type: it.type,
-                                length: it.length,
+                                formType: it.formType || 'input',
+                                length: isInputLikeElement(it.formType || 'input') ? it.length : 0,
                                 isNullable: it.isNullable,
                                 isForm: it.isForm,
                                 isColumn: it.isColumn,
