@@ -360,7 +360,6 @@ export default class UserCenter extends Component {
                     }
                 });
 
-
                 const table = {
                     id: tableName,
                     isTable: true,
