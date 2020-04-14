@@ -9,7 +9,7 @@ import {
     Table,
     tableEditable, Operator,
 } from 'src/library/components';
-import {DB_URL_STORE_KEY, SWAGGER_URL_STORE_KEY, renderTags, renderFieldTags, getTables} from './index';
+import {DB_URL_STORE_KEY, SWAGGER_URL_STORE_KEY, renderTags, renderFieldTags, getTables, getLabel} from './index';
 import uuid from 'uuid/v4';
 import './style.less';
 import {ExclamationCircleOutlined} from '@ant-design/icons';
@@ -36,12 +36,15 @@ export default class UserCenter extends Component {
         {
             title: '中文名', dataIndex: 'chinese', width: 200,
             formProps: (record, index) => {
+                const tabIndex = index + 1; // index * 2 + 1
                 return {
                     required: true,
-                    tabIndex: index + 1, // index * 2 + 1
+                    tabIndex,
+                    onFocus: this.handleFocus,
                     onBlur: (e) => {
                         record.chinese = e.target.value;
                     },
+                    onKeyDown: (e) => this.handleKeyDown(e, tabIndex),
                 };
             },
         },
@@ -49,13 +52,18 @@ export default class UserCenter extends Component {
             title: '列名', dataIndex: 'field',
             formProps: (record, index) => {
                 if (record.isTable) return null;
+                const {table: {children}} = this.state;
+                const length = children?.length || 0;
 
+                const tabIndex = index + length + 1; // index * 2 + 2;
                 return {
                     required: true,
-                    tabIndex: index + 100, // index * 2 + 2
+                    tabIndex,
+                    onFocus: this.handleFocus,
                     onBlur: (e) => {
                         record.field = e.target.value;
                     },
+                    onKeyDown: (e) => this.handleKeyDown(e, tabIndex),
                 };
             },
         },
@@ -96,6 +104,77 @@ export default class UserCenter extends Component {
             this.handleDbUrlChange();
         }
     }
+
+    handleFocus = (e) => {
+        e.target.select();
+    };
+
+    handleKeyDown = (e, tabIndex) => {
+        const {keyCode, ctrlKey, shiftKey, altKey, metaKey} = e;
+
+        if (ctrlKey || shiftKey || altKey || metaKey) return;
+
+        const {table: {children}} = this.state;
+        const length = children?.length || 0;
+
+        const isUp = keyCode === 38;
+        const isRight = keyCode === 39;
+        const isDown = keyCode === 40;
+        const isLeft = keyCode === 37;
+        const isEnter = keyCode === 13;
+
+        let nextTabIndex;
+
+        if (isDown || isEnter) {
+            if (tabIndex === length || tabIndex === length * 2) {
+                nextTabIndex = undefined;
+            } else {
+                nextTabIndex = tabIndex + 1;
+            }
+        }
+
+        if (isUp) nextTabIndex = tabIndex - 1;
+
+        if (isLeft) {
+            if (tabIndex <= length) {
+                nextTabIndex = tabIndex - 1 <= 0 ? undefined : tabIndex - 1 + length;
+            } else {
+                nextTabIndex = tabIndex - length;
+            }
+        }
+
+        if (isRight) {
+            if (tabIndex <= length) {
+                nextTabIndex = tabIndex + length;
+            } else {
+                nextTabIndex = tabIndex - length === length ? undefined : tabIndex - length + 1;
+            }
+        }
+
+        const nextInput = document.querySelector(`input[tabindex='${nextTabIndex}']`);
+
+        if (nextInput) {
+            // 确保方向键也可以选中
+            setTimeout(() => {
+                nextInput.focus();
+                nextInput.select();
+            });
+        } else if (isEnter || isDown || isRight) {
+            // 新增一行
+            this.handleAdd(true);
+
+            // 等待新增行渲染完成，新增行 input 获取焦点
+            setTimeout(() => {
+                let ti = tabIndex;
+
+                if (isRight) ti = tabIndex - length;
+
+                if ((isDown || isEnter) && tabIndex === length * 2) ti = tabIndex + 1;
+
+                this.handleKeyDown({keyCode: 13}, ti);
+            });
+        }
+    };
 
     handleTypeChange = (e) => {
         const type = e.target.value;
@@ -170,7 +249,7 @@ export default class UserCenter extends Component {
                         tableName,
                         field,
                         comment: label,
-                        chinese: label,
+                        chinese: getLabel(label),
                         name: field,
 
                         type,
@@ -193,7 +272,7 @@ export default class UserCenter extends Component {
                                 tableName,
                                 field: dataIndex,
                                 comment: title,
-                                chinese: title,
+                                chinese: getLabel(title),
                                 name: dataIndex,
 
                                 type: 'string',
@@ -217,7 +296,7 @@ export default class UserCenter extends Component {
                             tableName,
                             field,
                             comment: label,
-                            chinese: label,
+                            chinese: getLabel(label),
                             name: field,
 
                             type,
@@ -322,7 +401,7 @@ export default class UserCenter extends Component {
         this.setState({table});
     };
 
-    handleAdd = () => {
+    handleAdd = (append) => {
         const {table} = this.state;
         if (!table.children) table.children = [];
         const length = table.children.length;
@@ -330,7 +409,7 @@ export default class UserCenter extends Component {
         const field = `field${length + 1}`;
         const id = uuid();
 
-        children.unshift({
+        const newRecord = {
             id,
             tableName,
             field,
@@ -346,7 +425,9 @@ export default class UserCenter extends Component {
             isQuery: false,
             isForm: true,
             isIgnore: false,
-        });
+        };
+
+        append ? children.push(newRecord) : children.unshift(newRecord);
         table.children = [...children];
         this.setState({table: {...table}});
     };
@@ -371,7 +452,7 @@ export default class UserCenter extends Component {
                         const children = table.children
                             .map(it => ({
                                 field: it.field,
-                                chinese: it.chinese,
+                                chinese: getLabel(it.chinese),
                                 name: it.name,
                                 type: it.type,
                                 length: it.length,
@@ -517,7 +598,7 @@ export default class UserCenter extends Component {
                     </Form>
                 </QueryBar>
                 <div style={{marginBottom: 8, display: 'flex', justifyContent: 'space-between'}}>
-                    <Button style={{marginRight: 8}} onClick={this.handleAdd}>添加</Button>
+                    <Button style={{marginRight: 8}} onClick={() => this.handleAdd()}>添加</Button>
                     <div style={{paddingRight: 23, paddingTop: 3}}>
                         {renderTags(table, () => this.setState({table: {...table}}))}
                     </div>

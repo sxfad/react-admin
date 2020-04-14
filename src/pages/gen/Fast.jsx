@@ -4,7 +4,7 @@ import {ExclamationCircleOutlined} from '@ant-design/icons';
 import {FormElement, FormRow, Table, tableEditable} from 'src/library/components';
 import config from 'src/commons/config-hoc';
 import PageContent from 'src/layouts/page-content';
-import {DB_URL_STORE_KEY, renderTags, renderFieldTags, getTables} from './index';
+import {DB_URL_STORE_KEY, renderTags, renderFieldTags, getTables, getLabel} from './index';
 import './style.less';
 
 const EditTable = tableEditable(Table);
@@ -122,7 +122,7 @@ export default class Fast extends Component {
                     const children = item.children
                         .map(it => ({
                             field: it.field,
-                            chinese: it.chinese,
+                            chinese: getLabel(it.chinese),
                             name: it.name,
                             type: it.type,
                             length: it.length,

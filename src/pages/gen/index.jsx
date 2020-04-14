@@ -11,6 +11,14 @@ const {TabPane} = Tabs;
 export const DB_URL_STORE_KEY = 'GEN_DB_URL';
 export const SWAGGER_URL_STORE_KEY = 'GEN_SWAGGER_URL';
 
+export function getLabel(str) {
+    if (!str) return '未定义';
+
+    if ((str.endsWith('id') || str.endsWith('Id')) && str.length > 2) return str.slice(0, -2);
+
+    return str;
+}
+
 export function getTables(res) {
     const tables = res.tables || {};
     const ignoreFields = res.ignoreFields || [];
