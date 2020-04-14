@@ -4,7 +4,13 @@ import {ExclamationCircleOutlined} from '@ant-design/icons';
 import {FormElement, FormRow, Table, tableEditable} from 'src/library/components';
 import config from 'src/commons/config-hoc';
 import PageContent from 'src/layouts/page-content';
-import {DB_URL_STORE_KEY, renderTags, renderFieldTags, getTables, getLabel} from './index';
+import {
+    DB_URL_STORE_KEY,
+    renderTags,
+    renderFieldTags,
+    getTables,
+    getLabel,
+} from './util';
 import './style.less';
 
 const EditTable = tableEditable(Table);

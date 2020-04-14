@@ -53,7 +53,7 @@ export default class UserCenter extends Component {
                             onConfirm: () => this.handleDelete(id),
                         },
                     },
-                    
+
                 ];
 
                 return <Operator items={items}/>

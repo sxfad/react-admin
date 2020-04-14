@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import {Button, Form, Modal} from 'antd';
+import {ExclamationCircleOutlined} from '@ant-design/icons';
+import uuid from 'uuid/v4';
 import PageContent from 'src/layouts/page-content';
+import {isInputLikeElement} from 'src/library/components/form-element';
 import config from 'src/commons/config-hoc';
 import {
     QueryBar,
@@ -10,11 +13,17 @@ import {
     tableEditable,
     Operator,
 } from 'src/library/components';
-import {isInputLikeElement} from 'src/library/components/form-element';
-import {DB_URL_STORE_KEY, SWAGGER_URL_STORE_KEY, renderTags, renderFieldTags, getTables, getLabel, getFormElementType} from './index';
-import uuid from 'uuid/v4';
+import {
+    DB_URL_STORE_KEY,
+    SWAGGER_URL_STORE_KEY,
+    renderTags,
+    renderFieldTags,
+    getTables,
+    getLabel,
+    getFormElementType,
+} from './util';
 import './style.less';
-import {ExclamationCircleOutlined} from '@ant-design/icons';
+
 
 const EditTable = tableEditable(Table);
 
@@ -540,7 +549,6 @@ export default class UserCenter extends Component {
             style: {paddingLeft: 16},
         };
 
-
         return (
             <PageContent loading={loading || deleting} style={{padding: 0, margin: 0}}>
                 <QueryBar>
@@ -574,7 +582,7 @@ export default class UserCenter extends Component {
                                                 />
                                                 <FormElement
                                                     {...formProps}
-                                                    width={300}
+                                                    elementStyle={{width: 200}}
                                                     type="select"
                                                     showSearch
                                                     label="数据库表"

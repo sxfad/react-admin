@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import PropTypes from "prop-types";
-import classnames from "classnames";
-import {SortableContainer, SortableElement} from "react-sortable-hoc";
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 import './index.less';
 
 
@@ -69,7 +69,7 @@ export default function DragRow(OriTable) {
                     onSortStart: handleSortStart,
                     helperClass: classnames(helperClass, 'helper-element'),
                 };
-                return <BodyContainer ref={node => this.body = node} {...injectProps} {...props}/>
+                return <BodyContainer ref={node => this.body = node} {...injectProps} {...props}/>;
             };
 
             this.components = {

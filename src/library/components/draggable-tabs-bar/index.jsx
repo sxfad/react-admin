@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { CloseOutlined } from '@ant-design/icons';
+import {CloseOutlined} from '@ant-design/icons';
 import {
     SortableContainer,
-    SortableElement
+    SortableElement,
 } from 'react-sortable-hoc';
 import classNames from 'classnames';
 import './style.less';
@@ -50,10 +50,10 @@ const SortableContainerList = SortableContainer(props => {
                     (
                         closable ? (
                             <div key="close" className="close-wrapper" onClick={(e) => onClose && onClose(item, e)}>
-                                <CloseOutlined />
+                                <CloseOutlined/>
                             </div>
                         ) : null
-                    )
+                    ),
                 ];
 
                 if (itemWrapper) {
@@ -118,6 +118,8 @@ export default class DraggableTabsBar extends Component {
     }
 
     setTabsWidth = () => {
+        if (!this.container) return;
+
         const {mouseIn} = this.state;
         const maxWidth = 150;
         const items = this.container.querySelectorAll('.draggable-tabs-bar-horizontal-item-inner');
