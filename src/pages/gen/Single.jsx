@@ -310,6 +310,7 @@ export default class UserCenter extends Component {
                 (columns || []).forEach(item => {
                     const {title, dataIndex} = item;
                     if (!children.find(it => it.field === dataIndex)) {
+                        const formType = getFormElementType({oType: 'input', label: title});
                         children.push(
                             {
                                 id: uuid(),
@@ -320,6 +321,7 @@ export default class UserCenter extends Component {
                                 name: dataIndex,
 
                                 type: 'string',
+                                formType,
                                 length: 0,
                                 isNullable: true,
 
@@ -335,6 +337,8 @@ export default class UserCenter extends Component {
                 (forms || []).forEach(item => {
                     const {type, field, label} = item;
                     if (!children.find(it => it.field === field)) {
+                        const formType = getFormElementType({oType: type, label: label});
+
                         children.push({
                             id: uuid(),
                             tableName,
@@ -344,6 +348,7 @@ export default class UserCenter extends Component {
                             name: field,
 
                             type,
+                            formType,
                             length: 0,
                             isNullable: true,
 
