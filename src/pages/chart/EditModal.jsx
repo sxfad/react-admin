@@ -75,19 +75,10 @@ export default class EditModal extends Component {
                     {isEdit ? <FormElement {...formProps} type="hidden" name="id"/> : null}
                     <FormElement
                         {...formProps}
-                        type="select"
-                        label="图标标题"
-                        name="title"
-                        options={[
-                            {value: '1', label: '选项1'},
-                            {value: '2', label: '选项2'},
-                        ]}
-                    />
-                    <FormElement
-                        {...formProps}
-                        label="type"
-                        name="type"
-                        maxLength={20}
+                        label="消息标识"
+                        name="messageToken"
+                        required
+                        maxLength={50}
                     />
                     <FormElement
                         {...formProps}
@@ -98,9 +89,8 @@ export default class EditModal extends Component {
                     />
                     <FormElement
                         {...formProps}
-                        label="消息标识"
-                        name="messageToken"
-                        required
+                        label="图标标题"
+                        name="title"
                         maxLength={50}
                     />
                     <FormElement
@@ -112,6 +102,12 @@ export default class EditModal extends Component {
                         {...formProps}
                         label="横轴系显示标签个数"
                         name="labelTickCount"
+                    />
+                    <FormElement
+                        {...formProps}
+                        label="type"
+                        name="type"
+                        maxLength={20}
                     />
                 </Form>
             </ModalContent>

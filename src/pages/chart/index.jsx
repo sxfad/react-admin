@@ -30,12 +30,12 @@ export default class UserCenter extends Component {
     };
 
     columns = [
-        {title: '图标标题', dataIndex: 'title', width: 200},
-        {title: 'type', dataIndex: 'type', width: 200},
-        {title: '描述', dataIndex: 'description', width: 200},
         {title: '消息标识', dataIndex: 'messageToken', width: 200},
+        {title: '描述', dataIndex: 'description', width: 200},
+        {title: '图标标题', dataIndex: 'title', width: 200},
         {title: '纵轴显示标签个数', dataIndex: 'valueTickCount', width: 200},
         {title: '横轴系显示标签个数', dataIndex: 'labelTickCount', width: 200},
+        {title: 'type', dataIndex: 'type', width: 200},
         {
             title: '操作', dataIndex: 'operator', width: 100,
             render: (value, record) => {
@@ -53,7 +53,7 @@ export default class UserCenter extends Component {
                             onConfirm: () => this.handleDelete(id),
                         },
                     },
-
+                    
                 ];
 
                 return <Operator items={items}/>
@@ -150,13 +150,8 @@ export default class UserCenter extends Component {
                         <FormRow>
                             <FormElement
                                 {...formProps}
-                                type="select"
                                 label="图标标题"
                                 name="title"
-                                options={[
-                                    {value: '1', label: '选项1'},
-                                    {value: '2', label: '选项2'},
-                                ]}
                             />
                             <FormElement
                                 {...formProps}

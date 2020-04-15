@@ -9,9 +9,9 @@ upstream api_service {
 }
 
 server {
-    listen       80;
-    server_name  xxx.com;
-    root /usr/local/nginx/html;
+    listen      80;
+    server_name xxx.com; # 注意修改为相应的server_name
+    root        /usr/local/nginx/html; # 前端静态文件目录
     location / {
       index index.html;
       try_files $uri $uri/ /index.html; #react-router 防止页面刷新出现404
@@ -24,7 +24,7 @@ server {
       add_header Cache-Control "public";
     }
 
-    # 代理ajax请求
+     # 代理ajax请求
     location ^~/api {
        rewrite ^/api/(.*)$ /$1 break; # 如果后端接口不是统一以api开头，去掉api前缀
        proxy_pass http://api_service/;

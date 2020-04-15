@@ -11,6 +11,7 @@ import {
     FormElement,
     Table,
     tableEditable,
+    tableRowDraggable,
     Operator,
 } from 'src/library/components';
 import {
@@ -25,7 +26,7 @@ import {
 import './style.less';
 
 
-const EditTable = tableEditable(Table);
+const EditTable = tableEditable(tableRowDraggable(Table));
 
 @config({
     ajax: true,
@@ -117,7 +118,7 @@ export default class UserCenter extends Component {
             },
         },
         {
-            title: '选项', dataIndex: 'operator', width: 160,
+            title: '选项', dataIndex: 'operator', width: 170,
             render: (value, record) => {
                 return renderFieldTags(record, () => this.setState({table: {...this.state.table}}));
             },
@@ -537,6 +538,16 @@ export default class UserCenter extends Component {
             .catch(console.log);
     };
 
+    handleSortEnd = ({newIndex, oldIndex}) => {
+        const {table} = this.state;
+        const {children} = table;
+
+        children.splice(newIndex, 0, ...children.splice(oldIndex, 1));
+        table.children = [...children];
+
+        this.setState({table: {...table}});
+    };
+
     render() {
         const {
             loading,
@@ -663,6 +674,7 @@ export default class UserCenter extends Component {
                     </div>
                 </div>
                 <EditTable
+                    onSortEnd={this.handleSortEnd}
                     serialNumber
                     columns={this.columns}
                     dataSource={table.children}

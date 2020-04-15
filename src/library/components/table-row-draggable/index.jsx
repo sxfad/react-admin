@@ -15,9 +15,10 @@ let BodyContainer = SortableContainer(props => {
         children,
         ...others
     } = props;
+    const children2 = props.children.flat(4).filter(item => !!item);
 
     return (
-        <tbody {...others}>{children.map((item, index) => {
+        <tbody {...others}>{children2.map((item, index) => {
             const {key} = item;
 
             return (
@@ -47,7 +48,7 @@ export default function DragRow(OriTable) {
         constructor(props) {
             super(props);
 
-            const {helperClass, onSortStart, onSortEnd} = this.props;
+            const {helperClass, onSortStart, onSortEnd, components} = this.props;
 
             const handleSortStart = (...args) => {
                 onSortStart && onSortStart(...args);
@@ -58,22 +59,35 @@ export default function DragRow(OriTable) {
                 const tds = tr.querySelectorAll('td');
 
                 tds.forEach((item, index) => {
-                    const width = getCss(item, 'width');
-                    helperTds[index].style.width = width;
+                    helperTds[index].style.width = getCss(item, 'width');
+                    helperTds[index].style.height = getCss(item, 'height');
                 });
+            };
+
+            const handleSortEnd = (props) => {
+                let {oldIndex, newIndex} = props;
+                if (this.body.container.querySelector('.ant-table-measure-row')) {
+                    newIndex = (newIndex - 1) < 0 ? 0 : newIndex - 1;
+                    oldIndex = oldIndex - 1;
+                }
+
+                onSortEnd({...props, oldIndex, newIndex});
             };
 
             let BodyWrapper = (props) => {
                 const injectProps = {
-                    onSortEnd: onSortEnd,
+                    onSortEnd: handleSortEnd,
                     onSortStart: handleSortStart,
                     helperClass: classnames(helperClass, 'helper-element'),
                 };
                 return <BodyContainer ref={node => this.body = node} {...injectProps} {...props}/>;
             };
 
+            const body = components?.body || {};
+
             this.components = {
                 body: {
+                    ...body,
                     wrapper: BodyWrapper,
                 },
             };

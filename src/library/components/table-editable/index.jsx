@@ -57,9 +57,12 @@ export default function editTable(OriTable) {
     return class EditTable extends Component {
 
         render() {
-            const {columns, className = '', onRow, ...others} = this.props;
-            const components = {
+            const {columns, className = '', onRow, components, ...others} = this.props;
+            const body = components?.body || {};
+
+            const nextComponents = {
                 body: {
+                    ...body,
                     row: EditableRow,
                     cell: EditableCell,
                 },
@@ -93,7 +96,7 @@ export default function editTable(OriTable) {
                         };
                     }}
                     className={`table-editable-root ${className}`}
-                    components={components}
+                    components={nextComponents}
                     columns={newColumns}
                     {...others}
                 />
