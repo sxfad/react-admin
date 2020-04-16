@@ -29,9 +29,11 @@ module.exports = {
             'redux-thunk',
             'prop-types',
             '@loadable/component',
+            'antd',
+            '@ant-design/icons',
         ],
     },
-    devtool: '#source-map',
+    // devtool: '#source-map',
     output: {
         path: path.join(__dirname, 'dll'),
         filename: '[name]_[hash].dll.js',

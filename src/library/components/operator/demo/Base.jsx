@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Table} from 'antd';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import {Operator} from '../../../index';
 
 export default class Base extends Component {

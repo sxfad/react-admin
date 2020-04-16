@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Form, Modal} from 'antd';
 import {ExclamationCircleOutlined} from '@ant-design/icons';
-import uuid from 'uuid/v4';
+import {v4 as uuid} from 'uuid';
 import PageContent from 'src/layouts/page-content';
 import {isInputLikeElement} from 'src/library/components/form-element';
 import config from 'src/commons/config-hoc';
@@ -24,7 +24,6 @@ import {
     getFormElementType,
 } from './util';
 import './style.less';
-
 
 const EditTable = tableEditable(tableRowDraggable(Table));
 

@@ -1,7 +1,7 @@
 import React, {useContext, Component} from 'react';
 import {Form} from 'antd';
 import {FormElement} from 'src/library/components';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import './style.less';
 
 const EditableContext = React.createContext();

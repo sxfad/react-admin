@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import uuidV4 from 'uuid/v4';
+import { v4 as uuidV4 } from 'uuid';
 import PubSub from 'pubsub-js'
 
 
