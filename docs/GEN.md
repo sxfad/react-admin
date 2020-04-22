@@ -41,7 +41,7 @@ $ yarn gen -y
 1. form表单可用类型：
     1. input hidden number textarea password mobile email
     1. select select-tree checkbox checkbox-group radio radio-group switch
-    1. date time date-time date-range cascader json icon-picker
+    1. date time date-time date-range cascader icon-picker
 
 ### 数据库链接各式
 ```
@@ -62,3 +62,5 @@ mysql://user:password@host:port/database?querystring
     1. 需要同时指定模板和目标文件名比如：自定义页面 ./src/template.js->customer.jsx；
     1. 模板路径相对项目根目录开始写起；
 
+## 代码生成页面
+系统提供了代码生成页面，分为「快速生成」和「单独生成」，进入系统后，点击「代码生成」，可以打开代码生成页面。
