@@ -22,8 +22,8 @@
         <td><img src="docs/imgs/menu.jpg" alt="菜单&权限"/></td>
     </tr>
     <tr>
-        <td><img src="imgs/gen_quick.png" alt="快速生成"/></td>
-        <td><img src="imgs/gen_single.png" alt="单独生成"/></td>
+        <td><img src="docs/imgs/gen_quick.png" alt="快速生成"/></td>
+        <td><img src="docs/imgs/gen_single.png" alt="单独生成"/></td>
     </tr>
     <tr>
         <td><img src="docs/imgs/401.jpg" alt="未登录"/></td>
