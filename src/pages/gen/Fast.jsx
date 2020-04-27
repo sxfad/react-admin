@@ -90,7 +90,7 @@ export default class Fast extends Component {
     ];
 
     componentDidMount() {
-        const dbUrl = window.localStorage.getItem(DB_URL_STORE_KEY);
+        const dbUrl = window.localStorage.getItem(DB_URL_STORE_KEY) || '';
         if (dbUrl) {
             this.form.setFieldsValue({dbUrl});
             // 初始化查询
@@ -113,7 +113,7 @@ export default class Fast extends Component {
         const dbUrl = e.target.value;
 
         // 进行本地存储，记录数据库地址，使用原生存储，不区分用户
-        window.localStorage.setItem(DB_URL_STORE_KEY, dbUrl);
+        window.localStorage.setItem(DB_URL_STORE_KEY, dbUrl || '');
     };
 
     handleGen = () => {

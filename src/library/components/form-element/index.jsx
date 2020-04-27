@@ -184,7 +184,7 @@ class FormElement extends Component {
     };
 
     // 获取校验信息
-    getRules = (rules = [], placeholder) => {
+    getRules = (rules = [], requireMessage) => {
         const {
             required,
             maxLength,
@@ -193,7 +193,7 @@ class FormElement extends Component {
 
         // 如果存在required属性，自动添加必填校验
         if (required && !rules.find(item => 'required' in item)) {
-            rules.push({required: true, message: `${placeholder}!`});
+            rules.push({required: true, message: `${requireMessage}!`});
         }
 
         if (maxLength !== void 0 && !rules.find(item => 'max' in item)) {
@@ -304,7 +304,7 @@ class FormElement extends Component {
             others.allowClear = true;
         }
 
-        rules = this.getRules(rules, others.placeholder);
+        rules = this.getRules(rules, isInputLikeElement(type) ? `请输入${label}` : `请选择${label}`);
 
         if (rules.find(item => ('required' in item) && item.required)) {
             required = true;

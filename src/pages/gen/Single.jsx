@@ -143,8 +143,8 @@ export default class UserCenter extends Component {
     ];
 
     componentDidMount() {
-        const dbUrl = window.localStorage.getItem(DB_URL_STORE_KEY);
-        const swaggerUrl = window.localStorage.getItem(SWAGGER_URL_STORE_KEY);
+        const dbUrl = window.localStorage.getItem(DB_URL_STORE_KEY) || '';
+        const swaggerUrl = window.localStorage.getItem(SWAGGER_URL_STORE_KEY) || '';
         this.form.setFieldsValue({swaggerUrl});
 
         if (dbUrl) {
@@ -240,7 +240,7 @@ export default class UserCenter extends Component {
 
     handleDbUrlChange = (e) => {
         const dbUrl = this.form.getFieldValue('dbUrl');
-        window.localStorage.setItem(DB_URL_STORE_KEY, dbUrl);
+        window.localStorage.setItem(DB_URL_STORE_KEY, dbUrl || '');
 
         // 清空数据
         this.setState({tables: [], table: {}});
@@ -539,7 +539,7 @@ export default class UserCenter extends Component {
 
     handleSortEnd = ({newIndex, oldIndex}) => {
         const {table} = this.state;
-        const {children} = table;
+        const {children = []} = table;
 
         children.splice(newIndex, 0, ...children.splice(oldIndex, 1));
         table.children = [...children];
