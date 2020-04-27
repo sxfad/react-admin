@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {toLogin} from "@/commons";
-import config from '@/commons/config-hoc';
+import {toLogin} from 'src/commons';
+import config from 'src/commons/config-hoc';
 import './style.less';
 
 @config({

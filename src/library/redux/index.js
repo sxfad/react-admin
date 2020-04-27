@@ -211,7 +211,7 @@ export function getActionsAndReducers({models}) {
     return {
         actions: _actions,
         reducers: _reducers,
-    }
+    };
 }
 
 
@@ -232,32 +232,30 @@ function setObjectByObject(originObj, mapObj = {}) {
             originObj[key] = value;
         }
     });
-    return originObj
+    return originObj;
 }
 
 /**
  * 通用异步Meta处理，默认启用errorTip，禁用successTip，onResolve，onReject回调
- * @param successTip
- * @param errorTip
- * @param onResolve
- * @param onReject
- * @param onComplete
+ * @param options
  * @returns {{successTip: boolean, errorTip, onResolve: *, onReject: *, onComplete: *}}
  */
-export function commonAsyncMeta({
-                                    successTip = false,
-                                    errorTip,
-                                    onResolve,
-                                    onReject,
-                                    onComplete,
-                                }) {
+export function commonAsyncMeta(options) {
+    const {
+        successTip = false,
+        errorTip,
+        onResolve,
+        onReject,
+        onComplete,
+    } = options;
+
     return {
         successTip,
         errorTip,
         onResolve,
         onReject,
         onComplete,
-    }
+    };
 }
 
 export const __DO_NOT_USE__ActionTypes = _actionTypes;

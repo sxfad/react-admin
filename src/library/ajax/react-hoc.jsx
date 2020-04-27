@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 const createAjaxHoc = sxAjax => ({propName = 'ajax'} = {}) => WrappedComponent => {
-    class WithSubscription extends Component {
+    class WithAjax extends Component {
         constructor(props) {
             super(props);
             this._$ajax = {};
@@ -17,7 +17,7 @@ const createAjaxHoc = sxAjax => ({propName = 'ajax'} = {}) => WrappedComponent =
             }
         }
 
-        static displayName = `WithSubscription(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+        static displayName = `WithAjax(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
 
         componentWillUnmount() {
             this._$ajaxTokens.forEach(item => item.cancel());
@@ -31,7 +31,7 @@ const createAjaxHoc = sxAjax => ({propName = 'ajax'} = {}) => WrappedComponent =
         }
     }
 
-    return WithSubscription;
+    return WithAjax;
 };
 
 export default createAjaxHoc;

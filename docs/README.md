@@ -47,6 +47,10 @@ react-admin是基于基于[React16.x](https://reactjs.org)、[Ant Design4.x](htt
         <td><img src="imgs/menu.jpg" alt="菜单&权限"/></td>
     </tr>
     <tr>
+            <td><img src="imgs/gen_quick.png" alt="快速生成"/></td>
+            <td><img src="imgs/gen_single.png" alt="单独生成"/></td>
+        </tr>
+    <tr>
         <td><img src="imgs/401.jpg" alt="未登录"/></td>
         <td><img src="imgs/404.png" alt="页面不存在"/></td>
     </tr>

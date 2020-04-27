@@ -3,7 +3,7 @@ import {getNodeByPropertyAndValue, convertToTree} from 'src/library/utils/tree-u
 import {pathToRegexp} from 'path-to-regexp';
 import {ROUTE_BASE_NAME} from 'src/router/AppRouter';
 
-const CURRENT_USER_KEY = 'current-user';
+const LOGIN_USER_STORAGE_KEY = 'login-user';
 
 const localStorage = window.localStorage;
 const sessionStorage = window.sessionStorage;
@@ -19,32 +19,36 @@ export function hasPermission(code) {
 
 /**
  * 设置当前用户信息
+ * @param loginUser 当前登录用户信息
  */
-export function setLoginUser(currentUser = {}) {
+export function setLoginUser(loginUser = {}) {
     // 将用户属性在这里展开，方便查看系统都用到了那些用户属性
-    const {id, name, avatar, token, permissions} = currentUser;
+    const {id, name, avatar, token, permissions, others} = loginUser;
     const userStr = JSON.stringify({
         id,             // 用户id 必须
         name,           // 用户名 必须
         avatar,         // 用头像 非必须
         token,          // 登录凭证 非必须 ajax请求有可能会用到，也许是cookie
         permissions,    // 用户权限
+        ...others,      // 其他属性
     });
 
-    sessionStorage.setItem(CURRENT_USER_KEY, userStr);
+    sessionStorage.setItem(LOGIN_USER_STORAGE_KEY, userStr);
 }
 
 /**
  * 获取当前用户信息
+ * @returns {any}
  */
 export function getLoginUser() {
-    const loginUser = sessionStorage.getItem(CURRENT_USER_KEY);
+    const loginUser = sessionStorage.getItem(LOGIN_USER_STORAGE_KEY);
 
     return loginUser ? JSON.parse(loginUser) : null;
 }
 
 /**
- * 判断用户是否登录
+ * 判断用户是否登录 前端简单通过登录用户是否存在来判断
+ * @returns {boolean}
  */
 export function isLogin() {
     // 如果当前用户存在，就认为已经登录了
@@ -59,6 +63,7 @@ export function toHome() {
     const lastHref = window.sessionStorage.getItem('last-href');
 
     // 强制跳转 进入系统之后，需要一些初始化工作，需要所有的js重新加载
+    // 拼接ROUTE_BASE_NAME，系统有可能发布在域名二级目录下
     window.location.href = lastHref || `${ROUTE_BASE_NAME}/`;
 }
 
@@ -76,7 +81,7 @@ export function toLogin() {
 
     // 清除相关数据
     session.clear();
-    localStorage.setItem(CURRENT_USER_KEY, null);
+    localStorage.setItem(LOGIN_USER_STORAGE_KEY, null);
     sessionStorage.clear();
     sessionStorage.setItem('last-href', window.location.pathname);
 
@@ -181,6 +186,6 @@ export function getMenuTreeDataAndPermissions(menus) {
     });
 
     const menuTreeData = convertToTree(orderedData);
-    return {menuTreeData, permissions}
+    return {menuTreeData, permissions};
 }
 

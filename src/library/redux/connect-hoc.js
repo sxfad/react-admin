@@ -1,2 +1,1 @@
-const createConnectHOC = connect => (mapStateToProps = state => ({})) => (WrappedComponent) => connect({mapStateToProps, LayoutComponent: WrappedComponent});
-export default createConnectHOC;
+export default connect => (mapStateToProps = state => ({})) => (WrappedComponent) => connect({mapStateToProps, LayoutComponent: WrappedComponent});
