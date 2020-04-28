@@ -13,6 +13,7 @@ export default class IFrame extends Component {
         return (
             <div styleName="iframe">
                 <iframe
+                    allowFullScreen="true"
                     title={src}
                     src={src}
                 />
