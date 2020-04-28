@@ -13,22 +13,17 @@
     left: 0;
     width: 100vw; // 不会因为body出现滚动条而抖动
     height: @headerHeight;
-    padding-right: 16px;
-    background-color: @primary-color;
-    background-image: url('./topbg.png');
-    background-position: right;
-    background-repeat: no-repeat;
+    padding-right: 8px;
+    background: url('./topbg.png') no-repeat @primary-color right;
 
     .logo-container {
         display: inline-flex;
         align-items: center;
-        flex-grow: 0;
-        flex-shrink: 0;
-        height: @headerHeight;
+        flex: 0;
         position: relative;
+        height: @headerHeight;
         overflow: hidden;
         background: linear-gradient(to right, darken(@primary-color, 20%), @primary-color);
-        box-shadow: none;
 
         h1 {
             color: #fff;
@@ -39,8 +34,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        flex-grow: 0;
-        flex-shrink: 0;
+        flex: 0;
         height: 100%;
         font-size: 20px;
         cursor: pointer;
@@ -54,8 +48,7 @@
     }
 
     .center {
-        flex-shrink: 1;
-        flex-grow: 1;
+        flex: 1;
         overflow: auto;
 
         :global {
@@ -69,14 +62,12 @@
                 color: #fff;
             }
         }
-
     }
 
     .right {
         display: flex;
         align-items: stretch;
-        flex-grow: 0;
-        flex-shrink: 0;
+        flex: 0;
         height: 100%;
 
         .action {
@@ -88,16 +79,15 @@
             height: 100%;
             color: #fff;
 
+            &:hover {
+                opacity: .7;
+            }
+
             i {
                 font-size: 16px;
                 vertical-align: middle;
                 margin-right: 5px;
             }
-
-            //&:global(.ant-popover-open),
-            //&:hover {
-            //    background: lighten(@primary-color, 40%);
-            //}
         }
 
     }

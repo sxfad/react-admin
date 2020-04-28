@@ -118,8 +118,8 @@ export default class Header extends Component {
                 )}
 
                 <div styleName="right">
-                    <HeaderFullScreen styleName="action" className="header-action"/>
-                    <HeaderUser styleName="action" className="header-action" theme={theme}/>
+                    <HeaderFullScreen styleName="action"/>
+                    <HeaderUser styleName="action" theme={theme}/>
                 </div>
             </div>
         );
