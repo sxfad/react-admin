@@ -12,7 +12,9 @@ import PageContent from 'src/layouts/page-content';
 export default class Edit extends Component {
     state = {
         loading: false, // 页面加载loading
+        data: {},       // 回显数据
         isEdit: false,  // 是否是编辑页面
+
     };
 
     componentDidMount() {
@@ -34,6 +36,7 @@ export default class Edit extends Component {
         this.setState({loading: true});
         this.props.ajax.get(`/user-center/${id}`)
             .then(res => {
+                this.setState({data: res});
                 this.form.setFieldsValue(res);
             })
             .finally(() => this.setState({loading: false}));
@@ -57,7 +60,7 @@ export default class Edit extends Component {
     };
 
     render() {
-        const {loading, isEdit} = this.state;
+        const {loading, data, isEdit} = this.state;
         const formProps = {
             labelWidth: 100,
             width: '50%',
@@ -66,6 +69,8 @@ export default class Edit extends Component {
         return (
             <PageContent loading={loading}>
                 <Form
+                    name="user-center-edit"
+                    initialValues={data}
                     ref={form => this.form = form}
                     onFinish={this.handleSubmit}
                 >
@@ -73,45 +78,8 @@ export default class Edit extends Component {
                     <FormRow>
                         <FormElement
                             {...formProps}
-                            label="account"
-                            name="account"
-                            required
-                            maxLength={255}
-                        />
-                        <FormElement
-                            {...formProps}
-                            type="password"
-                            label="密码"
-                            name="password"
-                            required
-                            maxLength={255}
-                        />
-                        <FormElement
-                            {...formProps}
                             label="用户名"
                             name="name"
-                            maxLength={20}
-                        />
-                        <FormElement
-                            {...formProps}
-                            type="mobile"
-                            label="手机"
-                            name="mobile"
-                            maxLength={20}
-                        />
-                        <FormElement
-                            {...formProps}
-                            type="email"
-                            label="邮箱"
-                            name="email"
-                            required
-                            maxLength={50}
-                        />
-                        <FormElement
-                            {...formProps}
-                            type="switch"
-                            label="是否启用"
-                            name="enabled"
                         />
                     </FormRow>
                     <FormRow>

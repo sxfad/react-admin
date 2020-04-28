@@ -13,6 +13,7 @@ import {ModalContent} from 'src/library/components';
 export default class EditModal extends Component {
     state = {
         loading: false, // 页面加载loading
+        data: {},       // 回显数据
     };
 
     componentDidMount() {
@@ -31,6 +32,7 @@ export default class EditModal extends Component {
         this.setState({loading: true});
         this.props.ajax.get(`/mock/users/${id}`)
             .then(res => {
+                this.setState({data: res});
                 this.form.setFieldsValue(res);
             })
             .finally(() => this.setState({loading: false}));
@@ -54,7 +56,7 @@ export default class EditModal extends Component {
 
     render() {
         const {isEdit} = this.props;
-        const {loading} = this.state;
+        const {loading, data} = this.state;
         const formProps = {
             labelWidth: 100,
         };
@@ -69,6 +71,7 @@ export default class EditModal extends Component {
                 <Form
                     ref={form => this.form = form}
                     onFinish={this.handleSubmit}
+                    initialValues={data}
                 >
                     {isEdit ? <FormElement {...formProps} type="hidden" name="id"/> : null}
 

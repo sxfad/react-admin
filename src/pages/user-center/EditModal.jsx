@@ -13,6 +13,7 @@ import {ModalContent} from 'src/library/components';
 export default class EditModal extends Component {
     state = {
         loading: false, // 页面加载loading
+        data: {},       // 回显数据
     };
 
     componentDidMount() {
@@ -31,6 +32,7 @@ export default class EditModal extends Component {
         this.setState({loading: true});
         this.props.ajax.get(`/user-center/${id}`)
             .then(res => {
+                this.setState({data: res});
                 this.form.setFieldsValue(res);
             })
             .finally(() => this.setState({loading: false}));
@@ -55,7 +57,7 @@ export default class EditModal extends Component {
 
     render() {
         const {isEdit} = this.props;
-        const {loading} = this.state;
+        const {loading, data} = this.state;
         const formProps = {
             labelWidth: 100,
         };
@@ -68,51 +70,16 @@ export default class EditModal extends Component {
                 onCancel={() => this.form.resetFields()}
             >
                 <Form
+                    name="user-center-modal-edit"
+                    initialValues={data}
                     ref={form => this.form = form}
                     onFinish={this.handleSubmit}
                 >
                     {isEdit ? <FormElement {...formProps} type="hidden" name="id"/> : null}
                     <FormElement
                         {...formProps}
-                        label="account"
-                        name="account"
-                        required
-                        maxLength={255}
-                    />
-                    <FormElement
-                        {...formProps}
-                        type="password"
-                        label="密码"
-                        name="password"
-                        required
-                        maxLength={255}
-                    />
-                    <FormElement
-                        {...formProps}
                         label="用户名"
                         name="name"
-                        maxLength={20}
-                    />
-                    <FormElement
-                        {...formProps}
-                        type="mobile"
-                        label="手机"
-                        name="mobile"
-                        maxLength={20}
-                    />
-                    <FormElement
-                        {...formProps}
-                        type="email"
-                        label="邮箱"
-                        name="email"
-                        required
-                        maxLength={50}
-                    />
-                    <FormElement
-                        {...formProps}
-                        type="switch"
-                        label="是否启用"
-                        name="enabled"
                     />
                 </Form>
             </ModalContent>

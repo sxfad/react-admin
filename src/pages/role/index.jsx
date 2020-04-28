@@ -124,11 +124,11 @@ export default class UserCenter extends Component {
                             <FormElement
                                 {...formProps}
                                 label="角色名"
-                                field="name"
+                                name="name"
                             />
                             <FormElement layout>
                                 <Button type="primary" htmlType="submit">提交</Button>
-                                <Button onClick={() => form.resetFields()}>重置</Button>
+                                <Button onClick={() => this.form.resetFields()}>重置</Button>
                             </FormElement>
                             <Button type="primary" onClick={() => this.setState({visible: true, id: null})}>添加</Button>
                         </FormRow>

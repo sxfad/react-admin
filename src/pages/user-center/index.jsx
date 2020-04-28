@@ -10,11 +10,11 @@ import {
     Operator,
     Pagination,
 } from 'src/library/components';
-import EditModal from './EditModal';
 
 @config({
     path: '/user-center',
     ajax: true,
+    router: true,
 })
 export default class UserCenter extends Component {
     state = {
@@ -25,17 +25,10 @@ export default class UserCenter extends Component {
         pageNum: 1,         // 分页当前页
         pageSize: 20,       // 分页每页显示条数
         deleting: false,    // 删除中loading
-        visible: false,     // 添加、修改弹框
-        id: null,           // 需要修改的数据id
     };
 
     columns = [
-        {title: 'account', dataIndex: 'account', width: 200},
-        {title: '密码', dataIndex: 'password', width: 200},
         {title: '用户名', dataIndex: 'name', width: 200},
-        {title: '手机', dataIndex: 'mobile', width: 200},
-        {title: '邮箱', dataIndex: 'email', width: 200},
-        {title: '是否启用', dataIndex: 'enabled', width: 200},
         {
             title: '操作', dataIndex: 'operator', width: 100,
             render: (value, record) => {
@@ -43,7 +36,7 @@ export default class UserCenter extends Component {
                 const items = [
                     {
                         label: '修改',
-                        onClick: () => this.setState({visible: true, id}),
+                        onClick: () => this.props.history.push(`/user-center/_/edit/${id}`),
                     },
                     {
                         label: '删除',
@@ -53,10 +46,7 @@ export default class UserCenter extends Component {
                             onConfirm: () => this.handleDelete(id),
                         },
                     },
-                    {
-                        label: '权限',
-                        onClick: this.handle2,
-                    },
+                    
                 ];
 
                 return <Operator items={items}/>
@@ -123,14 +113,6 @@ export default class UserCenter extends Component {
         })
     };
 
-    handleImport = () => {
-        // TODO
-    };
-    
-    handle2 = () => {
-        // TODO
-    };
-    
     render() {
         const {
             loading,
@@ -140,8 +122,6 @@ export default class UserCenter extends Component {
             total,
             pageNum,
             pageSize,
-            visible,
-            id,
         } = this.state;
 
         const formProps = {
@@ -153,7 +133,11 @@ export default class UserCenter extends Component {
         return (
             <PageContent loading={loading || deleting}>
                 <QueryBar>
-                    <Form onFinish={this.handleSubmit} ref={form => this.form = form}>
+                    <Form
+                        name="user-center-query"
+                        ref={form => this.form = form}
+                        onFinish={this.handleSubmit}
+                    >
                         <FormRow>
                             <FormElement
                                 {...formProps}
@@ -164,9 +148,8 @@ export default class UserCenter extends Component {
                                 <Button type="primary" htmlType="submit">提交</Button>
                                 <Button onClick={() => this.form.resetFields()}>重置</Button>
                             </FormElement>
-                            <Button type="primary" onClick={() => this.setState({visible: true, id: null})}>添加</Button>
+                            <Button type="primary" onClick={() => this.props.history.push('/user-center/_/edit/:id')}>添加</Button>
                             <Button danger disabled={disabledDelete} onClick={this.handleBatchDelete}>删除</Button>
-                            <Button type="primary" onClick={this.handleImport}>导入</Button>
                         </FormRow>
                     </Form>
                 </QueryBar>
@@ -188,13 +171,6 @@ export default class UserCenter extends Component {
                     pageSize={pageSize}
                     onPageNumChange={pageNum => this.setState({pageNum}, () => this.form.submit())}
                     onPageSizeChange={pageSize => this.setState({pageSize, pageNum: 1}, () => this.form.submit())}
-                />
-                <EditModal
-                    visible={visible}
-                    id={id}
-                    isEdit={id !== null}
-                    onOk={() => this.setState({visible: false}, () => this.form.submit())}
-                    onCancel={() => this.setState({visible: false})}
                 />
             </PageContent>
         );
