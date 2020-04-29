@@ -1,6 +1,8 @@
 # models(redux) 封装
 基于[redux](https://redux.js.org/)进行封装，不改变redux源码，可以结合使用redux社区中其他解决方案。
 
+注：一般情况下，用不到redux~
+
 ## models用于管理数据，解决的问题：
 1. 命名空间（防止数据、方法命名冲突）：数据与方法，都归属于具体model，比如：state.userCenter.xxx，this.props.action.userCenter.xxx();
 1. 如何方便的获取数据：connect与组件连接；@connect(state => ({name: state.user.name}));
