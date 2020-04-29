@@ -1,7 +1,31 @@
 # React Admin
-基于[React](https://reactjs.org)、[Ant Design](https://ant.design/)的管理系统架构。
+基于[React](https://reactjs.org)、[Ant Design](https://ant.design/)的管理系统架构。让开发人员专注于业务，其他琐事，交给框架！
 
 感谢开源社区，感谢Ant Design团队提供优秀的开源项目！
+
+## 特性
+
+- 菜单配置：扁平化数据组织，方便编写、存库，页面菜单、标题、面包屑状态自动同步；
+- 页面配置：提供配置装饰器，页面功能配置化；
+- 系统路由：简化路由配置，一个变量搞定；
+- Ajax请求：restful规范，自动错误提示，提示可配置；自动打断为完成的请求；
+- Mock模拟数据：无需等待后端，自己提供数据，简化mock写法；
+- 样式&主题：Less简化css编写，CSS Module防冲突，用户可自定义主题颜色；
+- 导航布局：多种导航方式，一键切换；
+- Model(Redux)：简化Redux写法，配置化同步LocalStorage；
+- 权限控制：菜单级别、功能级别权限控制；
+- 代码生成工具：CRUD基础一键生成，提高开发效率；
+- 内置组件：modal封装解决脏数据问题、可编辑表格、Form表单元素封装等等；
+- ......
+
+系统提供了一些基础的页面：
+
+- 登录
+- 修改密码
+- 菜单编辑
+- 用户管理
+- 角色管理
+- ......
 
 ## 快速开始
 
@@ -68,7 +92,7 @@ export default function getMenus(userId) {
 }
 ```
 
-路由的配置、菜单的关联等等，系统会帮我们处理，新建一个文件，即创建了一个页面。
+路由的配置、菜单的关联等等，系统会帮我们处理，新建一个文件，即创建了一个页面。更多丰富的功能、组件，[请戳文档](https://open.vbill.cn/react-admin)
 
 ## 文档地址
 最新文档[在这里](https://open.vbill.cn/react-admin)
@@ -97,6 +121,8 @@ export default function getMenus(userId) {
         <td><img src="docs/imgs/404.png" alt="页面不存在"/></td>
     </tr>
 </table>
+
+如果帮助到了您一点点，star 一下吧 🙂
 
 ## License
 
