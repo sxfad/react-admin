@@ -95,10 +95,10 @@ export default function getMenus(userId) {
 路由的配置、菜单的关联等等，系统会帮我们处理，新建一个文件，即创建了一个页面。更多丰富的功能[请戳文档](https://open.vbill.cn/react-admin)
 
 ## 文档地址
-最新文档[在这里](https://open.vbill.cn/react-admin)
+最新文档[戳这里](https://open.vbill.cn/react-admin)
 
 ## 项目预览
-预览地址[在这里](https://open.vbill.cn/react-admin-live/)
+预览地址[戳这里](https://open.vbill.cn/react-admin-live/)
 
 ## 项目截图
 这里只提供了部分页面截图，根据文档[快速开始](https://open.vbill.cn/react-admin/#/START)进行项目的搭建，浏览项目丰富功能！
