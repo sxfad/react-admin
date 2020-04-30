@@ -37,4 +37,5 @@ export default {
     },
     'post /mock/roles/menus 1000': true,
     'delete re:/mock/roles/.+': true,
+    'get re:/mock/roles/.+': {id: 1, name: '系统管理员', description: '描述'},
 };

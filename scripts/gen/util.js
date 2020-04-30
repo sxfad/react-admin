@@ -5,6 +5,8 @@ const fs = require('fs');
 const http = require('http');
 const axios = require('axios');
 const https = require('https');
+const pluralize = require('pluralize');
+
 
 function testConnection(url) {
     return new Promise(function (resolve, reject) {
@@ -154,39 +156,42 @@ function getConfigFromDbTable(options) {
 
     // 下划线转连字符
     const moduleName = tableName.replace(/_/g, '-');
+
+    // 复数
+    const pluralizeModuleName = pluralize(moduleName);
     const base = {
         moduleName,
-        path: `/${moduleName}`,
+        path: `/${pluralizeModuleName}`,
         ajax: {
             search: {
                 name: '查询',
                 method: 'get',
-                url: `/${moduleName}`,
+                url: `/${pluralizeModuleName}`,
             },
             detail: {
                 name: '详情',
                 method: 'get',
-                url: `/${moduleName}/{id}`,
+                url: `/${pluralizeModuleName}/{id}`,
             },
             modify: {
                 name: '修改',
                 method: 'put',
-                url: `/${moduleName}`,
+                url: `/${pluralizeModuleName}`,
             },
             add: {
                 name: '添加',
                 method: 'post',
-                url: `/${moduleName}`,
+                url: `/${pluralizeModuleName}`,
             },
             delete: {
                 name: '删除',
                 method: 'del',
-                url: `/${moduleName}/{id}`,
+                url: `/${pluralizeModuleName}/{id}`,
             },
             batchDelete: {
                 name: '批量删除',
                 method: 'del',
-                url: `/${moduleName}`,
+                url: `/${pluralizeModuleName}`,
             },
         },
     };

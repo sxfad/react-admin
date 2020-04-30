@@ -90,7 +90,7 @@ export default class UserCenter extends Component {
         if (this.state.deleting) return;
 
         this.setState({deleting: true});
-        this.props.ajax.del(`/mock/role/${id}`, null, {successTip: '删除成功！', errorTip: '删除失败！'})
+        this.props.ajax.del(`/mock/roles/${id}`, null, {successTip: '删除成功！', errorTip: '删除失败！'})
             .then(() => this.form.submit())
             .finally(() => this.setState({deleting: false}));
     };
@@ -141,7 +141,7 @@ export default class UserCenter extends Component {
         const selectedRoleName = dataSource.find(item => item.id === selectedRoleId)?.name;
 
         return (
-            <PageContent styleName="root" loading={loading}>
+            <PageContent styleName="root" loading={loading || loadingRoleMenu}>
                 <QueryBar>
                     <Form onFinish={this.handleSubmit} ref={form => this.form = form}>
                         <FormRow>
@@ -183,7 +183,6 @@ export default class UserCenter extends Component {
                     </Col>
                     <Col span={10}>
                         <MenuSelect
-                            loading={loadingRoleMenu}
                             value={selectedKeys}
                             onChange={selectedKeys => this.setState({selectedKeys})}
                         />

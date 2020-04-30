@@ -1,4 +1,5 @@
 const path = require('path');
+const pluralize = require('pluralize');
 const urlParse = require('url').parse;
 const {
     getTableColumns,
@@ -313,7 +314,7 @@ function getBaseConfig(configArr) {
 
         if (!result.ajax[method]) {
             // 默认根据"查询"或者"目录"基于RestFul风格生成
-            const baseUrl = result.ajax.search ? result.ajax.search.url : `/${moduleName}`;
+            const baseUrl = result.ajax.search ? result.ajax.search.url : `/${pluralize(moduleName)}`;
 
             if (method === 'search') result.ajax[method] = {name, method: 'get', url: baseUrl};
             if (method === 'detail') result.ajax[method] = {name, method: 'get', url: `${baseUrl}/{id}`};
@@ -325,7 +326,7 @@ function getBaseConfig(configArr) {
     });
 
     // 处理页面默认路由地址
-    if (!result.path) result.path = `/${moduleName}`;
+    if (!result.path) result.path = `/${pluralize(moduleName)}`;
 
     return result;
 }
