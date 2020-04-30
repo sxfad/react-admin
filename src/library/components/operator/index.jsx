@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { DownOutlined, LoadingOutlined } from '@ant-design/icons';
+import {DownOutlined, LoadingOutlined} from '@ant-design/icons';
 import {Icon} from 'src/library/components';
-import { Popconfirm, Dropdown, Menu, Tooltip } from 'antd';
+import {Popconfirm, Dropdown, Menu, Tooltip} from 'antd';
 import './index.less';
 
 /**
@@ -36,12 +36,12 @@ export default class Operator extends Component {
 
     static defaultProps = {
         items: [],
-        moreText: <span>更多<DownOutlined /></span>,
+        moreText: <span>更多<DownOutlined/></span>,
         moreContentWidth: 'auto',
         moreTrigger: 'click',
     };
 
-    loadingIcon = <LoadingOutlined />;
+    loadingIcon = <LoadingOutlined/>;
 
     label = {};
 
@@ -78,6 +78,7 @@ export default class Operator extends Component {
         if (withKey) {
             label = (
                 <span onClick={(e) => {
+                    e && e.stopPropagation();
                     if (e.altKey || e.metaKey || e.ctrlKey) {
                         e.stopPropagation();
                         e.preventDefault();
@@ -189,7 +190,7 @@ export default class Operator extends Component {
                     <a className="operator-label">
                         {moreText}
                     </a>
-                </Dropdown>
+                </Dropdown>,
             );
         }
 

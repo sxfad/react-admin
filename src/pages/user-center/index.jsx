@@ -46,7 +46,7 @@ export default class UserCenter extends Component {
                             onConfirm: () => this.handleDelete(id),
                         },
                     },
-                    
+
                 ];
 
                 return <Operator items={items}/>
@@ -147,9 +147,9 @@ export default class UserCenter extends Component {
                             <FormElement layout>
                                 <Button type="primary" htmlType="submit">提交</Button>
                                 <Button onClick={() => this.form.resetFields()}>重置</Button>
+                                <Button type="primary" onClick={() => this.props.history.push('/user-center/_/edit/:id')}>添加</Button>
+                                <Button danger disabled={disabledDelete} onClick={this.handleBatchDelete}>删除</Button>
                             </FormElement>
-                            <Button type="primary" onClick={() => this.props.history.push('/user-center/_/edit/:id')}>添加</Button>
-                            <Button danger disabled={disabledDelete} onClick={this.handleBatchDelete}>删除</Button>
                         </FormRow>
                     </Form>
                 </QueryBar>

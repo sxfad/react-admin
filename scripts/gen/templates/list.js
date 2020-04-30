@@ -221,10 +221,10 @@ export default class UserCenter extends Component {
                             <FormElement layout>
                                 <Button type="primary" htmlType="submit">提交</Button>
                                 <Button onClick={() => this.form.resetFields()}>重置</Button>
+                                ${tools ? `${tools.find(item => item.text === '添加') ? `<Button type="primary" onClick={() => ${isModalEdit ? `this.setState({visible: true, id: null})` : `this.props.history.push('${base.path}/_/edit/:id')`}}>添加</Button>` : DELETE_THIS_LINE}
+                                ${tools.find(item => item.text === '删除') ? `<Button danger ${table.selectable ? 'disabled={disabledDelete} ' : ''}onClick={this.handleBatchDelete}>删除</Button>` : DELETE_THIS_LINE}
+                                ${tools.filter(item => !['添加', '删除'].includes(item.text)).length ? tools.filter(item => !['添加', '删除'].includes(item.text)).map(item => `<Button type="primary" onClick={this.${item.handle}}>${item.text}</Button>`).join('\n                             ') : DELETE_THIS_LINE}` : DELETE_THIS_LINE}
                             </FormElement>
-                            ${tools ? `${tools.find(item => item.text === '添加') ? `<Button type="primary" onClick={() => ${isModalEdit ? `this.setState({visible: true, id: null})` : `this.props.history.push('${base.path}/_/edit/:id')`}}>添加</Button>` : DELETE_THIS_LINE}
-                            ${tools.find(item => item.text === '删除') ? `<Button danger ${table.selectable ? 'disabled={disabledDelete} ' : ''}onClick={this.handleBatchDelete}>删除</Button>` : DELETE_THIS_LINE}
-                            ${tools.filter(item => !['添加', '删除'].includes(item.text)).length ? tools.filter(item => !['添加', '删除'].includes(item.text)).map(item => `<Button type="primary" onClick={this.${item.handle}}>${item.text}</Button>`).join('\n                             ') : DELETE_THIS_LINE}` : DELETE_THIS_LINE}
                         </FormRow>
                     </Form>
                 </QueryBar>` : DELETE_THIS_LINE}
