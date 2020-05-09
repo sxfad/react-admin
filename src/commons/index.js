@@ -112,8 +112,7 @@ export function getSelectedMenuByPath(path, menuTreeData) {
         });
 
         // 正则匹配，路由中有`:id`的情况
-        // fixme 容易出问题：a/b/:id,会匹配 a/b/1, a/b/detail，有可能不是期望的结果，注意路由写法
-        // fixme: a/b/tab/:id 具体的:id，添加一级，用来表明id是什么
+        // fixme 容易出问题：a/b/:id,会匹配 a/b/1, a/b/detail，有可能不是期望的结果，注意路由写法，a/b/tab/:id 具体的:id，添加一级，用来表明id是什么
         if (!selectedMenu && path !== '/') {
             selectedMenu = getNodeByPropertyAndValue(menuTreeData, 'path', path, (itemValue, value, item) => {
                 const isTop = item.children && item.children.length;

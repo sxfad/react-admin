@@ -1,6 +1,5 @@
 .root {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     position: fixed;
@@ -9,38 +8,44 @@
     bottom: 0;
     left: 0;
     z-index: 99999;
+    background: url("./bg.png") #fff no-repeat no-repeat left bottom;
+    background-size: 100% auto;
 }
 
-.container {
+.left {
+    flex: 1;
+    margin-right: 50px;
+    height: 100%;
+    background: url("./404.png") no-repeat right center;
+    background-size: 300px auto;
+}
+
+.right {
+    flex: 1;
+    margin-left: 50px;
+}
+
+.right-inner {
     display: flex;
-    justify-content: center;
     flex-direction: column;
-    position: absolute;
-    bottom: 30px;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+}
 
-    .header {
-        text-align: center;
+.code {
+    font-size: 100px;
+    font-weight: bolder;
+}
 
+.message {
+    font-size: 18px;
+    margin-bottom: 60px;
+}
 
-        h3 {
-            margin: 10px;
-        }
+.buttons {
+    button {
+        margin-right: 10px;
     }
-
-    .intro {
-        font-size: 12px;
-        margin-top: 16px;
-        text-align: center;
-    }
 }
 
-
-.error404 {
-    background: url("./404.jpg") no-repeat center #fff;
-    background-size: contain;
-}
-
-.error401 {
-    background: url("./401.jpg") no-repeat center #fff;
-    background-size: contain;
-}

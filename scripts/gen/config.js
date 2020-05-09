@@ -1,5 +1,5 @@
 const path = require('path');
-const pluralize = require('pluralize');
+const inflection = require('inflection');
 const urlParse = require('url').parse;
 const {
     getTableColumns,
@@ -9,6 +9,7 @@ const {
     getFormElementType,
     readSwagger,
 } = require('./util');
+
 
 // 命令要在项目根目录下执行
 const PAGES_DIR = path.join(process.cwd(), '/src/pages');
@@ -247,7 +248,7 @@ function getDataBaseConfig(configArr) {
 }
 
 // 获取基本配置
-function getBaseConfig(configArr) {
+function getBaseConfig(configArr, tableName) {
     const config = getBlockConfig(configArr, '基础配置');
 
     if (!config) return null;
@@ -308,13 +309,18 @@ function getBaseConfig(configArr) {
     });
 
     // 基于RestFul规范，处理默认ajax请求url
-    const {moduleName} = result;
+    if (!result) result = {};
+    let {moduleName} = result;
+    if (!moduleName) {
+        result.moduleName = moduleName = inflection.singularize(tableName);
+    }
+
     Object.entries(methodMap).forEach(([method, name]) => {
         if (!result.ajax) result.ajax = {};
 
         if (!result.ajax[method]) {
             // 默认根据"查询"或者"目录"基于RestFul风格生成
-            const baseUrl = result.ajax.search ? result.ajax.search.url : `/${pluralize(moduleName)}`;
+            const baseUrl = result.ajax.search ? result.ajax.search.url : `/${inflection.pluralize(moduleName)}`;
 
             if (method === 'search') result.ajax[method] = {name, method: 'get', url: baseUrl};
             if (method === 'detail') result.ajax[method] = {name, method: 'get', url: `${baseUrl}/{id}`};
@@ -326,7 +332,7 @@ function getBaseConfig(configArr) {
     });
 
     // 处理页面默认路由地址
-    if (!result.path) result.path = `/${pluralize(moduleName)}`;
+    if (!result.path) result.path = `/${inflection.pluralize(moduleName)}`;
 
     return result;
 }
@@ -512,7 +518,7 @@ async function readDataBase(dataBaseConfig) {
 async function getConfig(configFilePath, configFileContent) {
     const configArray = configFileContent.split('\n');
     const dataBaseConfig = getDataBaseConfig(configArray);
-    const baseConfig = getBaseConfig(configArray);
+    const baseConfig = getBaseConfig(configArray, dataBaseConfig.tableName);
     const pageConfig = getPagesConfig(configArray, baseConfig.moduleName);
     const interfaceConfig = getInterfaceConfig(configArray);
     const toolConfig = getToolConfig(configArray);

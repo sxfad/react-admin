@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import {Button} from 'antd';
 import config from 'src/commons/config-hoc';
 import './style.less';
 
@@ -39,15 +39,17 @@ export default class Error404 extends Component {
         const {history} = this.props;
         const {time} = this.state;
         return (
-            <div styleName="root error404">
-                <div styleName="container">
-                    <div styleName="header">
-                        <h3>页面不存在</h3>
+            <div styleName="root">
+                <div styleName="left"/>
+                <div styleName="right">
+                    <div styleName="right-inner">
+                        <div styleName="code">404</div>
+                        <div styleName="message">页面不存在</div>
+                        <div styleName="buttons">
+                            <Button type="primary" onClick={() => this.props.history.replace('/')}>返回首页</Button>
+                            {history.length >= 2 ? <Button type="primary" onClick={this.handleGoBack}>返回上一步（{time})</Button> : null}
+                        </div>
                     </div>
-                    <p styleName="intro">
-                        跳转到<Link to="/"> 首页 </Link>
-                        {history.length >= 2 ? <span>或者返回 <a onClick={this.handleGoBack}>上一步（{time}）</a></span> : null}
-                    </p>
                 </div>
             </div>
         );

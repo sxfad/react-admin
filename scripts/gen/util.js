@@ -5,7 +5,7 @@ const fs = require('fs');
 const http = require('http');
 const axios = require('axios');
 const https = require('https');
-const pluralize = require('pluralize');
+const inflection = require('inflection');
 
 
 function testConnection(url) {
@@ -158,7 +158,7 @@ function getConfigFromDbTable(options) {
     const moduleName = tableName.replace(/_/g, '-');
 
     // 复数
-    const pluralizeModuleName = pluralize(moduleName);
+    const pluralizeModuleName = inflection.pluralize(moduleName);
     const base = {
         moduleName,
         path: `/${pluralizeModuleName}`,

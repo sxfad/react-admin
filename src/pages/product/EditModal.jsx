@@ -1,15 +1,4 @@
-const DELETE_THIS_LINE = 'DELETE_THIS_LINE';
-const WITH_OPTIONS_TYPE = ['select', 'radio-group', 'checkbox-group'];
-/**
- * 获取弹框编辑页面字符串
- */
-module.exports = function (config) {
-    const {
-        base,
-        forms,
-    } = config;
-
-    return `import React, {Component} from 'react';
+import React, {Component} from 'react';
 import {Form} from 'antd';
 import {FormElement} from 'src/library/components';
 import config from 'src/commons/config-hoc';
@@ -41,7 +30,7 @@ export default class EditModal extends Component {
         const {id} = this.props;
 
         this.setState({loading: true});
-        this.props.ajax.${base.ajax.detail.method}(\`${base.ajax.detail.url.replace('{id}', '${id}')}\`)
+        this.props.ajax.get(`/products/${id}`)
             .then(res => {
                 this.setState({data: res});
 
@@ -60,8 +49,8 @@ export default class EditModal extends Component {
 
         const {isEdit} = this.props;
         const successTip = isEdit ? '修改成功！' : '添加成功！';
-        const ajaxMethod = isEdit ? this.props.ajax.${base.ajax.modify.method} : this.props.ajax.${base.ajax.add.method};
-        const ajaxUrl = isEdit ? '${base.ajax.modify.url}' : '${base.ajax.add.url}';
+        const ajaxMethod = isEdit ? this.props.ajax.put : this.props.ajax.post;
+        const ajaxUrl = isEdit ? '/products' : '/products';
 
         this.setState({loading: true});
         ajaxMethod(ajaxUrl, values, {successTip})
@@ -87,28 +76,27 @@ export default class EditModal extends Component {
                 onCancel={() => this.form.resetFields()}
             >
                 <Form
-                    name="${base.moduleName}-modal-edit"
+                    name="product-modal-edit"
                     initialValues={data}
                     ref={form => this.form = form}
                     onFinish={this.handleSubmit}
                 >
                     {isEdit ? <FormElement {...formProps} type="hidden" name="id"/> : null}
-                    ${forms.map(item => `<FormElement
+                    <FormElement
                         {...formProps}
-                        ${item.type !== 'input' ? `type="${item.type}"` : DELETE_THIS_LINE}
-                        label="${item.label}"
-                        name="${item.field}"
-                        ${item.required ? 'required' : DELETE_THIS_LINE}
-                        ${item.maxLength ? `maxLength={${item.maxLength}}` : DELETE_THIS_LINE}
-                        ${WITH_OPTIONS_TYPE.includes(item.type) ? `options={[
-                            {value: '1', label: '选项1'},
-                            {value: '2', label: '选项2'},
-                        ]}` : DELETE_THIS_LINE}
-                    />`).join('\n                    ')}
+                        label="描述"
+                        name="description"
+                        maxLength={200}
+                    />
+                    <FormElement
+                        {...formProps}
+                        label="产品名称"
+                        name="name"
+                        required
+                        maxLength={50}
+                    />
                 </Form>
             </ModalContent>
         );
     }
 }
-`.split('\n').filter(item => item.trim() !== DELETE_THIS_LINE).join('\n');
-};

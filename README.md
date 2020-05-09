@@ -103,24 +103,14 @@ export default function getMenus(userId) {
 ## 项目截图
 这里只提供了部分页面截图，根据文档[快速开始](https://open.vbill.cn/react-admin/#/START)进行项目的搭建，浏览项目丰富功能！
 
-<table>
-    <tr>
-        <td><img src="docs/imgs/login.jpg" alt="登录"/></td>
-        <td><img src="docs/imgs/home.jpg" alt="首页"/></td>
-    </tr>
-    <tr>
-        <td><img src="docs/imgs/users.jpg" alt="用户"/></td>
-        <td><img src="docs/imgs/menu.jpg" alt="菜单&权限"/></td>
-    </tr>
-    <tr>
-        <td><img src="docs/imgs/gen_quick.png" alt="快速生成"/></td>
-        <td><img src="docs/imgs/gen_single.png" alt="单独生成"/></td>
-    </tr>
-    <tr>
-        <td><img src="docs/imgs/401.jpg" alt="未登录"/></td>
-        <td><img src="docs/imgs/404.png" alt="页面不存在"/></td>
-    </tr>
-</table>
+![登录](docs/imgs/login.jpg)
+![首页](docs/imgs/home.jpg)
+![用户](docs/imgs/users.jpg)
+![菜单&权限](docs/imgs/menu.jpg)
+![角色管理](docs/imgs/role.jpg)
+![快速生成](docs/imgs/gen_quick.png)
+![单独生成](docs/imgs/gen_single.png)
+![页面不存在](docs/imgs/404.jpg)
 
 如果帮助到了您一点点，star 一下吧 🙂
 

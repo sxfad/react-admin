@@ -1,6 +1,6 @@
 {
     "name": "react-adminv4",
-    "version": "0.1.0",
+    "version": "4.0",
     "private": true,
     "scripts": {
         "start": "node scripts/start.js",
@@ -57,6 +57,7 @@
         "globby": "6",
         "html-webpack-plugin": "4.0.0-beta.11",
         "identity-obj-proxy": "3.0.0",
+        "inflection": "^1.12.0",
         "less": "^3.11.1",
         "less-loader": "^5.0.0",
         "lodash": "^4.17.15",
@@ -69,7 +70,6 @@
         "nprogress": "^0.2.0",
         "optimize-css-assets-webpack-plugin": "5.0.3",
         "path-to-regexp": "^6.1.0",
-        "pluralize": "^8.0.0",
         "pnp-webpack-plugin": "1.6.4",
         "postcss-flexbugs-fixes": "4.1.0",
         "postcss-less": "^3.1.4",
