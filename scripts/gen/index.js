@@ -10,19 +10,64 @@ const DEFAULT_CONFIG_FILE = path.join(__dirname, './config.conf');
 program
     .version('0.1.0')
     .option('-y, --yes', '忽略覆盖文件提示')
+    .option('-t, --table <value>', '根据数据库表名，快速生成')
     .parse(process.argv);
 
 let configFile = program.args[0];
 
-const ignoreTip = program.yes;
+let ignoreTip = program.yes;
+const tableName = program.table;
 
 if (configFile) {
     configFile = path.join(process.cwd(), configFile);
 } else {
     configFile = DEFAULT_CONFIG_FILE;
 }
+let configFileContent = fs.readFileSync(configFile, 'UTF-8');
 
-const configFileContent = fs.readFileSync(configFile, 'UTF-8');
+
+if (tableName) {
+    let dbUrl = '';
+    for (const line of configFileContent.split('\n')) {
+        if (line.startsWith('url mysql')) {
+            dbUrl = line;
+            break;
+        }
+    }
+    configFileContent = `
+###### 数据库配置 ######
+${dbUrl}
+tableName ${tableName}
+
+###### 页面类型配置 ######
+列表页面
+弹框表单
+
+###### 工具条配置 ######
+添加
+删除
+
+###### 表格配置 ######
+可选中
+分页
+序号
+
+###### 操作列配置 ######
+修改
+删除
+
+###### 接口配置 ######
+
+###### 基础配置 #####
+
+###### 查询条件配置 ######
+
+###### 表格列配置 ######
+
+###### 表单元素配置 ######
+
+    `;
+}
 
 async function genFiles() {
     const config = await getConfig(configFile, configFileContent);

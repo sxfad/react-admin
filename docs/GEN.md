@@ -22,6 +22,11 @@ $ yarn gen ./my-confog.conf
 $ yarn gen -y
 ```
 
+基于数据库表，快速生成
+```bash
+$ yarn gen -t users
+```
+
 ## 配置文件编写说明
 配置文件通过自定义脚本读取，需要遵循一些简单的编写规则
 
