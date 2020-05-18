@@ -105,14 +105,6 @@ export default function getMenus(userId) {
 ## 项目截图
 这里只提供了部分页面截图，根据文档[快速开始](http://shubin.wang/docs/#/START)进行项目的搭建，浏览项目丰富功能！
 
-<div>
-<style type="text/css">
-.markdown-body img {
-    border: 1px solid #e8e8e8;
-}
-</style>
-</div>
-
 ![登录](docs/imgs/login.jpg)
 ![首页](docs/imgs/home.jpg)
 ![用户](docs/imgs/users.jpg)
