@@ -106,7 +106,7 @@ export default function getMenus(userId) {
 这里只提供了部分页面截图，根据文档[快速开始](http://shubin.wang/docs/#/START)进行项目的搭建，浏览项目丰富功能！
 
 <div>
-<style>
+<style type="text/css">
 .markdown-body img {
     border: 1px solid #e8e8e8;
 }
