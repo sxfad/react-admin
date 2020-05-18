@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, HashRouter, Route, Switch} from 'react-router-dom';
 import {isLogin} from 'src/commons';
 import PageFrame from 'src/layouts/frame';
 import Error404 from 'src/components/error/Error404';
@@ -10,6 +10,8 @@ import routes, {noFrameRoutes, noAuthRoutes /*commonPaths*/} from './routes';
 
 // 直接挂载到域名根目录
 export const ROUTE_BASE_NAME = process.env.BASE_NAME || '';
+
+const BaseRouter = ROUTE_BASE_NAME === '/react-admin/preview' ? HashRouter : BrowserRouter;
 
 @config({
     query: true,
@@ -35,7 +37,7 @@ export default class AppRouter extends Component {
         const userRoutes = this.getUserRoutes();
 
         return (
-            <BrowserRouter basename={ROUTE_BASE_NAME}>
+            <BaseRouter basename={ROUTE_BASE_NAME}>
                 <div style={{display: 'flex', flexDirection: 'column', position: 'relative', minHeight: '100vh'}}>
                     <Route path="/" render={props => {
                         // 框架组件单独渲染，与其他页面成为兄弟节点，框架组件和具体页面组件渲染互不影响
@@ -79,7 +81,7 @@ export default class AppRouter extends Component {
                         <Route component={Error404}/>
                     </Switch>
                 </div>
-            </BrowserRouter>
+            </BaseRouter>
         );
     }
 }
