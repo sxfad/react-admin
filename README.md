@@ -86,22 +86,22 @@ export default function getMenus(userId) {
         {key: 'my-key', text: '我的测试页面', icon: 'user', path: '/my-test'},
 
         {key: 'antDesign', text: 'Ant Design 官网', icon: 'ant-design', url: 'https://ant-design.gitee.io', target: '', order: 2000},
-        {key: 'document', text: '文档', icon: 'book', url: 'https://open.vbill.cn/react-admin', target: '_blank', order: 1200},
+        {key: 'document', text: '文档', icon: 'book', url: 'http://shubin.wang/docs', target: '_blank', order: 1200},
 
     ]);
 }
 ```
 
-路由的配置、菜单的关联等等，系统会帮我们处理，新建一个文件，即创建了一个页面。更多丰富的功能[请戳文档](https://open.vbill.cn/react-admin)
+路由的配置、菜单的关联等等，系统会帮我们处理，新建一个文件，即创建了一个页面。更多丰富的功能[请戳文档](http://shubin.wang/docs)
 
 ## 文档地址
-最新文档[戳这里](https://open.vbill.cn/react-admin)
+最新文档[戳这里](http://shubin.wang/docs)
 
 ## 项目预览
-预览地址[戳这里](https://open.vbill.cn/react-admin-live/)
+预览地址[戳这里](http://shubin.wang)
 
 ## 项目截图
-这里只提供了部分页面截图，根据文档[快速开始](https://open.vbill.cn/react-admin/#/START)进行项目的搭建，浏览项目丰富功能！
+这里只提供了部分页面截图，根据文档[快速开始](http://shubin.wang/docs/#/START)进行项目的搭建，浏览项目丰富功能！
 
 ![登录](docs/imgs/login.jpg)
 ![首页](docs/imgs/home.jpg)

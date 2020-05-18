@@ -35,7 +35,7 @@ react-admin是基于基于[React16.x](https://reactjs.org)、[Ant Design4.x](htt
 ```
 ## 预览
 
-部分页面截图，完整项目预览地址[戳这里](https://open.vbill.cn/react-admin-live/)
+部分页面截图，完整项目预览地址[戳这里](http://shubin.wang)
 <div style="background: #efefef;padding: 0 10px;">
 
 ![登录](imgs/login.jpg)

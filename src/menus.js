@@ -10,7 +10,7 @@ export default function getMenus(userId) {
     // TODO 根据userId获取菜单数据 或在此文件中前端硬编码菜单
     return Promise.resolve([
         {key: 'antDesign', text: 'Ant Design 官网', icon: 'ant-design', url: 'https://ant-design.gitee.io', target: '', order: 2000},
-        {key: 'document', text: '文档', icon: 'book', url: 'https://open.vbill.cn/react-admin', target: '_blank', order: 1200},
+        {key: 'document', text: '文档', icon: 'book', url: 'http://shubin.wang/docs', target: '_blank', order: 1200},
 
         {key: 'customer-header', text: '自定义头部', icon: 'api', path: '/example/customer-header', order: 998},
         {key: 'user', text: '用户管理', icon: 'user', path: '/users', order: 900},
