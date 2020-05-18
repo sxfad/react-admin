@@ -100,6 +100,8 @@ export default function getMenus(userId) {
 ## 项目预览
 预览地址[戳这里](http://shubin.wang)
 
+注：用户名、密码随意输入
+
 ## 项目截图
 这里只提供了部分页面截图，根据文档[快速开始](http://shubin.wang/docs/#/START)进行项目的搭建，浏览项目丰富功能！
 
