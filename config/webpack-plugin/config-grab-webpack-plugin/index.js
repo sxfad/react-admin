@@ -187,7 +187,7 @@ function getConfigFromContent(content) {
     return result;
 }
 
-// 获取 {} 内的内容
+// 获取 {} 内的内容 算法不是很严谨，如果字符串中含有不成对的{}，会出错
 function getCurlyBracketContent(content) {
     const stack = [];
     const left = '{';
