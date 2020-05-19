@@ -46,7 +46,7 @@ class Plugin {
 
         compiler.hooks.entryOption.tap(pluginName, () => {
                 doGrab(options);
-            }
+            },
         );
     }
 
@@ -126,7 +126,7 @@ function getConfigFromContent(content) {
     // 删除注释
     const reg = /("([^\\\"]*(\\.)?)*")|('([^\\\']*(\\.)?)*')|(\/{2,}.*?(\r|\n))|(\/\*(\n|.)*?\*\/)/g;
     let noCommentContent = content.replace(reg, function (word) {
-        return /^\/{2,}/.test(word) || /^\/\*/.test(word) ? "" : word;
+        return /^\/{2,}/.test(word) || /^\/\*/.test(word) ? '' : word;
     });
 
     // 基于常量 PAGE_ROUTE 进行路由匹配
@@ -145,18 +145,18 @@ function getConfigFromContent(content) {
 
 
     // 截取@config部分字符串，提高正则匹配命中率
-    const configIndex = noCommentContent.indexOf('@config');
+    const importIndex = noCommentContent.indexOf('import config');
+    if (importIndex === -1) return result;
+    
+    let configIndex = noCommentContent.indexOf('config(');
 
     if (configIndex === -1) return result;
 
     noCommentContent = noCommentContent.substring(configIndex);
 
-    const classIndex = noCommentContent.indexOf('class');
+    noCommentContent = getCurlyBracketContent(noCommentContent);
 
-    if (!classIndex) return result;
-
-    noCommentContent = noCommentContent.substring(0, classIndex);
-
+    if (!noCommentContent) return result;
 
     // 需要抓取的属性
     const configs = {
@@ -186,6 +186,33 @@ function getConfigFromContent(content) {
         }
     });
     return result;
+}
+
+// 获取 {} 内的内容
+function getCurlyBracketContent(content) {
+    const stack = [];
+    const left = '{';
+    const right = '}';
+    const startIndex = content.indexOf(left);
+    if (startIndex === -1) return '';
+
+    content = content.substring(startIndex);
+
+    for (let i = 0; i < content.length; i++) {
+
+        let s = content[i];
+        if (left === s) {
+            stack.push(s);
+        }
+        if (right === s) {
+            stack.pop();
+            if (stack.length === 0) {
+                return content.substring(0, i + 1);
+            }
+        }
+    }
+
+    return '';
 }
 
 module.exports = Plugin;
