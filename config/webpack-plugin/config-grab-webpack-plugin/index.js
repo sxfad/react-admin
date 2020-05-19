@@ -144,16 +144,15 @@ function getConfigFromContent(content) {
     }
 
 
-    // 截取@config部分字符串，提高正则匹配命中率
     const importIndex = noCommentContent.indexOf('import config');
     if (importIndex === -1) return result;
-    
+
     let configIndex = noCommentContent.indexOf('config(');
 
     if (configIndex === -1) return result;
 
+    // 获取config参数，{}包裹的内容
     noCommentContent = noCommentContent.substring(configIndex);
-
     noCommentContent = getCurlyBracketContent(noCommentContent);
 
     if (!noCommentContent) return result;
