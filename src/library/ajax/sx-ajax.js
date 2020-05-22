@@ -34,11 +34,13 @@ export default class SXAjax {
      * @param onShowErrorTip 如何显示错误提示
      * @param onShowSuccessTip 如何显示成功提示
      * @param isMock 区分哪些请求需要mock，比如：url以约定'/mock'开头的请求，使用mock等方式。
+     * @param reject 出错是否进行reject 默认true
      */
     constructor({
                     onShowSuccessTip = (/* response, successTip  */) => true,
                     onShowErrorTip = (/* err, errorTip */) => true,
                     isMock = (/* url, data, method, options */) => false,
+                    reject = true,
                 } = {}) {
         this.instance = axios.create();
         this.mockInstance = axios.create();
@@ -50,6 +52,7 @@ export default class SXAjax {
         this.onShowSuccessTip = onShowSuccessTip;
         this.onShowErrorTip = onShowErrorTip;
         this.isMock = isMock;
+        this.reject = reject;
     }
 
     setDefaultOption(instance) {
@@ -74,6 +77,8 @@ export default class SXAjax {
         // 有 null的情况
         let data = d || {};
         options = options || {};
+
+        const useReject = ('reject' in options) ? options.reject : this.reject;
 
         let {
             successTip = false, // 默认false，不展示
@@ -165,9 +170,9 @@ export default class SXAjax {
                 const isCanceled = err && err.message && err.message.canceled;
                 if (isCanceled) return; // 如果是用户主动cancel，不做任何处理，不会触发任何函数
                 this.onShowErrorTip(err, errorTip);
-                reject(err);
-            }).catch(error => {
-                reject(error);
+                useReject ? reject(err) : resolve({$type: 'unRejectError', $error: err});
+            }).catch(err => {
+                useReject ? reject(err) : resolve({$type: 'unRejectError', $error: err});
             });
         });
         ajaxPromise.cancel = function () {

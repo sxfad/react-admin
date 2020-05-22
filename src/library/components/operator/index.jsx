@@ -93,7 +93,7 @@ export default class Operator extends Component {
             );
         }
         return (
-            <Popconfirm {...confirm}>
+            <Popconfirm okType="danger" {...confirm}>
                 {label}
             </Popconfirm>
         );

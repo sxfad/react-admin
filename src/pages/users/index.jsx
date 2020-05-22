@@ -63,6 +63,7 @@ export default class UserCenter extends Component {
     }
 
     handleSubmit = (values) => {
+
         if (this.state.loading) return;
 
         const {pageNum, pageSize} = this.state;

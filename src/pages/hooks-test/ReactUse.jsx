@@ -21,20 +21,20 @@ export default config({
 
     useEffectOnce(() => {
         // componentDidMount
-        console.log('Running effect once on mount');
+        console.log('useEffectOnce mount');
 
         return () => {
             // componentWillUnmount
-            console.log('Running clean-up of effect on unmount');
+            console.log('useEffectOnce unmount');
         };
     });
 
     useLifecycles(() => {
         // componentDidMount
-        console.log('MOUNTED');
+        console.log('useLifecycles mount');
     }, () => {
         // componentWillUnmount
-        console.log('UNMOUNTED');
+        console.log('useLifecycles unmount');
     });
 
     let [count, setCount] = useState(0);
