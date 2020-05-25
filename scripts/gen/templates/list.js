@@ -121,8 +121,10 @@ export default class UserCenter extends Component {
         this.handleSubmit();
     }
 
-    handleSubmit = (values) => {
+    handleSubmit = async () => {
         if (this.state.loading) return;
+
+        const values = await this.form.validateFields();
 
         ${table.pagination ? 'const {pageNum, pageSize} = this.state;' : DELETE_THIS_LINE}
         const params = {
@@ -147,7 +149,7 @@ export default class UserCenter extends Component {
 
         this.setState({deleting: true});
         this.props.ajax.${base.ajax.delete.method}(\`${base.ajax.delete.url.replace('{id}', '${id}')}\`, null, {successTip: '删除成功！', errorTip: '删除失败！'})
-            .then(() => this.form.submit())
+            .then(() => this.handleSubmit())
             .finally(() => this.setState({deleting: false}));
     };` : DELETE_THIS_LINE}
 
@@ -170,7 +172,7 @@ export default class UserCenter extends Component {
             onOk: () => {
                 this.setState({deleting: true});
                 this.props.ajax.${base.ajax.batchDelete.method}('${base.ajax.batchDelete.url}', {ids: selectedRowKeys}, {successTip: '删除成功！', errorTip: '删除失败！'})
-                    .then(() => this.form.submit())
+                    .then(() => this.handleSubmit())
                     .finally(() => this.setState({deleting: false}));
             },
         })
@@ -205,7 +207,7 @@ export default class UserCenter extends Component {
                     <Form
                         name="${base.moduleName}-query"
                         ref={form => this.form = form}
-                        onFinish={this.handleSubmit}
+                        onFinish={() => this.setState({pageNum: 1}, () => this.handleSubmit())}
                     >
                         <FormRow>
                             ${queries.map(item => `<FormElement
@@ -249,14 +251,14 @@ export default class UserCenter extends Component {
                     total={total}
                     pageNum={pageNum}
                     pageSize={pageSize}
-                    onPageNumChange={pageNum => this.setState({pageNum}, () => this.form.submit())}
-                    onPageSizeChange={pageSize => this.setState({pageSize, pageNum: 1}, () => this.form.submit())}
+                    onPageNumChange={pageNum => this.setState({pageNum}, () => this.handleSubmit())}
+                    onPageSizeChange={pageSize => this.setState({pageSize, pageNum: 1}, () => this.handleSubmit())}
                 />` : DELETE_THIS_LINE}
                 ${isModalEdit ? `<EditModal
                     visible={visible}
                     id={id}
                     isEdit={id !== null}
-                    onOk={() => this.setState({visible: false}, () => this.form.submit())}
+                    onOk={() => this.setState({visible: false}, () => this.handleSubmit())}
                     onCancel={() => this.setState({visible: false})}
                 />` : DELETE_THIS_LINE}
             </PageContent>
