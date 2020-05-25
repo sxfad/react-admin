@@ -21,12 +21,10 @@ export default config({
 })(props => {
     // 数据定义
     const [loading, setLoading] = useState(false);
-    const [condition, setCondition] = useState({});
+    const [{condition, pageSize, pageNum}, setCondition] = useState({condition: {}, pageSize: 20, pageNum: 1});
     const [dataSource, setDataSource] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [total, setTotal] = useState(0);
-    const [pageNum, setPageNum] = useState(1);
-    const [pageSize, setPageSize] = useState(20);
     const [deleting, setDeleting] = useState(false);
     const [visible, setVisible] = useState(false);
     const [id, setId] = useState(null);
@@ -85,8 +83,9 @@ export default config({
 
         setDeleting(true);
         await props.ajax.del(`/mock/users/${id}`, null, {successTip: '删除成功！', errorTip: '删除失败！'});
-        form.submit();
         setDeleting(false);
+
+        await handleSearch();
     }
 
     async function handleBatchDelete() {
@@ -102,7 +101,8 @@ export default config({
         if ($error) return;
 
         setSelectedRowKeys([]);
-        form.submit();
+
+        await handleSearch();
     }
 
     // effect 定义
@@ -121,7 +121,7 @@ export default config({
     return (
         <PageContent>
             <QueryBar>
-                <Form form={form} onFinish={setCondition}>
+                <Form form={form} onFinish={condition => setCondition({condition, pageSize, pageNum: 1})}>
                     <FormRow>
                         <FormElement
                             {...formProps}
@@ -164,14 +164,14 @@ export default config({
                 total={total}
                 pageNum={pageNum}
                 pageSize={pageSize}
-                onPageNumChange={setPageNum}
-                onPageSizeChange={setPageSize}
+                onPageNumChange={pageNum => setCondition({condition, pageSize, pageNum})}
+                onPageSizeChange={pageSize => setCondition({condition, pageSize, pageNum: 1})}
             />
             <EditModal
                 visible={visible}
                 id={id}
                 isEdit={id !== null}
-                onOk={() => setVisible(false) || form.submit()}
+                onOk={() => setVisible(false) || handleSearch()}
                 onCancel={() => setVisible(false)}
             />
         </PageContent>
