@@ -3,6 +3,9 @@ import {Button, Form} from 'antd';
 
 import PageContent from 'src/layouts/page-content';
 import config from 'src/commons/config-hoc';
+import batchDeleteConfirm from 'src/components/batch-delete-confirm';
+import {useGet, useDel} from 'src/commons/ajax';
+import api from './useApi';
 import {
     FormElement,
     FormRow,
@@ -11,24 +14,26 @@ import {
     QueryBar,
     Table,
 } from 'src/library/components';
-import batchDeleteConfirm from 'src/components/batch-delete-confirm';
 
 import EditModal from './EditModalHooks';
 
 export default config({
     path: '/hook/users',
     title: '用户管理(Hooks)',
-})(props => {
+})(() => {
     // 数据定义
-    const [loading, setLoading] = useState(false);
     const [{condition, pageSize, pageNum}, setCondition] = useState({condition: {}, pageSize: 20, pageNum: 1});
     const [dataSource, setDataSource] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [total, setTotal] = useState(0);
-    const [deleting, setDeleting] = useState(false);
     const [visible, setVisible] = useState(false);
     const [id, setId] = useState(null);
     const [form] = Form.useForm();
+
+    // 请求相关定义 只是定义，不会触发请求，调用相关函数，才会触发请求
+    const [loading, fetchUsers] = useGet('/mock/users');
+    const [deleting, deleteUsers] = api.deleteUsers(); // 可以单独封装成api
+    const [deletingOne, deleteUser] = useDel('/mock/users/:id', {successTip: '删除成功！', errorTip: '删除失败！'});
 
     const columns = [
         {title: '用户名', dataIndex: 'name', width: 200},
@@ -68,40 +73,28 @@ export default config({
             pageSize,
         };
 
-        console.log(params);
-        setLoading(true);
-        const res = await props.ajax.get('/mock/users', params);
+        console.log('params:', params);
+        const res = await fetchUsers(params);
+        console.log('res:', res);
 
         setDataSource(res?.list || []);
         setTotal(res?.total || 0);
-
-        setLoading(false);
     }
 
     async function handleDelete(id) {
-        if (deleting) return;
+        if (deletingOne) return;
 
-        setDeleting(true);
-        await props.ajax.del(`/mock/users/${id}`, null, {successTip: '删除成功！', errorTip: '删除失败！'});
-        setDeleting(false);
-
+        await deleteUser(id);
         await handleSearch();
     }
 
     async function handleBatchDelete() {
         if (deleting) return;
-        const ok = await batchDeleteConfirm(selectedRowKeys.length);
 
-        if (!ok) return;
+        await batchDeleteConfirm(selectedRowKeys.length);
 
-        setDeleting(true);
-        const {$error} = await props.ajax.del('/mock/users', {ids: selectedRowKeys}, {successTip: '删除成功！', errorTip: '删除失败！'});
-        setDeleting(false);
-
-        if ($error) return;
-
+        await deleteUsers({ids: selectedRowKeys});
         setSelectedRowKeys([]);
-
         await handleSearch();
     }
 
@@ -117,9 +110,11 @@ export default config({
 
     // jsx 用到的数据
     const formProps = {width: 200};
-    const disabledDelete = !selectedRowKeys?.length;
+    const pageLoading = loading || deleting || deletingOne;
+    const disabledDelete = !selectedRowKeys?.length || pageLoading;
+
     return (
-        <PageContent>
+        <PageContent loading={pageLoading}>
             <QueryBar>
                 <Form form={form} onFinish={condition => setCondition({condition, pageSize, pageNum: 1})}>
                     <FormRow>
@@ -142,7 +137,7 @@ export default config({
                             <Button type="primary" htmlType="submit">提交</Button>
                             <Button onClick={() => form.resetFields()}>重置</Button>
                             <Button type="primary" onClick={() => setVisible(true) || setId(null)}>添加</Button>
-                            <Button danger disabled={disabledDelete || loading} onClick={handleBatchDelete}>删除</Button>
+                            <Button danger disabled={disabledDelete} onClick={handleBatchDelete}>删除</Button>
                         </FormElement>
                     </FormRow>
                 </Form>
@@ -152,7 +147,6 @@ export default config({
                     selectedRowKeys,
                     onChange: setSelectedRowKeys,
                 }}
-                loading={loading}
                 columns={columns}
                 dataSource={dataSource}
                 rowKey="id"

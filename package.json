@@ -123,7 +123,8 @@
         },
         "extends": "react-app",
         "rules": {
-            "jsx-a11y/anchor-is-valid": 0
+            "jsx-a11y/anchor-is-valid": 0,
+            "react-hooks/exhaustive-deps": 0
         }
     },
     "browserslist": {

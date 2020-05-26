@@ -166,12 +166,10 @@ export default class SXAjax {
             }).then(response => {
                 this.onShowSuccessTip(response, successTip);
                 resolve(originResponse ? response : response.data);
-            }, err => {
+            }).catch(err => {
                 const isCanceled = err && err.message && err.message.canceled;
                 if (isCanceled) return; // 如果是用户主动cancel，不做任何处理，不会触发任何函数
                 this.onShowErrorTip(err, errorTip);
-                useReject ? reject(err) : resolve({$type: 'unRejectError', $error: err});
-            }).catch(err => {
                 useReject ? reject(err) : resolve({$type: 'unRejectError', $error: err});
             });
         });

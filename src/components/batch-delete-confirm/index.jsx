@@ -12,14 +12,14 @@ export default function batchDeleteConfirm(count) {
             条记录吗？
         </div>
     );
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         Modal.confirm({
             title: '温馨提示',
             content,
             icon: <ExclamationCircleOutlined/>,
             okType: 'danger',
             onOk: () => resolve(true),
-            onCancel: () => resolve(false),
+            onCancel: () => reject('user cancel confirm'),
         });
     });
 }

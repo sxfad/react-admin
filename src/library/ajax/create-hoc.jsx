@@ -1,5 +1,17 @@
 import React, {Component} from 'react';
 
+/**
+ * 创建 ajax 高阶组件
+ *
+ * 组件卸载时，打断未完成的请求
+ * props中注入ajax属性
+ *
+ * 使用方式：
+ * this.props.ajax.get(...)
+ *
+ * @param sxAjax
+ * @returns {function({propName?: *}=): function(*): WithAjax}
+ */
 const createAjaxHoc = sxAjax => ({propName = 'ajax'} = {}) => WrappedComponent => {
     class WithAjax extends Component {
         constructor(props) {
