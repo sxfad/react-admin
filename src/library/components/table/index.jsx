@@ -7,9 +7,9 @@ export default class TableComponent extends Component {
     static propTypes = {
         surplusSpace: PropTypes.bool, // 是否使用剩余空间，如果 true 表格将铺满全屏
         serialNumber: PropTypes.bool, // 是否显示序号
+        serialText: PropTypes.string, // 序号列表头名称
         pageSize: PropTypes.number,
         pageNum: PropTypes.number,
-        serialText: PropTypes.string,
         otherHeight: PropTypes.number,
         offsetHeight: PropTypes.number,
 
