@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Spin} from 'antd';
 import PropTypes from 'prop-types';
 import Footer from '../footer';
-import {connect} from 'src/models/index';
+import {connect} from 'src/models';
 import './style.less';
 
 /**
