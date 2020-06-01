@@ -21,7 +21,7 @@ import {ModalContent} from 'src/library/components';
         title: props => props.isEdit ? '修改' : '添加',
     },
 })
-export default class EditModal extends Component {
+export default class ${base.ModuleName}EditModal extends Component {
     state = {
         loading: false, // 页面加载loading
         data: {},       // 回显数据

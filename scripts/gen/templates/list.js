@@ -27,6 +27,7 @@ module.exports = function (config) {
         table,
         columns,
     } = config;
+    console.log(config);
 
     if (queries && !queries.length) queries = null;
 
@@ -50,7 +51,7 @@ module.exports = function (config) {
     const operatorDelete = operators && operators.find(item => item.text === '删除');
 
     return `import React, {Component} from 'react';
-${tools || queries || hasBatchDelete ? `import {${(queries || tools) ? 'Button, ' : ''}${queries ? 'Form, ' : ''}${hasBatchDelete ? 'Modal' : ''}} from 'antd';` : DELETE_THIS_LINE}
+${tools || queries || hasBatchDelete ? `import {${(queries || tools) ? 'Button, ' : ''}${queries ? 'Form, ' : ''}} from 'antd';` : DELETE_THIS_LINE}
 ${columns.find(renderTime) ? `import moment from 'moment';` : DELETE_THIS_LINE}
 import PageContent from 'src/layouts/page-content';
 import config from 'src/commons/config-hoc';
@@ -63,14 +64,14 @@ import {
     ${operators ? 'Operator,' : DELETE_THIS_LINE}
     ${table.pagination ? 'Pagination,' : DELETE_THIS_LINE}
 } from 'src/library/components';
+${hasBatchDelete ? `import batchDeleteConfirm from 'src/components/batch-delete-confirm';` : DELETE_THIS_LINE}
 ${isModalEdit ? 'import EditModal from \'./EditModal\';' : DELETE_THIS_LINE}
 
 @config({
     path: '${base.path}',
-    ajax: true,
     ${isPageEdit ? 'router: true,' : DELETE_THIS_LINE}
 })
-export default class UserCenter extends Component {
+export default class ${base.ModuleName}List extends Component {
     state = {
         loading: false,     // 表格加载数据loading
         dataSource: [],     // 表格数据
@@ -124,8 +125,7 @@ export default class UserCenter extends Component {
     handleSubmit = async () => {
         if (this.state.loading) return;
 
-        const values = await this.form.validateFields();
-
+        ${queries ? 'const values = await this.form.validateFields();\n' : DELETE_THIS_LINE}
         ${table.pagination ? 'const {pageNum, pageSize} = this.state;' : DELETE_THIS_LINE}
         const params = {
             ${queries ? '...values,' : DELETE_THIS_LINE}
@@ -157,25 +157,16 @@ export default class UserCenter extends Component {
         if (this.state.deleting) return;
 
         const {selectedRowKeys} = this.state;
-        const content = (
-            <span>
-                您确定删除
-                <span style={{padding: '0 5px', color: 'red', fontSize: 18}}>
-                    {selectedRowKeys.length}
-                </span>
-                条记录吗？
-            </span>
-        );
-        Modal.confirm({
-            title: '温馨提示',
-            content,
-            onOk: () => {
+        batchDeleteConfirm(selectedRowKeys.length)
+            .then(() => {
                 this.setState({deleting: true});
                 this.props.ajax.${base.ajax.batchDelete.method}('${base.ajax.batchDelete.url}', {ids: selectedRowKeys}, {successTip: '删除成功！', errorTip: '删除失败！'})
-                    .then(() => this.handleSubmit())
+                    .then(() => {
+                        this.setState({selectedRowKeys: []});
+                        this.handleSubmit();
+                    })
                     .finally(() => this.setState({deleting: false}));
-            },
-        })
+            });
     };` : DELETE_THIS_LINE}
 
     ${handles ? handles.map(item => `${item} = () => {

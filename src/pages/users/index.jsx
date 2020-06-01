@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Modal, Form} from 'antd';
+import {Button, Form} from 'antd';
 import PageContent from 'src/layouts/page-content';
 import config from 'src/commons/config-hoc';
 import {
@@ -10,6 +10,7 @@ import {
     Operator,
     Pagination,
 } from 'src/library/components';
+import batchDeleteConfirm from 'src/components/batch-delete-confirm';
 import EditModal from './EditModal';
 
 @config({
@@ -98,25 +99,16 @@ export default class UserCenter extends Component {
         if (this.state.deleting) return;
 
         const {selectedRowKeys} = this.state;
-        const content = (
-            <span>
-                您确定删除
-                <span style={{padding: '0 5px', color: 'red', fontSize: 18}}>
-                    {selectedRowKeys.length}
-                </span>
-                条记录吗？
-            </span>
-        );
-        Modal.confirm({
-            title: '温馨提示',
-            content,
-            onOk: () => {
+        batchDeleteConfirm(selectedRowKeys.length)
+            .then(() => {
                 this.setState({deleting: true});
                 this.props.ajax.del('/mock/users', {ids: selectedRowKeys}, {successTip: '删除成功！', errorTip: '删除失败！'})
-                    .then(() => this.handleSubmit())
+                    .then(() => {
+                        this.setState({selectedRowKeys: []});
+                        this.handleSubmit();
+                    })
                     .finally(() => this.setState({deleting: false}));
-            },
-        });
+            });
     };
 
     render() {

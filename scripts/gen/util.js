@@ -158,40 +158,47 @@ function getConfigFromDbTable(options) {
     const moduleName = tableName.replace(/_/g, '-');
 
     // 复数
-    const pluralizeModuleName = inflection.pluralize(moduleName);
+    const moduleNames = inflection.pluralize(moduleName);
+    const ModuleName = inflection.camelize(moduleName);
+    const ModuleNames = inflection.pluralize(ModuleName);
+
     const base = {
         moduleName,
-        path: `/${pluralizeModuleName}`,
+        moduleNames,
+        ModuleName,
+        ModuleNames,
+
+        path: `/${moduleNames}`,
         ajax: {
             search: {
                 name: '查询',
                 method: 'get',
-                url: `/${pluralizeModuleName}`,
+                url: `/${moduleNames}`,
             },
             detail: {
                 name: '详情',
                 method: 'get',
-                url: `/${pluralizeModuleName}/{id}`,
+                url: `/${moduleNames}/{id}`,
             },
             modify: {
                 name: '修改',
                 method: 'put',
-                url: `/${pluralizeModuleName}`,
+                url: `/${moduleNames}`,
             },
             add: {
                 name: '添加',
                 method: 'post',
-                url: `/${pluralizeModuleName}`,
+                url: `/${moduleNames}`,
             },
             delete: {
                 name: '删除',
                 method: 'del',
-                url: `/${pluralizeModuleName}/{id}`,
+                url: `/${moduleNames}/{id}`,
             },
             batchDelete: {
                 name: '批量删除',
                 method: 'del',
-                url: `/${pluralizeModuleName}`,
+                url: `/${moduleNames}`,
             },
         },
     };
@@ -203,21 +210,21 @@ function getConfigFromDbTable(options) {
             pages.push({
                 typeName: '列表页面',
                 filePath: path.join(__dirname, '../../src/pages', moduleName, 'index.jsx'),
-                template: path.join(__dirname, 'templates', 'list.js'),
+                template: path.join(__dirname, 'templates', 'list-hooks.js'),
             });
         }
         if (modalEdit) {
             pages.push({
                 typeName: '弹框表单',
                 filePath: path.join(__dirname, '../../src/pages', moduleName, 'EditModal.jsx'),
-                template: path.join(__dirname, 'templates', 'edit-modal.js'),
+                template: path.join(__dirname, 'templates', 'edit-modal-hooks.js'),
             });
         }
         if (pageEdit) {
             pages.push({
                 typeName: '页面表单',
                 filePath: path.join(__dirname, '../../src/pages', moduleName, 'Edit.jsx'),
-                template: path.join(__dirname, 'templates', 'edit.js'),
+                template: path.join(__dirname, 'templates', 'edit-hooks.js'),
             });
         }
     }
@@ -326,7 +333,7 @@ function getConfigFromDbTable(options) {
     const listPageConfig = {
         fileTypeName: '列表页面',
         filePath: path.join(__dirname, '../../src/pages', moduleName, 'index.jsx'),
-        template: path.join(__dirname, 'templates', 'list.js'),
+        template: path.join(__dirname, 'templates', 'list-hooks.js'),
         base,
         pages,
         queries,
@@ -340,7 +347,7 @@ function getConfigFromDbTable(options) {
     const modalEditConfig = {
         fileTypeName: '弹框表单',
         filePath: path.join(__dirname, '../../src/pages', moduleName, 'EditModal.jsx'),
-        template: path.join(__dirname, 'templates', 'edit-modal.js'),
+        template: path.join(__dirname, 'templates', 'edit-modal-hooks.js'),
         base,
         pages,
         queries,
@@ -354,7 +361,7 @@ function getConfigFromDbTable(options) {
     const pageEditConfig = {
         fileTypeName: '页面表单',
         filePath: path.join(__dirname, '../../src/pages', moduleName, 'edit.jsx'),
-        template: path.join(__dirname, 'templates', 'edit.js'),
+        template: path.join(__dirname, 'templates', 'edit-hooks.js'),
         base,
         pages,
         queries,

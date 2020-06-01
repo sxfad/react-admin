@@ -334,6 +334,9 @@ function getBaseConfig(configArr, tableName) {
     // 处理页面默认路由地址
     if (!result.path) result.path = `/${inflection.pluralize(moduleName)}`;
 
+    result.ModuleName = inflection.camelize(moduleName);
+    result.ModuleNames = inflection.pluralize(result.ModuleName);
+
     return result;
 }
 
@@ -344,9 +347,9 @@ function getPagesConfig(configArr, moduleName = '') {
     if (!config) return null;
 
     const defaultPages = [
-        '列表页面', 'list.js', 'index.jsx',
-        '弹框表单', 'edit-modal.js', 'EditModal.jsx',
-        '页面表单', 'edit.js', 'Edit.jsx',
+        '列表页面', 'list-hooks.js', 'index.jsx',
+        '弹框表单', 'edit-modal-hooks.js', 'EditModal.jsx',
+        '页面表单', 'edit-hooks.js', 'Edit.jsx',
     ];
 
     let result = null;

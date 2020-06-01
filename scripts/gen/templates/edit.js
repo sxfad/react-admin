@@ -21,7 +21,7 @@ import PageContent from 'src/layouts/page-content';
     path: '${base.path}/_/edit/:id',
     ajax: true,
 })
-export default class Edit extends Component {
+export default class ${base.ModuleName}Edit extends Component {
     state = {
         loading: false, // 页面加载loading
         data: {},       // 回显数据
@@ -71,8 +71,7 @@ export default class Edit extends Component {
         this.setState({loading: true});
         ajaxMethod(ajaxUrl, values, {successTip})
             .then(() => {
-                const {onOk} = this.props;
-                onOk && onOk();
+                this.props.history.goBack();
             })
             .finally(() => this.setState({loading: false}));
     };
