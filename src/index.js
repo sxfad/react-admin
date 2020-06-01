@@ -2,11 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import * as storage from 'src/library/utils/storage';
-import * as sxRedux from 'src/library/redux';
 import App from './App';
-import handleSuccess from './commons/handle-success';
-import handleError from './commons/handle-error';
-import {configureStore} from './models';
+import {store} from './models';
 import * as serviceWorker from './serviceWorker';
 import {getLoginUser} from './commons';
 import './index.css';
@@ -23,11 +20,6 @@ const currentUser = getLoginUser() || {};
 storage.init({
     keyPrefix: currentUser.id,
 });
-
-sxRedux.init({storage, handleError, handleSuccess});
-
-// models store
-const store = configureStore();
 
 ReactDOM.render(<Provider store={store}><App/></Provider>, document.getElementById('root'));
 // If you want your app to work offline and load faster, you can change
