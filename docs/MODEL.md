@@ -19,13 +19,18 @@
 此文件通过脚本自动生成，不要直接编辑，生成规则如下：
 
 ```
+// models文件加下，直接将文件名作为modelName
 /path/to/models/user-center.js --> export userCenter from '/path/to/models/user-center';
+
+// model.js结尾的文件，将作为model，文件名为modelName
 /path/to/user-center.model.js  --> export userCenter from '/path/to/user-center.model.js';
+
+// model.js将作为model，所处文件夹名将作为modelName
 /path/to/user-center/model.js  --> export userCenter from '/path/to/user-center/model.js';
 ```
 
 ## 组件与redux进行连接
-提供了两种方式，装饰器方式、函数调用方式；
+提供了多种种方式，装饰器方式、函数调用、hooks、js文件直接使用；
 
 ### 装饰器
 推荐使用装饰器方式
@@ -58,6 +63,57 @@ function mapStateToProps(state) {
 
 export default connectComponent({LayoutComponent: Demo, mapStateToProps});
 ```
+
+### hooks
+```jsx
+import {useSelector} from 'react-redux';
+import {useAction} from 'src/models';
+
+export default () => {
+    const action = useAction();
+    const show = useSelector(state => state.side.show);
+    
+    console.log(show);
+
+    useEffect(() =>{
+        action.side.hide()    
+
+    }, []);
+
+    return <div/>
+}
+```
+
+**对 useSelector 的说明**：
+
+useSelector(select) 默认对 select 函数的返回值进行引用比较 ===，并且仅在返回值改变时触发重渲染。
+
+即：如果select函数返回一个临时对象，会多次re-render
+    
+    最好不要这样使用:
+    const someData = useSelector(state => {
+    
+        // 每次都返回一个新对象，导致re-render
+        return {name: state.name, age: state.age};
+    })
+    
+    最好多次调用useSelector，单独返回数据，或者返回非引用类型数据
+    const name = useSelector(state => state.firstName + state.lastName);
+    const age = useSelector(state => state.age);
+
+### js文件中使用
+没有特殊需求，一般不会在普通js文件中使用
+
+```javascript
+import {action, store} from 'src/models';
+
+// 获取数据 
+const state = store.getState();
+
+// 修改数据
+action.side.hide();
+```
+
 
 ## 简化写法
 action reducer 二合一，省去了actionType，简化写法；

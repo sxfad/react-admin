@@ -23,6 +23,9 @@ import {useState, useEffect, useRef, useCallback} from 'react';
 
  // key 要与url中的对应
  await deleteOne({id});
+ *
+ * 存在的问题：
+ *  由于loading是通过ajax的finally异步进行设置的，并不会跟调用者的setState进行合并，setLoading会单独触发一次render
  */
 export default function createHooks(ajax) {
     const create = (method) => (url, initOptions = {}) => {
