@@ -31,7 +31,7 @@ export default config({
     const [form] = Form.useForm();
 
     // 请求相关定义 只是定义，不会触发请求，调用相关函数，才会触发请求
-    const [loading, fetchUsers] = useGet('/mock/users');
+    const [loading, fetchUsers] = useGet('/users');
     const [deleting, deleteUsers] = api.deleteUsers(); // 可以单独封装成api
     const [deletingOne, deleteUser] = useDel('/mock/users/:id', {successTip: '删除成功！', errorTip: '删除失败！'});
 

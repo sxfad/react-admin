@@ -8,6 +8,8 @@ function getDefaultSettings(instance) {
     instance.defaults.baseURL = '/api';
     instance.defaults.timeout = 1000 * 60;
     instance.mockDefaults.baseURL = '/';
+    // instance.defaults.headers['XXX-TOKEN'] = 'token-value';
+    // instance.defaults.headers.get['token'] = 'token-value';
 }
 
 // ajax工具，含有errorTip 和 successTip
