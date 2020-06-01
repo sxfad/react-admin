@@ -73,6 +73,22 @@ export default class MyTest extends Component {
     }
 }
 ```
+函数式写法：
+```jsx
+import React from 'react';
+import config from 'src/commons/config-hoc';
+import PageContent from 'src/layouts/page-content';
+
+export default config({
+    path: '/my-test',
+})(() => {
+    return (
+        <PageContent>
+            我的第一个页面
+        </PageContent>
+    );
+});
+```
 
 浏览器访问 `http://localhost:4000/my-test`
 
