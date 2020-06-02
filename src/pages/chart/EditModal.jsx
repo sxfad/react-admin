@@ -13,7 +13,7 @@ export default config({
     const [form] = Form.useForm();
     const [loading, fetchChart] = useGet('/charts/{id}');
     const [saving, saveChart] = usePost('/charts', {successTip: '添加成功！'});
-    const [updating, updateChart] = usePut('/charts', {successTip: '添加成功！'});
+    const [updating, updateChart] = usePut('/charts', {successTip: '修改成功！'});
 
     async function fetchData() {
         if (loading) return;
@@ -32,8 +32,7 @@ export default config({
     async function handleSubmit(values) {
         if (saving || updating) return;
 
-        const ajaxMethod = isEdit ? updateChart : saveChart;
-        await ajaxMethod(values);
+        await (isEdit ? updateChart : saveChart)(values);
 
         onOk && onOk();
     }
