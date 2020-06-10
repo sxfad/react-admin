@@ -8,7 +8,7 @@ import './style.less';
  *
  * @param options 各种类型说明如下：
  *      string：modal 的 title
- *      function：modal 的title
+ *      function：返回值为 modal 的options
  *      object：Modal组件相关配置，具体配置参考antd Modal组件
  *          title: string | ReactNode | function(props)
  *          fullScreen: boolean 是否全屏显示modal
@@ -28,8 +28,6 @@ export default (options) => WrappedComponent => {
 
             if (typeof options === 'string') title = options;
 
-            if (typeof options === 'function') title = options;
-
             if (typeof options === 'object') title = options.title;
 
             if (typeof title === 'function') title = title(this.props);
@@ -39,10 +37,13 @@ export default (options) => WrappedComponent => {
 
         render() {
             const {visible, onCancel} = this.props;
-            const title = this.getTitle();
-            const others = typeof options === 'object' ? options : {};
+            let others = {};
 
-            const {fullScreen} = others;
+            if (typeof options === 'string') others = {title: options};
+            if (typeof options === 'object') others = options;
+            if (typeof options === 'function') others = options(this.props);
+
+            const {fullScreen, title} = others;
 
             let className = 'modal-hoc-root';
             let top = 100;
@@ -70,5 +71,5 @@ export default (options) => WrappedComponent => {
                 </Modal>
             );
         }
-    }
+    };
 };

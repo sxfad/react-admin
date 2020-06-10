@@ -2,6 +2,7 @@
 * [快速开始](START.md)
 * [菜单配置](MENU.md)
 * [页面开发](PAGE.md)
+* [弹框页面开发](MODAL_PAGE.md)
 * [系统路由](ROUTE.md)
 * [Ajax请求](AJAX.md)
 * [Mock模拟数据](MOCK.md)

@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import {Button, Spin} from 'antd';
 import PropTypes from 'prop-types';
 import {getElementTop, getParentByClassName} from 'src/library/utils';
@@ -13,17 +13,18 @@ export default class ModalContent extends Component {
 
     static propTypes = {
         surplusSpace: PropTypes.bool,   // 是否使用屏幕剩余空间
+        otherHeight: PropTypes.number,  // 除了主体内容之外的其他高度，用于计算主体高度；
         loading: PropTypes.bool,        // 是否加载中
         loadingTip: PropTypes.any,      // 加载中提示文案
-        otherHeight: PropTypes.number,  // 除了主体内容之外的其他高度，用于计算主体高度；
         footer: PropTypes.any,          // 底部
-        okText: PropTypes.any,          // 确定按钮文案
         okHtmlType: PropTypes.any,      // 确定按钮类型
-        resetText: PropTypes.any,       // 重置按钮文案
-        cancelText: PropTypes.any,      // 取消按钮文案
+        okText: PropTypes.any,          // 确定按钮文案
         onOk: PropTypes.func,           // 确定事件
+        cancelText: PropTypes.any,      // 取消按钮文案
         onCancel: PropTypes.func,       // 取消事件
+        resetText: PropTypes.any,       // 重置按钮文案
         onReset: PropTypes.func,        // 表单重置事件
+
         style: PropTypes.object,        // 最外层容器样式
         bodyStyle: PropTypes.object,    // 内容容器样式
     };
@@ -112,11 +113,11 @@ export default class ModalContent extends Component {
                     {footer !== false ? (
                         <div className="ant-modal-footer" style={{flex: 0}}>
                             {footer ? footer : (
-                                <Fragment>
+                                <>
                                     <Button type="primary" onClick={onOk} htmlType={okHtmlType}>{okText}</Button>
                                     {onReset ? <Button onClick={onReset}>{resetText}</Button> : null}
                                     <Button onClick={onCancel}>{cancelText}</Button>
-                                </Fragment>
+                                </>
                             )}
                         </div>
                     ) : null}
