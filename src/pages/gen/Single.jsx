@@ -23,6 +23,7 @@ import {
     getLabel,
     getFormElementType,
 } from './util';
+import PreviewModal from './PreviewModal';
 import './style.less';
 
 const EditTable = tableEditable(tableRowDraggable(Table));
@@ -40,6 +41,8 @@ export default class UserCenter extends Component {
         table: {},          // 当前编辑table
         tables: [],         // 数据库表
         ignoreFields: [],   // 忽略字段
+        previewVisible: false,
+        previewCode: '',
     };
 
     columns = [
@@ -491,50 +494,83 @@ export default class UserCenter extends Component {
         this.setState({table: {...table}});
     };
 
+    /** 获取参数 */
+    getParams = async (showTip) => {
+        await this.form.validateFields();
+
+        if (!this.state.table?.children?.length) {
+            Modal.error({
+                icon: <ExclamationCircleOutlined/>,
+                title: '温馨提示',
+                content: '字段配置为空，无法生成，请添加字段信息！',
+            });
+
+            return Promise.reject();
+        }
+
+        return new Promise((resolve, reject) => {
+            const getParams = () => {
+                const {table} = this.state;
+                const children = table.children
+                    .map(it => ({
+                        field: it.field,
+                        chinese: getLabel(it.chinese),
+                        name: it.name,
+                        type: it.type,
+                        formType: it.formType || 'input',
+                        length: isInputLikeElement(it.formType || 'input') ? it.length : 0,
+                        isNullable: it.isNullable,
+                        isForm: it.isForm,
+                        isColumn: it.isColumn,
+                        isQuery: it.isQuery,
+                    }));
+
+                const params = {
+                    tables: [{
+                        ...table,
+                        children,
+                    }],
+                };
+
+                resolve(params);
+            };
+
+            if (!showTip) {
+                getParams();
+                return;
+            }
+
+            Modal.confirm({
+                icon: <ExclamationCircleOutlined/>,
+                title: '同名文件将被覆盖，是否继续？',
+                content: '代码文件直接生成到项目目录中，会引起webpack的热更新，当前页面有可能会重新加载。',
+                onOk: () => {
+                    getParams();
+                },
+                onCancel: () => {
+                    reject();
+                },
+            });
+        });
+    };
+
     handleGen = async () => {
-        this.form.validateFields()
-            .then(() => {
-                if (!this.state.table?.children?.length) {
-                    return Modal.error({
-                        icon: <ExclamationCircleOutlined/>,
-                        title: '温馨提示',
-                        content: '字段配置为空，无法生成，请添加字段信息！',
-                    });
-                }
+        const params = await this.getParams(true);
 
-                Modal.confirm({
-                    icon: <ExclamationCircleOutlined/>,
-                    title: '同名文件将被覆盖，是否继续？',
-                    content: '代码文件直接生成到项目目录中，会引起webpack的热更新，当前页面有可能会重新加载。',
-                    onOk: () => {
-                        const {table} = this.state;
-                        const children = table.children
-                            .map(it => ({
-                                field: it.field,
-                                chinese: getLabel(it.chinese),
-                                name: it.name,
-                                type: it.type,
-                                formType: it.formType || 'input',
-                                length: isInputLikeElement(it.formType || 'input') ? it.length : 0,
-                                isNullable: it.isNullable,
-                                isForm: it.isForm,
-                                isColumn: it.isColumn,
-                                isQuery: it.isQuery,
-                            }));
+        this.setState({loading: true});
+        this.props.ajax.post('/gen/tables', params, {baseURL: '/', successTip: '生成成功！'})
+            .finally(() => this.setState({loading: false}));
+    };
 
-                        const params = {
-                            tables: [{
-                                ...table,
-                                children,
-                            }],
-                        };
-                        this.setState({loading: true});
-                        this.props.ajax.post('/gen/tables', params, {baseURL: '/', successTip: '生成成功！'})
-                            .finally(() => this.setState({loading: false}));
-                    },
-                });
+    handlePreview = async () => {
+        const params = await this.getParams();
+
+        this.setState({loading: true});
+        this.props.ajax.post('/gen/preview', params, {baseURL: '/'})
+            .then(res => {
+                this.setState({previewVisible: true, previewCode: res});
             })
-            .catch(console.log);
+            .finally(() => this.setState({loading: false}));
     };
 
     handleSortEnd = ({newIndex, oldIndex}) => {
@@ -553,6 +589,8 @@ export default class UserCenter extends Component {
             deleting,
             tables,
             table,
+            previewVisible,
+            previewCode,
         } = this.state;
 
         const formProps = {
@@ -660,14 +698,15 @@ export default class UserCenter extends Component {
                                     }
                                 }}
                             </Form.Item>
-                            <FormElement layout>
-                                <Button type="primary" onClick={this.handleGen}>生成文件</Button>
-                            </FormElement>
                         </FormRow>
                     </Form>
                 </QueryBar>
                 <div style={{marginBottom: 8, display: 'flex', justifyContent: 'space-between'}}>
-                    <Button style={{marginRight: 8}} onClick={() => this.handleAdd()}>添加</Button>
+                    <div>
+                        <Button type="primary" onClick={() => this.handleAdd()}>添加</Button>
+                        <Button style={{margin: '0 8px'}} type="primary" onClick={this.handleGen}>生成文件</Button>
+                        <Button onClick={this.handlePreview}>代码预览</Button>
+                    </div>
                     <div style={{paddingRight: 23, paddingTop: 3}}>
                         {renderTags(table, () => this.setState({table: {...table}}))}
                     </div>
@@ -678,6 +717,12 @@ export default class UserCenter extends Component {
                     columns={this.columns}
                     dataSource={table.children}
                     rowKey="id"
+                />
+                <PreviewModal
+                    visible={previewVisible}
+                    previewCode={previewCode}
+                    onOk={() => this.setState({previewVisible: false})}
+                    onCancel={() => this.setState({previewVisible: false})}
                 />
             </PageContent>
         );

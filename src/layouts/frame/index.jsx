@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {BackTop, Spin} from 'antd';
+import {Spin} from 'antd';
 import {Helmet} from 'react-helmet';
 import {withRouter} from 'react-router-dom';
 import PageHead from '../page-head';
@@ -239,7 +239,6 @@ export default class FrameTopSideMenu extends Component {
         return (
             <div styleName="base-frame" className="no-print">
                 <Helmet title={titleIsString ? titleText : ''}/>
-                <BackTop/>
                 <Header/>
                 <Side layout={layout} theme={theme}/>
                 <div styleName={topSpaceClass.join(' ')}/>

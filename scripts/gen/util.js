@@ -402,7 +402,6 @@ function getFormElementType({oType = 'string', label = ''}) {
     return type;
 }
 
-
 async function writeFiles(configs) {
     const successFile = [];
 

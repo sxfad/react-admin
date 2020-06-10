@@ -53,7 +53,9 @@ export default class Operator extends Component {
             return <a className="operator-label" style={{display: 'inline-block', width: labelWidth, textAlign: 'center'}}>{this.loadingIcon}</a>;
         }
 
-        const labelStyle = {};
+        const labelStyle = {
+            transition: 'all 1ms', // 解决拖拽表格，点击无效问题
+        };
 
         if (color) labelStyle.color = color;
 

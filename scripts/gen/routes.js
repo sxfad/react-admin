@@ -27,6 +27,30 @@ router.get('/gen/tables', async (req, res) => {
     }
 });
 
+router.post('/gen/preview', async (req, res) => {
+    try {
+        const {tables} = req.body;
+
+        let configs = [];
+        tables.map(getConfigFromDbTable).forEach(item => {
+            configs = configs.concat(item);
+        });
+
+        const result = [];
+        configs.forEach(cfg => {
+            let {template} = cfg;
+            result.push({
+                config: cfg,
+                code: require(template)(cfg),
+            });
+        });
+
+        res.send(result);
+    } catch (e) {
+        res.status(400).send(e);
+    }
+});
+
 router.post('/gen/tables', async (req, res) => {
     try {
         const {tables} = req.body;

@@ -50,7 +50,7 @@ module.exports = function (config) {
     const operatorDelete = operators && operators.find(item => item.text === '删除');
 
     return `import React, {useEffect, useState} from 'react';
-${tools || queries || hasBatchDelete ? `import {${(queries || tools) ? 'Button, ' : ''}${queries ? 'Form, ' : ''}} from 'antd';` : DELETE_THIS_LINE}
+${tools || queries || hasBatchDelete ? `import {${(queries || tools) ? 'Button, ' : ''}${queries ? 'Form' : ''}} from 'antd';` : DELETE_THIS_LINE}
 ${columns.find(renderTime) ? `import moment from 'moment';` : DELETE_THIS_LINE}
 
 import PageContent from 'src/layouts/page-content';
@@ -73,7 +73,7 @@ export default config({
     path: '${base.path}',
     ${isPageEdit ? 'router: true,' : DELETE_THIS_LINE}
 })((${isPageEdit ? 'props' : ''}) => {
-    ${queries || table.pagination ? `const [{${queries ? 'condition, ' : ''}${table.pagination ? 'pageSize, pageNum' : ''}}, setCondition] = useState({${queries ? 'condition: {}, ': ''}${table.pagination ? 'pageSize: 20, pageNum: 1' : ''}});` : DELETE_THIS_LINE}
+    ${queries || table.pagination ? `const [{${queries ? 'condition, ' : ''}${table.pagination ? 'pageSize, pageNum' : ''}}, setCondition] = useState({${queries ? 'condition: {}, ' : ''}${table.pagination ? 'pageSize: 20, pageNum: 1' : ''}});` : DELETE_THIS_LINE}
     const [dataSource, setDataSource] = useState([]);
     ${table.selectable ? 'const [selectedRowKeys, setSelectedRowKeys] = useState([]);' : DELETE_THIS_LINE}
     ${table.pagination ? 'const [total, setTotal] = useState(0);' : DELETE_THIS_LINE}
@@ -163,7 +163,7 @@ export default config({
     ]);
 
     ${queries ? 'const formProps = {width: 200};' : DELETE_THIS_LINE}
-    const pageLoading = loading || deleting || deletingOne;
+    const pageLoading = loading${hasBatchDelete ? ' || deleting' : null}${hasDelete ? ' || deletingOne' : ''};
     ${hasBatchDelete ? 'const disabledDelete = !selectedRowKeys?.length || pageLoading;' : DELETE_THIS_LINE}
 
     return (
