@@ -23,27 +23,28 @@ export default (options) => WrappedComponent => {
     return class ModalComponent extends Component {
         static displayName = `WithModal(${componentName})`;
 
-        getTitle = () => {
-            let title;
-
-            if (typeof options === 'string') title = options;
-
-            if (typeof options === 'object') title = options.title;
-
-            if (typeof title === 'function') title = title(this.props);
-
-            return title;
-        };
-
         render() {
             const {visible, onCancel} = this.props;
+            let title;
+
             let others = {};
 
-            if (typeof options === 'string') others = {title: options};
-            if (typeof options === 'object') others = options;
-            if (typeof options === 'function') others = options(this.props);
+            // options 如果是函数，返回值作为参数
+            if (typeof options === 'function') options = options(this.props);
 
-            const {fullScreen, title} = others;
+            // options 如果为字符串，直接作为title
+            if (typeof options === 'string') title = options;
+
+            // options 如果为对象，获取title
+            if (typeof options === 'object') {
+                title = options.title;
+                others = options;
+            }
+
+            // 如果title为函数，返回值作为title
+            if (typeof title === 'function') title = title(this.props);
+
+            const {fullScreen} = others;
 
             let className = 'modal-hoc-root';
             let top = 100;
