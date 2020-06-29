@@ -4,19 +4,26 @@
 ```js
 const proxy = require('http-proxy-middleware');
 
+const prefix = process.env.AJAX_PREFIX || '/api';
+
 module.exports = function (app) {
-    app.use(proxy('/api', // 代理以api开头的请求，可以基于自己的实际项目需求进行更改
+    app.use(proxy(prefix,
         {
             target: 'http://localhost:3000/',
-            pathRewrite: { // 如果后端接口不是统一以api开头，去掉api
-                '^/api': '',
+            pathRewrite: {
+                ['^' + prefix]: '', // 如果后端接口无前缀，可以通过这种方式去掉
             },
             changeOrigin: true,
             secure: false, // 是否验证证书
             ws: true, // 启用websocket
-        }
+        },
     ));
 };
+
 ```
 
 注：更多代理配置请参考[http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)
+
+
+前端默认ajax前缀 /api 可以通过 AJAX_PREFIX 参数进行修改。
+

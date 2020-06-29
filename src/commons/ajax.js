@@ -3,9 +3,11 @@ import mockUrls from '../mock/url-config';
 import handleError from './handle-error';
 import handleSuccess from './handle-success';
 
+const prefix = process.env.AJAX_PREFIX || '/api';
+
 // 默认配置在这里设置
-function getDefaultSettings(instance) {
-    instance.defaults.baseURL = '/api';
+export function getDefaultSettings(instance) {
+    instance.defaults.baseURL = prefix;
     instance.defaults.timeout = 1000 * 60;
     instance.mockDefaults.baseURL = '/';
     // instance.defaults.headers['XXX-TOKEN'] = 'token-value';
