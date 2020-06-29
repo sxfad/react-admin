@@ -47,9 +47,20 @@ server {
 }
 ```
 
-## 一个域名对应多个项目，以子目录方式区分
+## 一个域名对应多个项目
+多个项目挂载到同一个域名下，可以通过子目录方式区分
 
-### 目录结构
+比如，如下地址各对应一个项目
+
+- http://shubin.wang
+- http://shubin.wang/project1
+- http://shubin.wang/project2
+
+前端项目构建时，添加BASE_NAME PUBLIC_URL参数
+```bash
+BASE_NAME=/project1 PUBLIC_URL=/project1 yarn build
+```
+### nginx 静态文件目录结构
 ```
 .
 ├── /home/ubuntu/react-admin                 
