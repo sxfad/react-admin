@@ -10,7 +10,7 @@ import {
     middlewareSyncReducerToLocalStorage,
     init,
 } from 'src/library/redux';
-import * as models from './all-models';
+import models from './models';
 import * as storage from '../library/utils/storage';
 import handleError from '../commons/handle-error';
 import handleSuccess from '../commons/handle-success';

@@ -15,18 +15,12 @@
 1. 业务代码可集中归类：在models目录中统一编写，或者在具体业务目录中，模块化方式。
 
 
-## all-models.js
-此文件通过脚本自动生成，不要直接编辑，生成规则如下：
+## src/models
+所有的model直接在models下定义，不支持子文件夹，文件名对应模块名：
 
 ```
-// models文件加下，直接将文件名作为modelName
-/path/to/models/user-center.js --> export userCenter from '/path/to/models/user-center';
-
-// model.js结尾的文件，将作为model，文件名为modelName
-/path/to/user-center.model.js  --> export userCenter from '/path/to/user-center.model.js';
-
-// model.js将作为model，所处文件夹名将作为modelName
-/path/to/user-center/model.js  --> export userCenter from '/path/to/user-center/model.js';
+/path/to/models/user-center.js --> userCenter;
+/path/to/models/user.js --> user;
 ```
 
 ## 组件与redux进行连接

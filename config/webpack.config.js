@@ -29,10 +29,6 @@ const appPackageJson = require(paths.appPackageJson);
 const theme = require('../src/theme');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-const ConfigGrabWebpackPlugin = require('./webpack-plugin/config-grab-webpack-plugin');
-const ModelGrabWebpackPlugin = require('./webpack-plugin/model-grab-webpack-plugin');
-
-
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 // Some apps do not need the benefits of saving a web request, so not inlining the chunk
@@ -330,6 +326,13 @@ module.exports = function (webpackEnv) {
         module: {
             strictExportPresence: true,
             rules: [
+                {
+                    test: /pages\/page-routes\.js$/,
+                    enforce: 'pre',
+                    use: path.resolve(__dirname, 'route-loader.js'),
+                    include: paths.appSrc,
+                },
+
                 // Disable require.ensure as it's not a standard language feature.
                 {parser: {requireEnsure: false}},
 
@@ -533,34 +536,7 @@ module.exports = function (webpackEnv) {
             new webpack.DllReferencePlugin({
                 manifest: require(path.join(__dirname, 'dll', 'reactVendor-manifest.json')),
             }),
-            new ModelGrabWebpackPlugin({
-                paths: [
-                    path.resolve(__dirname, '../src/models/**/*.js'),
-                    path.resolve(__dirname, '../src/pages/**/model.js'),
-                    path.resolve(__dirname, '../src/pages/**/*.model.js'),
-                ],
-                ignored: [
-                    '**/index.js',
-                    '**/all-models.js',
-                ],
-                output: path.resolve(__dirname, '../src/models/all-models.js'),
-                watch: isEnvDevelopment,
-                // template,
-                displayLog: false,
-            }),
 
-            new ConfigGrabWebpackPlugin({
-                // mode: 'dir',
-                mode: 'variable',
-                codeSplitting: true,
-                paths: [
-                    path.resolve(__dirname, '../src/pages/**/*.jsx'),
-                ],
-                pagePath: path.resolve(__dirname, '../src/pages'),
-                ignored: [],
-                output: path.resolve(__dirname, '../src/pages/page-routes.js'),
-                watch: isEnvDevelopment,
-            }),
             // Generates an `index.html` file with the <script> injected.
             new HtmlWebpackPlugin(
                 Object.assign(

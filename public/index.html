@@ -82,17 +82,5 @@
         </div>
     </div>
 </div>
-<script>
-    // dev 模式
-    if ('%NODE_ENV%' === 'development') {
-        // 解决首次启动，打开浏览器白屏问题
-        window.onload = function () {
-            setTimeout(() => {
-                const loading = document.querySelector('.init-loading');
-                if (loading) window.location.reload();
-            }, 1000);
-        };
-    }
-</script>
 </body>
 </html>

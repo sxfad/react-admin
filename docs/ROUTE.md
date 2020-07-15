@@ -4,7 +4,7 @@
 系统通过脚本，简化路由配置。
 
 ## 路由配置方式
-通过脚本，自动抓取，生成`/src/pages/page-routes.js`文件，支持两种写法：
+通过route-loader 将路由内容填充到`/src/pages/page-routes.js`文件，支持两种写法：
 
 1. 常量方式
     ```js
@@ -20,7 +20,7 @@
     }
     ```
 
-比如SomePage.jsx中有上面其中任意一种写法，最终会在`/src/pages/page-routes.js`文件中生成如下路由配置：
+比如SomePage.jsx中有上面其中任意一种写法，route-loader最终会在`/src/pages/page-routes.js`文件中填充如下路由配置：
 ```js
 {
     path: '/path',
