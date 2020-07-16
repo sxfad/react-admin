@@ -26,6 +26,7 @@ const renderContent = (value, record) => {
     return obj;
 };
 
+
 @config({ajax: true})
 export default class Fast extends Component {
     state = {
