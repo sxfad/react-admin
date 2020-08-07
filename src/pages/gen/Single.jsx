@@ -715,7 +715,7 @@ export default class UserCenter extends Component {
                     onSortEnd={this.handleSortEnd}
                     serialNumber
                     columns={this.columns}
-                    dataSource={table.children}
+                    dataSource={table?.children}
                     rowKey="id"
                 />
                 <PreviewModal

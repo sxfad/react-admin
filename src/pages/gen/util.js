@@ -98,6 +98,8 @@ export function getTables(res) {
 }
 
 export function renderTags(record, onClick = () => undefined) {
+    if (!record) return;
+
     const configMap = {
         listPage: '列表页 orange',
         query: '查询条件 gold',

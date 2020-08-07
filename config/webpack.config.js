@@ -327,7 +327,7 @@ module.exports = function (webpackEnv) {
             strictExportPresence: true,
             rules: [
                 {
-                    test: /pages\/page-routes\.js$/,
+                    test: /page-routes\.js$/,
                     enforce: 'pre',
                     use: path.resolve(__dirname, 'route-loader.js'),
                     include: paths.appSrc,

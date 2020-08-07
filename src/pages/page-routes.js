@@ -23,14 +23,14 @@ export const keepAlives = [
 export default [
     {
         path: '/',
-        component: () => import('/Users/wangshubin/workspace/suixingpay/application-dependency/admin-front/src/pages/home/index.jsx'),
+        component: () => import('./home/index.jsx'),
     },
     {
         path: '/iframe_page_/:src',
-        component: () => import('/Users/wangshubin/workspace/suixingpay/application-dependency/admin-front/src/pages/iframe/index.jsx'),
+        component: () => import('./iframe/index.jsx'),
     },
     {
         path: '/login',
-        component: () => import('/Users/wangshubin/workspace/suixingpay/application-dependency/admin-front/src/pages/login/index.jsx'),
+        component: () => import('./login/index.jsx'),
     },
 ];
