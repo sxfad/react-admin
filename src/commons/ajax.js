@@ -19,7 +19,7 @@ const _ajax = new SXAjax({
     onShowErrorTip: (error, errorTip) => handleError({error, errorTip}),
     onShowSuccessTip: (response, successTip) => handleSuccess({successTip}),
     isMock,
-    reject: false,
+    reject: true,
 });
 getDefaultSettings(_ajax);
 
