@@ -1,6 +1,7 @@
 const globby = require('globby');
 const path = require('path');
 const fs = require('fs');
+const {pathToRegexp} = require('path-to-regexp');
 
 module.exports = function () {
     // 路由文件所在目录
@@ -22,8 +23,29 @@ module.exports = function () {
 
         if (config) result[fileName] = config;
     });
+
+    const err = checkPath(result);
+    if (err) throw Error(err);
+
     return getRouteFileContent(result);
 };
+
+// 检测路由配置冲突
+function checkPath(result) {
+    const arr = Object.entries(result);
+    for (const [filePath, config] of arr) {
+        const {path} = config;
+        const exit = arr.find(([f, c]) => {
+            return f !== filePath && (c.path === path || pathToRegexp(c.path).exec(path) || pathToRegexp(path).exec(c.path));
+        });
+        if (exit) {
+            return `路由地址：${path} 与 ${exit[1].path} 配置冲突，对应文件文件如下：
+${filePath}
+${exit[0]}`;
+        }
+    }
+    return false;
+}
 
 
 /**
