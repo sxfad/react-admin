@@ -17,7 +17,7 @@ import './style.less';
     const {selectedMenu, menus} = state.menu;
     const {title, breadcrumbs, showHead} = state.page;
     const {show: showSide, width, collapsed, collapsedWidth, dragging} = state.side;
-    const {loading, loadingTip} = state.system;
+    const {loading, loadingTip, isMobile} = state.system;
     const {pageFrameLayout, pageHeadFixed, pageHeadShow, tabsShow} = state.settings;
     return {
         menus,
@@ -37,12 +37,13 @@ import './style.less';
         pageHeadFixed,
         pageHeadShow, // 设置中统一控制的头部是否显示
         tabsShow,
+        isMobile,
     };
 })
 export default class FrameTopSideMenu extends Component {
     constructor(...props) {
         super(...props);
-        const {action: {menu, side, system}} = this.props;
+        const {action: {menu, side, system}, isMobile} = this.props;
         // 从Storage中获取出需要同步到redux的数据
         this.props.action.getStateFromStorage();
 
@@ -87,6 +88,7 @@ export default class FrameTopSideMenu extends Component {
             menu.getMenuStatus();
             side.show();
             this.setTitleAndBreadcrumbs();
+            isMobile && side.setCollapsed(true);
         });
 
         this.props.history.listen(() => {
@@ -95,6 +97,10 @@ export default class FrameTopSideMenu extends Component {
                 menu.getMenuStatus();
                 side.show();
                 this.setTitleAndBreadcrumbs();
+
+                isMobile && side.setCollapsed(true);
+
+                // 如果是移动端 隐藏菜单
             });
         });
     }
@@ -186,6 +192,7 @@ export default class FrameTopSideMenu extends Component {
             globalLoading,
             globalLoadingTip,
             sideDragging,
+            isMobile,
         } = this.props;
 
         sideWidth = sideCollapsed ? sideCollapsedWidth : sideWidth;
@@ -205,6 +212,11 @@ export default class FrameTopSideMenu extends Component {
 
         const theme = 'default'; // (isTopSideMenu || isSideMenu) ? 'dark' : 'default';
 
+        if (isMobile) {
+            showPageHead = true;
+            pageHeadFixed = true;
+            tabsShow = false;
+        }
         let pageHead = null;
         if (showPageHead) {
             pageHead = (
@@ -216,14 +228,14 @@ export default class FrameTopSideMenu extends Component {
 
             if (pageHeadFixed) {
                 pageHead = (
-                    <div styleName={`page-head-fixed ${tabsShow ? 'with-tabs' : ''}`} style={{left: hasSide ? sideWidth : 0, transitionDuration}}>
+                    <div className="frame-page-head-fixed" styleName={`page-head-fixed ${tabsShow ? 'with-tabs' : ''}`} style={{left: hasSide ? sideWidth : 0, transitionDuration}}>
                         {pageHead}
                     </div>
                 );
             }
         }
 
-        if (isSideMenu) pageHead = null;
+        if (isSideMenu && !isMobile) pageHead = null;
 
         const titleText = title?.text || title;
         const titleIsString = typeof titleText === 'string';
@@ -241,9 +253,9 @@ export default class FrameTopSideMenu extends Component {
                 <Helmet title={titleIsString ? titleText : ''}/>
                 <Header/>
                 <Side layout={layout} theme={theme}/>
-                <div styleName={topSpaceClass.join(' ')}/>
+                <div styleName={topSpaceClass.join(' ')} className={topSpaceClass.join(' ')}/>
                 {pageHead}
-                {tabsShow ? <div styleName="page-tabs" style={{left: sideWidthSpace, width: windowWidth - sideWidthSpace, transitionDuration}}><PageTabs width={windowWidth - sideWidthSpace}/></div> : null}
+                {tabsShow ? <div styleName="page-tabs" id="frame-page-tabs" style={{left: sideWidthSpace, width: windowWidth - sideWidthSpace, transitionDuration}}><PageTabs width={windowWidth - sideWidthSpace}/></div> : null}
                 <div styleName="global-loading" style={{display: globalLoading ? 'block' : 'none'}}>
                     <Spin spinning size="large" tip={globalLoadingTip}/>
                 </div>

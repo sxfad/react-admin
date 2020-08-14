@@ -1,0 +1,63 @@
+.frame-side-mask {
+    display: none;
+}
+
+@media (max-width: 575px) {
+    body {
+        padding-left: 0 !important;
+    }
+
+    /*#logo-container {*/
+    /*    flex-basis: 80px !important;*/
+    /*}*/
+    /*#logo-container h1 {*/
+    /*    display: none;*/
+    /*}*/
+    .frame-page-head-fixed {
+        left: 0 !important;
+    }
+
+    .frame-page-head-fixed > div {
+        /*padding: 8px 16px;*/
+    }
+
+    .frame-logo-container-collapsed {
+        flex-basis: 0 !important;
+    }
+
+    .system-breadcrumb-default {
+        display: none;
+    }
+
+    .frame-side-collapsed {
+        width: 0 !important;
+    }
+
+    .frame-side-extended .frame-side-mask {
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .frame-side-collapsed > div {
+        overflow: hidden !important;
+    }
+
+    .form-element-flex-root {
+        flex: 0 0 100% !important;
+        padding-right: 10px;
+    }
+
+    .form-element-flex-root .ant-form-item-label {
+        text-align: right;
+    }
+
+    .form-element-flex-root .ant-form-item-label:after {
+        content: '：'
+    }
+
+    .frame-label-without-width .ant-form-item-label {
+        flex-basis: auto !important;
+    }
+}

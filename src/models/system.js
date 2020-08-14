@@ -17,6 +17,7 @@ export default {
         tabs: [],                   // 所有的tab配置 {path, text, icon, component, active, scrollTop}
         keepAlive: false,           // 页面切换回去之后，保持内容，通过显示隐藏div实现，不知道会有什么坑！！！性能？各个互相干扰？
         noFrame: false,             // 不需要头部、左侧菜单，一般用于将此项目嵌入到其他项目中
+        isMobile: document.body.clientWidth < 575,
     },
 
     syncStorage: {

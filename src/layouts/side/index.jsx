@@ -84,6 +84,10 @@ export default class Side extends Component {
         this.props.action.side.setDragging(false);
     };
 
+    handleMaskClick = () => {
+        this.props.action.side.setCollapsed(true);
+    };
+
     render() {
         let {
             theme,
@@ -122,7 +126,12 @@ export default class Side extends Component {
         }
 
         if (hasSide) return (
-            <div styleName="side" style={{width: sideWidth, display: showSide ? 'block' : 'none', transitionDuration, ...style}}>
+            <div
+                styleName="side"
+                className={sideCollapsed ? 'frame-side-collapsed' : 'frame-side-extended'}
+                style={{width: sideWidth, display: showSide ? 'block' : 'none', transitionDuration, ...style}}
+            >
+                <div className="frame-side-mask" onClick={this.handleMaskClick}/>
                 {sideCollapsed ? null : (
                     <DragBar
                         styleName="drag-bar"

@@ -266,8 +266,10 @@ class FormElement extends Component {
             valuePropName = 'targetKeys';
         }
 
+        let labelWithoutWidth = true;
         if (!labelCol && labelWidth !== undefined) {
             labelCol = {flex: `0 0 ${labelWidth}px`};
+            labelWithoutWidth = false;
         }
 
         if (type === 'select' && ('showSearch' in others) && !('optionFilterProp' in others)) {
@@ -384,6 +386,7 @@ class FormElement extends Component {
                     validateTrigger={validateTrigger}
                     valuePropName={valuePropName}
                     wrapperCol={wrapperCol}
+                    className={labelWithoutWidth ? 'frame-label-without-width' : ''}
                 >
                     {children}
                 </FormItem>

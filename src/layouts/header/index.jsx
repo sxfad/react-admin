@@ -55,7 +55,7 @@ export default class Header extends Component {
             style: theme === 'dark' ? {color: '#fff', backgroundColor: '#222'} : null,
         };
 
-        return sideCollapsed ? <MenuUnfoldOutlined {...props} styleName="trigger"/> : <MenuFoldOutlined {...props} styleName="trigger"/>;
+        return sideCollapsed ? <MenuUnfoldOutlined {...props} styleName="trigger" className="frame-menu-trigger"/> : <MenuFoldOutlined {...props} styleName="trigger"/>;
     };
 
     render() {
@@ -93,7 +93,12 @@ export default class Header extends Component {
 
         return (
             <div id="header" styleName="header" data-theme={theme}>
-                <div styleName="logo-container" id="logo-container" style={{flex: `0 0 ${sideWidth}px`, transitionDuration}}>
+                <div
+                    styleName="logo-container"
+                    className={`frame-logo-container-${sideCollapsed ? 'collapsed' : 'extended'}`}
+                    id="logo-container"
+                    style={{flex: `0 0 ${sideWidth}px`, transitionDuration}}
+                >
                     <Link to="/">
                         <Logo
                             min={sideCollapsed}

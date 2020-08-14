@@ -50,7 +50,7 @@ export default class HeaderUser extends Component {
         );
         return (
             <div styleName="user-menu" ref={node => this.userMenu = node}>
-                <Dropdown overlay={menu} getPopupContainer={() => (this.userMenu || document.body)}>
+                <Dropdown trigger="click" overlay={menu} getPopupContainer={() => (this.userMenu || document.body)}>
                     <span styleName="account" className={className}>
                         <span styleName="user-name">{name}</span>
                         <CaretDownOutlined/>
