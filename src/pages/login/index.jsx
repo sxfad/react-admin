@@ -21,8 +21,9 @@ export default class extends Component {
     };
 
     componentDidMount() {
+        console.log(window.location);
         // 开发时方便测试，填写表单
-        if (process.env.NODE_ENV === 'development' || process.env.BASE_NAME === '/react-admin-live') {
+        if (process.env.NODE_ENV === 'development' || window.location.origin === 'http://shubin.wang') {
             this.form.setFieldsValue({userName: 'admin', password: '111'});
         }
 
