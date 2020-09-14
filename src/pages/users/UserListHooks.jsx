@@ -79,7 +79,6 @@ export default config({
         params.pageNum = options.pageNum || pageNum;
         params.pageSize = options.pageSize || pageSize;
 
-
         console.log('params:', params);
         const res = await fetchUsers(params);
         console.log('res:', res);
