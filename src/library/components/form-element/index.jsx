@@ -54,7 +54,10 @@ function getElement(item) {
 
     // 如果 component 存在，说明是自定义组件
     if (component) {
-        return typeof component === 'function' ? component() : component;
+        if (typeof component === 'function') return component({ ...commonProps, ...props });
+
+        const Comp = component;
+        return <Comp {...commonProps} {...props}/>;
     }
 
     if (isInputLikeElement(type)) {

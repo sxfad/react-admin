@@ -23,7 +23,7 @@ export function hasPermission(code) {
  */
 export function setLoginUser(loginUser = {}) {
     // 将用户属性在这里展开，方便查看系统都用到了那些用户属性
-    const {id, name, avatar, token, permissions, others} = loginUser;
+    const {id, name, avatar, token, permissions, ...others} = loginUser;
     const userStr = JSON.stringify({
         id,             // 用户id 必须
         name,           // 用户名 必须

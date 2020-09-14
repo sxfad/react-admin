@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Form} from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Button, Form } from 'antd';
 
 import PageContent from 'src/layouts/page-content';
 import config from 'src/commons/config-hoc';
 import batchDeleteConfirm from 'src/components/batch-delete-confirm';
-import {useGet, useDel} from 'src/commons/ajax';
+import { useGet, useDel } from 'src/commons/ajax';
 import api from './useApi';
 import {
     FormElement,
@@ -22,28 +22,29 @@ export default config({
     title: '用户管理(Hooks)',
 })(() => {
     // 数据定义
-    const [{condition, pageSize, pageNum}, setCondition] = useState({condition: {}, pageSize: 20, pageNum: 1});
-    const [dataSource, setDataSource] = useState([]);
-    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const [total, setTotal] = useState(0);
-    const [visible, setVisible] = useState(false);
-    const [id, setId] = useState(null);
-    const [form] = Form.useForm();
+    const [ pageNum, setPageNum ] = useState(1);
+    const [ pageSize, setPageSize ] = useState(20);
+    const [ dataSource, setDataSource ] = useState([]);
+    const [ selectedRowKeys, setSelectedRowKeys ] = useState([]);
+    const [ total, setTotal ] = useState(0);
+    const [ visible, setVisible ] = useState(false);
+    const [ id, setId ] = useState(null);
+    const [ form ] = Form.useForm();
 
     // 请求相关定义 只是定义，不会触发请求，调用相关函数，才会触发请求
-    const [loading, fetchUsers] = useGet('/mock/users');
-    const [deleting, deleteUsers] = api.deleteUsers(); // 可以单独封装成api
-    const [deletingOne, deleteUser] = useDel('/mock/users/:id', {successTip: '删除成功！', errorTip: '删除失败！'});
+    const [ loading, fetchUsers ] = useGet('/mock/users');
+    const [ deleting, deleteUsers ] = api.deleteUsers(); // 可以单独封装成api
+    const [ deletingOne, deleteUser ] = useDel('/mock/users/:id', { successTip: '删除成功！', errorTip: '删除失败！' });
 
     const columns = [
-        {title: '用户名', dataIndex: 'name', width: 200},
-        {title: '年龄', dataIndex: 'age', width: 200},
-        {title: '工作', dataIndex: 'job', width: 200},
-        {title: '职位', dataIndex: 'position', width: 200},
+        { title: '用户名', dataIndex: 'name', width: 200 },
+        { title: '年龄', dataIndex: 'age', width: 200 },
+        { title: '工作', dataIndex: 'job', width: 200 },
+        { title: '职位', dataIndex: 'position', width: 200 },
         {
             title: '操作', dataIndex: 'operator', width: 100,
             render: (value, record) => {
-                const {id, name} = record;
+                const { id, name } = record;
                 const items = [
                     {
                         label: '编辑',
@@ -65,13 +66,19 @@ export default config({
     ];
 
     // 函数定义
-    async function handleSearch() {
+    async function handleSearch(options = {}) {
         if (loading) return;
+
+        // 获取表单数据
+        const values = form.getFieldsValue();
         const params = {
-            ...condition,
-            pageNum,
-            pageSize,
+            ...values,
         };
+
+        // 翻页信息优先从参数中获取
+        params.pageNum = options.pageNum || pageNum;
+        params.pageSize = options.pageSize || pageSize;
+
 
         console.log('params:', params);
         const res = await fetchUsers(params);
@@ -79,6 +86,8 @@ export default config({
 
         setDataSource(res?.list || []);
         setTotal(res?.total || 0);
+        setPageNum(params.pageNum);
+        setPageSize(params.pageSize);
     }
 
     async function handleDelete(id) {
@@ -93,30 +102,25 @@ export default config({
 
         await batchDeleteConfirm(selectedRowKeys.length);
 
-        await deleteUsers({ids: selectedRowKeys});
+        await deleteUsers({ ids: selectedRowKeys });
         setSelectedRowKeys([]);
         await handleSearch();
     }
 
-    // effect 定义
-    // condition pageNum pageSize 改变触发查询
+    // 组件初始化完成之后，进行一次查询
     useEffect(() => {
         handleSearch();
-    }, [
-        condition,
-        pageNum,
-        pageSize,
-    ]);
+    }, []);
 
     // jsx 用到的数据
-    const formProps = {width: 200};
+    const formProps = { width: 200 };
     const pageLoading = loading || deleting || deletingOne;
     const disabledDelete = !selectedRowKeys?.length || pageLoading;
 
     return (
         <PageContent loading={pageLoading}>
             <QueryBar>
-                <Form form={form} onFinish={condition => setCondition({condition, pageSize, pageNum: 1})}>
+                <Form form={form} onFinish={() => handleSearch({ pageNum: 1 })}>
                     <FormRow>
                         <FormElement
                             {...formProps}
@@ -125,12 +129,14 @@ export default config({
                         />
                         <FormElement
                             {...formProps}
+                            allowClear
                             type="select"
                             label="职位"
                             name="job"
+                            onChange={() => handleSearch({ pageNum: 1 })}
                             options={[
-                                {value: 1, label: 1},
-                                {value: 2, label: 2},
+                                { value: 1, label: 1 },
+                                { value: 2, label: 2 },
                             ]}
                         />
                         <FormElement layout>
@@ -158,14 +164,14 @@ export default config({
                 total={total}
                 pageNum={pageNum}
                 pageSize={pageSize}
-                onPageNumChange={pageNum => setCondition({condition, pageSize, pageNum})}
-                onPageSizeChange={pageSize => setCondition({condition, pageSize, pageNum: 1})}
+                onPageNumChange={pageNum => handleSearch({ pageNum })}
+                onPageSizeChange={pageSize => handleSearch({ pageSize })}
             />
             <EditModal
                 visible={visible}
                 id={id}
                 isEdit={id !== null}
-                onOk={() => setVisible(false) || handleSearch()}
+                onOk={() => setVisible(false) || handleSearch({ pageNum: 1 })}
                 onCancel={() => setVisible(false)}
             />
         </PageContent>

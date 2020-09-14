@@ -1,9 +1,10 @@
-import React, {Component} from 'react';
-import {Spin} from 'antd';
+import React, { Component } from 'react';
+import { Spin } from 'antd';
 import PropTypes from 'prop-types';
 import Footer from '../footer';
-import {connect} from 'src/models';
+import { connect } from 'src/models';
 import './style.less';
+import { PAGE_FRAME_LAYOUT } from '@/models/settings';
 
 /**
  * 页面内容 容器
@@ -15,6 +16,8 @@ import './style.less';
     pageLoading: state.page.loading,
     pageLoadingTip: state.page.loadingTip,
     sideWidth: state.side.width,
+    showSide: state.side.show,
+    layout: state.settings.pageFrameLayout,
 }))
 export default class PageContent extends Component {
     static propTypes = {
@@ -43,6 +46,8 @@ export default class PageContent extends Component {
             action,
             className,
             sideWidth,
+            showSide,
+            layout,
             ...others
         } = this.props;
 
@@ -60,13 +65,17 @@ export default class PageContent extends Component {
         const tip = loadingTip || pageLoadingTip;
         const top = this.root?.offsetTop || 0;
 
+        const isTopSideMenu = layout === PAGE_FRAME_LAYOUT.TOP_SIDE_MENU;
+        const isSideMenu = layout === PAGE_FRAME_LAYOUT.SIDE_MENU;
+        const hasSide = isTopSideMenu || isSideMenu;
+
         return (
             <div ref={node => this.root = node} style={rootStyle} styleName="page-content-root">
                 <div
                     styleName="page-loading"
                     style={{
                         display: isLoading ? 'block' : 'none',
-                        left: sideWidth,
+                        left: hasSide && showSide ? sideWidth : 0,
                         top,
                     }}
                 >

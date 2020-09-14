@@ -3,8 +3,8 @@
  * @module 树操作工具
  */
 
-import {cloneDeep} from 'lodash';
-import {uniqueArray, arrayRemoveAll, arrayRemove} from './index';
+import { cloneDeep } from 'lodash';
+import { uniqueArray, arrayRemoveAll, arrayRemove } from './index';
 
 /**
  * 将数据转换成tree所需格式
@@ -14,7 +14,7 @@ import {uniqueArray, arrayRemoveAll, arrayRemove} from './index';
  * @returns {{name: *, key: *}}
  */
 export function generateTreeNode(data, keyField = 'id', titleField = 'name') {
-    return {...data, title: data[titleField], key: data[keyField]};
+    return { ...data, title: data[titleField], key: data[keyField] };
 }
 
 /**
@@ -105,8 +105,8 @@ export function getGenerationsByKey(rows, key) {
     if (!parentNode) return [];
 
 
-    let nodes = [parentNode];
-    let generationNodes = [cloneDeep(parentNode)];
+    let nodes = [ parentNode ];
+    let generationNodes = [ cloneDeep(parentNode) ];
 
     // 存放要处理的节点
     let toDo = nodes.map((v) => v);
@@ -156,13 +156,13 @@ export function convertToTree(rows, parentNode = null) {
         rows.forEach(row => {
             if (row.parentKey === node.key) {
                 let child = cloneDeep(row);
-                let parentKeys = [node.key];
+                let parentKeys = [ node.key ];
                 if (node.parentKeys) {
                     parentKeys = node.parentKeys.concat(node.key);
                 }
                 child.parentKeys = parentKeys;
 
-                let parentTexts = [node.text];
+                let parentTexts = [ node.text ];
                 if (node.parentTexts) {
                     parentTexts = node.parentTexts.concat(node.text);
                 }
@@ -173,7 +173,7 @@ export function convertToTree(rows, parentNode = null) {
                 delete tempNode.parentKeys;
                 delete tempNode.parentNodes;
                 delete tempNode.parentTexts;
-                let parentNodes = [tempNode];
+                let parentNodes = [ tempNode ];
                 if (node.parentNodes) {
                     parentNodes = node.parentNodes.concat(parentNodes);
                 }
@@ -182,7 +182,7 @@ export function convertToTree(rows, parentNode = null) {
                 if (node.children) {
                     node.children.push(child);
                 } else {
-                    node.children = [child];
+                    node.children = [ child ];
                 }
                 // child加入toDo，继续处理
                 toDo.push(child);
@@ -211,7 +211,7 @@ export function getNodeByPropertyAndValue(treeData, key, value, compare) {
     const loop = (data) => {
         for (let item of data) {
             if (compare(item[key], value, item)) {
-                node = {...item};
+                node = { ...item };
                 break;
             }
             if (item.children && item.children.length) {
@@ -243,11 +243,11 @@ export function getGenerationKeys(treeData, key) {
     const node = getNodeByKey(treeData, key);
     const keys = [];
     const loop = (node) => {
-        const {key, children} = node;
+        const { key, children } = node;
+        keys.push(key);
+
         if (children?.length) {
             children.forEach(loop);
-        } else {
-            keys.push(key);
         }
     };
     loop(node);
@@ -289,7 +289,7 @@ export function getGenerationalNodesByKey(treeData, key) {
  */
 export function getCheckedKeys(treeData, checkedKeys, checked, checkNodeKey) {
     // TODO 区分半选和全选
-    let allKeys = [...checkedKeys];
+    let allKeys = [ ...checkedKeys ];
     const generationalNodes = getGenerationalNodesByKey(treeData, checkNodeKey);
     const generationalKeys = generationalNodes.map(n => n.key);
 
@@ -309,7 +309,7 @@ export function getCheckedKeys(treeData, checkedKeys, checked, checkNodeKey) {
         // 判断其父节点是否还有子节点选中了，如果没有，父节点也不选中
         const node = getNodeByKey(treeData, checkNodeKey);
         if (node.parentKeys) {
-            const pks = [...node.parentKeys];
+            const pks = [ ...node.parentKeys ];
             pks.reverse();
             pks.forEach(key => {
                 const pNode = getNodeByKey(treeData, key);
@@ -365,9 +365,9 @@ export function addNodeChildByKey(treeData, key, newNode) {
         for (let item of data) {
             if (item.key === key) {
                 if (item.children) {
-                    item.children.push({...newNode});
+                    item.children.push({ ...newNode });
                 } else {
-                    item.children = [{...newNode}];
+                    item.children = [ { ...newNode } ];
                 }
                 break;
             }
@@ -416,7 +416,7 @@ export function getTopNodeByNode(treeData, node) {
     const loop = (data) => { // 查找node的父节点
         for (let item of data) {
             if (item.key === node.parentKey) {
-                parentNode = {...item};
+                parentNode = { ...item };
                 break;
             }
             if (item.children && item.children.length) {
