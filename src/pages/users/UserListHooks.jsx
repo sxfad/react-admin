@@ -164,7 +164,7 @@ export default config({
                 pageNum={pageNum}
                 pageSize={pageSize}
                 onPageNumChange={pageNum => handleSearch({ pageNum })}
-                onPageSizeChange={pageSize => handleSearch({ pageSize })}
+                onPageSizeChange={pageSize => handleSearch({ pageNum: 1, pageSize })}
             />
             <EditModal
                 visible={visible}
