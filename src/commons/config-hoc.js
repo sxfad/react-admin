@@ -1,21 +1,21 @@
-import React, {Component} from 'react';
-import {withRouter} from 'react-router-dom';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import PubSub from 'pubsub-js';
-import {compose} from 'src/library/utils';
+import { compose } from 'src/library/utils';
 import queryHoc from 'src/library/utils/query-hoc';
-import {connect as reduxConnect} from 'src/models';
-import {ajaxHoc} from 'src/commons/ajax';
+import { connect as reduxConnect } from 'src/models';
+import { ajaxHoc } from 'src/commons/ajax';
 import pubSubHoc from 'src/library/utils/pub-sub-hoc';
 import eventHoc from 'src/library/utils/dom-event-hoc';
-import {modal as modalHoc} from 'src/library/components';
-import {ROUTE_BASE_NAME} from 'src/router/AppRouter';
+import { modal as modalHoc } from 'src/library/components';
+import { ROUTE_BASE_NAME } from 'src/router/AppRouter';
 
 /**
  * 页面配置高阶组件，整合了多个高阶组件
  * @param options
  * @returns {function(*): WithConfig}
  */
-export default (options) => {
+export default (options = {}) => {
     return WrappedComponent => {
         const {
             // path = void 0,       // 页面路由地址，如果存在path配置，会通过脚本抓取，当前组件将会作为路由页面，path将作为路由地址
@@ -70,7 +70,7 @@ export default (options) => {
                 super(...args);
                 this.initFrame();
 
-                const {pathname, search} = window.location;
+                const { pathname, search } = window.location;
                 let currentPath = window.decodeURIComponent(`${pathname}${search}`);
                 currentPath = currentPath.replace(ROUTE_BASE_NAME, '');
 
@@ -101,7 +101,7 @@ export default (options) => {
 
             // 设置框架级的一些数据
             initFrame = () => {
-                const {page, side: sideAction, system} = this.props.action;
+                const { page, side: sideAction, system } = this.props.action;
 
                 // 页面标题设置
                 if (title === false) {
