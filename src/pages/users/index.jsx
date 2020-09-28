@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Button, Form} from 'antd';
+import React, { Component } from 'react';
+import { Button, Form } from 'antd';
 import PageContent from 'src/layouts/page-content';
 import config from 'src/commons/config-hoc';
 import {
@@ -31,18 +31,18 @@ export default class UserCenter extends Component {
     };
 
     columns = [
-        {title: '用户名', dataIndex: 'name', width: 200},
-        {title: '年龄', dataIndex: 'age', width: 200},
-        {title: '工作', dataIndex: 'job', width: 200},
-        {title: '职位', dataIndex: 'position', width: 200},
+        { title: '用户名', dataIndex: 'name', width: 200 },
+        { title: '年龄', dataIndex: 'age', width: 200 },
+        { title: '工作', dataIndex: 'job', width: 200 },
+        { title: '职位', dataIndex: 'position', width: 200 },
         {
             title: '操作', dataIndex: 'operator', width: 100,
             render: (value, record) => {
-                const {id, name} = record;
+                const { id, name } = record;
                 const items = [
                     {
                         label: '编辑',
-                        onClick: () => this.setState({visible: true, id}),
+                        onClick: () => this.setState({ visible: true, id }),
                     },
                     {
                         label: '删除',
@@ -68,46 +68,46 @@ export default class UserCenter extends Component {
 
         const values = await this.form.validateFields();
 
-        const {pageNum, pageSize} = this.state;
+        const { pageNum, pageSize } = this.state;
         const params = {
             ...values,
             pageNum,
             pageSize,
         };
 
-        this.setState({loading: true});
+        this.setState({ loading: true });
         this.props.ajax.get('/mock/users', params)
             .then(res => {
                 const dataSource = res?.list || [];
                 const total = res?.total || 0;
 
-                this.setState({dataSource, total});
+                this.setState({ dataSource, total });
             })
-            .finally(() => this.setState({loading: false}));
+            .finally(() => this.setState({ loading: false }));
     };
 
     handleDelete = (id) => {
         if (this.state.deleting) return;
 
-        this.setState({deleting: true});
-        this.props.ajax.del(`/mock/users/${id}`, null, {successTip: '删除成功！', errorTip: '删除失败！'})
+        this.setState({ deleting: true });
+        this.props.ajax.del(`/mock/users/${id}`, null, { successTip: '删除成功！', errorTip: '删除失败！' })
             .then(() => this.handleSubmit())
-            .finally(() => this.setState({deleting: false}));
+            .finally(() => this.setState({ deleting: false }));
     };
 
     handleBatchDelete = () => {
         if (this.state.deleting) return;
 
-        const {selectedRowKeys} = this.state;
+        const { selectedRowKeys } = this.state;
         batchDeleteConfirm(selectedRowKeys.length)
             .then(() => {
-                this.setState({deleting: true});
-                this.props.ajax.del('/mock/users', {ids: selectedRowKeys}, {successTip: '删除成功！', errorTip: '删除失败！'})
+                this.setState({ deleting: true });
+                this.props.ajax.del('/mock/users', { ids: selectedRowKeys }, { successTip: '删除成功！', errorTip: '删除失败！' })
                     .then(() => {
-                        this.setState({selectedRowKeys: []});
+                        this.setState({ selectedRowKeys: [] });
                         this.handleSubmit();
                     })
-                    .finally(() => this.setState({deleting: false}));
+                    .finally(() => this.setState({ deleting: false }));
             });
     };
 
@@ -131,7 +131,7 @@ export default class UserCenter extends Component {
         return (
             <PageContent>
                 <QueryBar>
-                    <Form onFinish={() => this.setState({pageNum: 1}, () => this.handleSubmit())} ref={form => this.form = form}>
+                    <Form onFinish={() => this.setState({ pageNum: 1 }, () => this.handleSubmit())} ref={form => this.form = form}>
                         <FormRow>
                             <FormElement
                                 {...formProps}
@@ -144,14 +144,14 @@ export default class UserCenter extends Component {
                                 label="职位"
                                 name="job"
                                 options={[
-                                    {value: 1, label: 1},
-                                    {value: 2, label: 2},
+                                    { value: 1, label: 1 },
+                                    { value: 2, label: 2 },
                                 ]}
                             />
                             <FormElement layout>
                                 <Button type="primary" htmlType="submit">提交</Button>
                                 <Button onClick={() => this.form.resetFields()}>重置</Button>
-                                <Button type="primary" onClick={() => this.setState({visible: true, id: null})}>添加</Button>
+                                <Button type="primary" onClick={() => this.setState({ visible: true, id: null })}>添加</Button>
                                 <Button danger loading={deleting} disabled={disabledDelete} onClick={this.handleBatchDelete}>删除</Button>
                             </FormElement>
                         </FormRow>
@@ -161,7 +161,7 @@ export default class UserCenter extends Component {
                 <Table
                     rowSelection={{
                         selectedRowKeys,
-                        onChange: selectedRowKeys => this.setState({selectedRowKeys}),
+                        onChange: selectedRowKeys => this.setState({ selectedRowKeys }),
                     }}
                     loading={loading}
                     columns={this.columns}
@@ -176,16 +176,16 @@ export default class UserCenter extends Component {
                     total={total}
                     pageNum={pageNum}
                     pageSize={pageSize}
-                    onPageNumChange={pageNum => this.setState({pageNum}, () => this.handleSubmit())}
-                    onPageSizeChange={pageSize => this.setState({pageSize, pageNum: 1}, () => this.handleSubmit())}
+                    onPageNumChange={pageNum => this.setState({ pageNum }, () => this.handleSubmit())}
+                    onPageSizeChange={pageSize => this.setState({ pageSize, pageNum: 1 }, () => this.handleSubmit())}
                 />
 
                 <EditModal
                     visible={visible}
                     id={id}
                     isEdit={id !== null}
-                    onOk={() => this.setState({visible: false}, () => this.handleSubmit())}
-                    onCancel={() => this.setState({visible: false})}
+                    onOk={() => this.setState({ visible: false }, () => this.handleSubmit())}
+                    onCancel={() => this.setState({ visible: false })}
                 />
             </PageContent>
         );
