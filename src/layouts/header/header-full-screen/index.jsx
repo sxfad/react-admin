@@ -1,15 +1,36 @@
-import React, {Component} from 'react';
-import {FullscreenExitOutlined, FullscreenOutlined} from '@ant-design/icons';
-import {Tooltip} from 'antd';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 import config from 'src/commons/config-hoc';
 
 @config({
     event: true,
 })
 export default class HeaderFullScreen extends Component {
+    static propTypes = {
+        placement: PropTypes.any,
+        element: PropTypes.any,
+        toFullTip: PropTypes.any,
+        exitFullTip: PropTypes.any,
+        onFull: PropTypes.func,
+        onExit: PropTypes.func,
+        inFrame: PropTypes.bool,
+
+    };
+    static defaultProps = {
+        element: document.documentElement,
+        toFullTip: '全屏',
+        exitFullTip: '退出全屏',
+        onFull: () => void 0,
+        onExit: () => void 0,
+        inFrame: false,
+        placement: 'bottom',
+    };
     state = {
         fullScreen: false,
         toolTipVisible: false,
+        prevStyle: {},
     };
 
     componentDidMount() {
@@ -20,11 +41,56 @@ export default class HeaderFullScreen extends Component {
         this.props.addEventListener(document, 'webkitfullscreenchange', this.handleFullScreenChange);
         this.props.addEventListener(document, 'msfullscreenchange', this.handleFullScreenChange);
         this.props.addEventListener(document, 'click', () => this.handleToolTipHide(0));
-        this.setState({fullScreen: !!fullScreen});
+        this.setState({ fullScreen: !!fullScreen });
+
+        this.props.addEventListener(document, 'keydown', this.handleKeyDown);
     }
 
+    handleKeyDown = (e) => {
+        const { keyCode } = e;
+        const { element, inFrame, onExit } = this.props;
+        const { fullScreen, prevStyle } = this.state;
+        if (keyCode === 27 && fullScreen && inFrame) {
+            Object.entries(prevStyle).forEach(([ key, value ]) => {
+                element.style[key] = value;
+            });
+            onExit && onExit();
+        }
+    };
+
     handleFullScreenClick = () => {
-        const {fullScreen} = this.state;
+        const { element, inFrame, onFull, onExit } = this.props;
+        const { fullScreen, prevStyle } = this.state;
+        if (inFrame) {
+            if (fullScreen) {
+                Object.entries(prevStyle).forEach(([ key, value ]) => {
+                    element.style[key] = value;
+                });
+                onExit && onExit();
+
+                this.setState({ fullScreen: false });
+
+            } else {
+                const prevStyle = {};
+                [ 'position', 'top', 'right', 'bottom', 'left' ].forEach(key => {
+                    prevStyle[key] = element.style[key];
+                });
+                this.setState({ prevStyle });
+
+                Object.entries({
+                    position: 'fixed',
+                    top: '50px',
+                    right: 0,
+                    bottom: 0,
+                    left: 0,
+                }).forEach(([ key, value ]) => {
+                    element.style[key] = value;
+                });
+                onFull && onFull();
+                this.setState({ fullScreen: true });
+            }
+            return;
+        }
         if (fullScreen) {
             if (document.exitFullscreen) {
                 document.exitFullscreen();
@@ -36,7 +102,6 @@ export default class HeaderFullScreen extends Component {
                 document.webkitExitFullscreen();
             }
         } else {
-            const element = document.documentElement;
             if (element.requestFullscreen) {
                 element.requestFullscreen();
             } else if (element.mozRequestFullScreen) {
@@ -50,24 +115,26 @@ export default class HeaderFullScreen extends Component {
     };
 
     handleFullScreenChange = () => {
-        const {fullScreen} = this.state;
-        this.setState({fullScreen: !fullScreen});
+        const { onFull, onExit } = this.props;
+        const { fullScreen } = this.state;
+        !fullScreen ? onFull() : onExit();
+        this.setState({ fullScreen: !fullScreen });
     };
 
     handleToolTipShow = () => {
         if (this.ST) clearTimeout(this.ST);
-        this.setState({toolTipVisible: true});
+        this.setState({ toolTipVisible: true });
     };
 
     handleToolTipHide = (time = 300) => {
         this.ST = setTimeout(() => {
-            this.setState({toolTipVisible: false});
+            this.setState({ toolTipVisible: false });
         }, time);
     };
 
     render() {
-        const {className} = this.props;
-        const {fullScreen, toolTipVisible} = this.state;
+        const { className, toFullTip, exitFullTip, placement } = this.props;
+        const { fullScreen, toolTipVisible } = this.state;
         return (
             <div
                 className={className}
@@ -78,7 +145,7 @@ export default class HeaderFullScreen extends Component {
                 onMouseEnter={this.handleToolTipShow}
                 onMouseLeave={() => this.handleToolTipHide()}
             >
-                <Tooltip visible={toolTipVisible} placement="bottom" title={fullScreen ? '退出全屏' : '全屏'}>
+                <Tooltip visible={toolTipVisible} placement={placement} title={fullScreen ? exitFullTip : toFullTip}>
                     {fullScreen ? (
                         <FullscreenExitOutlined/>
                     ) : (

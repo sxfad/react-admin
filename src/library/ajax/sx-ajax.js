@@ -23,7 +23,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * **/
 
 import axios from 'axios';
-import {stringify} from 'qs';
+import { stringify } from 'qs';
 
 export default class SXAjax {
     /**
@@ -37,11 +37,11 @@ export default class SXAjax {
      * @param reject 出错是否进行reject 默认true
      */
     constructor({
-                    onShowSuccessTip = (/* response, successTip  */) => true,
-                    onShowErrorTip = (/* err, errorTip */) => true,
-                    isMock = (/* url, data, method, options */) => false,
-                    reject = true,
-                } = {}) {
+        onShowSuccessTip = (/* response, successTip  */) => true,
+        onShowErrorTip = (/* err, errorTip */) => true,
+        isMock = (/* url, data, method, options */) => false,
+        reject = true,
+    } = {}) {
         this.instance = axios.create();
         this.mockInstance = axios.create();
         this.setDefaultOption(this.instance);
@@ -142,8 +142,9 @@ export default class SXAjax {
             || (options.headers && options.headers['contentType'])
             || '';
 
-        const isFormType = (defaultsContentType && defaultsContentType.indexOf('application/x-www-form-urlencoded') > -1)
-            || contentType.indexOf('application/x-www-form-urlencoded') > -1;
+        const ct = contentType || defaultsContentType;
+
+        const isFormType = ct.indexOf('application/x-www-form-urlencoded') > -1;
 
         if (isFormType) {
             data = stringify(data);
@@ -170,7 +171,7 @@ export default class SXAjax {
                 const isCanceled = err && err.message && err.message.canceled;
                 if (isCanceled) return; // 如果是用户主动cancel，不做任何处理，不会触发任何函数
                 this.onShowErrorTip(err, errorTip);
-                useReject ? reject(err) : resolve({$type: 'unRejectError', $error: err});
+                useReject ? reject(err) : resolve({ $type: 'unRejectError', $error: err });
             });
         });
         ajaxPromise.cancel = function () {

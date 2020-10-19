@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import {Button, Spin} from 'antd';
+import React, { Component } from 'react';
+import { Button, Spin } from 'antd';
 import PropTypes from 'prop-types';
-import {getElementTop, getParentByClassName} from 'src/library/utils';
+import { getElementTop, getParentByClassName } from 'src/library/utils';
 
 /**
  * Modal 的内容容器，默认会使用屏幕剩余空间，内部内容滚动
@@ -43,7 +43,7 @@ export default class ModalContent extends Component {
     };
 
     componentDidMount() {
-        const {surplusSpace} = this.props;
+        const { surplusSpace } = this.props;
 
         if (surplusSpace) {
             this.handleWindowResize();
@@ -52,13 +52,13 @@ export default class ModalContent extends Component {
     }
 
     componentWillUnmount() {
-        const {surplusSpace} = this.props;
+        const { surplusSpace } = this.props;
 
         if (surplusSpace) window.removeEventListener('resize', this.handleWindowResize);
     }
 
     handleWindowResize = () => {
-        let {otherHeight} = this.props;
+        let { otherHeight } = this.props;
         const windowHeight = document.documentElement.clientHeight;
         if (!otherHeight) {
             const top = getElementTop(this.wrapper);
@@ -76,7 +76,7 @@ export default class ModalContent extends Component {
         }
         const height = windowHeight - otherHeight;
 
-        this.setState({height});
+        this.setState({ height });
     };
 
     render() {
@@ -98,20 +98,23 @@ export default class ModalContent extends Component {
             children,
             ...others
         } = this.props;
-        const {height} = this.state;
+        const { height } = this.state;
         return (
             <Spin spinning={loading} tip={loadingTip}>
                 <div
                     className="modal-content"
                     ref={node => this.wrapper = node}
-                    style={{display: 'flex', flexDirection: 'column', height, ...style}}
+                    style={{ display: 'flex', flexDirection: 'column', height, ...style }}
                     {...others}
                 >
-                    <div style={{flex: 1, padding: 16, overflow: surplusSpace ? 'auto' : '', ...bodyStyle}}>
+                    <div
+                        className="modal-content-inner"
+                        style={{ flex: 1, padding: 16, overflow: surplusSpace ? 'auto' : '', ...bodyStyle }}
+                    >
                         {children}
                     </div>
                     {footer !== false ? (
-                        <div className="ant-modal-footer" style={{flex: 0}}>
+                        <div className="ant-modal-footer" style={{ flex: 0 }}>
                             {footer ? footer : (
                                 <>
                                     <Button type="primary" onClick={onOk} htmlType={okHtmlType}>{okText}</Button>

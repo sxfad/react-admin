@@ -1,16 +1,15 @@
-import React, {Component} from 'react';
-import {Form} from 'antd';
+import React, { Component } from 'react';
+import { Form } from 'antd';
 import config from 'src/commons/config-hoc';
-import {FormElement, ModalContent} from 'src/library/components';
+import { FormElement, ModalContent } from 'src/library/components';
 import PageContent from 'src/layouts/page-content';
 
 @config({
     ajax: true,
-    connect: state => ({loginUser: state.system.loginUser}),
+    connect: state => ({ loginUser: state.system.loginUser }),
     modal: {
         title: '修改密码',
         width: 420,
-        centered: true,
     },
 })
 export default class ModifyPassword extends Component {
@@ -20,26 +19,26 @@ export default class ModifyPassword extends Component {
 
     handleOk = (values) => {
         if (this.state.loading) return;
-        const {onOk} = this.props;
+        const { onOk } = this.props;
 
         console.log(values);
-        this.setState({loading: true});
+        this.setState({ loading: true });
         this.props.ajax.post(`/users/${values.id}/password`, values)
             .then(() => {
                 if (onOk) onOk();
             })
-            .finally(() => this.setState({loading: false}));
+            .finally(() => this.setState({ loading: false }));
     };
 
     handleCancel = () => {
-        const {onCancel} = this.props;
+        const { onCancel } = this.props;
         if (onCancel) onCancel();
     };
 
     render() {
-        const {loginUser} = this.props;
+        const { loginUser } = this.props;
         const id = loginUser?.id;
-        const {loading} = this.state;
+        const { loading } = this.state;
         const labelWidth = 100;
 
         return (
@@ -50,7 +49,7 @@ export default class ModifyPassword extends Component {
                 onCancel={this.handleCancel}
             >
                 <PageContent>
-                    <Form ref={form => this.form = form} onFinish={this.handleOk} initialValues={{id}}>
+                    <Form ref={form => this.form = form} onFinish={this.handleOk} initialValues={{ id }}>
                         <FormElement type="hidden" name="id"/>
                         <FormElement
                             label="原密码"
@@ -72,10 +71,10 @@ export default class ModifyPassword extends Component {
                             labelWidth={labelWidth}
                             type="password"
                             name="reNewPassword"
-                            dependencies={['newPassword']}
+                            dependencies={[ 'newPassword' ]}
                             required
                             rules={[
-                                ({getFieldValue}) => ({
+                                ({ getFieldValue }) => ({
                                     validator(rule, value) {
                                         if (!value || getFieldValue('newPassword') === value) {
                                             return Promise.resolve();

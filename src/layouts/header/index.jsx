@@ -1,21 +1,21 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {MenuFoldOutlined, MenuUnfoldOutlined} from '@ant-design/icons';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import Link from '../page-link';
 import Logo from './logo';
 import HeaderUser from './header-user';
 import HeaderMenu from './header-menu';
 import HeaderFullScreen from './header-full-screen';
-import {connect} from 'src/models/index';
-import {PAGE_FRAME_LAYOUT} from 'src/models/settings';
+import { connect } from 'src/models';
+import { PAGE_FRAME_LAYOUT } from 'src/models/settings';
 import Breadcrumb from '../breadcrumb';
 import './style.less';
 
 @connect(state => {
-    const {menus, topMenu} = state.menu;
-    const {show: showSide, width, collapsed, collapsedWidth, dragging} = state.side;
-    const {breadcrumbs} = state.page;
-    const {pageFrameLayout} = state.settings;
+    const { menus, topMenu } = state.menu;
+    const { show: showSide, width, collapsed, collapsedWidth, dragging } = state.side;
+    const { breadcrumbs } = state.page;
+    const { pageFrameLayout } = state.settings;
 
     return {
         menus,
@@ -43,7 +43,7 @@ export default class Header extends Component {
     };
 
     handleToggle = () => {
-        const {sideCollapsed} = this.props;
+        const { sideCollapsed } = this.props;
         this.props.action.side.setCollapsed(!sideCollapsed);
     };
 
@@ -52,7 +52,7 @@ export default class Header extends Component {
 
         const props = {
             onClick: this.handleToggle,
-            style: theme === 'dark' ? {color: '#fff', backgroundColor: '#222'} : null,
+            style: theme === 'dark' ? { color: '#fff', backgroundColor: '#222' } : null,
         };
 
         return sideCollapsed ? <MenuUnfoldOutlined {...props} styleName="trigger" className="frame-menu-trigger"/> : <MenuFoldOutlined {...props} styleName="trigger"/>;
@@ -81,7 +81,7 @@ export default class Header extends Component {
 
         let topMenus = menus;
         if (isTopSideMenu) {
-            topMenus = menus && menus.map(item => ({key: item.key, text: item.text, path: item.path, icon: item.icon}));
+            topMenus = menus && menus.map(item => ({ key: item.key, text: item.text, path: item.path, icon: item.icon }));
         }
         if (isTopMenu) {
             topMenus = menus;
@@ -97,7 +97,7 @@ export default class Header extends Component {
                     styleName="logo-container"
                     className={`frame-logo-container-${sideCollapsed ? 'collapsed' : 'extended'}`}
                     id="logo-container"
-                    style={{flex: `0 0 ${sideWidth}px`, transitionDuration}}
+                    style={{ flex: `0 0 ${sideWidth}px`, transitionDuration }}
                 >
                     <Link to="/">
                         <Logo
@@ -115,10 +115,10 @@ export default class Header extends Component {
                             <HeaderMenu
                                 theme={theme}
                                 dataSource={topMenus}
-                                selectedKeys={[topMenu && topMenu.key]}
+                                selectedKeys={[ topMenu && topMenu.key ]}
                             />
                         ) : null}
-                        {isSideMenu ? <div style={{marginLeft: 16}}><Breadcrumb theme={theme} dataSource={breadcrumbs}/></div> : null}
+                        {isSideMenu ? <div style={{ marginLeft: 16 }}><Breadcrumb theme={theme} dataSource={breadcrumbs}/></div> : null}
                     </div>
                 )}
 

@@ -1,0 +1,66 @@
+.empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.expand-all {
+    margin-bottom: 8px;
+}
+
+.box {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.top {
+    height: 40px;
+}
+
+.content {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: auto;
+}
+
+.tree-node-title {
+    //display: flex;
+
+    .title {
+        display: inline-block;
+        //flex: 0 0 100px;
+        //overflow: hidden; // 超出的文本隐藏
+        //text-overflow: ellipsis; // 溢出用省略号显示
+        //white-space: nowrap; // 溢出不换行
+    }
+
+    .icons {
+        //flex: 0 0 100px;
+        display: inline-block;
+        opacity: 0;
+        margin-left: 8px;
+        transition: opacity 300ms;
+    }
+
+    &:hover {
+        .icons {
+            opacity: 1;
+        }
+    }
+
+    :global {
+        .anticon {
+            padding: 0 4px;
+
+            &:hover {
+                opacity: .5;
+            }
+        }
+    }
+}
