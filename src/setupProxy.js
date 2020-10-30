@@ -1,13 +1,13 @@
 const proxy = require('http-proxy-middleware');
 
-const prefix = process.env.AJAX_PREFIX || '/api';
+// 前端web服务代理配置
 
-module.exports = function (app) {
-    app.use(proxy(prefix,
+module.exports = function(app) {
+    app.use(proxy('/api',
         {
             target: 'http://localhost:3000/',
             pathRewrite: {
-                ['^' + prefix]: '', // 如果后端接口无前缀，可以通过这种方式去掉
+                '^/api': '', // 如果后端接口无前缀，可以通过这种方式去掉
             },
             changeOrigin: true,
             secure: false, // 是否验证证书

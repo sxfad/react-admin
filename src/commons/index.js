@@ -1,12 +1,14 @@
-import {session} from 'src/library/utils/storage';
-import {getNodeByPropertyAndValue, convertToTree} from 'src/library/utils/tree-utils';
-import {pathToRegexp} from 'path-to-regexp';
-import {ROUTE_BASE_NAME} from 'src/router/AppRouter';
+import { session } from 'src/library/utils/storage';
+import { getNodeByPropertyAndValue, convertToTree } from 'src/library/utils/tree-utils';
+import { pathToRegexp } from 'path-to-regexp';
+import cfg from 'src/config';
 
-const LOGIN_USER_STORAGE_KEY = 'login-user';
+const { baseName } = cfg;
 
 const localStorage = window.localStorage;
 const sessionStorage = window.sessionStorage;
+
+const LOGIN_USER_STORAGE_KEY = 'login-user';
 
 /**
  * 判断是否有权限
@@ -23,7 +25,7 @@ export function hasPermission(code) {
  */
 export function setLoginUser(loginUser = {}) {
     // 将用户属性在这里展开，方便查看系统都用到了那些用户属性
-    const {id, name, avatar, token, permissions, ...others} = loginUser;
+    const { id, name, avatar, token, permissions, ...others } = loginUser;
     const userStr = JSON.stringify({
         id,             // 用户id 必须
         name,           // 用户名 必须
@@ -64,7 +66,7 @@ export function toHome() {
 
     // 强制跳转 进入系统之后，需要一些初始化工作，需要所有的js重新加载
     // 拼接ROUTE_BASE_NAME，系统有可能发布在域名二级目录下
-    window.location.href = lastHref || `${ROUTE_BASE_NAME}/`;
+    window.location.href = lastHref || `${baseName}/`;
 }
 
 /**
@@ -86,7 +88,7 @@ export function toLogin() {
     sessionStorage.setItem('last-href', window.location.pathname);
 
     // 强制跳转，让浏览器刷新，重置数据
-    window.location.href = `${ROUTE_BASE_NAME}${loginPath}`;
+    window.location.href = `${baseName}${loginPath}`;
 
     return null;
 }
@@ -98,7 +100,7 @@ export function toLogin() {
  * @returns {*}
  */
 export function getSelectedMenuByPath(path, menuTreeData) {
-    path = path.replace(ROUTE_BASE_NAME, '');
+    path = path.replace(baseName, '');
     let selectedMenu;
     if (menuTreeData) {
         if (path.indexOf('/_') > -1) {
@@ -149,7 +151,7 @@ export function getMenuTreeDataAndPermissions(menus) {
     });
 
     // 菜单根据order 排序
-    const orderedData = [...menus].sort((a, b) => {
+    const orderedData = [ ...menus ].sort((a, b) => {
         const aOrder = a.order || 0;
         const bOrder = b.order || 0;
 
@@ -185,6 +187,6 @@ export function getMenuTreeDataAndPermissions(menus) {
     });
 
     const menuTreeData = convertToTree(orderedData);
-    return {menuTreeData, permissions};
+    return { menuTreeData, permissions };
 }
 

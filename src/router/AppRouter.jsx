@@ -1,19 +1,19 @@
-import React, {Component} from 'react';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import {isLogin} from 'src/commons';
+import React, { Component } from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { isLogin } from 'src/commons';
 import PageFrame from 'src/layouts/frame';
 import Error404 from 'src/components/error/Error404';
 import config from 'src/commons/config-hoc';
 import KeepAuthRoute from './KeepAuthRoute';
 import KeepPage from './KeepPage';
-import routes, {noFrameRoutes, noAuthRoutes /*commonPaths*/} from './routes';
+import routes, { noFrameRoutes, noAuthRoutes /*commonPaths*/ } from './routes';
+import cfg from 'src/config';
 
-// 直接挂载到域名根目录
-export const ROUTE_BASE_NAME = process.env.BASE_NAME || '';
+const { baseName } = cfg;
 
 @config({
     query: true,
-    connect: state => ({userPaths: state.system.userPaths, systemNoFrame: state.system.noFrame}),
+    connect: state => ({ userPaths: state.system.userPaths, systemNoFrame: state.system.noFrame }),
 })
 export default class AppRouter extends Component {
 
@@ -30,13 +30,13 @@ export default class AppRouter extends Component {
     };
 
     render() {
-        const {noFrame: queryNoFrame, noAuth} = this.props.query;
-        const {systemNoFrame} = this.props;
+        const { noFrame: queryNoFrame, noAuth } = this.props.query;
+        const { systemNoFrame } = this.props;
         const userRoutes = this.getUserRoutes();
 
         return (
-            <BrowserRouter basename={ROUTE_BASE_NAME}>
-                <div style={{display: 'flex', flexDirection: 'column', position: 'relative', minHeight: '100vh'}}>
+            <BrowserRouter basename={baseName}>
+                <div style={{ display: 'flex', flexDirection: 'column', position: 'relative', minHeight: '100vh' }}>
                     <Route path="/" render={props => {
                         // 框架组件单独渲染，与其他页面成为兄弟节点，框架组件和具体页面组件渲染互不影响
 
@@ -57,7 +57,7 @@ export default class AppRouter extends Component {
                     </Route>
                     <Switch>
                         {userRoutes.map(item => {
-                            const {path, component} = item;
+                            const { path, component } = item;
                             let isNoAuthRoute = false;
 
                             // 不需要登录的页面

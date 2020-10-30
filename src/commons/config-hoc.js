@@ -8,7 +8,9 @@ import { ajaxHoc } from 'src/commons/ajax';
 import pubSubHoc from 'src/library/utils/pub-sub-hoc';
 import eventHoc from 'src/library/utils/dom-event-hoc';
 import { modal as modalHoc } from 'src/library/components';
-import { ROUTE_BASE_NAME } from 'src/router/AppRouter';
+import cfg from 'src/config';
+
+const { baseName } = cfg;
 
 /**
  * 页面配置高阶组件，整合了多个高阶组件
@@ -72,7 +74,7 @@ export default (options = {}) => {
 
                 const { pathname, search } = window.location;
                 let currentPath = window.decodeURIComponent(`${pathname}${search}`);
-                currentPath = currentPath.replace(ROUTE_BASE_NAME, '');
+                currentPath = currentPath.replace(baseName, '');
 
                 this.tabShowToken = PubSub.subscribe('tab-show', (msg, targetPath) => {
                     targetPath = window.decodeURIComponent(targetPath);
