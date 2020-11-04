@@ -102,5 +102,6 @@ export default function createHooks(ajax) {
         usePost: create('post'),
         usePut: create('put'),
         useDel: create('del'),
+        usePatch: create('patch'),
     };
 }

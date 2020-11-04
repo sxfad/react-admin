@@ -20,5 +20,11 @@ export default function getMenus(userId) {
         {key: 'page404', text: '404页面不存在', icon: 'file-search', path: '/404', order: 700},
         {key: 'example', text: '示例', icon: 'align-left', order: 600},
         {key: 'table-editable', parentKey: 'example', text: '可编辑表格', icon: 'align-left', path: '/example/table-editable', order: 600},
+
+        {key: 'level', text: '多级', icon: 'align-left', order: 500},
+        {key: 'level1', parentKey: 'level', text: '多级1', icon: 'align-left', order: 500},
+        {key: 'level11', parentKey: 'level', text: '多级11', icon: 'align-left', order: 500},
+        {key: 'level2', parentKey: 'level11', text: '多级11', icon: 'align-left', order: 500},
+
     ]);
 }

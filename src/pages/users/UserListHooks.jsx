@@ -116,6 +116,8 @@ export default config({
     const pageLoading = loading || deleting || deletingOne;
     const disabledDelete = !selectedRowKeys?.length || pageLoading;
 
+
+    console.log('render');
     return (
         <PageContent loading={pageLoading}>
             <QueryBar>
