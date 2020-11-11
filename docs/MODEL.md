@@ -16,11 +16,17 @@
 
 
 ## src/models
-所有的model直接在models下定义，不支持子文件夹，文件名对应模块名：
+所有的model直接在models或pages下定义：
 
+model模块名规则：
 ```
 /path/to/models/user-center.js --> userCenter;
 /path/to/models/user.js --> user;
+
+/path/to/pages/users/model.js --> users;
+/path/to/pages/users/job.model.js --> job;
+/path/to/pages/users/user-center.model.js --> userCenter;
+/path/to/pages/users/user.center.model.js --> userCenter;
 ```
 
 ## 组件与redux进行连接
