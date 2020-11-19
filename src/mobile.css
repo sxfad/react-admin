@@ -53,8 +53,13 @@
         text-align: right;
     }
 
-    .form-element-flex-root .ant-form-item-label:after {
+    .form-element-flex-root .portal-form-item-label label:after {
+        display: block;
         content: '：'
+    }
+
+    .form-element-flex-root .portal-form-item-label label.portal-form-item-no-colon:after {
+        display: none;
     }
 
     .frame-label-without-width .ant-form-item-label {

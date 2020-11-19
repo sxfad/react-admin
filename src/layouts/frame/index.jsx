@@ -1,24 +1,24 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Spin} from 'antd';
-import {Helmet} from 'react-helmet';
-import {withRouter} from 'react-router-dom';
+import { Spin } from 'antd';
+import { Helmet } from 'react-helmet';
+import { withRouter } from 'react-router-dom';
 import PageHead from '../page-head';
 import Header from '../header';
 import Side from '../side';
 import PageTabs from '../page-tabs';
-import {connect} from 'src/models';
-import {getLoginUser, getSelectedMenuByPath, setLoginUser} from 'src/commons';
-import {PAGE_FRAME_LAYOUT} from 'src/models/settings';
+import { connect } from 'src/models';
+import { getSelectedMenuByPath } from 'src/commons';
+import { PAGE_FRAME_LAYOUT } from 'src/models/settings';
 import './style.less';
 
 @withRouter
 @connect(state => {
-    const {selectedMenu, menus} = state.menu;
-    const {title, breadcrumbs, showHead} = state.page;
-    const {show: showSide, width, collapsed, collapsedWidth, dragging} = state.side;
-    const {loading, loadingTip, isMobile} = state.system;
-    const {pageFrameLayout, pageHeadFixed, pageHeadShow, tabsShow} = state.settings;
+    const { selectedMenu, menus } = state.menu;
+    const { title, breadcrumbs, showHead } = state.page;
+    const { show: showSide, width, collapsed, collapsedWidth, dragging } = state.side;
+    const { loading, loadingTip, isMobile } = state.system;
+    const { pageFrameLayout, pageHeadFixed, pageHeadShow, tabsShow } = state.settings;
     return {
         menus,
         selectedMenu,
@@ -43,65 +43,20 @@ import './style.less';
 export default class FrameTopSideMenu extends Component {
     constructor(...props) {
         super(...props);
-        const {action: {menu, side, system}, isMobile} = this.props;
-        // 从Storage中获取出需要同步到redux的数据
-        this.props.action.getStateFromStorage();
-
-        const loginUser = getLoginUser();
-        const userId = loginUser?.id;
-
-        // 获取系统菜单 和 随菜单携带过来的权限
-        this.state.loading = true;
-        menu.getMenus({
-            params: {userId},
-            onResolve: (res) => {
-                const menus = res || [];
-                const permissions = [];
-                const paths = [];
-
-                menus.forEach(({type, path, code}) => {
-                    if (type === '2' && code) permissions.push(code);
-
-                    if (path) paths.push(path);
-                });
-
-                if (loginUser) {
-                    loginUser.permissions = permissions;
-                    setLoginUser(loginUser);
-                }
-
-                // 设置当前登录的用户到model中
-                system.setLoginUser(loginUser);
-
-                // 保存用户权限到model中
-                system.setPermissions(permissions);
-
-                // 保存当前用户可用path到model中
-                system.setUserPaths(paths);
-            },
-            onComplete: () => {
-                this.setState({loading: false});
-            },
-        });
-
-        setTimeout(() => { // 等待getStateFromStorage获取配置之后再设置
-            menu.getMenuStatus();
-            side.show();
-            this.setTitleAndBreadcrumbs();
-            isMobile && side.setCollapsed(true);
-        });
-
-        this.props.history.listen(() => {
-            // 加上timeout之后，tab页切换之后，对应页面就不render了，不知道为什么！
+        const { action: { menu, side }, isMobile } = this.props;
+        const setMenuStatus = () => {
             setTimeout(() => {
                 menu.getMenuStatus();
                 side.show();
                 this.setTitleAndBreadcrumbs();
-
                 isMobile && side.setCollapsed(true);
-
-                // 如果是移动端 隐藏菜单
             });
+        };
+
+        setMenuStatus();
+        this.props.history.listen(() => {
+            // 加上timeout之后，tab页切换之后，对应页面就不render了，不知道为什么！
+            setMenuStatus();
         });
     }
 
@@ -118,7 +73,7 @@ export default class FrameTopSideMenu extends Component {
 
     setTitleAndBreadcrumbs() {
         const {
-            action: {page},
+            action: { page },
             pageHeadShow,
             menus,
             title: prevTitle,
@@ -228,7 +183,7 @@ export default class FrameTopSideMenu extends Component {
 
             if (pageHeadFixed) {
                 pageHead = (
-                    <div className="frame-page-head-fixed" styleName={`page-head-fixed ${tabsShow ? 'with-tabs' : ''}`} style={{left: hasSide ? sideWidth : 0, transitionDuration}}>
+                    <div className="frame-page-head-fixed" styleName={`page-head-fixed ${tabsShow ? 'with-tabs' : ''}`} style={{ left: hasSide ? sideWidth : 0, transitionDuration }}>
                         {pageHead}
                     </div>
                 );
@@ -240,7 +195,7 @@ export default class FrameTopSideMenu extends Component {
         const titleText = title?.text || title;
         const titleIsString = typeof titleText === 'string';
 
-        const topSpaceClass = ['content-top-space'];
+        const topSpaceClass = [ 'content-top-space' ];
 
         if (showPageHead && pageHead && pageHeadFixed) topSpaceClass.push('with-fixed-page-head');
         if (tabsShow) topSpaceClass.push('with-tabs');
@@ -255,8 +210,8 @@ export default class FrameTopSideMenu extends Component {
                 <Side layout={layout} theme={theme}/>
                 <div styleName={topSpaceClass.join(' ')} className={topSpaceClass.join(' ')}/>
                 {pageHead}
-                {tabsShow ? <div styleName="page-tabs" id="frame-page-tabs" style={{left: sideWidthSpace, width: windowWidth - sideWidthSpace, transitionDuration}}><PageTabs width={windowWidth - sideWidthSpace}/></div> : null}
-                <div styleName="global-loading" style={{display: globalLoading ? 'block' : 'none'}}>
+                {tabsShow ? <div styleName="page-tabs" id="frame-page-tabs" style={{ left: sideWidthSpace, width: windowWidth - sideWidthSpace, transitionDuration }}><PageTabs width={windowWidth - sideWidthSpace}/></div> : null}
+                <div styleName="global-loading" style={{ display: globalLoading ? 'block' : 'none' }}>
                     <Spin spinning size="large" tip={globalLoadingTip}/>
                 </div>
             </div>
