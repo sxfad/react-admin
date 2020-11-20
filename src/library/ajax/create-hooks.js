@@ -57,10 +57,12 @@ export default function createHooks(ajax) {
 
                 if (!(key in params)) throw Error(`缺少「${key}」参数`);
 
-                const value = params[key];
-                Reflect.deleteProperty(params, key);
+                return params[key];
 
-                return value;
+                // const value = params[key];
+                // Reflect.deleteProperty(params, key);
+                //
+                // return value;
             }).join('/');
 
             const mergedOptions = { ...initOptions, ...options };
