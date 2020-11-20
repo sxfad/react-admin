@@ -38,6 +38,7 @@ module.exports = {
         path: path.join(__dirname, 'dll'),
         filename: '[name]_[hash].dll.js',
         library: '[name]_[hash]',
+        libraryTarget: 'window',
     },
     plugins: [
         new webpack.DllPlugin({
