@@ -13,7 +13,7 @@ react-admin是基于基于[React16.x](https://reactjs.org)、[Ant Design4.x](htt
 ├── src                 
 │   ├── commons         // 通用js，业务相关
 │   ├── components      // 通用组件，业务相关
-│   ├── layouts         // 页面框架布局组件
+│   ├── layouts         // 页面框架布局组件+
 │   ├── library         // 基础组件、工具
 │   │   ├── ajax        // ajax基础库
 │   │   ├── components  // 公共组件，业务无关
@@ -35,7 +35,7 @@ react-admin是基于基于[React16.x](https://reactjs.org)、[Ant Design4.x](htt
 ```
 ## 预览
 
-部分页面截图，完整项目预览地址[戳这里](http://shubin.wang)
+部分页面截图，完整项目预览地址[戳这里](https://sxfad.github.io/react-admin/build/#/login)
 <div style="background: #efefef;padding: 0 10px;">
 
 ![登录](imgs/login.jpg)
