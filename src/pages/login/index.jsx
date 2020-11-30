@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {Helmet} from 'react-helmet';
-import {Input, Button, Form} from 'antd';
-import {LockOutlined, UserOutlined} from '@ant-design/icons';
-import {setLoginUser, toHome} from 'src/commons';
+import React, { Component } from 'react';
+import { Helmet } from 'react-helmet';
+import { Input, Button, Form } from 'antd';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { setLoginUser, toHome } from 'src/commons';
 import config from 'src/commons/config-hoc';
 import Banner from './banner/index';
 import './style.less';
@@ -23,17 +23,17 @@ export default class extends Component {
     componentDidMount() {
         console.log(window.location);
         // 开发时方便测试，填写表单
-        if (process.env.NODE_ENV === 'development' || window.location.origin === 'http://shubin.wang') {
-            this.form.setFieldsValue({userName: 'admin', password: '111'});
+        if (process.env.NODE_ENV === 'development' || process.env.PREVIEW) {
+            this.form.setFieldsValue({ userName: 'admin', password: '111' });
         }
 
-        setTimeout(() => this.setState({isMount: true}), 300);
+        setTimeout(() => this.setState({ isMount: true }), 300);
     }
 
     handleSubmit = (values) => {
         if (this.state.loading) return;
 
-        const {userName, password} = values;
+        const { userName, password } = values;
         const params = {
             userName,
             password,
@@ -62,7 +62,7 @@ export default class extends Component {
     };
 
     render() {
-        const {loading, message, isMount} = this.state;
+        const { loading, message, isMount } = this.state;
         const formItemStyleName = isMount ? 'form-item active' : 'form-item';
 
         return (
@@ -85,7 +85,7 @@ export default class extends Component {
                             <div styleName={formItemStyleName}>
                                 <Form.Item
                                     name="userName"
-                                    rules={[{required: true, message: '请输入用户名'}]}
+                                    rules={[ { required: true, message: '请输入用户名' } ]}
                                 >
                                     <Input allowClear autoFocus prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="用户名"/>
                                 </Form.Item>
@@ -93,13 +93,13 @@ export default class extends Component {
                             <div styleName={formItemStyleName}>
                                 <Form.Item
                                     name="password"
-                                    rules={[{required: true, message: '请输入密码'}]}
+                                    rules={[ { required: true, message: '请输入密码' } ]}
                                 >
                                     <Input.Password prefix={<LockOutlined className="site-form-item-icon"/>} placeholder="密码"/>
                                 </Form.Item>
                             </div>
                             <div styleName={formItemStyleName}>
-                                <Form.Item shouldUpdate={true} style={{marginBottom: 0}}>
+                                <Form.Item shouldUpdate={true} style={{ marginBottom: 0 }}>
                                     {() => (
                                         <Button
                                             styleName="submit-btn"
@@ -108,7 +108,7 @@ export default class extends Component {
                                             htmlType="submit"
                                             disabled={
                                                 !this.form?.isFieldsTouched(true) ||
-                                                this.form?.getFieldsError().filter(({errors}) => errors.length).length
+                                                this.form?.getFieldsError().filter(({ errors }) => errors.length).length
                                             }
                                         >
                                             登录

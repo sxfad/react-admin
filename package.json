@@ -5,7 +5,7 @@
     "scripts": {
         "start": "node scripts/start.js",
         "build": "cross-env NODE_ENV=production node scripts/build.js",
-        "build:pre": "git fetch --all && git reset --hard origin/master && git pull && yarn && cross-env MOCK=true yarn build && cp -r ./docs ./build/",
+        "build:pre": "cross-env MOCK=true PREVIEW=true yarn build && cp -r ./build ./docs/ ",
         "build:dll": "rimraf config/dll && webpack --config config/webpack.dll.config.js",
         "build:analyz": "cross-env ANALYZ=true yarn build",
         "build:time": "cross-env ANALYZ_TIME=true yarn build",

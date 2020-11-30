@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Table} from 'antd';
-import {getElementTop} from 'src/library/utils';
+import { Table } from 'antd';
+import { getElementTop } from 'src/library/utils';
 
 export default class TableComponent extends Component {
     static propTypes = {
@@ -60,7 +60,7 @@ export default class TableComponent extends Component {
     componentDidUpdate(prevProps) {
         if (this.props.surplusSpace) {
             const prevDataSource = prevProps.dataSource;
-            const {dataSource} = this.props;
+            const { dataSource } = this.props;
 
             if (dataSource?.length !== prevDataSource?.length) {
                 this.setTableBodyHeight();
@@ -75,22 +75,23 @@ export default class TableComponent extends Component {
     }
 
     setTableBodyHeight = () => {
-        this.tableBody = this.wrapper.querySelector('.ant-table-tbody');
+        this.tableBody = this.wrapper.querySelector('.ant-table-body');
+        this.tableTBody = this.wrapper.querySelector('.ant-table-tbody');
         this.tablePlaceholder = this.wrapper.querySelector('.ant-table-placeholder');
         this.tableHead = this.wrapper.querySelector('.ant-table-header');
 
-        const {pathname, search} = window.location;
+        const { pathname, search } = window.location;
         const currentPath = window.decodeURIComponent(`${pathname}${search}`);
         const activeTab = document.getElementById(currentPath);
         this.pagination = (activeTab ? activeTab : document).querySelector('.pagination-wrap');
 
         let tableBodyHeight;
-        const {dataSource} = this.props;
+        const { dataSource } = this.props;
         const windowHeight = document.documentElement.clientHeight;
 
         // 计算除了表格内容之外，其他高度
         if ('otherHeight' in this.props) {
-            const {otherHeight} = this.props;
+            const { otherHeight } = this.props;
             tableBodyHeight = windowHeight - otherHeight;
         } else {
             const tableHeadHeight = this.tableHead?.offsetHeight + 1 || 0;
@@ -107,12 +108,12 @@ export default class TableComponent extends Component {
 
         if (dataSource?.length) {
             this.tableBody.style.height = `${tableBodyHeight}px`;
+            this.tableTBody.style.height = `${tableBodyHeight}px`;
         } else {
-            this.tableBody.style.height = '0px';
-            this.tablePlaceholder.style.height = `${tableBodyHeight - 36}px`;
+            this.tablePlaceholder.style.height = `${tableBodyHeight}px`;
         }
 
-        this.setState({tableBodyHeight});
+        this.setState({ tableBodyHeight });
     };
 
     render() {
@@ -131,8 +132,8 @@ export default class TableComponent extends Component {
             columns,
             ...others
         } = this.props;
-        const {tableBodyHeight} = this.state;
-        let tableScroll = surplusSpace ? {y: tableBodyHeight, ...scroll} : scroll;
+        const { tableBodyHeight } = this.state;
+        let tableScroll = surplusSpace ? { y: tableBodyHeight, ...scroll } : scroll;
 
         if (rowSelection === true) rowSelection = {};
 
@@ -163,7 +164,7 @@ export default class TableComponent extends Component {
         }
 
         return (
-            <div ref={node => this.wrapper = node}>
+            <div style={{ width: '100%' }} ref={node => this.wrapper = node}>
                 <Table
                     scroll={tableScroll}
                     pagination={false}

@@ -78,6 +78,7 @@ function getClientEnvironment(publicUrl) {
                 // images into the `src` and `import` them in code to get their paths.
                 PUBLIC_URL: publicUrl,
                 MOCK: process.env.MOCK,
+                PREVIEW: process.env.PREVIEW,
                 AJAX_PREFIX: process.env.AJAX_PREFIX,
                 BASE_NAME: process.env.BASE_NAME || '',
                 // We support configuring the sockjs pathname during development.
@@ -98,7 +99,7 @@ function getClientEnvironment(publicUrl) {
         }, {}),
     };
 
-    return {raw, stringified};
+    return { raw, stringified };
 }
 
 module.exports = getClientEnvironment;
