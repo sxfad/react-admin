@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Radio, Card, Checkbox} from 'antd';
-import PageContent from 'src/layouts/page-content';
+import { PageContent } from 'ra-lib';
 import config from 'src/commons/config-hoc';
 
 @config({

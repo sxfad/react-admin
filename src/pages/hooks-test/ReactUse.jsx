@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useEffectOnce, useLifecycles, useMount, useUnmount, useMap} from 'react-use';
 import {Button} from 'antd';
 import config from 'src/commons/config-hoc';
-import PageContent from 'src/layouts/page-content';
+import { PageContent } from 'ra-lib';
 
 export default config({
     path: '/react-use',

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Icon } from 'src/library/components';
+import { Icon } from 'ra-lib';
 import config from 'src/commons/config-hoc';
-import { convertToTree, getGenerationKeys } from 'src/library/utils/tree-utils';
-import { Table } from 'src/library/components';
+import { tree } from 'ra-lib';
+import { Table } from 'ra-lib';
 import './style.less';
 
 @config({
@@ -70,7 +70,7 @@ export default class index extends Component {
                     return bOrder - aOrder;
                 });
 
-                const menuTreeData = convertToTree(orderedData);
+                const menuTreeData = tree.convertToTree(orderedData);
 
                 // 默认展开全部
                 const expandedRowKeys = menus.map(item => item.key);
@@ -90,7 +90,7 @@ export default class index extends Component {
         let allKeys = [ ...value ];
 
         // 全选 取消 子级
-        const childrenKeys = getGenerationKeys(menus, key);
+        const childrenKeys = tree.getGenerationKeys(menus, key);
         const { parentKeys = [] } = record;
         if (selected) {
             // 子级全部加入
@@ -104,7 +104,7 @@ export default class index extends Component {
 
             // 判断父级状态 只要有后代选中就加入
             parentKeys.reverse().forEach(pk => {
-                const cKs = getGenerationKeys(menus, pk);
+                const cKs = tree.getGenerationKeys(menus, pk);
                 const hasChildSelected = cKs.some(ck => allKeys.includes(ck));
 
                 if (hasChildSelected) {
@@ -132,7 +132,7 @@ export default class index extends Component {
         const { menus } = this.state;
         const { key } = record;
         // 如果 部分子级被选中，就是半选
-        const childrenKeys = getGenerationKeys(menus, key);
+        const childrenKeys = tree.getGenerationKeys(menus, key);
         return value.includes(key) && value.some(k => childrenKeys.includes(k)) && !childrenKeys.every(k => value.includes(k));
     };
 

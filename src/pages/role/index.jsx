@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Form, Row, Col} from 'antd';
-import PageContent from 'src/layouts/page-content';
+import { PageContent } from 'ra-lib';
 import config from 'src/commons/config-hoc';
 import MenuSelect from 'src/pages/menu-permission/MenuSelect';
 import {
@@ -9,7 +9,7 @@ import {
     FormElement,
     Table,
     Operator,
-} from 'src/library/components';
+} from 'ra-lib';
 import EditModal from './EditModal';
 import './style.less';
 

@@ -7,6 +7,7 @@ const {
 } = process.env;
 
 export default {
+    appName: 'React Admin',
     // 默认ajax url前缀
     ajaxPrefix: AJAX_PREFIX || '/api',
     // 默认ajax超时时间

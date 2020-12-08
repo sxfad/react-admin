@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {Button, Form, Modal} from 'antd';
-import {ExclamationCircleOutlined} from '@ant-design/icons';
-import {v4 as uuid} from 'uuid';
-import PageContent from 'src/layouts/page-content';
-import {isInputLikeElement} from 'src/library/components/form-element';
+import React, { Component } from 'react';
+import { Button, Form, Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { v4 as uuid } from 'uuid';
 import config from 'src/commons/config-hoc';
 import {
+    isInputLikeElement,
+    PageContent,
     QueryBar,
     FormRow,
     FormElement,
@@ -13,7 +13,7 @@ import {
     tableEditable,
     tableRowDraggable,
     Operator,
-} from 'src/library/components';
+} from 'ra-lib';
 import {
     DB_URL_STORE_KEY,
     SWAGGER_URL_STORE_KEY,
@@ -46,7 +46,7 @@ export default class UserCenter extends Component {
     };
 
     columns = [
-        {title: '注释', dataIndex: 'comment', width: 200},
+        { title: '注释', dataIndex: 'comment', width: 200 },
         {
             title: '中文名', dataIndex: 'chinese', width: 200,
             formProps: (record, index) => {
@@ -66,7 +66,7 @@ export default class UserCenter extends Component {
             title: '列名', dataIndex: 'field',
             formProps: (record, index) => {
                 if (record.isTable) return null;
-                const {table: {children}} = this.state;
+                const { table: { children } } = this.state;
                 const length = children?.length || 0;
 
                 const tabIndex = index + length + 1; // index * 2 + 2;
@@ -90,28 +90,28 @@ export default class UserCenter extends Component {
                     type: 'select',
                     showSearch: true,
                     options: [
-                        {value: 'input', label: '输入框'},
-                        {value: 'hidden', label: '隐藏框'},
-                        {value: 'number', label: '数字框'},
-                        {value: 'textarea', label: '文本框'},
-                        {value: 'password', label: '密码框'},
-                        {value: 'mobile', label: '手机输入框'},
-                        {value: 'email', label: '邮箱输入框'},
-                        {value: 'select', label: '下拉框'},
-                        {value: 'select-tree', label: '下拉树'},
-                        {value: 'checkbox', label: '复选框'},
-                        {value: 'checkbox-group', label: '复选框组'},
-                        {value: 'radio', label: '单选框'},
-                        {value: 'radio-group', label: '单选框组'},
-                        {value: 'radio-button', label: '单选按钮组'},
-                        {value: 'switch', label: '切换按钮'},
-                        {value: 'date', label: '日期选择框'},
-                        {value: 'time', label: '时间选择框'},
-                        {value: 'moth', label: '月份选择框'},
-                        {value: 'date-time', label: '日期+时间选择框'},
-                        {value: 'date-range', label: '日期区间选择框'},
-                        {value: 'cascader', label: '级联下拉框'},
-                        {value: 'transfer', label: '穿梭框'},
+                        { value: 'input', label: '输入框' },
+                        { value: 'hidden', label: '隐藏框' },
+                        { value: 'number', label: '数字框' },
+                        { value: 'textarea', label: '文本框' },
+                        { value: 'password', label: '密码框' },
+                        { value: 'mobile', label: '手机输入框' },
+                        { value: 'email', label: '邮箱输入框' },
+                        { value: 'select', label: '下拉框' },
+                        { value: 'select-tree', label: '下拉树' },
+                        { value: 'checkbox', label: '复选框' },
+                        { value: 'checkbox-group', label: '复选框组' },
+                        { value: 'radio', label: '单选框' },
+                        { value: 'radio-group', label: '单选框组' },
+                        { value: 'radio-button', label: '单选按钮组' },
+                        { value: 'switch', label: '切换按钮' },
+                        { value: 'date', label: '日期选择框' },
+                        { value: 'time', label: '时间选择框' },
+                        { value: 'moth', label: '月份选择框' },
+                        { value: 'date-time', label: '日期+时间选择框' },
+                        { value: 'date-range', label: '日期区间选择框' },
+                        { value: 'cascader', label: '级联下拉框' },
+                        { value: 'transfer', label: '穿梭框' },
                     ],
                     onChange: (formType) => {
                         record.formType = formType;
@@ -122,13 +122,13 @@ export default class UserCenter extends Component {
         {
             title: '选项', dataIndex: 'operator', width: 170,
             render: (value, record) => {
-                return renderFieldTags(record, () => this.setState({table: {...this.state.table}}));
+                return renderFieldTags(record, () => this.setState({ table: { ...this.state.table } }));
             },
         },
         {
             title: '操作', dataIndex: 'operator', width: 40,
             render: (value, record) => {
-                const {id, name} = record;
+                const { id, name } = record;
                 const items = [
                     {
                         label: '删除',
@@ -148,10 +148,10 @@ export default class UserCenter extends Component {
     componentDidMount() {
         const dbUrl = window.localStorage.getItem(DB_URL_STORE_KEY) || '';
         const swaggerUrl = window.localStorage.getItem(SWAGGER_URL_STORE_KEY) || '';
-        this.form.setFieldsValue({swaggerUrl});
+        this.form.setFieldsValue({ swaggerUrl });
 
         if (dbUrl) {
-            this.form.setFieldsValue({dbUrl});
+            this.form.setFieldsValue({ dbUrl });
             // 初始化查询
             this.handleDbUrlChange();
         }
@@ -162,11 +162,11 @@ export default class UserCenter extends Component {
     };
 
     handleKeyDown = (e, tabIndex) => {
-        const {keyCode, ctrlKey, shiftKey, altKey, metaKey} = e;
+        const { keyCode, ctrlKey, shiftKey, altKey, metaKey } = e;
 
         if (ctrlKey || shiftKey || altKey || metaKey) return;
 
-        const {table: {children}} = this.state;
+        const { table: { children } } = this.state;
         const length = children?.length || 0;
 
         const isUp = keyCode === 38;
@@ -223,7 +223,7 @@ export default class UserCenter extends Component {
 
                 if ((isDown || isEnter) && tabIndex === length * 2) ti = tabIndex + 1;
 
-                this.handleKeyDown({keyCode: 13}, ti);
+                this.handleKeyDown({ keyCode: 13 }, ti);
             });
         }
     };
@@ -246,25 +246,25 @@ export default class UserCenter extends Component {
         window.localStorage.setItem(DB_URL_STORE_KEY, dbUrl || '');
 
         // 清空数据
-        this.setState({tables: [], table: {}});
-        this.form.setFieldsValue({tableName: undefined});
+        this.setState({ tables: [], table: {} });
+        this.form.setFieldsValue({ tableName: undefined });
 
         if (!dbUrl) return;
 
-        this.setState({loading: true});
-        this.props.ajax.get('/gen/tables', {dbUrl}, {baseURL: '/'})
+        this.setState({ loading: true });
+        this.props.ajax.get('/gen/tables', { dbUrl }, { baseURL: '/' })
             .then(res => {
-                const {dataSource} = getTables(res);
-                this.setState({tables: dataSource}, () => {
+                const { dataSource } = getTables(res);
+                this.setState({ tables: dataSource }, () => {
 
                     // 默认选中第一个表
                     const tableName = dataSource[0]?.tableName;
 
-                    this.form.setFieldsValue({tableName});
+                    this.form.setFieldsValue({ tableName });
                     this.handleTableNameChange(tableName);
                 });
             })
-            .finally(() => this.setState({loading: false}));
+            .finally(() => this.setState({ loading: false }));
     };
 
     handleSwaggerChange = () => {
@@ -272,8 +272,8 @@ export default class UserCenter extends Component {
         window.localStorage.setItem(SWAGGER_URL_STORE_KEY, swaggerUrl);
 
         // 清空数据
-        this.setState({tables: [], table: {}});
-        this.form.setFieldsValue({tableName: undefined});
+        this.setState({ tables: [], table: {} });
+        this.form.setFieldsValue({ tableName: undefined });
 
         if (!swaggerUrl) return;
 
@@ -288,16 +288,16 @@ export default class UserCenter extends Component {
             password,
         };
 
-        this.setState({loading: true});
-        this.props.ajax.get('/gen/swagger', params, {baseURL: '/'})
+        this.setState({ loading: true });
+        this.props.ajax.get('/gen/swagger', params, { baseURL: '/' })
             .then(res => {
-                const {moduleName: tableName, queries, columns, forms} = res;
+                const { moduleName: tableName, queries, columns, forms } = res;
 
                 const children = [];
                 (queries || []).forEach(item => {
-                    const {type, field, label, required} = item;
+                    const { type, field, label, required } = item;
                     const chinese = getLabel(label);
-                    const formType = getFormElementType({oType: type, label: chinese});
+                    const formType = getFormElementType({ oType: type, label: chinese });
 
                     children.push({
                         id: uuid(),
@@ -320,9 +320,9 @@ export default class UserCenter extends Component {
                 });
 
                 (columns || []).forEach(item => {
-                    const {title, dataIndex} = item;
+                    const { title, dataIndex } = item;
                     if (!children.find(it => it.field === dataIndex)) {
-                        const formType = getFormElementType({oType: 'input', label: title});
+                        const formType = getFormElementType({ oType: 'input', label: title });
                         children.push(
                             {
                                 id: uuid(),
@@ -347,9 +347,9 @@ export default class UserCenter extends Component {
                 });
 
                 (forms || []).forEach(item => {
-                    const {type, field, label} = item;
+                    const { type, field, label } = item;
                     if (!children.find(it => it.field === field)) {
-                        const formType = getFormElementType({oType: type, label: label});
+                        const formType = getFormElementType({ oType: type, label: label });
 
                         children.push({
                             id: uuid(),
@@ -392,14 +392,14 @@ export default class UserCenter extends Component {
                     children,
                 };
 
-                this.setState({table});
+                this.setState({ table });
             })
-            .finally(() => this.setState({loading: false}));
+            .finally(() => this.setState({ loading: false }));
     };
 
     handleModuleNameChange = () => {
         // 清空数据
-        this.setState({tables: [], table: {}});
+        this.setState({ tables: [], table: {} });
 
         const moduleName = this.form.getFieldValue('moduleName');
         if (!moduleName) return;
@@ -450,23 +450,23 @@ export default class UserCenter extends Component {
     };
 
     handleDelete = (id) => {
-        const {table} = this.state;
-        const {children} = table;
+        const { table } = this.state;
+        const { children } = table;
         table.children = children.filter(item => item.id !== id);
-        this.setState({table: {...table}});
+        this.setState({ table: { ...table } });
     };
 
     handleTableNameChange = (tableName) => {
-        const {tables} = this.state;
+        const { tables } = this.state;
         const table = tables.find(item => item.tableName === tableName);
-        this.setState({table});
+        this.setState({ table });
     };
 
     handleAdd = (append) => {
-        const {table} = this.state;
+        const { table } = this.state;
         if (!table.children) table.children = [];
         const length = table.children.length;
-        const {tableName, children} = table;
+        const { tableName, children } = table;
         const field = `field${length + 1}`;
         const id = uuid();
 
@@ -490,8 +490,8 @@ export default class UserCenter extends Component {
         };
 
         append ? children.push(newRecord) : children.unshift(newRecord);
-        table.children = [...children];
-        this.setState({table: {...table}});
+        table.children = [ ...children ];
+        this.setState({ table: { ...table } });
     };
 
     /** 获取参数 */
@@ -510,7 +510,7 @@ export default class UserCenter extends Component {
 
         return new Promise((resolve, reject) => {
             const getParams = () => {
-                const {table} = this.state;
+                const { table } = this.state;
                 const children = table.children
                     .map(it => ({
                         field: it.field,
@@ -526,10 +526,10 @@ export default class UserCenter extends Component {
                     }));
 
                 const params = {
-                    tables: [{
+                    tables: [ {
                         ...table,
                         children,
-                    }],
+                    } ],
                 };
 
                 resolve(params);
@@ -557,30 +557,30 @@ export default class UserCenter extends Component {
     handleGen = async () => {
         const params = await this.getParams(true);
 
-        this.setState({loading: true});
-        this.props.ajax.post('/gen/tables', params, {baseURL: '/', successTip: '生成成功！'})
-            .finally(() => this.setState({loading: false}));
+        this.setState({ loading: true });
+        this.props.ajax.post('/gen/tables', params, { baseURL: '/', successTip: '生成成功！' })
+            .finally(() => this.setState({ loading: false }));
     };
 
     handlePreview = async () => {
         const params = await this.getParams();
 
-        this.setState({loading: true});
-        this.props.ajax.post('/gen/preview', params, {baseURL: '/'})
+        this.setState({ loading: true });
+        this.props.ajax.post('/gen/preview', params, { baseURL: '/' })
             .then(res => {
-                this.setState({previewVisible: true, previewCode: res});
+                this.setState({ previewVisible: true, previewCode: res });
             })
-            .finally(() => this.setState({loading: false}));
+            .finally(() => this.setState({ loading: false }));
     };
 
-    handleSortEnd = ({newIndex, oldIndex}) => {
-        const {table} = this.state;
-        const {children = []} = table;
+    handleSortEnd = ({ newIndex, oldIndex }) => {
+        const { table } = this.state;
+        const { children = [] } = table;
 
         children.splice(newIndex, 0, ...children.splice(oldIndex, 1));
-        table.children = [...children];
+        table.children = [ ...children ];
 
-        this.setState({table: {...table}});
+        this.setState({ table: { ...table } });
     };
 
     render() {
@@ -594,13 +594,13 @@ export default class UserCenter extends Component {
         } = this.state;
 
         const formProps = {
-            style: {paddingLeft: 16},
+            style: { paddingLeft: 16 },
         };
 
         return (
-            <PageContent loading={loading || deleting} style={{padding: 0, margin: 0}}>
+            <PageContent loading={loading || deleting} style={{ padding: 0, margin: 0 }}>
                 <QueryBar>
-                    <Form ref={form => this.form = form} initialValues={{type: 'mysql', method: 'get', userName: 'admin', password: '123456'}}>
+                    <Form ref={form => this.form = form} initialValues={{ type: 'mysql', method: 'get', userName: 'admin', password: '123456' }}>
                         <FormRow>
                             <FormElement
                                 {...formProps}
@@ -608,14 +608,14 @@ export default class UserCenter extends Component {
                                 type="radio-button"
                                 name="type"
                                 options={[
-                                    {value: 'swagger', label: 'Swagger'},
-                                    {value: 'mysql', label: 'MySql'},
-                                    {value: 'customer', label: '自定义'},
+                                    { value: 'swagger', label: 'Swagger' },
+                                    { value: 'mysql', label: 'MySql' },
+                                    { value: 'customer', label: '自定义' },
                                 ]}
                                 onChange={this.handleTypeChange}
                             />
-                            <Form.Item style={{marginBottom: 0}} shouldUpdate={(prevValues, currValues) => prevValues.type !== currValues.type}>
-                                {({getFieldValue}) => {
+                            <Form.Item style={{ marginBottom: 0 }} shouldUpdate={(prevValues, currValues) => prevValues.type !== currValues.type}>
+                                {({ getFieldValue }) => {
                                     const type = getFieldValue('type');
                                     if (type === 'mysql') {
                                         return (
@@ -630,13 +630,13 @@ export default class UserCenter extends Component {
                                                 />
                                                 <FormElement
                                                     {...formProps}
-                                                    elementStyle={{width: 200}}
+                                                    elementStyle={{ width: 200 }}
                                                     type="select"
                                                     showSearch
                                                     label="数据库表"
                                                     name="tableName"
                                                     onChange={this.handleTableNameChange}
-                                                    options={tables.map(item => ({value: item.tableName, label: `${item.tableName} ${item.comment}`}))}
+                                                    options={tables.map(item => ({ value: item.tableName, label: `${item.tableName} ${item.comment}` }))}
                                                 />
                                             </FormRow>
                                         );
@@ -659,9 +659,9 @@ export default class UserCenter extends Component {
                                                     placeholder="接口方法"
                                                     name="method"
                                                     options={[
-                                                        {value: 'get', label: 'GET'},
-                                                        {value: 'post', label: 'POST'},
-                                                        {value: 'put', label: 'PUT'},
+                                                        { value: 'get', label: 'GET' },
+                                                        { value: 'post', label: 'POST' },
+                                                        { value: 'put', label: 'PUT' },
                                                     ]}
                                                     onChange={this.handleSwaggerChange}
                                                 />
@@ -690,7 +690,7 @@ export default class UserCenter extends Component {
                                                     label="模块名"
                                                     name="moduleName"
                                                     placeholder="比如：user-center"
-                                                    rules={[{required: true, message: '请输入模块名！'}]}
+                                                    rules={[ { required: true, message: '请输入模块名！' } ]}
                                                     onChange={this.handleModuleNameChange}
                                                 />
                                             </FormRow>
@@ -701,14 +701,14 @@ export default class UserCenter extends Component {
                         </FormRow>
                     </Form>
                 </QueryBar>
-                <div style={{marginBottom: 8, display: 'flex', justifyContent: 'space-between'}}>
+                <div style={{ marginBottom: 8, display: 'flex', justifyContent: 'space-between' }}>
                     <div>
                         <Button type="primary" onClick={() => this.handleAdd()}>添加</Button>
-                        <Button style={{margin: '0 8px'}} type="primary" onClick={this.handleGen}>生成文件</Button>
+                        <Button style={{ margin: '0 8px' }} type="primary" onClick={this.handleGen}>生成文件</Button>
                         <Button onClick={this.handlePreview}>代码预览</Button>
                     </div>
-                    <div style={{paddingRight: 23, paddingTop: 3}}>
-                        {renderTags(table, () => this.setState({table: {...table}}))}
+                    <div style={{ paddingRight: 23, paddingTop: 3 }}>
+                        {renderTags(table, () => this.setState({ table: { ...table } }))}
                     </div>
                 </div>
                 <EditTable
@@ -721,8 +721,8 @@ export default class UserCenter extends Component {
                 <PreviewModal
                     visible={previewVisible}
                     previewCode={previewCode}
-                    onOk={() => this.setState({previewVisible: false})}
-                    onCancel={() => this.setState({previewVisible: false})}
+                    onOk={() => this.setState({ previewVisible: false })}
+                    onCancel={() => this.setState({ previewVisible: false })}
                 />
             </PageContent>
         );

@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import config from 'src/commons/config-hoc';
-import PageContent from 'src/layouts/page-content';
+import { PageContent } from 'ra-lib';
 import './style.less';
 
 @config({
     path: '/',
-    title: {text: '首页', icon: 'home'},
-    breadcrumbs: [{key: 'home', text: '首页', icon: 'home'}],
+    title: { text: '首页', icon: 'home' },
+    breadcrumbs: [ { key: 'home', text: '首页', icon: 'home' } ],
 })
 export default class Home extends Component {
 

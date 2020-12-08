@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Button} from 'antd';
 import config from 'src/commons/config-hoc';
-import PageContent from 'src/layouts/page-content';
+import { PageContent } from 'ra-lib';
 
 export default config({
     path: '/use-state',

@@ -2,21 +2,28 @@ import React from 'react';
 import { ConfigProvider, Spin } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import AppRouter from './router/AppRouter';
-import { connect } from './models';
 import moment from 'moment';
-import { getLoginUser, setLoginUser } from '@/commons';
-import 'moment/locale/zh-cn'; // 解决 antd 日期组件国际化问题
+import 'moment/locale/zh-cn';
+import { getLoginUser, setLoginUser, getMenuTreeDataAndPermissions } from 'src/commons';
+import { connect } from 'src/models'; // 解决 antd 日期组件国际化问题
+import getMenus from './menus';
+import cfg from 'src/config';
+import theme from 'src/theme';
+
+const { appName } = cfg;
 // 设置语言
 moment.locale('zh-cn');
+
 
 @connect()
 export default class App extends React.Component {
     state = {
-        loading: false,
+        loading: true,
     };
 
     componentDidMount() {
-        const { action: { menu, system } } = this.props;
+        const { action: { layout } } = this.props;
+
         // 从Storage中获取出需要同步到redux的数据
         this.props.action.getStateFromStorage();
 
@@ -25,17 +32,43 @@ export default class App extends React.Component {
 
         // 获取系统菜单 和 随菜单携带过来的权限
         this.setState({ loading: true });
-        menu.getMenus({
-            params: { userId },
-            onResolve: (res) => {
-                const menus = res || [];
-                const permissions = [];
-                const paths = [];
 
-                menus.forEach(({ type, path, code }) => {
+        getMenus(userId)
+            .then(res => {
+                const plainMenus = res || [];
+                const permissions = [];
+                const userPaths = [];
+
+                const { menuTreeData } = getMenuTreeDataAndPermissions(plainMenus);
+
+                // 设置basePath
+                const loop = (nodes, basePath) => {
+                    nodes.forEach(item => {
+                        const { path, children } = item;
+                        item.path = `${basePath}${path}`;
+
+                        if (children?.length) {
+                            loop(children, basePath);
+                        }
+                    });
+                };
+
+                menuTreeData.forEach(top => {
+                    const { basePath, path, children } = top;
+                    if (!basePath) return;
+
+                    if (path && !path.startsWith(basePath)) {
+                        top.path = `${basePath}${path}`;
+                    }
+                    if (children?.length) {
+                        loop(children, basePath);
+                    }
+                });
+
+                plainMenus.forEach(({ type, path, code }) => {
                     if (type === '2' && code) permissions.push(code);
 
-                    if (path) paths.push(path);
+                    if (path) userPaths.push(path);
                 });
 
                 if (loginUser) {
@@ -43,24 +76,22 @@ export default class App extends React.Component {
                     setLoginUser(loginUser);
                 }
 
-                // 设置当前登录的用户到model中
-                system.setLoginUser(loginUser);
-
-                // 保存用户权限到model中
-                system.setPermissions(permissions);
-
-                // 保存当前用户可用path到model中
-                system.setUserPaths(paths);
-            },
-            onComplete: () => {
+                layout.setMenus(menuTreeData);
+                layout.setPlainMenus(plainMenus);
+                layout.setUserPaths(userPaths);
+                layout.setPermissions(permissions);
+                layout.setLoginUser(loginUser);
+                layout.setAppName(appName);
+                layout.setPrimaryColor(theme['@primary-color']);
+            })
+            .finally(() => {
                 this.setState({ loading: false });
-            },
-        });
+            });
     }
 
     render() {
+        const { subLoading, subAppError } = this.props;
         const { loading } = this.state;
-
         return (
             <ConfigProvider locale={zhCN}>
                 {loading ? (
@@ -74,7 +105,7 @@ export default class App extends React.Component {
                         <Spin spinning tip="加载中..."/>
                     </div>
                 ) : (
-                    <AppRouter/>
+                    <AppRouter subLoading={subLoading} subAppError={subAppError}/>
                 )}
             </ConfigProvider>
         );

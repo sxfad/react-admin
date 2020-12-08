@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Tabs} from 'antd';
 import config from 'src/commons/config-hoc';
-import PageContent from 'src/layouts/page-content';
+import { PageContent } from 'ra-lib';
 import Fast from './Fast';
 import Single from './Single';
 import './style.less';

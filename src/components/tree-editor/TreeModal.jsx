@@ -2,7 +2,7 @@ import React from 'react';
 import { Input, Tree, Empty, Button, Popconfirm } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined, SaveOutlined } from '@ant-design/icons';
 import config from 'src/commons/config-hoc';
-import { ModalContent } from 'src/library/components';
+import { ModalContent } from 'ra-lib';
 import PropTypes from 'prop-types';
 import './style.less';
 

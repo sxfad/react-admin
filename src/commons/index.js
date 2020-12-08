@@ -1,5 +1,4 @@
-import { session } from 'src/library/utils/storage';
-import { getNodeByPropertyAndValue, convertToTree } from 'src/library/utils/tree-utils';
+import { storage, tree } from 'ra-lib';
 import { pathToRegexp } from 'path-to-regexp';
 import cfg from 'src/config';
 
@@ -82,7 +81,7 @@ export function toLogin() {
     if (isLogin) return null;
 
     // 清除相关数据
-    session.clear();
+    storage.session.clear();
     localStorage.setItem(LOGIN_USER_STORAGE_KEY, null);
     sessionStorage.clear();
     sessionStorage.setItem('last-href', window.location.pathname);
@@ -108,7 +107,7 @@ export function getSelectedMenuByPath(path, menuTreeData) {
         }
 
         // 先精确匹配
-        selectedMenu = getNodeByPropertyAndValue(menuTreeData, 'path', path, (itemValue, value, item) => {
+        selectedMenu = tree.getNodeByPropertyAndValue(menuTreeData, 'path', path, (itemValue, value, item) => {
             const isTop = item.children && item.children.length;
             return itemValue === value && !isTop; // 排除父级节点
         });
@@ -116,7 +115,7 @@ export function getSelectedMenuByPath(path, menuTreeData) {
         // 正则匹配，路由中有`:id`的情况
         // fixme 容易出问题：a/b/:id,会匹配 a/b/1, a/b/detail，有可能不是期望的结果，注意路由写法，a/b/tab/:id 具体的:id，添加一级，用来表明id是什么
         if (!selectedMenu && path !== '/') {
-            selectedMenu = getNodeByPropertyAndValue(menuTreeData, 'path', path, (itemValue, value, item) => {
+            selectedMenu = tree.getNodeByPropertyAndValue(menuTreeData, 'path', path, (itemValue, value, item) => {
                 const isTop = item.children && item.children.length;
                 const re = pathToRegexp(itemValue);
                 return !!re.exec(value) && !isTop; // 排除父级节点
@@ -186,7 +185,7 @@ export function getMenuTreeDataAndPermissions(menus) {
         }
     });
 
-    const menuTreeData = convertToTree(orderedData);
+    const menuTreeData = tree.convertToTree(orderedData);
     return { menuTreeData, permissions };
 }
 

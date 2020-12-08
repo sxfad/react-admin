@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
-import * as storage from 'src/library/utils/storage';
+import { Provider } from 'react-redux';
+import { storage } from 'ra-lib';
 import App from './App';
-import {store} from './models';
+import { store } from './models';
 import * as serviceWorker from './serviceWorker';
-import {getLoginUser} from './commons';
+import { getLoginUser } from './commons';
 import './index.css';
 import './mobile.css';
 

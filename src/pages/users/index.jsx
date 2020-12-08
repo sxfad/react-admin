@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Form } from 'antd';
-import PageContent from 'src/layouts/page-content';
+import { PageContent } from 'ra-lib';
 import config from 'src/commons/config-hoc';
 import {
     QueryBar,
@@ -9,7 +9,7 @@ import {
     Table,
     Operator,
     Pagination,
-} from 'src/library/components';
+} from 'ra-lib';
 import batchDeleteConfirm from 'src/components/batch-delete-confirm';
 import EditModal from './EditModal';
 

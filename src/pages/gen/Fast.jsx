@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Form, Button, Modal} from 'antd';
 import {ExclamationCircleOutlined} from '@ant-design/icons';
-import {FormElement, FormRow, Table, tableEditable} from 'src/library/components';
+import {FormElement, FormRow, Table, tableEditable} from 'ra-lib';
 import config from 'src/commons/config-hoc';
-import PageContent from 'src/layouts/page-content';
+import { PageContent } from 'ra-lib';
 import {
     DB_URL_STORE_KEY,
     renderTags,

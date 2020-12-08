@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Form} from 'antd';
-import {FormElement, FormRow, IconPicker, ModalContent} from 'src/library/components';
+import {FormElement, FormRow, IconPicker, ModalContent} from 'ra-lib';
 import config from 'src/commons/config-hoc';
 
 @config({

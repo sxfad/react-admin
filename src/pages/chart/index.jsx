@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Form, } from 'antd';
 
-import PageContent from 'src/layouts/page-content';
+import { PageContent } from 'ra-lib';
 import config from 'src/commons/config-hoc';
 import {useGet, useDel} from 'src/commons/ajax';
 import {
@@ -11,7 +11,7 @@ import {
     Table,
     Operator,
     Pagination,
-} from 'src/library/components';
+} from 'ra-lib';
 import batchDeleteConfirm from 'src/components/batch-delete-confirm';
 
 import EditModal from './EditModal';
@@ -55,7 +55,7 @@ export default config({
                             onConfirm: () => handleDelete(id),
                         },
                     },
-                    
+
                 ];
 
                 return <Operator items={items}/>

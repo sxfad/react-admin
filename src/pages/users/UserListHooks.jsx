@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'antd';
 
-import PageContent from 'src/layouts/page-content';
+import { PageContent } from 'ra-lib';
 import config from 'src/commons/config-hoc';
 import batchDeleteConfirm from 'src/components/batch-delete-confirm';
 import { useGet, useDel } from 'src/commons/ajax';
@@ -13,7 +13,7 @@ import {
     Pagination,
     QueryBar,
     Table,
-} from 'src/library/components';
+} from 'ra-lib';
 
 import EditModal from './EditModalHooks';
 
