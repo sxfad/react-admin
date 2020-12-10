@@ -108,7 +108,9 @@ export default config({
 
     // 组件初始化完成之后，进行一次查询
     useEffect(() => {
-        handleSearch();
+        (async () => {
+            await handleSearch();
+        })();
     }, []);
 
     // jsx 用到的数据

@@ -6,6 +6,8 @@ const {
     PUBLIC_URL,
 } = process.env;
 
+const isDev = NODE_ENV === 'development';
+
 export default {
     appName: 'React Admin',
     // 默认ajax url前缀
@@ -17,12 +19,14 @@ export default {
     baseName: BASE_NAME || '',
 
     // 是否启用mock
-    mock: MOCK || (NODE_ENV === 'development'),
+    mock: MOCK || isDev,
 
     // 静态文件前缀
     publicUrl: PUBLIC_URL || '',
 
     // 运行环境
     nodeEnv: NODE_ENV || 'development',
+
+    isDev,
 
 };
