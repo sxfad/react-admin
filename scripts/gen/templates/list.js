@@ -53,9 +53,10 @@ module.exports = function (config) {
     return `import React, {Component} from 'react';
 ${tools || queries || hasBatchDelete ? `import {${(queries || tools) ? 'Button, ' : ''}${queries ? 'Form, ' : ''}} from 'antd';` : DELETE_THIS_LINE}
 ${columns.find(renderTime) ? `import moment from 'moment';` : DELETE_THIS_LINE}
-import PageContent from 'src/layouts/page-content';
 import config from 'src/commons/config-hoc';
 import {
+    PageContent,
+    ${hasBatchDelete ? 'batchDeleteConfirm,' : DELETE_THIS_LINE}
     ${queries ? 'QueryBar,' : DELETE_THIS_LINE}
     ${(!queries && tools) ? 'ToolBar,' : DELETE_THIS_LINE}
     ${queries ? 'FormRow,' : DELETE_THIS_LINE}
@@ -63,8 +64,7 @@ import {
     Table,
     ${operators ? 'Operator,' : DELETE_THIS_LINE}
     ${table.pagination ? 'Pagination,' : DELETE_THIS_LINE}
-} from 'src/library/components';
-${hasBatchDelete ? `import batchDeleteConfirm from 'src/components/batch-delete-confirm';` : DELETE_THIS_LINE}
+} from 'ra-lib';
 ${isModalEdit ? 'import EditModal from \'./EditModal\';' : DELETE_THIS_LINE}
 
 @config({

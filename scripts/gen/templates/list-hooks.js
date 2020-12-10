@@ -1,8 +1,8 @@
 const DELETE_THIS_LINE = 'DELETE_THIS_LINE';
-const WITH_OPTIONS_TYPE = ['select', 'radio-group', 'checkbox-group'];
+const WITH_OPTIONS_TYPE = [ 'select', 'radio-group', 'checkbox-group' ];
 
 function renderTime(item) {
-    const {title, dataIndex} = item;
+    const { title, dataIndex } = item;
     const timeStr = `, render: value => value ? moment(value).format('YYYY-MM-DD HH:mm') : null`;
     const dateStr = `, render: value => value ? moment(value).format('YYYY-MM-DD') : null`;
 
@@ -17,7 +17,7 @@ function renderTime(item) {
 /**
  * 获取列表页字符串
  */
-module.exports = function (config) {
+module.exports = function(config) {
     let {
         base,
         pages,
@@ -37,9 +37,9 @@ module.exports = function (config) {
     const hasDelete = operators && !!operators.find(item => item.text === '删除');
     const hasBatchDelete = tools && !!tools.find(item => item.text === '删除');
     let handles = null;
-    const excludeHandles = ['handleDelete', 'handleBatchDelete'];
-    [...(tools || []), ...(operators || [])].forEach(item => {
-        const {handle} = item;
+    const excludeHandles = [ 'handleDelete', 'handleBatchDelete' ];
+    [ ...(tools || []), ...(operators || []) ].forEach(item => {
+        const { handle } = item;
         if (handle && !excludeHandles.includes(handle)) {
             if (!handles) handles = [];
             handles.push(handle);
@@ -53,10 +53,10 @@ module.exports = function (config) {
 ${tools || queries || hasBatchDelete ? `import {${(queries || tools) ? 'Button, ' : ''}${queries ? 'Form' : ''}} from 'antd';` : DELETE_THIS_LINE}
 ${columns.find(renderTime) ? `import moment from 'moment';` : DELETE_THIS_LINE}
 
-import PageContent from 'src/layouts/page-content';
 import config from 'src/commons/config-hoc';
-import {useGet${hasDelete || hasBatchDelete ? ', useDel' : ''}} from 'src/commons/ajax';
 import {
+    PageContent,
+    ${hasBatchDelete ? 'batchDeleteConfirm,' : DELETE_THIS_LINE}
     ${queries ? 'QueryBar,' : DELETE_THIS_LINE}
     ${(!queries && tools) ? 'ToolBar,' : DELETE_THIS_LINE}
     ${queries ? 'FormRow,' : DELETE_THIS_LINE}
@@ -64,26 +64,26 @@ import {
     Table,
     ${operators ? 'Operator,' : DELETE_THIS_LINE}
     ${table.pagination ? 'Pagination,' : DELETE_THIS_LINE}
-} from 'src/library/components';
-${hasBatchDelete ? `import batchDeleteConfirm from 'src/components/batch-delete-confirm';` : DELETE_THIS_LINE}
+} from 'ra-lib';
 
 ${isModalEdit ? 'import EditModal from \'./EditModal\';' : DELETE_THIS_LINE}
 
 export default config({
     path: '${base.path}',
     ${isPageEdit ? 'router: true,' : DELETE_THIS_LINE}
-})((${isPageEdit ? 'props' : ''}) => {
-    ${queries || table.pagination ? `const [{${queries ? 'condition, ' : ''}${table.pagination ? 'pageSize, pageNum' : ''}}, setCondition] = useState({${queries ? 'condition: {}, ' : ''}${table.pagination ? 'pageSize: 20, pageNum: 1' : ''}});` : DELETE_THIS_LINE}
+})((props) => {
+    ${table.pagination ? `const [ pageNum, setPageNum ] = useState(1);
+    const [ pageSize, setPageSize ] = useState(20);
+    const [total, setTotal] = useState(0);` : DELETE_THIS_LINE}
     const [dataSource, setDataSource] = useState([]);
     ${table.selectable ? 'const [selectedRowKeys, setSelectedRowKeys] = useState([]);' : DELETE_THIS_LINE}
-    ${table.pagination ? 'const [total, setTotal] = useState(0);' : DELETE_THIS_LINE}
     ${isModalEdit ? 'const [visible, setVisible] = useState(false);' : DELETE_THIS_LINE}
     ${isModalEdit ? 'const [id, setId] = useState(null);' : DELETE_THIS_LINE}
     ${queries ? 'const [form] = Form.useForm();' : DELETE_THIS_LINE}
 
-    const [loading, fetch${base.ModuleNames}] = useGet('${base.ajax.search.url}');
-    ${hasDelete ? `const [deleting, delete${base.ModuleNames}] = useDel('${base.ajax.batchDelete.url}', {successTip: '删除成功！', errorTip: '删除失败！'});` : DELETE_THIS_LINE}
-    ${hasBatchDelete ? `const [deletingOne, delete${base.ModuleName}] = useDel('${base.ajax.delete.url}', {successTip: '删除成功！', errorTip: '删除失败！'});` : DELETE_THIS_LINE}
+    const [loading, fetch${base.ModuleNames}] = props.ajax.useGet('${base.ajax.search.url}');
+    ${hasDelete ? `const [deleting, delete${base.ModuleNames}] = props.ajax.useDel('${base.ajax.batchDelete.url}', {successTip: '删除成功！', errorTip: '删除失败！'});` : DELETE_THIS_LINE}
+    ${hasBatchDelete ? `const [deletingOne, delete${base.ModuleName}] = props.ajax.useDel('${base.ajax.delete.url}', {successTip: '删除成功！', errorTip: '删除失败！'});` : DELETE_THIS_LINE}
 
     const columns = [
         ${columns.map(item => `{title: '${item.title}', dataIndex: '${item.dataIndex}', width: 200${renderTime(item)}},`).join('\n        ')}
@@ -107,7 +107,7 @@ export default config({
                             onConfirm: () => handleDelete(id),
                         },
                     },` : DELETE_THIS_LINE}
-                    ${operators.filter(item => !['修改', '删除'].includes(item.text)).map(item => `{
+                    ${operators.filter(item => ![ '修改', '删除' ].includes(item.text)).map(item => `{
                         label: '${item.text}',
                         ${item.iconMode ? `icon: '${item.icon}',` : DELETE_THIS_LINE}
                         onClick: ${item.handle},
@@ -119,18 +119,26 @@ export default config({
         },` : DELETE_THIS_LINE}
     ];
 
-    async function handleSearch() {
+    async function handleSearch(options = {}) {
         if (loading) return;
+        // 获取表单数据
+        ${queries ? 'const values = form.getFieldsValue();' : DELETE_THIS_LINE}
+
         const params = {
-            ${queries ? '...condition,' : DELETE_THIS_LINE}
-            ${table.pagination ? `pageNum,
-            pageSize,` : DELETE_THIS_LINE}
+            ${queries ? '...values,' : DELETE_THIS_LINE}
         };
+        ${table.pagination ? `
+        // 翻页信息优先从参数中获取
+        params.pageNum = options.pageNum || pageNum;
+        params.pageSize = options.pageSize || pageSize;`: DELETE_THIS_LINE}
 
         const res = await fetch${base.ModuleNames}(params);
 
         setDataSource(res?.list || []);
-        ${table.pagination ? 'setTotal(res?.total || 0);' : DELETE_THIS_LINE}
+        ${table.pagination ? `
+        setTotal(res?.total || 0);
+        setPageNum(params.pageNum);
+        setPageSize(params.pageSize);` : DELETE_THIS_LINE}
     }
 
     ${hasDelete ? `async function handleDelete(id) {
@@ -154,13 +162,13 @@ export default config({
         // TODO
     };
     `).join('\n    ') : DELETE_THIS_LINE}
+
+    // 组件初始化完成之后，进行一次查询
     useEffect(() => {
-        handleSearch();
-    }, [
-        ${queries ? 'condition,' : DELETE_THIS_LINE}
-        ${table.pagination ? `pageNum,
-        pageSize,` : DELETE_THIS_LINE}
-    ]);
+        (async () => {
+            await handleSearch();
+        })();
+    }, []);
 
     ${queries ? 'const formProps = {width: 200};' : DELETE_THIS_LINE}
     const pageLoading = loading${hasBatchDelete ? ' || deleting' : null}${hasDelete ? ' || deletingOne' : ''};
@@ -170,9 +178,9 @@ export default config({
         <PageContent loading={pageLoading}>
             ${queries ? `<QueryBar>
                 <Form
-                    name="${base.moduleName}-query"
+                    name="${base.module_name}_query"
                     form={form}
-                    onFinish={condition => setCondition({condition${table.pagination ? ', pageSize, pageNum: 1' : ''}})}
+                    onFinish={() => handleSearch({ pageNum: 1 })}
                 >
                     <FormRow>
                         ${queries.map(item => `<FormElement
@@ -190,7 +198,7 @@ export default config({
                             <Button onClick={() => form.resetFields()}>重置</Button>
                             ${tools ? `${tools.find(item => item.text === '添加') ? `<Button type="primary" onClick={() => ${isModalEdit ? `setVisible(true) || setId(null)` : `props.history.push('${base.path}/_/edit/:id')`}}>添加</Button>` : DELETE_THIS_LINE}
                             ${tools.find(item => item.text === '删除') ? `<Button danger ${table.selectable ? 'disabled={disabledDelete} ' : ''}onClick={handleBatchDelete}>删除</Button>` : DELETE_THIS_LINE}
-                            ${tools.filter(item => !['添加', '删除'].includes(item.text)).length ? tools.filter(item => !['添加', '删除'].includes(item.text)).map(item => `<Button type="primary" onClick={${item.handle}}>${item.text}</Button>`).join('\n                         ') : DELETE_THIS_LINE}` : DELETE_THIS_LINE}
+                            ${tools.filter(item => ![ '添加', '删除' ].includes(item.text)).length ? tools.filter(item => ![ '添加', '删除' ].includes(item.text)).map(item => `<Button type="primary" onClick={${item.handle}}>${item.text}</Button>`).join('\n                         ') : DELETE_THIS_LINE}` : DELETE_THIS_LINE}
                         </FormElement>
                     </FormRow>
                 </Form>
@@ -198,7 +206,7 @@ export default config({
             ${(!queries && tools) ? `<ToolBar>
                 ${tools ? `${tools.find(item => item.text === '添加') ? `<Button type="primary" onClick={() => ${isModalEdit ? `setVisible(true) || setId(null)` : `props.history.push('${base.path}/_/edit/:id')`}}>添加</Button>` : DELETE_THIS_LINE}
                 ${tools.find(item => item.text === '删除') ? `<Button danger ${table.selectable ? 'disabled={disabledDelete} ' : ''}onClick={handleBatchDelete}>删除</Button>` : DELETE_THIS_LINE}
-                ${tools.filter(item => !['添加', '删除'].includes(item.text)).length ? tools.filter(item => !['添加', '删除'].includes(item.text)).map(item => `<Button type="primary" onClick={${item.handle}}>${item.text}</Button>`).join('\n                 ') : DELETE_THIS_LINE}` : DELETE_THIS_LINE}
+                ${tools.filter(item => ![ '添加', '删除' ].includes(item.text)).length ? tools.filter(item => ![ '添加', '删除' ].includes(item.text)).map(item => `<Button type="primary" onClick={${item.handle}}>${item.text}</Button>`).join('\n                 ') : DELETE_THIS_LINE}` : DELETE_THIS_LINE}
             </ToolBar>` : DELETE_THIS_LINE}
             <Table
                 ${table.serialNumber ? 'serialNumber' : DELETE_THIS_LINE}
@@ -216,14 +224,14 @@ export default config({
                 total={total}
                 pageNum={pageNum}
                 pageSize={pageSize}
-                onPageNumChange={pageNum => setCondition({${queries ? 'condition, ' : ''}pageSize, pageNum})}
-                onPageSizeChange={pageSize => setCondition({${queries ? 'condition, ' : ''}pageSize, pageNum: 1})}
+                onPageNumChange={pageNum => handleSearch({ pageNum })}
+                onPageSizeChange={pageSize => handleSearch({ pageNum: 1, pageSize })}
             />` : DELETE_THIS_LINE}
             ${isModalEdit ? `<EditModal
                 visible={visible}
                 id={id}
                 isEdit={id !== null}
-                onOk={() => setVisible(false) || handleSearch()}
+                onOk={() => setVisible(false) || handleSearch({ pageNum: 1 })}
                 onCancel={() => setVisible(false)}
             />` : DELETE_THIS_LINE}
         </PageContent>

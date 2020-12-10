@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, Modal } from 'antd';
+import { Button, Form, Modal, Input } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { v4 as uuid } from 'uuid';
 import config from 'src/commons/config-hoc';
@@ -22,6 +22,7 @@ import {
     getTables,
     getLabel,
     getFormElementType,
+    getFormElementName,
 } from './util';
 import PreviewModal from './PreviewModal';
 import './style.less';
@@ -43,6 +44,7 @@ export default class UserCenter extends Component {
         ignoreFields: [],   // 忽略字段
         previewVisible: false,
         previewCode: '',
+        fastEdit: false,   // test area 快速编辑
     };
 
     columns = [
@@ -128,13 +130,13 @@ export default class UserCenter extends Component {
         {
             title: '操作', dataIndex: 'operator', width: 40,
             render: (value, record) => {
-                const { id, name } = record;
+                const { id, chinese } = record;
                 const items = [
                     {
                         label: '删除',
                         color: 'red',
                         confirm: {
-                            title: `您确定删除"${name}"?`,
+                            title: `您确定删除"${chinese}"?`,
                             onConfirm: () => this.handleDelete(id),
                         },
                     },
@@ -574,13 +576,72 @@ export default class UserCenter extends Component {
     };
 
     handleSortEnd = ({ newIndex, oldIndex }) => {
-        const { table } = this.state;
+        const { table = {} } = this.state;
         const { children = [] } = table;
 
         children.splice(newIndex, 0, ...children.splice(oldIndex, 1));
         table.children = [ ...children ];
 
         this.setState({ table: { ...table } });
+    };
+
+    handleFastEdit = () => {
+        const { fastEdit, table } = this.state;
+        const nextVisible = !fastEdit;
+        this.setState({ fastEdit: nextVisible });
+
+        if (!nextVisible) {
+            const value = document.getElementById('fastTextArea').value;
+            if (!value) {
+                this.setState({ table: { ...table, children: [] } });
+                return;
+            }
+
+            const rows = value.split('\n');
+            const children = [];
+            rows.forEach((item, index) => {
+                let str = item.trim();
+                // 多个空格 替换成一个
+                str = str.replace(/\s+/g, ' ');
+
+                if (!str) return;
+                let isColumn = str.includes('isColumn');
+                let isForm = str.includes('isForm');
+                let isQuery = str.includes('isQuery');
+
+                str = str.replace('isColumn', '');
+                str = str.replace('isForm', '');
+                str = str.replace('isQuery', '');
+
+                str = str.replace(/\s+/g, ' ');
+
+                if (!str) return;
+
+                let [ chinese, field, formType ] = str.split(' ');
+                if (!formType) formType = getFormElementType({ label: chinese });
+                if (!field) field = getFormElementName({ label: chinese, fields: children.map(item => item.field) });
+
+
+                if (!isColumn && !isForm && !isQuery) {
+                    isColumn = true;
+                    isForm = true;
+                }
+
+                children.push({
+                    id: field,
+                    comment: chinese,
+                    chinese,
+                    field,
+                    formType,
+                    isColumn,
+                    isForm,
+                    isQuery,
+                });
+
+            });
+
+            this.setState({ table: { ...table, children } });
+        }
     };
 
     render() {
@@ -591,6 +652,7 @@ export default class UserCenter extends Component {
             table,
             previewVisible,
             previewCode,
+            fastEdit,
         } = this.state;
 
         const formProps = {
@@ -703,21 +765,39 @@ export default class UserCenter extends Component {
                 </QueryBar>
                 <div style={{ marginBottom: 8, display: 'flex', justifyContent: 'space-between' }}>
                     <div>
-                        <Button type="primary" onClick={() => this.handleAdd()}>添加</Button>
-                        <Button style={{ margin: '0 8px' }} type="primary" onClick={this.handleGen}>生成文件</Button>
-                        <Button onClick={this.handlePreview}>代码预览</Button>
+                        <Button disabled={fastEdit} type="primary" onClick={() => this.handleAdd()}>添加</Button>
+                        <Button disabled={fastEdit} style={{ margin: '0 8px' }} type="primary" onClick={this.handleGen}>生成文件</Button>
+                        <Button disabled={fastEdit} onClick={this.handlePreview}>代码预览</Button>
+                        <Button type="primary" style={{ margin: '0 8px' }} onClick={this.handleFastEdit}>{fastEdit ? '表格编辑' : '快速编辑'}</Button>
                     </div>
                     <div style={{ paddingRight: 23, paddingTop: 3 }}>
                         {renderTags(table, () => this.setState({ table: { ...table } }))}
                     </div>
                 </div>
-                <EditTable
-                    onSortEnd={this.handleSortEnd}
-                    serialNumber
-                    columns={this.columns}
-                    dataSource={table?.children}
-                    rowKey="id"
-                />
+                <div style={{ position: 'relative', height: 'calc(100vh - 230px)' }}>
+
+                    {this.state.fastEdit ? (
+                        <Input.TextArea
+                            id="fastTextArea"
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                right: 0,
+                                bottom: 0,
+                                left: 0,
+                            }}
+                            defaultValue={table?.children?.map(item => `${item.chinese || ''} ${item.field || ''} ${item.formType || ''} ${[ 'isColumn', 'isForm', 'isQuery' ].map(key => item[key] ? key : '').join(' ')}`).join('\n')}
+                        />
+                    ) : (
+                        <EditTable
+                            onSortEnd={this.handleSortEnd}
+                            serialNumber
+                            columns={this.columns}
+                            dataSource={table?.children}
+                            rowKey="id"
+                        />
+                    )}
+                </div>
                 <PreviewModal
                     visible={previewVisible}
                     previewCode={previewCode}

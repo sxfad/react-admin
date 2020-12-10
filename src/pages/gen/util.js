@@ -1,5 +1,5 @@
 import React from 'react';
-import {Tag} from 'antd';
+import { Tag } from 'antd';
 import './style.less';
 
 export const DB_URL_STORE_KEY = 'GEN_DB_URL';
@@ -13,7 +13,20 @@ export function getLabel(str) {
     return str;
 }
 
-export function getFormElementType({oType = 'string', label = ''}) {
+export function getFormElementName({ label = '', fields = [] }) {
+    const numbers = fields.map(item => {
+        const str = item.replace('field', '') || '';
+        return window.parseInt(str, 10) || 0;
+    });
+
+    const max = numbers?.length ? Math.max(...numbers) : 0;
+
+    // FIXME 根据label 翻译，或者查库等手段 自动生成field
+
+    return `field${max + 1}`;
+}
+
+export function getFormElementType({ oType = 'string', label = '' }) {
     let type = 'input';
 
     // FIXME 完善更多类型
@@ -39,7 +52,7 @@ export function getTables(res) {
     const ignoreFields = res.ignoreFields || [];
     const selectedRowKeys = [];
 
-    const dataSource = tables.map(({name: tableName, comment, columns}) => {
+    const dataSource = tables.map(({ name: tableName, comment, columns }) => {
         const id = tableName;
         selectedRowKeys.push(id);
         let queryCount = 0;
@@ -61,7 +74,7 @@ export function getTables(res) {
             modalEdit: true,
             pageEdit: false,
             children: columns.map(it => {
-                const {camelCaseName, name, type, isNullable, comment, chinese, length} = it;
+                const { camelCaseName, name, type, isNullable, comment, chinese, length } = it;
                 const id = `${tableName}-${name}`;
                 selectedRowKeys.push(id);
 
@@ -72,7 +85,7 @@ export function getTables(res) {
                 if (isQuery) queryCount++;
                 if (queryCount > 2) isQuery = false;
 
-                const formType = getFormElementType({oType: type, label: chinese});
+                const formType = getFormElementType({ oType: type, label: chinese });
 
                 return {
                     id,
@@ -94,7 +107,7 @@ export function getTables(res) {
         };
     });
 
-    return {dataSource, selectedRowKeys};
+    return { dataSource, selectedRowKeys };
 }
 
 export function renderTags(record, onClick = () => undefined) {
@@ -114,9 +127,9 @@ export function renderTags(record, onClick = () => undefined) {
         pageEdit: '页面编辑 purple',
     };
 
-    return Object.entries(configMap).map(([key, value]) => {
+    return Object.entries(configMap).map(([ key, value ]) => {
         const enabled = record[key];
-        let [label, color] = value.split(' ');
+        let [ label, color ] = value.split(' ');
         if (!enabled) color = '#ccc';
 
         return (
@@ -156,14 +169,14 @@ export function renderTags(record, onClick = () => undefined) {
 }
 
 export function renderFieldTags(record, onClick = () => undefined) {
-    const {isColumn, isForm, isQuery} = record;
+    const { isColumn, isForm, isQuery } = record;
     const labelMap = {
         isColumn: '表格 orange',
         isQuery: '条件 green',
         isForm: '表单 purple',
     };
-    return Object.entries({isColumn, isQuery, isForm}).map(([key, val]) => {
-        const [label, color] = labelMap[key].split(' ');
+    return Object.entries({ isColumn, isQuery, isForm }).map(([ key, val ]) => {
+        const [ label, color ] = labelMap[key].split(' ');
 
         return (
             <Tag

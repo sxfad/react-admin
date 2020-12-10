@@ -4,6 +4,7 @@ import { Icon } from 'ra-lib';
 import config from 'src/commons/config-hoc';
 import { tree } from 'ra-lib';
 import { Table } from 'ra-lib';
+import getMenus from 'src/menus';
 import './style.less';
 
 @config({
@@ -52,9 +53,12 @@ export default class index extends Component {
 
     handleSearch() {
         this.setState({ loading: true });
-        this.props.ajax
-            .get('/menus')
+        // this.props.ajax
+        //     .get('/menus')
+        getMenus()
             .then(res => {
+                if (!Array.isArray(res)) return [];
+
                 const menus = res.map(item => ({ key: item.id, parentKey: item.parentId, ...item }));
                 const allMenuKeys = menus.map(item => item.key);
                 // 菜单根据order 排序

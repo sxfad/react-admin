@@ -13,10 +13,8 @@ module.exports = function (config) {
 
     return `import React, {useState, useEffect} from 'react';
 import {Form} from 'antd';
-import {FormElement} from 'src/library/components';
+import {FormElement, ModalContent} from 'ra-lib';
 import config from 'src/commons/config-hoc';
-import {ModalContent} from 'src/library/components';
-import {useGet, usePost, usePut} from 'src/commons/ajax';
 
 export default config({
     modal: props => props.isEdit ? '修改' : '添加',
@@ -24,9 +22,9 @@ export default config({
     const [data, setData] = useState({});
     const {isEdit, id, onOk} = props;
     const [form] = Form.useForm();
-    const [loading, fetch${ModuleName}] = useGet('${base.ajax.detail.url}');
-    const [saving, save${ModuleName}] = usePost('${base.ajax.add.url}', {successTip: '添加成功！'});
-    const [updating, update${ModuleName}] = usePut('${base.ajax.modify.url}', {successTip: '修改成功！'});
+    const [loading, fetch${ModuleName}] = props.ajax.useGet('${base.ajax.detail.url}');
+    const [saving, save${ModuleName}] = props.ajax.usePost('${base.ajax.add.url}', {successTip: '添加成功！'});
+    const [updating, update${ModuleName}] = props.ajax.usePut('${base.ajax.modify.url}', {successTip: '修改成功！'});
 
     async function fetchData() {
         if (loading) return;
