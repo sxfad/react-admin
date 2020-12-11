@@ -10,6 +10,7 @@ const {TabPane} = Tabs;
 
 @config({
     title: '代码生成',
+    side: false,
     path: '/gen',
 })
 export default class index extends Component {

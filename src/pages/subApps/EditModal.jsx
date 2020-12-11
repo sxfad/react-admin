@@ -1,25 +1,25 @@
-import React, {useState, useEffect} from 'react';
-import {Form} from 'antd';
-import {FormElement, ModalContent} from 'ra-lib';
+import React, { useState, useEffect } from 'react';
+import { Form } from 'antd';
+import { FormElement, ModalContent } from 'ra-lib';
 import config from 'src/commons/config-hoc';
 
 export default config({
     modal: props => props.isEdit ? '修改' : '添加',
 })(props => {
-    const [data, setData] = useState({});
-    const {isEdit, id, onOk} = props;
-    const [form] = Form.useForm();
-    const [loading, fetchDepartmentUser] = props.ajax.useGet('/departmentUsers/{id}');
-    const [saving, saveDepartmentUser] = props.ajax.usePost('/departmentUsers', {successTip: '添加成功！'});
-    const [updating, updateDepartmentUser] = props.ajax.usePut('/departmentUsers', {successTip: '修改成功！'});
+    const [ data, setData ] = useState({});
+    const { isEdit, id, onOk } = props;
+    const [ form ] = Form.useForm();
+    const [ loading, fetchSubApp ] = props.ajax.useGet('/subApps/{id}');
+    const [ saving, saveSubApp ] = props.ajax.usePost('/subApps', { successTip: '添加成功！' });
+    const [ updating, updateSubApp ] = props.ajax.usePut('/subApps', { successTip: '修改成功！' });
 
     async function fetchData() {
         if (loading) return;
 
-        const res = await fetchDepartmentUser(id);
+        const res = await fetchSubApp(id);
 
         // 不处理null，下拉框不显示placeholder
-        Object.entries(res).forEach(([key, value]) => {
+        Object.entries(res).forEach(([ key, value ]) => {
             if (value === null) res[key] = undefined;
         });
 
@@ -30,7 +30,7 @@ export default config({
     async function handleSubmit(values) {
         if (saving || updating) return;
 
-        await (isEdit ? updateDepartmentUser : saveDepartmentUser)(values);
+        await (isEdit ? updateSubApp : saveSubApp)(values);
 
         onOk && onOk();
     }
@@ -54,7 +54,7 @@ export default config({
             onCancel={() => form.resetFields()}
         >
             <Form
-                name="departmentUsers-modal-edit"
+                name="subApps-modal-edit"
                 form={form}
                 onFinish={handleSubmit}
                 initialValues={data}
@@ -62,25 +62,32 @@ export default config({
                 {isEdit ? <FormElement {...formProps} type="hidden" name="id"/> : null}
                 <FormElement
                     {...formProps}
-                    label="用户"
-                    name="userId"
-                    maxLength={36}
+                    label="entry"
+                    name="entry"
+                    maxLength={200}
                 />
                 <FormElement
                     {...formProps}
-                    label="部门"
-                    name="departmentId"
+                    label="activeRule"
+                    name="activeRule"
+                    maxLength={200}
                 />
                 <FormElement
                     {...formProps}
-                    type="switch"
-                    label="是否是领导"
-                    name="isLeader"
+                    label="name"
+                    name="name"
+                    maxLength={500}
                 />
                 <FormElement
                     {...formProps}
-                    label="排序"
-                    name="order"
+                    label="description"
+                    name="description"
+                    maxLength={500}
+                />
+                <FormElement
+                    {...formProps}
+                    label="side"
+                    name="side"
                 />
             </Form>
         </ModalContent>

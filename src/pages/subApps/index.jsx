@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Form} from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Button, Form } from 'antd';
 
 import config from 'src/commons/config-hoc';
 import {
@@ -16,30 +16,31 @@ import {
 import EditModal from './EditModal';
 
 export default config({
-    path: '/department_users',
+    path: '/subApps',
 })((props) => {
     const [ pageNum, setPageNum ] = useState(1);
     const [ pageSize, setPageSize ] = useState(20);
-    const [total, setTotal] = useState(0);
-    const [dataSource, setDataSource] = useState([]);
-    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const [visible, setVisible] = useState(false);
-    const [id, setId] = useState(null);
-    const [form] = Form.useForm();
+    const [ total, setTotal ] = useState(0);
+    const [ dataSource, setDataSource ] = useState([]);
+    const [ selectedRowKeys, setSelectedRowKeys ] = useState([]);
+    const [ visible, setVisible ] = useState(false);
+    const [ id, setId ] = useState(null);
+    const [ form ] = Form.useForm();
 
-    const [loading, fetchDepartmentUsers] = props.ajax.useGet('/departmentUsers');
-    const [deleting, deleteDepartmentUsers] = props.ajax.useDel('/departmentUsers', {successTip: '删除成功！', errorTip: '删除失败！'});
-    const [deletingOne, deleteDepartmentUser] = props.ajax.useDel('/departmentUsers/{id}', {successTip: '删除成功！', errorTip: '删除失败！'});
+    const [ loading, fetchSubApps ] = props.ajax.useGet('/subApps');
+    const [ deleting, deleteSubApps ] = props.ajax.useDel('/subApps', { successTip: '删除成功！', errorTip: '删除失败！' });
+    const [ deletingOne, deleteSubApp ] = props.ajax.useDel('/subApps/{id}', { successTip: '删除成功！', errorTip: '删除失败！' });
 
     const columns = [
-        {title: '用户', dataIndex: 'userId', width: 200},
-        {title: '部门', dataIndex: 'departmentId', width: 200},
-        {title: '是否是领导', dataIndex: 'isLeader', width: 200},
-        {title: '排序', dataIndex: 'order', width: 200},
+        { title: 'entry', dataIndex: 'entry' },
+        { title: 'activeRule', dataIndex: 'activeRule' },
+        { title: 'name', dataIndex: 'name' },
+        { title: 'description', dataIndex: 'description' },
+        { title: 'side', dataIndex: 'side' },
         {
-            title: '操作', dataIndex: 'operator', width: 100,
+            title: '操作', dataIndex: 'operator',
             render: (value, record) => {
-                const {id, name} = record;
+                const { id, name } = record;
                 const items = [
                     {
                         label: '修改',
@@ -53,10 +54,10 @@ export default config({
                             onConfirm: () => handleDelete(id),
                         },
                     },
-                    
+
                 ];
 
-                return <Operator items={items}/>
+                return <Operator items={items}/>;
             },
         },
     ];
@@ -69,15 +70,15 @@ export default config({
         const params = {
             ...values,
         };
-        
+
         // 翻页信息优先从参数中获取
         params.pageNum = options.pageNum || pageNum;
         params.pageSize = options.pageSize || pageSize;
 
-        const res = await fetchDepartmentUsers(params);
+        const res = await fetchSubApps(params);
 
         setDataSource(res?.list || []);
-        
+
         setTotal(res?.total || 0);
         setPageNum(params.pageNum);
         setPageSize(params.pageSize);
@@ -86,7 +87,7 @@ export default config({
     async function handleDelete(id) {
         if (deletingOne) return;
 
-        await deleteDepartmentUser(id);
+        await deleteSubApp(id);
         await handleSearch();
     }
 
@@ -95,7 +96,7 @@ export default config({
 
         await batchDeleteConfirm(selectedRowKeys.length);
 
-        await deleteDepartmentUsers({ids: selectedRowKeys});
+        await deleteSubApps({ ids: selectedRowKeys });
         setSelectedRowKeys([]);
         await handleSearch();
     }
@@ -108,7 +109,7 @@ export default config({
         })();
     }, []);
 
-    const formProps = {width: 200};
+    const formProps = {};
     const pageLoading = loading || deleting || deletingOne;
     const disabledDelete = !selectedRowKeys?.length || pageLoading;
 
@@ -116,20 +117,20 @@ export default config({
         <PageContent loading={pageLoading}>
             <QueryBar>
                 <Form
-                    name="department_users_query"
+                    name="subApps_query"
                     form={form}
                     onFinish={() => handleSearch({ pageNum: 1 })}
                 >
                     <FormRow>
                         <FormElement
                             {...formProps}
-                            label="用户"
-                            name="userId"
+                            label="entry"
+                            name="entry"
                         />
-                            <FormElement
+                        <FormElement
                             {...formProps}
-                            label="部门"
-                            name="departmentId"
+                            label="activeRule"
+                            name="activeRule"
                         />
                         <FormElement layout>
                             <Button type="primary" htmlType="submit">查询</Button>

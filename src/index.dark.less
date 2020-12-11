@@ -19,10 +19,17 @@ input:-webkit-autofill:active {
     -webkit-transition: color 99999s ease-out, background-color 99999s ease-out;
 }
 
+
 /*滚动条整体部分,必须要设置*/
 ::-webkit-scrollbar {
     width: 15px;
     background-color: @backgroundColorBase;
+}
+
+/*滚动条的上下两端的按钮*/
+::-webkit-scrollbar-button {
+    height: 15px;
+    background-color: @backgroundColor;
 }
 
 /*滚动条的滑块按钮*/
@@ -34,6 +41,10 @@ input:-webkit-autofill:active {
 
 .modal-content-inner .sx-page-content {
     background-color: #1f1f1f;
+}
+
+.sx-page-content-loading {
+    background-color: rgba(255, 255, 255, .1);
 }
 
 .sx-page-content {

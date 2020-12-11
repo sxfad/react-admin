@@ -141,7 +141,7 @@ export default config({
                             ]}
                         />
                         <FormElement layout>
-                            <Button type="primary" htmlType="submit">提交</Button>
+                            <Button type="primary" htmlType="submit">查询</Button>
                             <Button onClick={() => form.resetFields()}>重置</Button>
                             <Button type="primary" onClick={() => setVisible(true) || setId(null)}>添加</Button>
                             <Button danger disabled={disabledDelete} onClick={handleBatchDelete}>删除</Button>

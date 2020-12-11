@@ -1,15 +1,15 @@
 const DELETE_THIS_LINE = 'DELETE_THIS_LINE';
-const WITH_OPTIONS_TYPE = ['select', 'radio-group', 'checkbox-group'];
+const WITH_OPTIONS_TYPE = [ 'select', 'radio-group', 'checkbox-group' ];
 /**
  * 获取弹框编辑页面字符串
  */
-module.exports = function (config) {
+module.exports = function(config) {
     const {
         base,
         forms,
     } = config;
 
-    const {ModuleName, moduleName} = base;
+    const { ModuleName, moduleName } = base;
 
     return `import React, {useState, useEffect} from 'react';
 import {Form} from 'antd';
@@ -49,7 +49,9 @@ export default config({
     }
 
     useEffect(() => {
-        if (isEdit) fetchData();
+        (async () => {
+            if (isEdit) await fetchData();
+        })();
     }, []);
 
     const formProps = {

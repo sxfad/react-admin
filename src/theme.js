@@ -27,9 +27,7 @@ module.exports = {
     '@input-height-base': '28px',
     '@input-height-lg': '40px',
     '@input-height-sm': '24px',
-
     '@btn-height-base': '28px',
-
     '@table-padding-vertical': '8px',
     '@table-padding-horizontal': '8px',
     '@menu-inline-toplevel-item-height': '30px',

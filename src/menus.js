@@ -28,9 +28,9 @@ export default function getMenus(userId) {
         { key: 'level11', parentKey: 'level', path: '/2', text: '多级11', icon: 'align-left', order: 500 },
         { key: 'level2', parentKey: 'level11', path: '/3', text: '多级11', icon: 'align-left', order: 500 },
 
-        { key: 'baidu', basePath: 'http://baidu.com', text: '百度全家桶', icon: 'DribbbleOutlined', order: 400 },
-        { key: 'baidu-zhidao', parentKey: 'baidu', text: '知道', icon: 'align-left', url: '/zhidao' },
-        { key: 'baidu-buzhidao', parentKey: 'baidu', text: '不知道', icon: 'align-left', url: '/buzhidao' },
+        { key: 'baidu-family', basePath: 'http://baidu.com', text: '百度全家桶', icon: 'DribbbleOutlined', order: 400 },
+        { key: 'baidu-zhidao', parentKey: 'baidu-family', text: '知道', icon: 'align-left', url: '/zhidao' },
+        { key: 'baidu-buzhidao', parentKey: 'baidu-family', text: '不知道', icon: 'align-left', url: '/buzhidao' },
     ]);
 
 }

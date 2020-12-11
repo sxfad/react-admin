@@ -194,7 +194,7 @@ export default config({
                             ]}` : DELETE_THIS_LINE}
                         />`).join('\n                            ')}
                         <FormElement layout>
-                            <Button type="primary" htmlType="submit">提交</Button>
+                            <Button type="primary" htmlType="submit">查询</Button>
                             <Button onClick={() => form.resetFields()}>重置</Button>
                             ${tools ? `${tools.find(item => item.text === '添加') ? `<Button type="primary" onClick={() => ${isModalEdit ? `setVisible(true) || setId(null)` : `props.history.push('${base.path}/_/edit/:id')`}}>添加</Button>` : DELETE_THIS_LINE}
                             ${tools.find(item => item.text === '删除') ? `<Button danger ${table.selectable ? 'disabled={disabledDelete} ' : ''}onClick={handleBatchDelete}>删除</Button>` : DELETE_THIS_LINE}

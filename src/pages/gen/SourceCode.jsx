@@ -25,7 +25,7 @@ export default class SourceCode extends React.Component {
     setHeight = () => {
         const winHeight = document.documentElement.clientHeight || document.body.clientHeight;
         console.log(winHeight);
-        const height = winHeight - 285;
+        const height = winHeight - 286;
 
         this.setState({containerHeight: height});
     };

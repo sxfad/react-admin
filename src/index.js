@@ -8,10 +8,12 @@ import * as serviceWorker from './serviceWorker';
 import { getLoginUser } from './commons';
 
 import 'antd/dist/antd.less';
-import 'antd/dist/antd.dark.less';
+// import 'antd/dist/antd.dark.less';
+// import './index.dark.less';
+
 import './index.css';
-import './index.dark.less';
 import './index.mobile.css';
+
 
 // dev 模式开启mock
 if (process.env.NODE_ENV === 'development' || process.env.MOCK === 'true') {
