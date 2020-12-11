@@ -1,19 +1,23 @@
 import React from 'react';
 import { ConfigProvider, Spin } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
-import AppRouter from './router/AppRouter';
+import 'antd/dist/antd.less';
+
 import moment from 'moment';
 import 'moment/locale/zh-cn';
-import { getLoginUser, setLoginUser, getMenuTreeDataAndPermissions } from 'src/commons';
+import { util } from 'ra-lib';
+import { getLoginUser, setLoginUser } from 'src/commons';
 import { connect } from 'src/models'; // 解决 antd 日期组件国际化问题
-import getMenus from './menus';
 import cfg from 'src/config';
 import theme from 'src/theme';
+import getMenus from './menus';
+import AppRouter from './router/AppRouter';
+
+const { getMenuTreeDataAndPermissions } = util;
 
 const { appName } = cfg;
 // 设置语言
 moment.locale('zh-cn');
-
 
 @connect()
 export default class App extends React.Component {
@@ -40,30 +44,6 @@ export default class App extends React.Component {
                 const userPaths = [];
 
                 const { menuTreeData } = getMenuTreeDataAndPermissions(plainMenus);
-
-                // 设置basePath
-                const loop = (nodes, basePath) => {
-                    nodes.forEach(item => {
-                        const { path, children } = item;
-                        item.path = `${basePath}${path}`;
-
-                        if (children?.length) {
-                            loop(children, basePath);
-                        }
-                    });
-                };
-
-                menuTreeData.forEach(top => {
-                    const { basePath, path, children } = top;
-                    if (!basePath) return;
-
-                    if (path && !path.startsWith(basePath)) {
-                        top.path = `${basePath}${path}`;
-                    }
-                    if (children?.length) {
-                        loop(children, basePath);
-                    }
-                });
 
                 plainMenus.forEach(({ type, path, code }) => {
                     if (type === '2' && code) permissions.push(code);

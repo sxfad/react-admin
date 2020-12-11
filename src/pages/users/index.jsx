@@ -9,8 +9,8 @@ import {
     Table,
     Operator,
     Pagination,
+    batchDeleteConfirm,
 } from 'ra-lib';
-import batchDeleteConfirm from 'src/components/batch-delete-confirm';
 import EditModal from './EditModal';
 
 @config({

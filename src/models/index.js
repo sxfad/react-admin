@@ -11,7 +11,7 @@ layoutModel.initialState = {
     defaultHeadFixed: false,
     defaultShowTabs: false,
     keepOtherMenuOpen: true,
-    pageFrameLayout: PAGE_FRAME_LAYOUT.SIDE_MENU,
+    pageFrameLayout: PAGE_FRAME_LAYOUT.TOP_SIDE_MENU,
 };
 
 const modelObj = model({

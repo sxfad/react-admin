@@ -35,7 +35,7 @@ export default class index extends Component {
             },
         },
         {
-            title: '类型', dataIndex: 'type', key: 'type',
+            title: '类型', dataIndex: 'type', key: 'type', width: 80,
             render: (value, record) => {
                 const { url } = record;
                 if (url) return '站外菜单';
@@ -57,8 +57,6 @@ export default class index extends Component {
         //     .get('/menus')
         getMenus()
             .then(res => {
-                if (!Array.isArray(res)) return [];
-
                 const menus = res.map(item => ({ key: item.id, parentKey: item.parentId, ...item }));
                 const allMenuKeys = menus.map(item => item.key);
                 // 菜单根据order 排序
@@ -131,15 +129,6 @@ export default class index extends Component {
         onChange && onChange(selected ? allMenuKeys : []);
     };
 
-    indeterminate = (record) => {
-        const { value } = this.props;
-        const { menus } = this.state;
-        const { key } = record;
-        // 如果 部分子级被选中，就是半选
-        const childrenKeys = tree.getGenerationKeys(menus, key);
-        return value.includes(key) && value.some(k => childrenKeys.includes(k)) && !childrenKeys.every(k => value.includes(k));
-    };
-
     render() {
         const {
             menus,
@@ -159,10 +148,6 @@ export default class index extends Component {
                     selectedRowKeys: value,
                     onSelect: this.handleSelect,
                     onSelectAll: this.handleSelectAll,
-                    getCheckboxProps: record => {
-                        const indeterminate = this.indeterminate(record);
-                        return { indeterminate };
-                    },
                 }}
                 loading={loading}
                 columns={this.columns}

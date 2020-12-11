@@ -3,7 +3,7 @@
     "version": "4.0.0",
     "private": true,
     "scripts": {
-        "start": "node scripts/start.js",
+        "start": "PORT=4080 node scripts/start.js",
         "build": "cross-env NODE_ENV=production node scripts/build.js",
         "build:pre": "cross-env MOCK=true PREVIEW=true BASE_NAME=/react-admin/build PUBLIC_URL=/react-admin/build/ yarn build && cp -r ./build ./docs/ ",
         "build:dll": "rimraf config/dll && webpack --config config/webpack.dll.config.js",

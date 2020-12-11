@@ -10,8 +10,6 @@ import './style.less';
 
 const { isDev } = cfg;
 
-console.log(isDev);
-
 // 单独包装 整体layoutState 会频繁改变，放到 AppRouter，会导致 AppRouter 也频繁render
 export default config({
     connect: state => ({ layoutState: state.layout }),

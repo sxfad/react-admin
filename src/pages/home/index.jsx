@@ -5,6 +5,7 @@ import './style.less';
 
 @config({
     path: '/',
+    side: false,
     title: { text: '首页', icon: 'home' },
     breadcrumbs: [ { key: 'home', text: '首页', icon: 'home' } ],
 })

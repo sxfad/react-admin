@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Form, } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Button, Form } from 'antd';
 
 import { PageContent } from 'ra-lib';
 import config from 'src/commons/config-hoc';
-import {useGet, useDel} from 'src/commons/ajax';
+import { useGet, useDel } from 'src/commons/ajax';
 import {
     QueryBar,
     FormRow,
@@ -11,37 +11,37 @@ import {
     Table,
     Operator,
     Pagination,
+    batchDeleteConfirm,
 } from 'ra-lib';
-import batchDeleteConfirm from 'src/components/batch-delete-confirm';
 
 import EditModal from './EditModal';
 
 export default config({
     path: '/charts',
 })(() => {
-    const [{condition, pageSize, pageNum}, setCondition] = useState({condition: {}, pageSize: 20, pageNum: 1});
-    const [dataSource, setDataSource] = useState([]);
-    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const [total, setTotal] = useState(0);
-    const [visible, setVisible] = useState(false);
-    const [id, setId] = useState(null);
-    const [form] = Form.useForm();
+    const [ { condition, pageSize, pageNum }, setCondition ] = useState({ condition: {}, pageSize: 20, pageNum: 1 });
+    const [ dataSource, setDataSource ] = useState([]);
+    const [ selectedRowKeys, setSelectedRowKeys ] = useState([]);
+    const [ total, setTotal ] = useState(0);
+    const [ visible, setVisible ] = useState(false);
+    const [ id, setId ] = useState(null);
+    const [ form ] = Form.useForm();
 
-    const [loading, fetchCharts] = useGet('/charts');
-    const [deleting, deleteCharts] = useDel('/charts', {successTip: '删除成功！', errorTip: '删除失败！'});
-    const [deletingOne, deleteChart] = useDel('/charts/{id}', {successTip: '删除成功！', errorTip: '删除失败！'});
+    const [ loading, fetchCharts ] = useGet('/charts');
+    const [ deleting, deleteCharts ] = useDel('/charts', { successTip: '删除成功！', errorTip: '删除失败！' });
+    const [ deletingOne, deleteChart ] = useDel('/charts/{id}', { successTip: '删除成功！', errorTip: '删除失败！' });
 
     const columns = [
-        {title: '图标标题', dataIndex: 'title', width: 200},
-        {title: 'type', dataIndex: 'type', width: 200},
-        {title: '描述', dataIndex: 'description', width: 200},
-        {title: '消息标识', dataIndex: 'messageToken', width: 200},
-        {title: '纵轴显示标签个数', dataIndex: 'valueTickCount', width: 200},
-        {title: '横轴系显示标签个数', dataIndex: 'labelTickCount', width: 200},
+        { title: '图标标题', dataIndex: 'title', width: 200 },
+        { title: 'type', dataIndex: 'type', width: 200 },
+        { title: '描述', dataIndex: 'description', width: 200 },
+        { title: '消息标识', dataIndex: 'messageToken', width: 200 },
+        { title: '纵轴显示标签个数', dataIndex: 'valueTickCount', width: 200 },
+        { title: '横轴系显示标签个数', dataIndex: 'labelTickCount', width: 200 },
         {
             title: '操作', dataIndex: 'operator', width: 100,
             render: (value, record) => {
-                const {id, name} = record;
+                const { id, name } = record;
                 const items = [
                     {
                         label: '修改',
@@ -58,7 +58,7 @@ export default config({
 
                 ];
 
-                return <Operator items={items}/>
+                return <Operator items={items}/>;
             },
         },
     ];
@@ -89,7 +89,7 @@ export default config({
 
         await batchDeleteConfirm(selectedRowKeys.length);
 
-        await deleteCharts({ids: selectedRowKeys});
+        await deleteCharts({ ids: selectedRowKeys });
         setSelectedRowKeys([]);
         await handleSearch();
     }
@@ -102,7 +102,7 @@ export default config({
         pageSize,
     ]);
 
-    const formProps = {width: 200};
+    const formProps = { width: 200 };
     const pageLoading = loading || deleting || deletingOne;
     const disabledDelete = !selectedRowKeys?.length || pageLoading;
 
@@ -112,7 +112,7 @@ export default config({
                 <Form
                     name="chart-query"
                     form={form}
-                    onFinish={condition => setCondition({condition, pageSize, pageNum: 1})}
+                    onFinish={condition => setCondition({ condition, pageSize, pageNum: 1 })}
                 >
                     <FormRow>
                         <FormElement
@@ -120,7 +120,7 @@ export default config({
                             label="图标标题"
                             name="title"
                         />
-                            <FormElement
+                        <FormElement
                             {...formProps}
                             label="type"
                             name="type"
@@ -150,8 +150,8 @@ export default config({
                 total={total}
                 pageNum={pageNum}
                 pageSize={pageSize}
-                onPageNumChange={pageNum => setCondition({condition, pageSize, pageNum})}
-                onPageSizeChange={pageSize => setCondition({condition, pageSize, pageNum: 1})}
+                onPageNumChange={pageNum => setCondition({ condition, pageSize, pageNum })}
+                onPageSizeChange={pageSize => setCondition({ condition, pageSize, pageNum: 1 })}
             />
             <EditModal
                 visible={visible}

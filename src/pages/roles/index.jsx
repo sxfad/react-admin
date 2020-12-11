@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {Button, Form, Row, Col} from 'antd';
+import React, { Component } from 'react';
+import { Button, Form, Row, Col } from 'antd';
 import { PageContent } from 'ra-lib';
 import config from 'src/commons/config-hoc';
-import MenuSelect from 'src/pages/menu-permission/MenuSelect';
+import MenuSelect from 'src/pages/menus/MenuSelect';
 import {
     QueryBar,
     FormRow,
@@ -30,18 +30,18 @@ export default class UserCenter extends Component {
     };
 
     columns = [
-        {title: '角色名称', dataIndex: 'name', width: 150},
-        {title: '描述', dataIndex: 'description'},
+        { title: '角色名称', dataIndex: 'name', width: 150 },
+        { title: '描述', dataIndex: 'description' },
         {
             title: '操作', dataIndex: 'operator', width: 100,
             render: (value, record) => {
-                const {id, name} = record;
+                const { id, name } = record;
                 const items = [
                     {
                         label: '修改',
                         onClick: (e) => {
                             e.stopPropagation();
-                            this.setState({visible: true, id});
+                            this.setState({ visible: true, id });
                         },
                     },
                     {
@@ -73,51 +73,51 @@ export default class UserCenter extends Component {
         };
 
         // 一般系统中，角色不会太多，不做分页查询了
-        this.setState({loading: true});
+        this.setState({ loading: true });
         this.props.ajax.get('/mock/role', params)
             .then(res => {
                 const dataSource = res || [];
 
-                this.setState({dataSource});
+                this.setState({ dataSource });
 
                 // 查询之后，默认选中第一个角色
                 if (dataSource[0]) this.handleRowClick(dataSource[0]);
             })
-            .finally(() => this.setState({loading: false}));
+            .finally(() => this.setState({ loading: false }));
     };
 
     handleDelete = (id) => {
         if (this.state.deleting) return;
 
-        this.setState({deleting: true});
-        this.props.ajax.del(`/mock/roles/${id}`, null, {successTip: '删除成功！', errorTip: '删除失败！'})
+        this.setState({ deleting: true });
+        this.props.ajax.del(`/mock/roles/${id}`, null, { successTip: '删除成功！', errorTip: '删除失败！' })
             .then(() => this.form.submit())
-            .finally(() => this.setState({deleting: false}));
+            .finally(() => this.setState({ deleting: false }));
     };
 
     handleRowClick = (record) => {
-        const {id} = record;
-        this.setState({selectedRoleId: id, selectedKeys: []});
+        const { id } = record;
+        this.setState({ selectedRoleId: id, selectedKeys: [] });
         // 根据id 获取 role对应的菜单权限
-        const params = {roleId: id};
-        this.setState({loadingRoleMenu: true});
+        const params = { roleId: id };
+        this.setState({ loadingRoleMenu: true });
         this.props.ajax.get('/mock/roles/menus', params)
             .then(res => {
-                this.setState({selectedKeys: res});
+                this.setState({ selectedKeys: res });
             })
-            .finally(() => this.setState({loadingRoleMenu: false}));
+            .finally(() => this.setState({ loadingRoleMenu: false }));
     };
 
     handleSaveRoleMenu = () => {
-        const {selectedKeys} = this.state;
+        const { selectedKeys } = this.state;
 
-        const params = {ids: selectedKeys};
-        this.setState({loading: true});
-        this.props.ajax.post('/mock/roles/menus', params, {successTip: '保存角色权限成功！'})
+        const params = { ids: selectedKeys };
+        this.setState({ loading: true });
+        this.props.ajax.post('/mock/roles/menus', params, { successTip: '保存角色权限成功！' })
             .then(res => {
 
             })
-            .finally(() => this.setState({loading: false}));
+            .finally(() => this.setState({ loading: false }));
     };
 
     render() {
@@ -131,11 +131,11 @@ export default class UserCenter extends Component {
             loadingRoleMenu,
         } = this.state;
 
-        const {form} = this.props;
+        const { form } = this.props;
         const formProps = {
             form,
             width: 220,
-            style: {paddingLeft: 16},
+            style: { paddingLeft: 16 },
         };
 
         const selectedRoleName = dataSource.find(item => item.id === selectedRoleId)?.name;
@@ -153,7 +153,7 @@ export default class UserCenter extends Component {
                             <FormElement layout>
                                 <Button type="primary" htmlType="submit">查询</Button>
                                 <Button onClick={() => this.form.resetFields()}>重置</Button>
-                                <Button type="primary" onClick={() => this.setState({visible: true, id: null})}>添加</Button>
+                                <Button type="primary" onClick={() => this.setState({ visible: true, id: null })}>添加</Button>
                             </FormElement>
                             <div styleName="role-menu-tip">
                                 {selectedRoleName ? <span>当前角色权限：「{selectedRoleName}」</span> : <span>请在左侧列表中选择一个角色！</span>}
@@ -184,7 +184,7 @@ export default class UserCenter extends Component {
                     <Col span={10}>
                         <MenuSelect
                             value={selectedKeys}
-                            onChange={selectedKeys => this.setState({selectedKeys})}
+                            onChange={selectedKeys => this.setState({ selectedKeys })}
                         />
                     </Col>
                 </Row>
@@ -192,8 +192,8 @@ export default class UserCenter extends Component {
                     visible={visible}
                     id={id}
                     isEdit={id !== null}
-                    onOk={() => this.setState({visible: false}, this.form.submit)}
-                    onCancel={() => this.setState({visible: false})}
+                    onOk={() => this.setState({ visible: false }, this.form.submit)}
+                    onCancel={() => this.setState({ visible: false })}
                 />
             </PageContent>
         );
