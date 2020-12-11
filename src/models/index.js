@@ -12,6 +12,7 @@ layoutModel.initialState = {
     defaultShowTabs: false,
     keepOtherMenuOpen: true,
     pageFrameLayout: PAGE_FRAME_LAYOUT.TOP_SIDE_MENU,
+    theme: 'dark',
 };
 
 const modelObj = model({

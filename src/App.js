@@ -1,7 +1,6 @@
 import React from 'react';
 import { ConfigProvider, Spin } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
-import 'antd/dist/antd.less';
 
 import moment from 'moment';
 import 'moment/locale/zh-cn';
