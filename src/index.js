@@ -7,9 +7,9 @@ import { store } from './models';
 import * as serviceWorker from './serviceWorker';
 import { getLoginUser } from './commons';
 
-import 'antd/dist/antd.less';
-// import 'antd/dist/antd.dark.less';
-// import './index.dark.less';
+// import 'antd/dist/antd.less';
+import 'antd/dist/antd.dark.less';
+import './index.dark.less';
 
 import './index.css';
 import './index.mobile.css';

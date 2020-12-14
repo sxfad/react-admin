@@ -1,6 +1,7 @@
 @backgroundColorBase: #000;
 @backgroundColor: #141414;
 @borderColor: #303030;
+@color: rgba(255, 255, 255, 0.85);
 body {
     background: @backgroundColorBase !important;
 }
@@ -79,4 +80,45 @@ input:-webkit-autofill:active {
 .helper-element td {
     background-color: @backgroundColor;
     border-color: @borderColor;
+}
+
+#frame-page-tabs {
+    background-color: @backgroundColorBase;
+}
+
+.draggable-tabs-bar-root {
+    background-color: @backgroundColorBase;
+}
+
+.page-tabs-root {
+    margin-left: 7px;
+    margin-right: -7px;
+    box-shadow: 0 8px 0 0 @backgroundColor;
+}
+
+.draggable-tabs-bar-horizontal-item {
+    .draggable-tabs-bar-wrapper {
+        background: @backgroundColorBase;
+        color: @color;
+
+        &:before {
+            border-color: @backgroundColor;
+        }
+
+        &:after {
+            box-shadow: 0 0 10px 20px @backgroundColorBase
+        }
+    }
+
+    &:hover,
+    &.active {
+        .draggable-tabs-bar-wrapper {
+            background: @backgroundColor;
+            color: @color;
+
+            &:after {
+                box-shadow: 0 0 10px 20px @backgroundColor
+            }
+        }
+    }
 }
