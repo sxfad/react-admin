@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { isLogin } from 'src/commons';
 import Error404 from 'src/components/error/Error404';
 import config from 'src/commons/config-hoc';
-import KeepAuthRoute from './KeepAuthRoute';
+import AuthRoute from './AuthRoute';
 import routes, { noFrameRoutes, noAuthRoutes /*commonPaths*/ } from './routes';
 import LayoutFrame from 'src/layouts';
 import cfg from 'src/config';
@@ -69,7 +69,7 @@ export default class AppRouter extends Component {
                             if (noAuth === 'true') isNoAuthRoute = true;
 
                             return (
-                                <KeepAuthRoute
+                                <AuthRoute
                                     key={path}
                                     exact
                                     path={path}

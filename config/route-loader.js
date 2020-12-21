@@ -1,9 +1,9 @@
 const globby = require('globby');
 const path = require('path');
 const fs = require('fs');
-const {pathToRegexp} = require('path-to-regexp');
+const { pathToRegexp } = require('path-to-regexp');
 
-module.exports = function () {
+module.exports = function() {
     // 路由文件所在目录
     const routePagePath = path.resolve(__dirname, '../src/pages');
 
@@ -14,7 +14,7 @@ module.exports = function () {
     this.addContextDependency(routePagePath);
 
     // 获取所有的文件名
-    const fileNames = globby.sync(pages, {ignore: [], absolute: true});
+    const fileNames = globby.sync(pages, { ignore: [], absolute: true });
     const result = {};
 
     fileNames.forEach(fileName => {
@@ -33,9 +33,9 @@ module.exports = function () {
 // 检测路由配置冲突
 function checkPath(result) {
     const arr = Object.entries(result);
-    for (const [filePath, config] of arr) {
-        const {path} = config;
-        const exit = arr.find(([f, c]) => {
+    for (const [ filePath, config ] of arr) {
+        const { path } = config;
+        const exit = arr.find(([ f, c ]) => {
             return f !== filePath && (c.path === path || pathToRegexp(c.path).exec(path) || pathToRegexp(path).exec(c.path));
         });
         if (exit) {
@@ -47,6 +47,38 @@ ${exit[0]}`;
     return false;
 }
 
+/**
+ * 删除注释
+ * @param codes
+ * @returns {*|string}
+ */
+function removeComments(codes) {
+    let { replacedCodes, matchedObj } = replaceQuotationMarksWithForwardSlash(codes);
+
+    replacedCodes = replacedCodes.replace(/(\s*(?<!\\)\/\/.*$)|(\s*(?<!\\)\/\*[\s\S]*?(?<!\\)\*\/)/mg, '');
+    Object.keys(matchedObj).forEach(k => {
+        replacedCodes = replacedCodes.replace(k, matchedObj[k]);
+    });
+
+    return replacedCodes;
+
+    function replaceQuotationMarksWithForwardSlash(codes) {
+        let matchedObj = {};
+        let replacedCodes = '';
+
+        let regQuotation = /(?<!\\)('|"|`).*?(?<!\\)\1/mg;
+        let uniqueStr = 'QUOTATIONMARKS' + Math.floor(Math.random() * 10000);
+
+        let index = 0;
+        replacedCodes = codes.replace(regQuotation, function(match) {
+            let s = uniqueStr + (index++);
+            matchedObj[s] = match;
+            return s;
+        });
+
+        return { replacedCodes, matchedObj };
+    }
+}
 
 /**
  * 从文件内容中获取配置内容
@@ -58,10 +90,7 @@ function getConfigFromContent(content) {
     let result;
 
     // 删除注释
-    const reg = /("([^\\\"]*(\\.)?)*")|('([^\\\']*(\\.)?)*')|(\/{2,}.*?(\r|\n))|(\/\*(\n|.)*?\*\/)/g;
-    let noCommentContent = content.replace(reg, function (word) {
-        return /^\/{2,}/.test(word) || /^\/\*/.test(word) ? '' : word;
-    });
+    let noCommentContent = removeComments(content);
 
     // 基于常量 PAGE_ROUTE 进行路由匹配
     const patt = /export const PAGE_ROUTE = [ ]*['"]([^'"]+)['"][;]*/gm;
@@ -77,7 +106,6 @@ function getConfigFromContent(content) {
             break;
         }
     }
-
 
     const importIndex = noCommentContent.indexOf('import config');
     if (importIndex === -1) return result;
@@ -156,7 +184,7 @@ function getRouteFileContent(config) {
     const keepAlives = [];
     const routes = [];
 
-    Object.entries(config).forEach(([filePath, {path, keepAlive, noAuth, noFrame}]) => {
+    Object.entries(config).forEach(([ filePath, { path, keepAlive, noAuth, noFrame } ]) => {
         if (!path) return;
 
         if (noFrame === 'true') noFrames.push(`'${path}'`);

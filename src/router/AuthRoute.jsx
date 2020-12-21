@@ -18,7 +18,7 @@ import config from 'src/commons/config-hoc';
         };
     },
 })
-export default class KeepAuthRoute extends React.Component {
+export default class AuthRoute extends React.Component {
     render() {
         const {
             component: Component,
@@ -35,7 +35,7 @@ export default class KeepAuthRoute extends React.Component {
                 render={props => {
                     if (!noAuth && !isLogin()) return toLogin();
 
-                    return <Component {...props}/>;
+                    return <Component {...props} />;
                 }}
             />
         );

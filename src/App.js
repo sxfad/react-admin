@@ -31,7 +31,10 @@ export default class App extends React.Component {
         this.props.action.getStateFromStorage();
 
         const loginUser = getLoginUser();
-        if (!loginUser) return;
+        if (!loginUser) {
+            this.setState({ loading: false });
+            return;
+        }
 
         const userId = loginUser?.id;
 
@@ -83,10 +86,10 @@ export default class App extends React.Component {
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}>
-                        <Spin spinning tip="加载中..."/>
+                        <Spin spinning tip="加载中..." />
                     </div>
                 ) : (
-                    <AppRouter subLoading={subLoading} subAppError={subAppError}/>
+                    <AppRouter subLoading={subLoading} subAppError={subAppError} />
                 )}
             </ConfigProvider>
         );
