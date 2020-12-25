@@ -10,7 +10,8 @@
         "build:analyz": "cross-env ANALYZ=true yarn build",
         "build:time": "cross-env ANALYZ_TIME=true yarn build",
         "test": "node scripts/test.js",
-        "gen": "node scripts/gen/index.js"
+        "gen": "node scripts/gen/index.js",
+        "antd:less": "lessc src/antd.less --js public/antd.min.css -clean-css"
     },
     "dependencies": {
         "@ant-design/icons": "^4.0.3",

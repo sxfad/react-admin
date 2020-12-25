@@ -2,6 +2,7 @@ import { model, storage, layoutModel, PAGE_FRAME_LAYOUT } from 'ra-lib';
 import models from './models';
 import handleError from '../commons/handle-error';
 import handleSuccess from '../commons/handle-success';
+import theme from '../theme.less';
 
 // 一些默认值的设置
 layoutModel.initialState = {
@@ -12,7 +13,7 @@ layoutModel.initialState = {
     defaultShowTabs: false,
     keepOtherMenuOpen: true,
     pageFrameLayout: PAGE_FRAME_LAYOUT.TOP_SIDE_MENU,
-    // theme: 'dark',
+    theme: theme.theme,
 };
 
 const modelObj = model({

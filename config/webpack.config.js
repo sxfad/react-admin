@@ -26,7 +26,6 @@ const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const postcssNormalize = require('postcss-normalize');
 const appPackageJson = require(paths.appPackageJson);
-const theme = require('../src/theme');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
@@ -480,7 +479,7 @@ module.exports = function(webpackEnv) {
                                     loader: 'less-loader',
                                     options: {
                                         javascriptEnabled: true,
-                                        modifyVars: theme,
+                                        // modifyVars: theme,
                                     },
                                 },
                             ),
@@ -501,7 +500,7 @@ module.exports = function(webpackEnv) {
                                     loader: 'less-loader',
                                     options: {
                                         javascriptEnabled: true,
-                                        modifyVars: theme,
+                                        // modifyVars: theme,
                                     },
                                 },
                             ),

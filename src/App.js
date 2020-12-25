@@ -8,7 +8,7 @@ import { util } from 'ra-lib';
 import { getLoginUser, setLoginUser } from 'src/commons';
 import { connect } from 'src/models'; // 解决 antd 日期组件国际化问题
 import cfg from 'src/config';
-import theme from 'src/theme';
+import theme from './theme.less';
 import getMenus from './menus';
 import AppRouter from './router/AppRouter';
 
@@ -66,7 +66,7 @@ export default class App extends React.Component {
                 layout.setPermissions(permissions);
                 layout.setLoginUser(loginUser);
                 layout.setAppName(appName);
-                layout.setPrimaryColor(theme['@primary-color']);
+                layout.setPrimaryColor(theme.primaryColor);
             })
             .finally(() => {
                 this.setState({ loading: false });
