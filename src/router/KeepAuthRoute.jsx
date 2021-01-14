@@ -153,6 +153,7 @@ export default class KeepAuthRoute extends React.Component {
                                 newAddTab.text = this.props.title;
                                 newAddTab.icon = this.props.selectedMenu?.icon;
                                 system.setTabs([...tabs]);
+                                console.log(props);
                             });
                         }
                     }

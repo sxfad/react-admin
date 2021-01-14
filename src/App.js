@@ -12,7 +12,7 @@ moment.locale('zh-cn');
 @connect()
 export default class App extends React.Component {
     state = {
-        loading: false,
+        loading: true,
     };
 
     componentDidMount() {

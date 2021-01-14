@@ -1,11 +1,9 @@
-import { session } from 'src/library/utils/storage';
 import { getNodeByPropertyAndValue, convertToTree } from 'src/library/utils/tree-utils';
 import { pathToRegexp } from 'path-to-regexp';
 import cfg from 'src/config';
 
 const { baseName } = cfg;
 
-const localStorage = window.localStorage;
 const sessionStorage = window.sessionStorage;
 
 const LOGIN_USER_STORAGE_KEY = 'login-user';
@@ -82,8 +80,7 @@ export function toLogin() {
     if (isLogin) return null;
 
     // 清除相关数据
-    session.clear();
-    localStorage.setItem(LOGIN_USER_STORAGE_KEY, null);
+    sessionStorage.setItem(LOGIN_USER_STORAGE_KEY, null);
     sessionStorage.clear();
     sessionStorage.setItem('last-href', window.location.pathname);
 

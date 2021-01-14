@@ -26,7 +26,6 @@ reqPages.keys().forEach(key => {
     result[name] = model.default;
 });
 
-console.log(result);
 export default result;
 
 /** 获取模块名 */
