@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { isLogin } from 'src/commons';
+import React, {Component} from 'react';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {isLogin} from 'src/commons';
 import Error404 from 'src/components/error/Error404';
 import config from 'src/commons/config-hoc';
 import AuthRoute from './AuthRoute';
-import routes, { noFrameRoutes, noAuthRoutes /*commonPaths*/ } from './routes';
+import routes, {noFrameRoutes, noAuthRoutes /*commonPaths*/} from './routes';
 import LayoutFrame from 'src/layouts';
 import cfg from 'src/config';
 
-const { baseName } = cfg;
+const {baseName} = cfg;
 
 @config({
     query: true,
@@ -32,10 +32,10 @@ export default class AppRouter extends Component {
     };
 
     render() {
-        const { noFrame: queryNoFrame, noAuth } = this.props.query;
-        const { systemNoFrame } = this.props;
+        const {noFrame: queryNoFrame, noAuth} = this.props.query;
+        const {systemNoFrame} = this.props;
         const userRoutes = this.getUserRoutes();
-        const style = { display: 'flex', flexDirection: 'column', flex: 1, position: 'relative' };
+        const style = {display: 'flex', flexDirection: 'column', flex: 1, position: 'relative', minHeight: '100vh'};
 
         return (
             <BrowserRouter basename={baseName}>
@@ -59,7 +59,7 @@ export default class AppRouter extends Component {
                     }}/>
                     <Switch>
                         {userRoutes.map(item => {
-                            const { path, component } = item;
+                            const {path, component} = item;
                             let isNoAuthRoute = false;
 
                             // 不需要登录的页面

@@ -39,6 +39,7 @@
         "camelcase": "^5.3.1",
         "case-sensitive-paths-webpack-plugin": "2.3.0",
         "classnames": "^2.2.6",
+        "countup.js": "^2.0.7",
         "cross-env": "^7.0.2",
         "css-loader": "3.4.2",
         "dayjs": "^1.8.18",

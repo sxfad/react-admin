@@ -3087,6 +3087,11 @@ cosmiconfig@^6.0.0:
     path-type "^4.0.0"
     yaml "^1.7.2"
 
+countup.js@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.npmjs.org/countup.js/-/countup.js-2.0.7.tgz#56b72a87fc0ee3cadb38356c246ccac88fb0a8cc"
+  integrity sha512-FO0nQdvG1iQwHp28wdvkErxnNUSbdkzztqZ6YNHKLHydngD2tdiKEW8dFrqpahF3tj+Ma70h0vyYrCBzxlVWdg==
+
 create-ecdh@^4.0.0:
   version "4.0.3"
   resolved "https://registry.npm.taobao.org/create-ecdh/-/create-ecdh-4.0.3.tgz#c9111b6f33045c4697f144787f9254cdc77c45ff"
