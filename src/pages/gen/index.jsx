@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Tabs} from 'antd';
 import config from 'src/commons/config-hoc';
-import PageContent from 'src/layouts/page-content';
+import { PageContent } from 'ra-lib';
 import Fast from './Fast';
 import Single from './Single';
 import './style.less';
@@ -10,6 +10,7 @@ const {TabPane} = Tabs;
 
 @config({
     title: '代码生成',
+    side: false,
     path: '/gen',
 })
 export default class index extends Component {

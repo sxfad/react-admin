@@ -1,4 +1,4 @@
-import SXAjax, { createHoc, createHooks } from 'src/library/ajax';
+import { ajax as SXAjax, createHoc, createHooks } from 'ra-lib';
 import mockUrls from '../mock/url-config';
 import handleError from './handle-error';
 import handleSuccess from './handle-success';

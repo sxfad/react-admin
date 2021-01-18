@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'antd';
 
-import PageContent from 'src/layouts/page-content';
+import { PageContent, batchDeleteConfirm } from 'ra-lib';
 import config from 'src/commons/config-hoc';
-import batchDeleteConfirm from 'src/components/batch-delete-confirm';
-import { useGet, useDel } from 'src/commons/ajax';
 import api from './useApi';
 import {
     FormElement,
@@ -13,14 +11,14 @@ import {
     Pagination,
     QueryBar,
     Table,
-} from 'src/library/components';
+} from 'ra-lib';
 
 import EditModal from './EditModalHooks';
 
 export default config({
     path: '/hook/users',
     title: '用户管理(Hooks)',
-})(() => {
+})((props) => {
     // 数据定义
     const [ pageNum, setPageNum ] = useState(1);
     const [ pageSize, setPageSize ] = useState(20);
@@ -32,9 +30,9 @@ export default config({
     const [ form ] = Form.useForm();
 
     // 请求相关定义 只是定义，不会触发请求，调用相关函数，才会触发请求
-    const [ loading, fetchUsers ] = useGet('/mock/users');
+    const [ loading, fetchUsers ] = props.ajax.useGet('/mock/users');
     const [ deleting, deleteUsers ] = api.deleteUsers(); // 可以单独封装成api
-    const [ deletingOne, deleteUser ] = useDel('/mock/users/:id', { successTip: '删除成功！', errorTip: '删除失败！' });
+    const [ deletingOne, deleteUser ] = props.ajax.useDel('/mock/users/:id', { successTip: '删除成功！', errorTip: '删除失败！' });
 
     const columns = [
         { title: '用户名', dataIndex: 'name', width: 200 },
@@ -108,7 +106,9 @@ export default config({
 
     // 组件初始化完成之后，进行一次查询
     useEffect(() => {
-        handleSearch();
+        (async () => {
+            await handleSearch();
+        })();
     }, []);
 
     // jsx 用到的数据
@@ -141,7 +141,7 @@ export default config({
                             ]}
                         />
                         <FormElement layout>
-                            <Button type="primary" htmlType="submit">提交</Button>
+                            <Button type="primary" htmlType="submit">查询</Button>
                             <Button onClick={() => form.resetFields()}>重置</Button>
                             <Button type="primary" onClick={() => setVisible(true) || setId(null)}>添加</Button>
                             <Button danger disabled={disabledDelete} onClick={handleBatchDelete}>删除</Button>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Form } from 'antd';
-import PageContent from 'src/layouts/page-content';
+import { PageContent } from 'ra-lib';
 import config from 'src/commons/config-hoc';
 import {
     QueryBar,
@@ -9,8 +9,8 @@ import {
     Table,
     Operator,
     Pagination,
-} from 'src/library/components';
-import batchDeleteConfirm from 'src/components/batch-delete-confirm';
+    batchDeleteConfirm,
+} from 'ra-lib';
 import EditModal from './EditModal';
 
 @config({
@@ -149,7 +149,7 @@ export default class UserCenter extends Component {
                                 ]}
                             />
                             <FormElement layout>
-                                <Button type="primary" htmlType="submit">提交</Button>
+                                <Button type="primary" htmlType="submit">查询</Button>
                                 <Button onClick={() => this.form.resetFields()}>重置</Button>
                                 <Button type="primary" onClick={() => this.setState({ visible: true, id: null })}>添加</Button>
                                 <Button danger loading={deleting} disabled={disabledDelete} onClick={this.handleBatchDelete}>删除</Button>

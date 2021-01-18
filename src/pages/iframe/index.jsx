@@ -1,5 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import config from 'src/commons/config-hoc';
+import { PageContent } from 'ra-lib';
 import './style.less';
 
 @config({
@@ -8,16 +9,16 @@ import './style.less';
 })
 export default class IFrame extends Component {
     render() {
-        let {src} = this.props.match.params;
+        let { src } = this.props.match.params;
         src = window.decodeURIComponent(src);
         return (
-            <div styleName="iframe">
+            <PageContent fitHeight styleName="iframe">
                 <iframe
                     allowFullScreen="true"
                     title={src}
                     src={src}
                 />
-            </div>
+            </PageContent>
         );
     }
 }

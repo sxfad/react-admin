@@ -9,7 +9,9 @@ let config = {
     production: productionConfig,
 };
 
-const envConfig = config[process.env.NODE_ENV] || {};
+const env = process.env.CONFIG_ENV || process.env.NODE_ENV;
+
+const envConfig = config[env] || {};
 
 export default {
     ...defaultConfig,

@@ -1,10 +1,10 @@
 const mysql = require('mysql');
 
 function testConnection(dbUrl) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
         const connection = mysql.createConnection(dbUrl);
 
-        connection.connect(function (err) {
+        connection.connect(function(err) {
             if (err) {
                 console.error(err);
                 reject(err);
@@ -19,20 +19,20 @@ function testConnection(dbUrl) {
 
 function getTableNames(dbUrl) {
     const database = new URL(dbUrl).pathname.replace('/', '');
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
         const connection = mysql.createConnection(dbUrl);
 
         connection.connect();
 
-        const tableInfoSql = `select table_name, table_comment from information_schema.tables where table_schema='${database}' and table_type='base table'`;
+        const tableInfoSql = `select table_name, table_comment from information_schema.tables where table_schema='${database}' and (table_type='base table' or table_type='BASE TABLE')`;
 
-        connection.query(tableInfoSql, function (error, results) {
+        connection.query(tableInfoSql, function(error, results) {
             if (error) return reject(error);
 
             const result = results.map(item => {
                 return {
-                    name: item.table_name,
-                    comment: item.table_comment,
+                    name: item.table_name || item.TABLE_NAME,
+                    comment: item.table_comment || item.TABLE_COMMENT,
                 };
             });
             resolve(result);
@@ -45,14 +45,14 @@ function getTableNames(dbUrl) {
 function getTableColumns(dbUrl, table) {
     const database = new URL(dbUrl).pathname.replace('/', '');
 
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
         const connection = mysql.createConnection(dbUrl);
 
         connection.connect();
 
         const tableInfoSql = `select * from information_schema.columns where table_schema = "${database}" and table_name = "${table}"`;
 
-        connection.query(tableInfoSql, function (error, results) {
+        connection.query(tableInfoSql, function(error, results) {
             if (error) return reject(error);
 
             const result = results.map(item => {
@@ -60,7 +60,7 @@ function getTableColumns(dbUrl, table) {
                 const camelCaseName = name.replace(/_(\w)/g, (a, b) => b.toUpperCase());
                 const comment = item.COLUMN_COMMENT;
                 const commentInfo = getInfoByComment(comment);
-                const {chinese} = commentInfo;
+                const { chinese } = commentInfo;
 
                 return {
                     camelCaseName,

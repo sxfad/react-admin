@@ -9,10 +9,10 @@ const inflection = require('inflection');
 
 
 function testConnection(url) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
         const connection = mysql.createConnection(url);
 
-        connection.connect(function (err) {
+        connection.connect(function(err) {
             if (err) return reject(err);
 
             resolve(true);
@@ -24,15 +24,15 @@ function testConnection(url) {
 
 
 function getTableNames(options) {
-    return new Promise(function (resolve, reject) {
-        const {url, database} = options;
+    return new Promise(function(resolve, reject) {
+        const { url, database } = options;
         const connection = mysql.createConnection(url);
 
         connection.connect(err => {
             if (err) return reject(err);
             const tableInfoSql = `select table_name from information_schema.tables where table_schema='${database}' and table_type='base table'`;
 
-            connection.query(tableInfoSql, function (error, results, fields) {
+            connection.query(tableInfoSql, function(error, results, fields) {
                 if (error) return reject(error);
 
                 const result = results.map(item => {
@@ -48,8 +48,8 @@ function getTableNames(options) {
 }
 
 function getTableColumns(options) {
-    return new Promise(function (resolve, reject) {
-        const {url, database, table} = options;
+    return new Promise(function(resolve, reject) {
+        const { url, database, table } = options;
         const connection = mysql.createConnection(url);
 
         connection.connect(err => {
@@ -57,7 +57,7 @@ function getTableColumns(options) {
 
             const tableInfoSql = `select * from information_schema.columns where table_schema = "${database}" and table_name = "${table}"`;
 
-            connection.query(tableInfoSql, function (error, results, fields) {
+            connection.query(tableInfoSql, function(error, results, fields) {
                 if (error) return reject(error);
 
                 const result = results.map(item => {
@@ -65,7 +65,7 @@ function getTableColumns(options) {
                     const camelCaseName = name.replace(/_(\w)/g, (a, b) => b.toUpperCase());
                     const comment = item.COLUMN_COMMENT;
                     const commentInfo = getInfoByComment(comment);
-                    const {chinese} = commentInfo;
+                    const { chinese } = commentInfo;
 
                     return {
                         camelCaseName,
@@ -154,21 +154,24 @@ function getConfigFromDbTable(options) {
         children,
     } = options;
 
-    // 下划线转连字符
-    const moduleName = tableName.replace(/_/g, '-');
+    // 连字符转下划线
+    const module_name = tableName.replace(/-/g, '_');
+
+    const moduleName = inflection.camelize(module_name, true);
 
     // 复数
     const moduleNames = inflection.pluralize(moduleName);
-    const ModuleName = inflection.camelize(moduleName);
+    const ModuleName = inflection.singularize(inflection.camelize(moduleName));
     const ModuleNames = inflection.pluralize(ModuleName);
 
     const base = {
+        module_name,
         moduleName,
         moduleNames,
         ModuleName,
         ModuleNames,
 
-        path: `/${moduleNames}`,
+        path: `/${module_name}`,
         ajax: {
             search: {
                 name: '查询',
@@ -209,21 +212,21 @@ function getConfigFromDbTable(options) {
         if (listPage) {
             pages.push({
                 typeName: '列表页面',
-                filePath: path.join(__dirname, '../../src/pages', moduleName, 'index.jsx'),
+                filePath: path.join(__dirname, '../../src/pages', module_name, 'index.jsx'),
                 template: path.join(__dirname, 'templates', 'list-hooks.js'),
             });
         }
         if (modalEdit) {
             pages.push({
                 typeName: '弹框表单',
-                filePath: path.join(__dirname, '../../src/pages', moduleName, 'EditModal.jsx'),
+                filePath: path.join(__dirname, '../../src/pages', module_name, 'EditModal.jsx'),
                 template: path.join(__dirname, 'templates', 'edit-modal-hooks.js'),
             });
         }
         if (pageEdit) {
             pages.push({
                 typeName: '页面表单',
-                filePath: path.join(__dirname, '../../src/pages', moduleName, 'Edit.jsx'),
+                filePath: path.join(__dirname, '../../src/pages', module_name, 'Edit.jsx'),
                 template: path.join(__dirname, 'templates', 'edit-hooks.js'),
             });
         }
@@ -239,7 +242,7 @@ function getConfigFromDbTable(options) {
                 formType,
             } = item;
 
-            const type = formType || getFormElementType({oType, label});
+            const type = formType || getFormElementType({ oType, label });
 
             return {
                 type,
@@ -276,7 +279,7 @@ function getConfigFromDbTable(options) {
     };
 
     const columns = children.filter(item => item.isColumn).map(item => {
-        const {chinese: title, field: dataIndex} = item;
+        const { chinese: title, field: dataIndex } = item;
         return {
             title,
             dataIndex,
@@ -314,7 +317,7 @@ function getConfigFromDbTable(options) {
                 isNullable,
             } = item;
 
-            const type = formType || getFormElementType({oType, label});
+            const type = formType || getFormElementType({ oType, label });
             const required = !isNullable;
 
             const options = {
@@ -332,7 +335,7 @@ function getConfigFromDbTable(options) {
 
     const listPageConfig = {
         fileTypeName: '列表页面',
-        filePath: path.join(__dirname, '../../src/pages', moduleName, 'index.jsx'),
+        filePath: path.join(__dirname, '../../src/pages', module_name, 'index.jsx'),
         template: path.join(__dirname, 'templates', 'list-hooks.js'),
         base,
         pages,
@@ -346,7 +349,7 @@ function getConfigFromDbTable(options) {
 
     const modalEditConfig = {
         fileTypeName: '弹框表单',
-        filePath: path.join(__dirname, '../../src/pages', moduleName, 'EditModal.jsx'),
+        filePath: path.join(__dirname, '../../src/pages', module_name, 'EditModal.jsx'),
         template: path.join(__dirname, 'templates', 'edit-modal-hooks.js'),
         base,
         pages,
@@ -360,7 +363,7 @@ function getConfigFromDbTable(options) {
 
     const pageEditConfig = {
         fileTypeName: '页面表单',
-        filePath: path.join(__dirname, '../../src/pages', moduleName, 'edit.jsx'),
+        filePath: path.join(__dirname, '../../src/pages', module_name, 'edit.jsx'),
         template: path.join(__dirname, 'templates', 'edit-hooks.js'),
         base,
         pages,
@@ -382,7 +385,7 @@ function getConfigFromDbTable(options) {
 
 
 // 获取表单类型
-function getFormElementType({oType = 'string', label = ''}) {
+function getFormElementType({ oType = 'string', label = '' }) {
 
     let type = 'input';
 
@@ -406,12 +409,12 @@ async function writeFiles(configs) {
     const successFile = [];
 
     for (let cfg of configs) {
-        let {filePath, template, fileTypeName} = cfg;
+        let { filePath, template, fileTypeName } = cfg;
         const fp = filePath.replace(process.cwd(), '');
         const content = require(template)(cfg);
 
         writeFileSync(filePath, content);
-        successFile.push({name: fileTypeName, path: fp});
+        successFile.push({ name: fileTypeName, path: fp });
     }
 
     return successFile;
@@ -438,7 +441,7 @@ function writeFileSync(toFile, content) {
 }
 
 async function readSwagger(config, baseConfig) {
-    const {url, userName, password} = config;
+    const { url, userName, password } = config;
     const httpInstance = url.startsWith('https') ? https : http;
     const auth = 'Basic ' + Buffer.from(userName + ':' + password).toString('base64');
     const request = axios.create({
@@ -457,24 +460,24 @@ async function readSwagger(config, baseConfig) {
         modify, // 从modify中获取 forms
     } = baseConfig.ajax;
     const apiDocs = response.data;
-    const {paths, definitions} = apiDocs;
+    const { paths, definitions } = apiDocs;
 
     let queries = null;
     let columns = null;
     let forms = null;
 
     if (search) {
-        let {method, url, excludeFields = [], dataPath} = search;
+        let { method, url, excludeFields = [], dataPath } = search;
 
         // 获取查询条件
         if (paths[url]) { // 接口有可能不存在
-            excludeFields = [...excludeFields, ...COMMON_EXCLUDE_FIELDS];
-            const {parameters} = paths[url][method];
+            excludeFields = [ ...excludeFields, ...COMMON_EXCLUDE_FIELDS ];
+            const { parameters } = paths[url][method];
 
             parameters.forEach(item => {
-                const {name: field, required, description, in: inType, type: oType} = item;
+                const { name: field, required, description, in: inType, type: oType } = item;
                 const label = getTitle(description, field);
-                let type = getFormElementType({oType, label});
+                let type = getFormElementType({ oType, label });
 
                 if (inType === 'query' && !excludeFields.includes(field)) {
                     if (!queries) queries = [];
@@ -498,9 +501,9 @@ async function readSwagger(config, baseConfig) {
                 });
             }
 
-            Object.entries(properties).forEach(([dataIndex, item]) => {
+            Object.entries(properties).forEach(([ dataIndex, item ]) => {
                 if (!excludeFields.includes(dataIndex)) {
-                    const {description} = item;
+                    const { description } = item;
                     const title = getTitle(description, dataIndex);
 
                     if (!columns) columns = [];
@@ -515,24 +518,24 @@ async function readSwagger(config, baseConfig) {
 
     if (modify) {
         // 获取编辑表单信息
-        let {method, url, excludeFields = []} = modify;
+        let { method, url, excludeFields = [] } = modify;
 
         if (paths[url]) { // 接口有可能不存在
-            excludeFields = [...excludeFields, ...COMMON_EXCLUDE_FIELDS];
-            const {parameters} = paths[url][method];
+            excludeFields = [ ...excludeFields, ...COMMON_EXCLUDE_FIELDS ];
+            const { parameters } = paths[url][method];
 
             parameters.forEach(item => {
-                const {in: inType, schema} = item;
+                const { in: inType, schema } = item;
 
                 if (inType === 'body') {
                     const properties = getProperties(schema, definitions);
 
-                    Object.entries(properties).forEach(([field, item]) => {
+                    Object.entries(properties).forEach(([ field, item ]) => {
                         if (!excludeFields.includes(field)) {
-                            const {description, type: oType} = item;
+                            const { description, type: oType } = item;
                             const label = getTitle(description, field);
 
-                            let type = getFormElementType({oType, label});
+                            let type = getFormElementType({ oType, label });
 
                             if (!forms) forms = [];
                             forms.push({
@@ -565,14 +568,14 @@ function getProperties(schema, definitions) {
 
     const ref = schema.$ref || schema.items.$ref;
     const defKey = getDefKey(ref);
-    const {properties} = definitions[defKey];
+    const { properties } = definitions[defKey];
 
     if (!properties) return [];
 
     const propertiesValue = Object.values(properties);
     if (propertiesValue[0].items && propertiesValue[0].items.$ref) {
         const defKey = getDefKey(propertiesValue[0].items.$ref);
-        const {properties} = definitions[defKey];
+        const { properties } = definitions[defKey];
         return properties;
     }
 

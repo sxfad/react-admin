@@ -1,0 +1,124 @@
+@backgroundColorBase: #000;
+@backgroundColor: #141414;
+@borderColor: #303030;
+@color: rgba(255, 255, 255, 0.85);
+body {
+    background: @backgroundColorBase !important;
+}
+
+
+/*
+    修改自动回填样式
+    99999s 基本上就是一个无限长的时间
+    通过延长增加自动填充背景色的方式, 使用户感受不到样式的变化
+*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-transition-delay: 99999s;
+    -webkit-transition: color 99999s ease-out, background-color 99999s ease-out;
+}
+
+
+/*滚动条整体部分,必须要设置*/
+::-webkit-scrollbar {
+    width: 15px;
+    background-color: @backgroundColorBase;
+}
+
+/*滚动条的上下两端的按钮*/
+::-webkit-scrollbar-button {
+    height: 15px;
+    background-color: @backgroundColor;
+}
+
+/*滚动条的滑块按钮*/
+::-webkit-scrollbar-thumb {
+    border-radius: 15px;
+    background-color: @backgroundColor;
+    box-shadow: inset 0 0 0 3px @backgroundColorBase;
+}
+
+.modal-content-inner .sx-page-content {
+    background-color: #1f1f1f !important;
+}
+
+.sx-page-content-loading {
+    background-color: rgba(255, 255, 255, .1) !important;
+}
+
+.sx-page-content {
+    background-color: @backgroundColor !important;
+}
+
+.pagination-wrap {
+    border-top-color: @borderColor !important;
+}
+
+.sx-query-bar {
+    border-bottom-color: @backgroundColorBase !important;
+}
+
+#header {
+    background-color: @backgroundColor !important;
+}
+
+#logo-container {
+    background-color: #1f1f1f !important;
+}
+
+.sx-side-outer {
+    background-color: @backgroundColorBase !important;
+}
+
+.frame-side-extended,
+.frame-side-collapsed {
+    box-shadow: 0 4px 4px 2px @backgroundColor !important;
+}
+
+.helper-element td {
+    background-color: @backgroundColor !important;
+    border-color: @borderColor !important;
+}
+
+#frame-page-tabs {
+    background-color: @backgroundColorBase !important;
+}
+
+.draggable-tabs-bar-root {
+    background-color: @backgroundColorBase !important;
+}
+
+.page-tabs-root {
+    margin-left: 7px !important;
+    margin-right: -7px !important;
+    box-shadow: 0 8px 0 0 @backgroundColor !important;
+}
+
+.draggable-tabs-bar-horizontal-item {
+    .draggable-tabs-bar-wrapper {
+        background: @backgroundColorBase;
+        color: @color;
+
+        &:before {
+            border-color: @backgroundColor;
+        }
+
+        &:after {
+            box-shadow: 0 0 10px 20px @backgroundColorBase
+        }
+    }
+
+    &:hover,
+    &.active {
+        .draggable-tabs-bar-wrapper {
+            background: @backgroundColor;
+            color: @color;
+
+            &:after {
+                box-shadow: 0 0 10px 20px @backgroundColor
+            }
+        }
+    }
+}

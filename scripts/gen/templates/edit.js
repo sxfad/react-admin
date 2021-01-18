@@ -12,9 +12,8 @@ module.exports = function (config) {
 
     return `import React, {Component} from 'react';
 import {Form, Button} from 'antd';
-import {FormElement, FormRow} from 'src/library/components';
+import {PageContent, FormElement, FormRow} from 'ra-lib';
 import config from 'src/commons/config-hoc';
-import PageContent from 'src/layouts/page-content';
 
 @config({
     title: props => props.match.params.id === ':id' ? '添加' : '修改',

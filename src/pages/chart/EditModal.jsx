@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {Form} from 'antd';
-import {FormElement} from 'src/library/components';
+import {FormElement} from 'ra-lib';
 import config from 'src/commons/config-hoc';
-import {ModalContent} from 'src/library/components';
+import {ModalContent} from 'ra-lib';
 import {useGet, usePost, usePut} from 'src/commons/ajax';
 
 export default config({

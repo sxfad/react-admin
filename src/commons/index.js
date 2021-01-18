@@ -1,12 +1,22 @@
-import { getNodeByPropertyAndValue, convertToTree } from 'src/library/utils/tree-utils';
-import { pathToRegexp } from 'path-to-regexp';
+import { storage } from 'ra-lib';
 import cfg from 'src/config';
 
 const { baseName } = cfg;
-
 const sessionStorage = window.sessionStorage;
 
 const LOGIN_USER_STORAGE_KEY = 'login-user';
+
+
+/**
+ * 浏览器跳转，携带baseName
+ * @param href
+ * @returns {string|*}
+ */
+export function locationHref(href) {
+    if (href?.startsWith('http')) return window.location.href = href;
+
+    return window.location.href = `${baseName}${href}`;
+}
 
 /**
  * 判断是否有权限
@@ -62,9 +72,7 @@ export function toHome() {
     // 跳转页面，优先跳转上次登出页面
     const lastHref = window.sessionStorage.getItem('last-href');
 
-    // 强制跳转 进入系统之后，需要一些初始化工作，需要所有的js重新加载
-    // 拼接ROUTE_BASE_NAME，系统有可能发布在域名二级目录下
-    window.location.href = lastHref || `${baseName}/`;
+    locationHref(lastHref || '/');
 }
 
 /**
@@ -80,110 +88,12 @@ export function toLogin() {
     if (isLogin) return null;
 
     // 清除相关数据
-    sessionStorage.setItem(LOGIN_USER_STORAGE_KEY, null);
+    storage.session.clear();
     sessionStorage.clear();
     sessionStorage.setItem('last-href', window.location.pathname);
 
-    // 强制跳转，让浏览器刷新，重置数据
-    window.location.href = `${baseName}${loginPath}`;
+    locationHref(loginPath);
 
     return null;
-}
-
-/**
- * 根据path获取对应的菜单
- * @param path
- * @param menuTreeData
- * @returns {*}
- */
-export function getSelectedMenuByPath(path, menuTreeData) {
-    path = path.replace(baseName, '');
-    let selectedMenu;
-    if (menuTreeData) {
-        if (path.indexOf('/_') > -1) {
-            path = path.substring(0, path.indexOf('/_'));
-        }
-
-        // 先精确匹配
-        selectedMenu = getNodeByPropertyAndValue(menuTreeData, 'path', path, (itemValue, value, item) => {
-            const isTop = item.children && item.children.length;
-            return itemValue === value && !isTop; // 排除父级节点
-        });
-
-        // 正则匹配，路由中有`:id`的情况
-        // fixme 容易出问题：a/b/:id,会匹配 a/b/1, a/b/detail，有可能不是期望的结果，注意路由写法，a/b/tab/:id 具体的:id，添加一级，用来表明id是什么
-        if (!selectedMenu && path !== '/') {
-            selectedMenu = getNodeByPropertyAndValue(menuTreeData, 'path', path, (itemValue, value, item) => {
-                const isTop = item.children && item.children.length;
-                const re = pathToRegexp(itemValue);
-                return !!re.exec(value) && !isTop; // 排除父级节点
-            });
-        }
-    }
-    return selectedMenu;
-}
-
-
-/**
- * 获取菜单树状结构数据 和 随菜单携带过来的权限
- * @param menus 扁平化菜单数据
- */
-export function getMenuTreeDataAndPermissions(menus) {
-    // 用户权限code，通过菜单携带过来的 1 => 菜单 2 => 功能
-    const permissions = menus.map(item => {
-        if (item.type === '1') return item.key;
-        if (item.type === '2') return item.code;
-        return null;
-    });
-
-    // 获取菜单，过滤掉功能码
-    menus = menus.filter(item => item.type !== '2');
-
-    // 处理path： 只声明了url，为iframe页面
-    menus = menus.map(item => {
-        if (item.url) {
-            item.path = `/iframe_page_/${window.encodeURIComponent(item.url)}`;
-        }
-        return item;
-    });
-
-    // 菜单根据order 排序
-    const orderedData = [ ...menus ].sort((a, b) => {
-        const aOrder = a.order || 0;
-        const bOrder = b.order || 0;
-
-        // 如果order都不存在，根据 text 排序
-        if (!aOrder && !bOrder) {
-            return a.text > b.text ? 1 : -1;
-        }
-
-        return bOrder - aOrder;
-    });
-
-    // 设置顶级节点path，有的顶级没有指定path，默认设置为子孙节点的第一个path
-    const findPath = (node) => {
-        const children = orderedData.filter(item => item.parentKey === node.key);
-        let path = '';
-        if (children && children.length) {
-            for (let i = 0; i < children.length; i++) {
-                const child = children[i];
-                if (child.path) {
-                    path = child.path;
-                    break;
-                }
-                path = findPath(child);
-            }
-        }
-        return path;
-    };
-
-    orderedData.forEach(item => {
-        if (!item.path) {
-            item.path = findPath(item);
-        }
-    });
-
-    const menuTreeData = convertToTree(orderedData);
-    return { menuTreeData, permissions };
 }
 

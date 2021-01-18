@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {Form} from 'antd';
-import {FormElement} from 'src/library/components';
+import React, { Component } from 'react';
+import { Form } from 'antd';
+import { FormElement } from 'ra-lib';
 import config from 'src/commons/config-hoc';
-import {ModalContent} from 'src/library/components';
+import { ModalContent } from 'ra-lib';
 
 @config({
     ajax: true,
@@ -17,7 +17,7 @@ export default class EditModal extends Component {
     };
 
     componentDidMount() {
-        const {isEdit} = this.props;
+        const { isEdit } = this.props;
 
         if (isEdit) {
             this.fetchData();
@@ -27,36 +27,36 @@ export default class EditModal extends Component {
     fetchData = () => {
         if (this.state.loading) return;
 
-        const {id} = this.props;
+        const { id } = this.props;
 
-        this.setState({loading: true});
+        this.setState({ loading: true });
         this.props.ajax.get(`/mock/users/${id}`)
             .then(res => {
-                this.setState({data: res});
+                this.setState({ data: res });
                 this.form.setFieldsValue(res);
             })
-            .finally(() => this.setState({loading: false}));
+            .finally(() => this.setState({ loading: false }));
     };
 
     handleSubmit = (values) => {
         if (this.state.loading) return;
 
-        const {isEdit} = this.props;
+        const { isEdit } = this.props;
         const ajaxMethod = isEdit ? this.props.ajax.put : this.props.ajax.post;
         const successTip = isEdit ? '修改成功！' : '添加成功！';
 
-        this.setState({loading: true});
-        ajaxMethod('/mock/users', values, {successTip})
+        this.setState({ loading: true });
+        ajaxMethod('/mock/users', values, { successTip })
             .then(() => {
-                const {onOk} = this.props;
+                const { onOk } = this.props;
                 onOk && onOk();
             })
-            .finally(() => this.setState({loading: false}));
+            .finally(() => this.setState({ loading: false }));
     };
 
     render() {
-        const {isEdit} = this.props;
-        const {loading, data} = this.state;
+        const { isEdit } = this.props;
+        const { loading, data } = this.state;
         const formProps = {
             labelWidth: 100,
         };
@@ -73,7 +73,7 @@ export default class EditModal extends Component {
                     onFinish={this.handleSubmit}
                     initialValues={data}
                 >
-                    {isEdit ? <FormElement {...formProps} type="hidden" name="id"/> : null}
+                    {isEdit ? <FormElement {...formProps} type="hidden" name="id" /> : null}
 
                     <FormElement
                         {...formProps}
@@ -95,8 +95,9 @@ export default class EditModal extends Component {
                         label="工作"
                         name="job"
                         options={[
-                            {value: '1', label: '前端开发'},
-                            {value: '2', label: '后端开发'},
+                            { value: 0, label: '产品经理' },
+                            { value: 1, label: '前端开发' },
+                            { value: 2, label: '后端开发' },
                         ]}
                     />
                     <FormElement
@@ -105,8 +106,8 @@ export default class EditModal extends Component {
                         label="职位"
                         name="position"
                         options={[
-                            {value: '1', label: '员工'},
-                            {value: '2', label: 'CEO'},
+                            { value: '1', label: '员工' },
+                            { value: '2', label: 'CEO' },
                         ]}
                     />
                     <FormElement
@@ -118,8 +119,8 @@ export default class EditModal extends Component {
                         label="角色"
                         name="role"
                         options={[
-                            {value: '1', label: '员工'},
-                            {value: '2', label: 'CEO'},
+                            { value: '1', label: '员工' },
+                            { value: '2', label: 'CEO' },
                         ]}
                     />
 

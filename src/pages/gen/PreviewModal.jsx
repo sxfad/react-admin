@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Tabs, Button} from 'antd';
 import config from 'src/commons/config-hoc';
-import {ModalContent} from 'src/library/components';
+import {ModalContent} from 'ra-lib';
 import SourceCode from './SourceCode';
 
 const {TabPane} = Tabs;

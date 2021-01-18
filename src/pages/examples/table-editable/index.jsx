@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import config from 'src/commons/config-hoc';
-import {tableEditable, Operator, Table} from 'src/library/components';
-import PageContent from 'src/layouts/page-content';
+import {tableEditable, Operator, Table} from 'ra-lib';
+import { PageContent } from 'ra-lib';
 
 const EditTable = tableEditable(Table);
 

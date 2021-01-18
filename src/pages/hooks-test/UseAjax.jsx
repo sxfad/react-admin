@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import config from '../../commons/config-hoc';
-import PageContent from '../../layouts/page-content';
+import {PageContent} from 'ra-lib';
 import {Button} from 'antd';
 
 const useAjax = (options) => {

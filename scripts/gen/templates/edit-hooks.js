@@ -1,23 +1,21 @@
 const DELETE_THIS_LINE = 'DELETE_THIS_LINE';
-const WITH_OPTIONS_TYPE = ['select', 'radio-group', 'checkbox-group'];
+const WITH_OPTIONS_TYPE = [ 'select', 'radio-group', 'checkbox-group' ];
 
 /**
  * 获取编辑页面字符串
  */
-module.exports = function (config) {
+module.exports = function(config) {
     const {
         base,
         forms,
     } = config;
 
-    const {ModuleName, moduleName} = base;
+    const { ModuleName, moduleName } = base;
 
     return `import React, {useState, useEffect} from 'react';
 import {Form, Button} from 'antd';
-import {FormElement, FormRow} from 'src/library/components';
+import {PageContent, FormElement, FormRow} from 'ra-lib';
 import config from 'src/commons/config-hoc';
-import PageContent from 'src/layouts/page-content';
-import {useGet, usePost, usePut} from 'src/commons/ajax';
 
 export default config({
     title: props => props.match.params.id === ':id' ? '添加' : '修改',
@@ -26,9 +24,9 @@ export default config({
     const [data, setData] = useState({});
     const {isEdit, id} = props;
     const [form] = Form.useForm();
-    const [loading, fetch${ModuleName}] = useGet('${base.ajax.detail.url}');
-    const [saving, save${ModuleName}] = usePost('${base.ajax.add.url}', {successTip: '添加成功！'});
-    const [updating, update${ModuleName}] = usePut('${base.ajax.modify.url}', {successTip: '修改成功！'});
+    const [loading, fetch${ModuleName}] = props.ajax.useGet('${base.ajax.detail.url}');
+    const [saving, save${ModuleName}] = props.ajax.usePost('${base.ajax.add.url}', {successTip: '添加成功！'});
+    const [updating, update${ModuleName}] = props.ajax.usePut('${base.ajax.modify.url}', {successTip: '修改成功！'});
 
     async function fetchData() {
         if (loading) return;
@@ -53,7 +51,9 @@ export default config({
     }
 
     useEffect(() => {
-        if (isEdit) fetchData();
+        (async () => {
+            if (isEdit) await fetchData();
+        })();
     }, []);
 
     const formProps = {

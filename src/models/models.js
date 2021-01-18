@@ -1,6 +1,4 @@
 const result = {};
-
-// models 目录下 不支持子文件夹
 const req = require.context('./', false, /\.js$/);
 
 req.keys().forEach(key => {

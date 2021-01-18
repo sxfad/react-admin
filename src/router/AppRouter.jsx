@@ -1,20 +1,21 @@
-import React, { Component } from 'react';
-import { BrowserRouter, HashRouter, Route, Switch } from 'react-router-dom';
-import { isLogin } from 'src/commons';
-import PageFrame from 'src/layouts/frame';
+import React, {Component} from 'react';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {isLogin} from 'src/commons';
 import Error404 from 'src/components/error/Error404';
 import config from 'src/commons/config-hoc';
-import KeepAuthRoute from './KeepAuthRoute';
-import KeepPage from './KeepPage';
-import routes, { noFrameRoutes, noAuthRoutes /*commonPaths*/ } from './routes';
+import AuthRoute from './AuthRoute';
+import routes, {noFrameRoutes, noAuthRoutes /*commonPaths*/} from './routes';
+import LayoutFrame from 'src/layouts';
 import cfg from 'src/config';
 
-const { baseName } = cfg;
-const Router = process.env.PREVIEW ? HashRouter : BrowserRouter;
+const {baseName} = cfg;
 
 @config({
     query: true,
-    connect: state => ({ userPaths: state.system.userPaths, systemNoFrame: state.system.noFrame }),
+    connect: state => ({
+        systemNoFrame: state.layout.systemNoFrame,
+        userPaths: state.layout.userPaths,
+    }),
 })
 export default class AppRouter extends Component {
 
@@ -31,13 +32,14 @@ export default class AppRouter extends Component {
     };
 
     render() {
-        const { noFrame: queryNoFrame, noAuth } = this.props.query;
-        const { systemNoFrame } = this.props;
+        const {noFrame: queryNoFrame, noAuth} = this.props.query;
+        const {systemNoFrame} = this.props;
         const userRoutes = this.getUserRoutes();
+        const style = {display: 'flex', flexDirection: 'column', flex: 1, position: 'relative', minHeight: '100vh'};
 
         return (
-            <Router basename={baseName}>
-                <div style={{ display: 'flex', flexDirection: 'column', position: 'relative', minHeight: '100vh' }}>
+            <BrowserRouter basename={baseName}>
+                <div style={style}>
                     <Route path="/" render={props => {
                         // 框架组件单独渲染，与其他页面成为兄弟节点，框架组件和具体页面组件渲染互不影响
 
@@ -51,14 +53,13 @@ export default class AppRouter extends Component {
                         // 如果浏览器url中携带了noFrame=true参数，不显示框架
                         if (queryNoFrame === 'true') return null;
 
-                        return <PageFrame {...props}/>;
+                        if (window.__POWERED_BY_QIANKUN__) return null;
+
+                        return <LayoutFrame {...props}/>;
                     }}/>
-                    <Route exact path={userRoutes.map(item => item.path)}>
-                        <KeepPage/>
-                    </Route>
                     <Switch>
                         {userRoutes.map(item => {
-                            const { path, component } = item;
+                            const {path, component} = item;
                             let isNoAuthRoute = false;
 
                             // 不需要登录的页面
@@ -68,7 +69,7 @@ export default class AppRouter extends Component {
                             if (noAuth === 'true') isNoAuthRoute = true;
 
                             return (
-                                <KeepAuthRoute
+                                <AuthRoute
                                     key={path}
                                     exact
                                     path={path}
@@ -80,7 +81,7 @@ export default class AppRouter extends Component {
                         <Route component={Error404}/>
                     </Switch>
                 </div>
-            </Router>
+            </BrowserRouter>
         );
     }
 }

@@ -1,7 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './style.less';
 import logo from './logo.png';
 import star from './star.png';
+import cfg from 'src/config';
+
+const { appName } = cfg;
 
 export default class index extends Component {
     state = {
@@ -9,12 +12,11 @@ export default class index extends Component {
     };
 
     componentDidMount() {
-        this.setState({isMount: true});
+        this.setState({ isMount: true });
     }
 
-
     render() {
-        const {isMount} = this.state;
+        const { isMount } = this.state;
 
         return (
             <div styleName={isMount ? 'root active' : 'root'}>
@@ -23,7 +25,7 @@ export default class index extends Component {
                 </div>
                 <div styleName="logo">
                     <img src={logo} alt="图标"/>
-                    <span>React Admin</span>
+                    <span>{appName}</span>
                 </div>
             </div>
         );

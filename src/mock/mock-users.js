@@ -1,4 +1,4 @@
-import {getUsersByPageSize} from './mockdata/user';
+import { getUsersByPageSize } from './mockdata/user';
 
 export default {
     'post /mock/login': (config) => {
@@ -45,9 +45,9 @@ export default {
             }, 1000);
         });
     },
-    'get re:/mock/users/.+': {id: 1, name: '熊大', age: 22, job: '1', position: '1'},
+    'get re:/mock/users/.+': { id: 1, name: '熊大', age: 22, job: 0, position: '1' },
     'post /mock/users': true,
     'put /mock/users': true,
     'delete /mock/users': true,
     'delete re:/mock/users/.+': true,
-}
+};

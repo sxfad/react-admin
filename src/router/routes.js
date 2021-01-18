@@ -1,5 +1,5 @@
-import pageRoutes, {noAuths, noFrames, keepAlives} from '../pages/page-routes';
-import PageLoading from 'src/layouts/page-loading';
+import pageRoutes, { noAuths, noFrames, keepAlives } from '../pages/page-routes';
+import { PageLoading } from 'ra-lib';
 import loadable from '@loadable/component';
 import React from 'react';
 
@@ -27,6 +27,6 @@ export default [
     .map(item => {
         return {
             path: item.path,
-            component: loadable(item.component, {fallback: <PageLoading/>}),
+            component: loadable(item.component, { fallback: <PageLoading/> }),
         };
     });

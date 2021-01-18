@@ -11,9 +11,8 @@ module.exports = function (config) {
 
     return `import React, {Component} from 'react';
 import {Form} from 'antd';
-import {FormElement} from 'src/library/components';
+import {FormElement, ModalContent} from 'ra-lib';
 import config from 'src/commons/config-hoc';
-import {ModalContent} from 'src/library/components';
 
 @config({
     ajax: true,

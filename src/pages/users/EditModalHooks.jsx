@@ -1,19 +1,19 @@
-import React, {useState, useEffect} from 'react';
-import {Form} from 'antd';
-import {FormElement} from 'src/library/components';
+import React, { useState, useEffect } from 'react';
+import { Form } from 'antd';
+import { FormElement } from 'ra-lib';
 import config from 'src/commons/config-hoc';
-import {ModalContent} from 'src/library/components';
-import {useGet, usePost, usePut} from 'src/commons/ajax';
+import { ModalContent } from 'ra-lib';
+import { useGet, usePost, usePut } from 'src/commons/ajax';
 
 export default config({
     modal: props => props.isEdit ? '修改用户' : '添加用户',
 })(props => {
-    const [data, setData] = useState({});
-    const {isEdit, id, onOk} = props;
-    const [form] = Form.useForm();
-    const [loading, fetchUser] = useGet('/mock/users/:id');
-    const [saving, saveUser] = usePost('/mock/users', {successTip: '添加成功！'});
-    const [updating, updateUser] = usePut('/mock/users', {successTip: '添加成功！'});
+    const [ data, setData ] = useState({});
+    const { isEdit, id, onOk } = props;
+    const [ form ] = Form.useForm();
+    const [ loading, fetchUser ] = useGet('/mock/users/:id');
+    const [ saving, saveUser ] = usePost('/mock/users', { successTip: '添加成功！' });
+    const [ updating, updateUser ] = usePut('/mock/users', { successTip: '添加成功！' });
 
     async function fetchData() {
         if (loading) return;
@@ -35,7 +35,9 @@ export default config({
     }
 
     useEffect(() => {
-        if (isEdit) fetchData();
+        (async () => {
+            if (isEdit) await fetchData();
+        })();
     }, []);
 
     const formProps = {
@@ -77,8 +79,8 @@ export default config({
                     label="工作"
                     name="job"
                     options={[
-                        {value: '1', label: '前端开发'},
-                        {value: '2', label: '后端开发'},
+                        { value: '1', label: '前端开发' },
+                        { value: '2', label: '后端开发' },
                     ]}
                 />
                 <FormElement
@@ -87,8 +89,8 @@ export default config({
                     label="职位"
                     name="position"
                     options={[
-                        {value: '1', label: '员工'},
-                        {value: '2', label: 'CEO'},
+                        { value: '1', label: '员工' },
+                        { value: '2', label: 'CEO' },
                     ]}
                 />
                 <FormElement
@@ -100,8 +102,8 @@ export default config({
                     label="角色"
                     name="role"
                     options={[
-                        {value: '1', label: '员工'},
-                        {value: '2', label: 'CEO'},
+                        { value: '1', label: '员工' },
+                        { value: '2', label: 'CEO' },
                     ]}
                 />
             </Form>
