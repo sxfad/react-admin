@@ -14,7 +14,7 @@
         "antd:less": "lessc src/antd.less --js public/antd.min.css -clean-css"
     },
     "dependencies": {
-        "@ant-design/icons": "^4.0.3",
+        "@ant-design/icons": "^4.3.0",
         "@babel/core": "7.9.0",
         "@babel/plugin-proposal-decorators": "^7.8.3",
         "@babel/plugin-proposal-export-default-from": "^7.8.3",
@@ -84,7 +84,9 @@
         "prismjs": "^1.21.0",
         "prop-types": "^15.7.2",
         "pubsub-js": "^1.8.0",
-        "ra-lib": "^1.2.0",
+        "qs": "^6.5.2",
+        "ra-lib": "^1.2.8",
+        "rc-util": "^5.5.0",
         "react": "^16.13.1",
         "react-app-polyfill": "^1.0.6",
         "react-copy-to-clipboard": "^5.0.2",

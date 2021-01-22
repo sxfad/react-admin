@@ -4,8 +4,9 @@ import {PageContent} from 'ra-lib';
 
 export default config({
     path: '/users/:id',
-})(function UserCenter(props) {
-
+    title: {text: '用户中心', icon: 'user'},
+    side: false,
+})(function UserCenter() {
     return (
         <PageContent fitHeight>
             <div style={{
