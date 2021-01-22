@@ -85,7 +85,7 @@
         "prop-types": "^15.7.2",
         "pubsub-js": "^1.8.0",
         "qs": "^6.5.2",
-        "ra-lib": "^1.2.8",
+        "ra-lib": "^1.2.9",
         "rc-util": "^5.5.0",
         "react": "^16.13.1",
         "react-app-polyfill": "^1.0.6",
