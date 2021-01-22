@@ -98,26 +98,26 @@ input:-webkit-autofill:active {
 
 .draggable-tabs-bar-horizontal-item {
     .draggable-tabs-bar-wrapper {
-        background: @backgroundColorBase;
-        color: @color;
+        background: @backgroundColorBase !important;
+        color: @color !important;
 
         &:before {
-            border-color: @backgroundColor;
+            border-color: @backgroundColor !important;
         }
 
         &:after {
-            box-shadow: 0 0 10px 20px @backgroundColorBase
+            box-shadow: 0 0 10px 20px @backgroundColorBase !important;
         }
     }
 
     &:hover,
     &.active {
         .draggable-tabs-bar-wrapper {
-            background: @backgroundColor;
-            color: @color;
+            background: @backgroundColor !important;
+            color: @color !important;
 
             &:after {
-                box-shadow: 0 0 10px 20px @backgroundColor
+                box-shadow: 0 0 10px 20px @backgroundColor !important;
             }
         }
     }

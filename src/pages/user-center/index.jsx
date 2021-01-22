@@ -1,6 +1,6 @@
 import React from 'react';
 import config from 'src/commons/config-hoc';
-import { PageContent } from 'ra-lib';
+import {PageContent} from 'ra-lib';
 
 export default config({
     path: '/users/:id',

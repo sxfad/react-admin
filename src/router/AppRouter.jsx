@@ -43,16 +43,19 @@ export default class AppRouter extends Component {
                     <Route path="/" render={props => {
                         // 框架组件单独渲染，与其他页面成为兄弟节点，框架组件和具体页面组件渲染互不影响
 
+                        // 系统级别配置，不渲染框架
                         if (systemNoFrame) return null;
-                        // 通过配置，筛选那些页面不需要框架
+
+                        // 通过配置，筛选那些页面不渲染框架
                         if (noFrameRoutes.includes(props.location.pathname)) return null;
 
-                        // 框架内容属于登录之后内容，如果未登录，也不显示框架
+                        // 框架内容属于登录之后内容，如果未登录，不渲染框架
                         if (!isLogin()) return null;
 
-                        // 如果浏览器url中携带了noFrame=true参数，不显示框架
+                        // 如果浏览器url中携带了noFrame=true参数，不渲染框架
                         if (queryNoFrame === 'true') return null;
 
+                        // 如果是乾坤字项目，不渲染框架
                         if (window.__POWERED_BY_QIANKUN__) return null;
 
                         return <LayoutFrame {...props}/>;

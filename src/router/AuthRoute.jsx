@@ -1,31 +1,16 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
-import { isLogin, toLogin } from 'src/commons';
-import config from 'src/commons/config-hoc';
+import {Route} from 'react-router-dom';
+import {isLogin, toLogin} from 'src/commons';
 
 /**
- * 与KeepPage配合使用的路由，进行页面的收集
+ * 未登录拦截
+ * 前端判断是否登录，如果未登录直接跳转到登录页面
  */
-@config({
-    pubSub: true,
-    connect(state) {
-        return {
-            tabs: state.layout.tabs,
-            title: state.layout.title,
-            selectedMenu: state.layout.selectedMenu,
-            keepAliveSystem: state.layout.keepAlive,
-            showTabs: state.layout.showTabs,
-        };
-    },
-})
 export default class AuthRoute extends React.Component {
     render() {
         const {
             component: Component,
             noAuth,
-            tabs,
-            keepAliveSystem,
-            showTabs,
             ...rest
         } = this.props;
 
