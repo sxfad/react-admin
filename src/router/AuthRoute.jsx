@@ -20,7 +20,11 @@ export default class AuthRoute extends React.Component {
                 render={props => {
                     if (!noAuth && !isLogin()) return toLogin();
 
-                    return <Component {...props} />;
+
+                    // 给组件添加 key，如果多个tab公用一个页面（动态路由，比如用户详情页），tab切换时，保证组件卸载 重新加载
+                    const key = props.location.pathname;
+
+                    return <Component key={key} {...props} />;
                 }}
             />
         );
