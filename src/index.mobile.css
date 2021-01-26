@@ -29,6 +29,10 @@
         display: none;
     }
 
+    .frame-side-collapsed,
+    .frame-side-extended {
+        z-index: 9999;
+    }
     .frame-side-collapsed {
         width: 0 !important;
     }

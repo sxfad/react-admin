@@ -8456,10 +8456,10 @@ querystringify@^2.1.1:
   resolved "https://registry.npm.taobao.org/querystringify/-/querystringify-2.1.1.tgz#60e5a5fd64a7f8bfa4d2ab2ed6fdf4c85bad154e"
   integrity sha512-w7fLxIRCRT7U8Qu53jQnJyPkYZIaR4n5151KMfcJlO/A9397Wxb1amJvROTK6TOnp7PfoAmg/qXiNHI+08jRfA==
 
-ra-lib@^1.2.9:
-  version "1.2.9"
-  resolved "https://registry.npmjs.org/ra-lib/-/ra-lib-1.2.9.tgz#75326bc0ffc42cd3aa77388779342271a365b4c2"
-  integrity sha512-Fg5PtM1MMTfJ+iPM5qTzJLhIcAXGFNWHkFGzkuxuOSU73UEUxxU2fhi/Xab0GxeoW4BMWqJadNoOt8snxb+MoA==
+ra-lib@^1.2.10:
+  version "1.2.10"
+  resolved "https://registry.npmjs.org/ra-lib/-/ra-lib-1.2.10.tgz#409971758f4a2245f92c5a3c23148bd72d00dd8b"
+  integrity sha512-t1U2suTAeA7lirsNM/m3u9j6Fyb0AQ2xss+0F5zeOKNWzVXvKB6P0YMroCN9mWh3ZMkfDB6XJPrsuJgUKQrwxg==
 
 raf@^3.4.1:
   version "3.4.1"
