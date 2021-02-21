@@ -31,6 +31,13 @@ export default function getMenus(userId) {
         { key: 'baidu-family', basePath: 'http://baidu.com', text: '百度全家桶', icon: 'DribbbleOutlined', order: 400 },
         { key: 'baidu-zhidao', parentKey: 'baidu-family', text: '知道', icon: 'align-left', url: '/zhidao' },
         { key: 'baidu-buzhidao', parentKey: 'baidu-family', text: '不知道', icon: 'align-left', url: '/buzhidao' },
+        { key: 'code-key', parentKey: 'baidu-family', text: '添加用户', type: '2', code: 'ADD_USER', icon: 'align-left', url: '/buzhidao' },
     ]);
 
 }
+
+
+/*
+菜单数据主键也可以是：id parentId
+角色字段： id name description
+* */
