@@ -1,0 +1,1 @@
+{"version":3,"sources":["style.less"],"names":[],"mappings":"AAAA,cACI,SAAA,CACA,kBAAA,CACA,YACJ,CAJA,qBAMQ,QAAA,CACA,UAAA,CACA,WACR","file":"9.898172fa.chunk.css","sourcesContent":[".iframe {\n    padding: 0;\n    background: #f0f2f5;\n    display: flex;\n\n    iframe {\n        border: 0;\n        width: 100%;\n        height: 100%;\n    }\n}\n"]}
