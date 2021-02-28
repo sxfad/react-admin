@@ -3,7 +3,7 @@
     "version": "4.0.0",
     "private": true,
     "scripts": {
-        "start": "PORT=4080 node scripts/start.js",
+        "start": "cross-env PORT=4080 node scripts/start.js",
         "build": "cross-env NODE_ENV=production node scripts/build.js",
         "build:pre": "cross-env MOCK=true PREVIEW=true BASE_NAME=/react-admin/build PUBLIC_URL=/react-admin/build/ yarn build && cp -r ./build ./docs/ ",
         "build:dll": "rimraf config/dll && webpack --config config/webpack.dll.config.js",
@@ -85,7 +85,7 @@
         "prop-types": "^15.7.2",
         "pubsub-js": "^1.8.0",
         "qs": "^6.5.2",
-        "ra-lib": "^1.2.15",
+        "ra-lib": "^1.2.16",
         "rc-util": "^5.5.0",
         "react": "^16.13.1",
         "react-app-polyfill": "^1.0.6",
