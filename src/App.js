@@ -24,13 +24,15 @@ export default class App extends React.Component {
     };
 
     componentDidMount() {
+        const {action: {layout}} = this.props;
+        layout.setAppName(appName);
+        layout.setPrimaryColor(theme.primaryColor);
+
         // 未登录，直接跳转到登录页面
         if (!isLogin()) {
             this.setState({loading: false});
             return toLogin();
         }
-
-        const {action: {layout}} = this.props;
 
         // 从Storage中获取出需要同步到redux的数据
         this.props.action.getStateFromStorage();
@@ -66,8 +68,6 @@ export default class App extends React.Component {
                 layout.setUserPaths(userPaths);
                 layout.setPermissions(permissions);
                 layout.setLoginUser(loginUser);
-                layout.setAppName(appName);
-                layout.setPrimaryColor(theme.primaryColor);
             })
             .finally(() => {
                 this.setState({loading: false});
