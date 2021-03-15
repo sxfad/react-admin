@@ -128,7 +128,6 @@ export default class UserCenter extends Component {
             id,
         } = this.state;
 
-        console.log('users render');
         const formProps = {
             width: 200,
         };
