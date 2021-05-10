@@ -21,7 +21,7 @@ export default config({
     const [data, setData] = useState({});
     const [loading, fetchUser] = useGet('/mock/users/:id');
     const [saving, saveUser] = usePost('/mock/users', {successTip: '添加成功！'});
-    const [updating, updateUser] = usePut('/mock/users', {successTip: '添加成功！'});
+    const [updating, updateUser] = usePut('/mock/users', {successTip: '修改成功！'});
 
     async function fetchData() {
         if (loading) return;

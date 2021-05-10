@@ -10,7 +10,7 @@ layoutModel.initialState = {
     defaultShowSide: true,
     defaultShowHead: false,
     defaultHeadFixed: false,
-    defaultShowTabs: false,
+    defaultShowTabs: true,
     keepOtherMenuOpen: true,
     pageFrameLayout: PAGE_FRAME_LAYOUT.TOP_SIDE_MENU,
     theme: theme.theme,

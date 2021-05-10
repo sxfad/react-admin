@@ -97,3 +97,31 @@ export function toLogin() {
     return null;
 }
 
+
+/**
+ * 金钱格式化
+ * @param num
+ * @param comma
+ * @returns {string}
+ */
+export function money(num, comma = true) {
+    if (!num) num = '0';
+    num = num.toString().replace(/[$￥,]/g, '');
+    if (isNaN(num)) num = '0';
+
+    const sign = (Number(num) === (num = Math.abs(num)));
+    num = Math.floor(num * 100 + 0.50000000001);
+    let cents = num % 100;
+    num = Math.floor(num / 100).toString();
+
+    if (cents < 10) cents = '0' + cents;
+
+    if (comma) {
+        for (let i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++) {
+            num = num.substring(0, num.length - (4 * i + 3)) + ',' + num.substring(num.length - (4 * i + 3));
+        }
+    }
+
+    return (((sign) ? '' : '-') + num + '.' + cents);
+}
+

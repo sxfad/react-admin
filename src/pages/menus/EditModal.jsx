@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { Form } from 'antd';
-import { FormElement, FormRow, IconPicker, ModalContent } from 'ra-lib';
+import React, {Component} from 'react';
+import {Form} from 'antd';
+import {FormElement, FormRow, IconPicker, ModalContent} from 'ra-lib';
 import config from 'src/commons/config-hoc';
 
 export const targetOptions = [
-    { value: '', label: '项目内部窗口' },
-    { value: '_self', label: '替换当前窗口' },
-    { value: '_blank', label: '打开新窗口' },
+    {value: '', label: '项目内部窗口'},
+    {value: '_self', label: '替换当前窗口'},
+    {value: '_blank', label: '打开新窗口'},
 ];
 
 @config({
@@ -14,8 +14,8 @@ export const targetOptions = [
     modal: {
         width: 700,
         title: props => {
-            const { data = {} } = props;
-            const { key, type } = data;
+            const {data = {}} = props;
+            const {key, type} = data;
             const isMenu = type === '1';
 
             if (isMenu) return key ? '编辑菜单' : '添加菜单';
@@ -36,29 +36,29 @@ export default class EditModal extends Component {
         console.log('Received values of form: ', values);
 
         // 如果key存在视为修改，其他为添加
-        const { key, parentKey } = values;
+        const {key, parentKey} = values;
         const ajaxMethod = key ? this.props.ajax.put : this.props.ajax.post;
         const ajaxUrl = key ? `/menus/${key}` : '/menus';
-        const { onOk } = this.props;
+        const {onOk} = this.props;
 
-        this.setState({ loading: true });
-        ajaxMethod(ajaxUrl, { ...values, id: key, parentId: parentKey })
+        this.setState({loading: true});
+        ajaxMethod(ajaxUrl, {...values, id: key, parentId: parentKey})
             .then(() => {
-                this.setState({ visible: false });
+                this.setState({visible: false});
                 onOk && onOk();
             })
-            .finally(() => this.setState({ loading: false }));
+            .finally(() => this.setState({loading: false}));
     };
 
     handleCancel = () => {
-        const { onCancel } = this.props;
+        const {onCancel} = this.props;
         if (onCancel) onCancel();
     };
 
     render() {
-        const { data } = this.props;
-        const { loading } = this.state;
-        const { type, icon = 'bars' } = data;
+        const {data} = this.props;
+        const {loading} = this.state;
+        const {type, icon = 'bars'} = data;
         const isMenu = !type || type === '1';
 
         const formProps = {
@@ -77,8 +77,8 @@ export default class EditModal extends Component {
                 <Form
                     ref={form => this.form = form}
                     onFinish={this.handleSubmit}
-                    style={{ padding: 16 }}
-                    initialValues={{ ...data, icon }}
+                    style={{padding: 16}}
+                    initialValues={{...data, icon}}
                 >
                     <FormElement {...formProps} type="hidden" name="key"/>
                     <FormElement {...formProps} type="hidden" name="parentKey"/>
