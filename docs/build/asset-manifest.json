@@ -1,6 +1,6 @@
 {
   "files": {
-    "static/css/0.7200fe47.chunk.css": "/react-admin/build/static/css/0.7200fe47.chunk.css",
+    "static/css/0.ec49fd69.chunk.css": "/react-admin/build/static/css/0.ec49fd69.chunk.css",
     "static/js/0.5249cdbb.chunk.js": "/react-admin/build/static/js/0.5249cdbb.chunk.js",
     "static/js/0.5249cdbb.chunk.js.map": "/react-admin/build/static/js/0.5249cdbb.chunk.js.map",
     "static/css/1.b3101999.chunk.css": "/react-admin/build/static/css/1.b3101999.chunk.css",
@@ -13,11 +13,11 @@
     "static/js/3.7e376fcc.chunk.js": "/react-admin/build/static/js/3.7e376fcc.chunk.js",
     "static/js/3.7e376fcc.chunk.js.map": "/react-admin/build/static/js/3.7e376fcc.chunk.js.map",
     "main.css": "/react-admin/build/static/css/main.60c4666a.chunk.css",
-    "main.js": "/react-admin/build/static/js/main.36735e9b.chunk.js",
-    "main.js.map": "/react-admin/build/static/js/main.36735e9b.chunk.js.map",
-    "runtime-main.js": "/react-admin/build/static/js/runtime-main.8e45a3d2.js",
-    "runtime-main.js.map": "/react-admin/build/static/js/runtime-main.8e45a3d2.js.map",
-    "static/css/6.08ec7ed1.chunk.css": "/react-admin/build/static/css/6.08ec7ed1.chunk.css",
+    "main.js": "/react-admin/build/static/js/main.2e822ef5.chunk.js",
+    "main.js.map": "/react-admin/build/static/js/main.2e822ef5.chunk.js.map",
+    "runtime-main.js": "/react-admin/build/static/js/runtime-main.e104fd66.js",
+    "runtime-main.js.map": "/react-admin/build/static/js/runtime-main.e104fd66.js.map",
+    "static/css/6.b892ef53.chunk.css": "/react-admin/build/static/css/6.b892ef53.chunk.css",
     "static/js/6.b2ad8213.chunk.js": "/react-admin/build/static/js/6.b2ad8213.chunk.js",
     "static/js/6.b2ad8213.chunk.js.map": "/react-admin/build/static/js/6.b2ad8213.chunk.js.map",
     "static/css/7.f06c21b3.chunk.css": "/react-admin/build/static/css/7.f06c21b3.chunk.css",
@@ -77,13 +77,13 @@
     "static/js/32.f3528fb7.chunk.js": "/react-admin/build/static/js/32.f3528fb7.chunk.js",
     "static/js/32.f3528fb7.chunk.js.map": "/react-admin/build/static/js/32.f3528fb7.chunk.js.map",
     "index.html": "/react-admin/build/index.html",
-    "static/css/0.7200fe47.chunk.css.map": "/react-admin/build/static/css/0.7200fe47.chunk.css.map",
+    "static/css/0.ec49fd69.chunk.css.map": "/react-admin/build/static/css/0.ec49fd69.chunk.css.map",
     "static/css/1.b3101999.chunk.css.map": "/react-admin/build/static/css/1.b3101999.chunk.css.map",
     "static/css/10.3b456ce1.chunk.css.map": "/react-admin/build/static/css/10.3b456ce1.chunk.css.map",
     "static/css/17.f156edac.chunk.css.map": "/react-admin/build/static/css/17.f156edac.chunk.css.map",
     "static/css/2.6867ec13.chunk.css.map": "/react-admin/build/static/css/2.6867ec13.chunk.css.map",
     "static/css/3.bda1c43c.chunk.css.map": "/react-admin/build/static/css/3.bda1c43c.chunk.css.map",
-    "static/css/6.08ec7ed1.chunk.css.map": "/react-admin/build/static/css/6.08ec7ed1.chunk.css.map",
+    "static/css/6.b892ef53.chunk.css.map": "/react-admin/build/static/css/6.b892ef53.chunk.css.map",
     "static/css/7.f06c21b3.chunk.css.map": "/react-admin/build/static/css/7.f06c21b3.chunk.css.map",
     "static/css/9.3b456ce1.chunk.css.map": "/react-admin/build/static/css/9.3b456ce1.chunk.css.map",
     "static/css/main.60c4666a.chunk.css.map": "/react-admin/build/static/css/main.60c4666a.chunk.css.map",
@@ -92,10 +92,10 @@
     "static/media/login-bg.jpg": "/react-admin/build/static/media/login-bg.3ab1656e.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.8e45a3d2.js",
-    "static/css/6.08ec7ed1.chunk.css",
+    "static/js/runtime-main.e104fd66.js",
+    "static/css/6.b892ef53.chunk.css",
     "static/js/6.b2ad8213.chunk.js",
     "static/css/main.60c4666a.chunk.css",
-    "static/js/main.36735e9b.chunk.js"
+    "static/js/main.2e822ef5.chunk.js"
   ]
 }
