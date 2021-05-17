@@ -1,2 +1,0 @@
-(this["webpackJsonpant-admin"]=this["webpackJsonpant-admin"]||[]).push([[20],{500:function(t,n,a){"use strict";a.r(n);a(369);var c=a(169),e=a(101),i=a(524),s=a(55),b=a(8);n.default=Object(e.a)({path:"/demo/icon"})((function(t){return Object(b.jsx)(i.a,{children:Object(b.jsx)(c.b,{children:Object(b.jsx)(s.b,{type:"icon-kafka"})})})}))}}]);
-//# sourceMappingURL=20.293c9860.chunk.js.map
