@@ -5,7 +5,7 @@
 
 
 ## modal高阶组件
-modal高阶组件集成到了config中，也可以单独引用：`import {modal} from 'src/library/components';`
+modal高阶组件集成到了config中，也可以单独引用：`import {modal} from '@ra-lib/hoc';`
 
 ```jsx
 import React from 'react';
@@ -42,7 +42,7 @@ modal所有参数说明如下：
             
 参数|类型|默认值|说明
 ---|---|---|---
-surplusSpace|boolean|false|是否使用屏幕垂直方向剩余空间 
+fitHeight|boolean|false|是否使用屏幕垂直方向剩余空间 
 otherHeight|number|-|除了主体内容之外的其他高度，用于计算主体高度；
 loading|boolean|false|加载中
 loadingTip|-|-|加载提示文案

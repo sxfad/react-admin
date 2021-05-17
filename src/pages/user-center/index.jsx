@@ -1,24 +1,16 @@
-import React from 'react';
 import config from 'src/commons/config-hoc';
-import {PageContent} from 'ra-lib';
+import {PageContent} from '@ra-lib/components';
 
 export default config({
-    path: '/users/:id',
-    title: {text: '用户中心', icon: 'user'},
-    side: false,
-})(function UserCenter() {
+    path: '/users/center/:id',
+    selectedMenuPath: '/users', // 指定选中菜单
+    title: '用户中心',
+})(function UserEdit(props) {
+    const {id} = props.match.params;
+
     return (
-        <PageContent fitHeight>
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100%',
-            }}>
-                <h1>用户中心</h1>
-                <p>敬请期待</p>
-            </div>
+        <PageContent>
+            用户中心-{id}
         </PageContent>
     );
 });

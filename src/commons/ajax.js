@@ -1,80 +1,65 @@
-import { ajax as SXAjax, createHoc, createHooks } from 'ra-lib';
-import mockUrls from '../mock/url-config';
+import Ajax, {createHooks, createHoc} from '@ra-lib/ajax';
+import {getQuery} from '@ra-lib/util';
+import {AJAX_PREFIX, AJAX_TIMEOUT} from 'src/config';
 import handleError from './handle-error';
 import handleSuccess from './handle-success';
-import cfg from 'src/config';
+import {getLoginUser} from './index';
 
-const { ajaxPrefix, ajaxTimeout } = cfg;
-
-// 默认配置在这里设置
-export function withDefaultSettings(instance) {
-    instance.defaults.baseURL = ajaxPrefix;
-    instance.defaults.timeout = ajaxTimeout;
-    instance.mockDefaults.baseURL = '/';
-    // instance.defaults.headers['XXX-TOKEN'] = 'token-value';
-    // instance.defaults.headers.get['token'] = 'token-value';
-    return instance;
+// token来源
+const query = getQuery();
+if (query?.token) {
+    window.sessionStorage.setItem('token', query.token);
 }
+const token = getLoginUser()?.token || window.sessionStorage.getItem('token');
 
-// ajax工具，含有errorTip 和 successTip
-const _ajax = withDefaultSettings(new SXAjax({
-    onShowErrorTip: (error, errorTip) => handleError({ error, errorTip }),
-    onShowSuccessTip: (response, successTip) => handleSuccess({ successTip }),
-    isMock,
-    reject: true,
-}));
-
-// ajax工具，不含有 errorTip和successTip 一般models会使用
-const __ajax = withDefaultSettings(new SXAjax({ isMock }));
-
-// hooks
-const {
-    useGet: _useGet,
-    useDel: _useDel,
-    usePost: _usePost,
-    usePut: _usePut,
-    usePatch: _usePatch,
-} = createHooks(_ajax);
-/*
-// 请求响应拦截
-[ __ajax.instance, _ajax.instance ].forEach(instance => {
-    // 请求拦截
-    instance.interceptors.request.use(cfg => {
-        // Do something before request is sent
-        return cfg;
-    }, error => {
-        // Do something with request error
-        return Promise.reject(error);
-    });
-
-    // 响应拦截
-    instance.interceptors.response.use(res => {
-        // Do something before response
-        return res;
-    }, error => {
-        // Do something with response error
-        return Promise.reject(error);
-    });
+// 创建Ajax实例，设置默认值
+const ajax = new Ajax({
+    baseURL: AJAX_PREFIX,
+    timeout: AJAX_TIMEOUT,
+    headers: {token},
+    onError: handleError,
+    onSuccess: handleSuccess,
+    // withCredentials: true, // 跨域携带cookie，对应后端 Access-Control-Allow-Origin不可以为 '*'，需要指定为具体域名
 });
-*/
 
-// 判断请求是否是mock
-function isMock(url /* url, data, method, options */) {
-    return mockUrls.indexOf(url) > -1 || url.startsWith('/mock');
-}
+// 响应拦截
+ajax.instance.interceptors.response.use(res => {
+    // Do something before response
 
-// hooks
-export const useGet = _useGet;
-export const useDel = _useDel;
-export const usePost = _usePost;
-export const usePut = _usePut;
-export const usePatch = _usePatch;
+    // 后端自定义失败，前端直接抛出，走handleError逻辑
+    // if (res?.data?.code !== '00') return Promise.reject(res.data);
 
-// ajax高阶组件
-export const ajaxHoc = createHoc(_ajax);
+    return res;
+}, error => {
+    // Do something with response error
+    return Promise.reject(error);
+});
 
-// ajax工具，不含有 errorTip和successTip 一般models会使用
-export const ajax = __ajax;
+// 请求拦截
+ajax.instance.interceptors.request.use(cfg => {
+    // Do something before request is sent
+    return cfg;
+}, error => {
+    // Do something with request error
+    return Promise.reject(error);
+});
 
-// mockjs使用的axios实例
-export const mockInstance = __ajax.mockInstance = _ajax.mockInstance;
+const hooks = createHooks(ajax);
+const hoc = createHoc(ajax);
+
+export default ajax;
+
+export const ajaxHoc = hoc;
+
+export const get = ajax.get;
+export const post = ajax.post;
+export const put = ajax.put;
+export const del = ajax.del;
+export const patch = ajax.patch;
+
+export const useGet = hooks.useGet;
+export const usePost = hooks.usePost;
+export const usePut = hooks.usePut;
+export const useDel = hooks.useDel;
+export const usePatch = hooks.usePatch;
+

@@ -1,9 +1,11 @@
 import {notification} from 'antd';
 
-export default function handleSuccess({successTip}) {
-    successTip && notification.success({
+export default function handleSuccess({data, tip}) {
+    if (!tip) return;
+
+    notification.success({
         message: '成功',
-        description: successTip,
+        description: tip,
         duration: 2,
-    })
+    });
 }

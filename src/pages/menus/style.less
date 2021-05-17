@@ -1,2 +1,47 @@
 .root {
+    display: flex;
+
+}
+
+.menu {
+    flex: 0 0 210px;
+    display: flex;
+    flex-direction: column;
+
+    .menuTop {
+        flex: 0 0 50px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #e8e8e8;
+    }
+
+    .menuContent {
+        flex: 1;
+        overflow: auto;
+    }
+}
+
+.edit {
+    flex: 1;
+    overflow: auto;
+    padding: 0 32px;
+    border-left: 1px solid #e8e8e8;
+    border-right: 1px solid #e8e8e8;
+
+    h2 {
+        text-align: center;
+        padding: 8px;
+    }
+
+}
+
+.action {
+    flex: 1;
+    overflow: auto;
+    padding: 0 32px;
+
+    h2 {
+        text-align: center;
+        padding: 8px;
+    }
 }

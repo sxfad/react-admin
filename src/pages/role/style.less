@@ -1,0 +1,44 @@
+.root {
+    display: flex;
+}
+
+.role {
+    flex: 3;
+    padding: 8px;
+}
+
+.tableRow,
+.selectedRow {
+    cursor: pointer;
+}
+
+.selectedRow,
+.selectedRow:hover td {
+    background: #e8e8e8 !important;
+}
+
+.menu {
+    flex: 2;
+    margin-top: 8px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.menuTop {
+    flex: 0 0 48px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 8px;
+    margin-bottom: 8px;
+    background: #fff;
+}
+
+.menuContent {
+    flex: 1;
+    overflow: auto;
+    background: #fff;
+}

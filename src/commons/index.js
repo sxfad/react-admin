@@ -1,21 +1,31 @@
-import {storage} from 'ra-lib';
-import cfg from 'src/config';
-
-const {baseName} = cfg;
-const sessionStorage = window.sessionStorage;
+import {match} from 'path-to-regexp';
+import {BASE_NAME, HASH_ROUTER} from 'src/config';
+import pageConfigs from 'src/pages/page-configs';
+import {Storage} from '@ra-lib/util';
 
 const LOGIN_USER_STORAGE_KEY = 'login-user';
-
+const STORAGE_PREFIX = `${getLoginUser()?.id || ''}_`;
 
 /**
- * 浏览器跳转，携带baseName
+ * 前端存储对象 storage.local storage.session storage.global
+ * storage.local.setItem(key, value) storage.local.getItem(key, value)
+ * @type {Storage}
+ */
+export const storage = new Storage({prefix: STORAGE_PREFIX});
+
+/**
+ * 浏览器跳转，携带baseName hash等
  * @param href
  * @returns {string|*}
  */
 export function locationHref(href) {
     if (href?.startsWith('http')) return window.location.href = href;
 
-    return window.location.href = `${baseName}${href}`;
+    if (href && BASE_NAME && href.startsWith(BASE_NAME)) href = href.replace(BASE_NAME, '');
+
+    const hash = HASH_ROUTER ? '#' : '';
+
+    return window.location.href = `${BASE_NAME}${hash}${href}`;
 }
 
 /**
@@ -32,6 +42,9 @@ export function hasPermission(code) {
  * @param loginUser 当前登录用户信息
  */
 export function setLoginUser(loginUser = {}) {
+    if (!loginUser?.id) throw Error('loginUser must has id property!');
+    if (!loginUser?.name) throw Error('loginUser must has name property!');
+
     // 将用户属性在这里展开，方便查看系统都用到了那些用户属性
     const {id, name, avatar, token, permissions, ...others} = loginUser;
     const userStr = JSON.stringify({
@@ -43,7 +56,7 @@ export function setLoginUser(loginUser = {}) {
         ...others,      // 其他属性
     });
 
-    sessionStorage.setItem(LOGIN_USER_STORAGE_KEY, userStr);
+    window.sessionStorage.setItem(LOGIN_USER_STORAGE_KEY, userStr);
 }
 
 /**
@@ -51,9 +64,9 @@ export function setLoginUser(loginUser = {}) {
  * @returns {any}
  */
 export function getLoginUser() {
-    const loginUser = sessionStorage.getItem(LOGIN_USER_STORAGE_KEY);
+    const loginUser = window.sessionStorage.getItem(LOGIN_USER_STORAGE_KEY);
 
-    return loginUser ? JSON.parse(loginUser) : null;
+    return loginUser ? JSON.parse(loginUser) : undefined;
 }
 
 /**
@@ -61,8 +74,10 @@ export function getLoginUser() {
  * @returns {boolean}
  */
 export function isLogin() {
-    // 如果当前用户存在，就认为已经登录了
-    return !!getLoginUser();
+    // 前端判断是否登录，基于不同项目，可能需要调整
+    return !!getLoginUser()
+        || window.sessionStorage.getItem('token')
+        || window.localStorage.getItem('token');
 }
 
 /**
@@ -82,15 +97,14 @@ export function toLogin() {
     const loginPath = '/login';
 
     // 判断当前页面是否已经是login页面，如果是，直接返回，不进行跳转，防止出现跳转死循环
-    const pathname = window.location.pathname;
-    const isLogin = pathname.indexOf(loginPath) !== -1;
+    const href = window.location.href;
+    const isLogin = href.indexOf(loginPath) !== -1;
 
     if (isLogin) return null;
 
     // 清除相关数据
-    storage.session.clear();
-    sessionStorage.clear();
-    sessionStorage.setItem('last-href', window.location.pathname);
+    window.sessionStorage.clear();
+    window.sessionStorage.setItem('last-href', window.location.href);
 
     locationHref(loginPath);
 
@@ -99,29 +113,46 @@ export function toLogin() {
 
 
 /**
- * 金钱格式化
- * @param num
- * @param comma
- * @returns {string}
+ * 检测路由配置冲突
+ * @param result
+ * @returns {string|boolean}
  */
-export function money(num, comma = true) {
-    if (!num) num = '0';
-    num = num.toString().replace(/[$￥,]/g, '');
-    if (isNaN(num)) num = '0';
+export function checkPath(result) {
+    result
+        .filter(({path}) => !!path)
+        .forEach(({path, filePath}) => {
+            const exit = result.find(({filePath: f, path: p}) => {
+                if (f === filePath) return false;
 
-    const sign = (Number(num) === (num = Math.abs(num)));
-    num = Math.floor(num * 100 + 0.50000000001);
-    let cents = num % 100;
-    num = Math.floor(num / 100).toString();
+                if (!p || !path) return false;
 
-    if (cents < 10) cents = '0' + cents;
+                if (p === path) return true;
 
-    if (comma) {
-        for (let i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++) {
-            num = num.substring(0, num.length - (4 * i + 3)) + ',' + num.substring(num.length - (4 * i + 3));
-        }
-    }
+                return match(path, {decode: decodeURIComponent})(p)
+                    || match(p, {decode: decodeURIComponent})(path);
 
-    return (((sign) ? '' : '-') + num + '.' + cents);
+            });
+            if (exit) {
+                throw Error(`路由地址：${path} 与 ${exit.path} 配置冲突，对应文件文件如下：\n${filePath}\n${exit.filePath}`);
+            }
+        });
+
 }
 
+
+/**
+ * 基于 window.location.pathname pageConfig 获取当前页面config高级组件参数
+ * @returns {{}|*}
+ */
+export function getCurrentPageConfig() {
+    let {pathname, hash} = window.location;
+    if (HASH_ROUTER) {
+        pathname = hash.replace('#', '').split('?')[0];
+    } else if (BASE_NAME) {
+        pathname = pathname.replace(BASE_NAME, '');
+    }
+
+    const config = pageConfigs.find(({path}) => path && match(path, {decode: decodeURIComponent})(pathname));
+
+    return config || {};
+}

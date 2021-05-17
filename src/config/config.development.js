@@ -1,1 +1,1 @@
-export default {};
+export const IS_DEV = true;

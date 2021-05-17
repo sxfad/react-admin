@@ -1,2 +1,0 @@
-(this["webpackJsonpreact-adminv4"]=this["webpackJsonpreact-adminv4"]||[]).push([[6],{236:function(n,t,c){"use strict";c(10),c(238)},238:function(n,t,c){},266:function(n,t,c){"use strict";c(10),c(267),c(236),c(121),c(122)},267:function(n,t,c){}}]);
-//# sourceMappingURL=6.952dbe24.chunk.js.map

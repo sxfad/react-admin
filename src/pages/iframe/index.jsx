@@ -1,24 +1,40 @@
-import React, { Component } from 'react';
 import config from 'src/commons/config-hoc';
-import { PageContent } from 'ra-lib';
-import './style.less';
+import {Result} from 'antd';
+import {PageContent} from '@ra-lib/components';
+import styles from './style.less';
 
-@config({
+export default config({
     path: '/iframe_page_/:src',
-    keepAlive: true,
-})
-export default class IFrame extends Component {
-    render() {
-        let { src } = this.props.match.params;
-        src = window.decodeURIComponent(src);
-        return (
-            <PageContent fitHeight styleName="iframe">
+})(function IFrame(props) {
+    let {src} = props?.match?.params || {};
+
+    src = window.decodeURIComponent(src);
+
+    return (
+        <PageContent fitHeight className={styles.root}>
+            {src && src !== 'undefined' ? (
                 <iframe
-                    allowFullScreen="true"
+                    allowFullScreen
                     title={src}
                     src={src}
                 />
-            </PageContent>
-        );
-    }
-}
+            ) : (
+                <div
+                    style={{
+                        height: '100%',
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <Result
+                        status="error"
+                        title="页面加载失败"
+                        subTitle={`传递正确的 src，当前获取到「${src}」`}
+                    />
+                </div>
+            )}
+        </PageContent>
+    );
+});

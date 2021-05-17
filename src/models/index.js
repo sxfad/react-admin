@@ -1,32 +1,27 @@
-import { model, storage, layoutModel, PAGE_FRAME_LAYOUT } from 'ra-lib';
+import {createStoreByModels} from '@ra-lib/model';
 import models from './models';
-import handleError from '../commons/handle-error';
-import handleSuccess from '../commons/handle-success';
-import theme from '../theme.less';
+import handleSuccess from 'src/commons/handle-success';
+import handleError from 'src/commons/handle-error';
+import {storage} from 'src/commons';
 
-// 一些默认值的设置
-layoutModel.initialState = {
-    ...layoutModel.initialState,
-    defaultShowSide: true,
-    defaultShowHead: false,
-    defaultHeadFixed: false,
-    defaultShowTabs: true,
-    keepOtherMenuOpen: true,
-    pageFrameLayout: PAGE_FRAME_LAYOUT.TOP_SIDE_MENU,
-    theme: theme.theme,
-};
-
-const modelObj = model({
-    models: { ...models, layout: layoutModel },
-    storage,
-    handleError,
-    handleSuccess,
+const result = createStoreByModels(models, {
+    // middlewares: [
+    //     thunk,
+    // ],
+    // enhancers: [], // 与 middlewares 进行compose运算的方法： const enhancer = compose(applyMiddleware(...middlewares), ...enhancers);
+    // reducers: {todos}, // 额外的reducers
+    // localStorage: window.localStorage,
+    // sessionStorage: window.sessionStorage,
+    // serialize: JSON.stringify,
+    // deserialize: JSON.parse,
+    localStorage: storage.local,
+    sessionStorage: storage.session,
+    serialize: data => data,
+    deserialize: data => data,
+    onError: handleError,
+    onSuccess: handleSuccess,
 });
 
-export const store = modelObj.store;
-export const action = modelObj.action;
-export const configureStore = modelObj.configureStore;
-export const connectComponent = modelObj.connectComponent;
-export const connect = modelObj.connect;
-export const useAction = modelObj.useAction;
-export const useSelector = modelObj.useSelector;
+export const store = result.store;
+export const connect = result.connect;
+export const actions = result.actions;

@@ -1,9 +1,12 @@
+/**
+ * 使用 require.context 自动引入所有model文件
+ * */
 const result = {};
-const req = require.context('./', false, /\.js$/);
 
+// src/models目录下，不支持子文件夹
+const req = require.context('./', false, /\.js$/);
 req.keys().forEach(key => {
     if ([
-        './all-models.js',
         './index.js',
         './models.js',
     ].includes(key)) return;
@@ -12,9 +15,8 @@ req.keys().forEach(key => {
     result[name] = model.default;
 });
 
-// pages 目录下 支持子文件夹
+// src/pages目录下，支持子文件夹
 const reqPages = require.context('../pages', true, /\.js$/);
-
 reqPages.keys().forEach(key => {
     if (!key.endsWith('model.js')) return;
 
@@ -26,7 +28,10 @@ reqPages.keys().forEach(key => {
 
 export default result;
 
-/** 获取模块名 */
+/**
+ * 获取模块名
+ * @param filePath
+ */
 function getModelName(filePath) {
     // models/page.js 情况
     let name = filePath.replace('./', '').replace('.js', '');

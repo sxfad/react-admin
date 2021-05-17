@@ -1,12 +1,18 @@
 import React from 'react';
-import { Result } from 'antd';
-import config from 'src/commons/config-hoc';
-import { PageContent } from 'ra-lib';
+import {Result} from 'antd';
+import {PageContent} from '@ra-lib/components';
 
-export default config({ noFrame: true })(props => {
-
+export default function Error404(props) {
     return (
-        <PageContent fitHeight style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <PageContent
+            fitHeight
+            style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden',
+            }}
+        >
             <Result
                 status="404"
                 title="404"
@@ -14,4 +20,4 @@ export default config({ noFrame: true })(props => {
             />
         </PageContent>
     );
-});
+}

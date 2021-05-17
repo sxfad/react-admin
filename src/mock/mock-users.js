@@ -1,7 +1,7 @@
-import { getUsersByPageSize } from './mockdata/user';
+import {getUsersByPageSize} from './mockdata/user';
 
 export default {
-    'post /mock/login': (config) => {
+    'post /login': (config) => {
         const {
             userName,
             password,
@@ -25,9 +25,9 @@ export default {
             }
         });
     },
-    'post /mock/logout': {},
+    'post /logout': {},
 
-    'get /mock/users': (config) => {
+    'get /users': (config) => {
         const {
             pageSize,
             pageNum,
@@ -36,18 +36,21 @@ export default {
 
         return new Promise((resolve) => {
             setTimeout(() => {
-                resolve([200, {
-                    pageNum,
-                    pageSize,
-                    total: 888,
-                    list: getUsersByPageSize(pageSize),
-                }]);
+                Math.random() < .3 ?
+                    resolve([400, {message: '查询出错了！'}])
+                    :
+                    resolve([200, {
+                        pageNum,
+                        pageSize,
+                        total: 888,
+                        list: getUsersByPageSize(pageSize),
+                    }]);
             }, 1000);
         });
     },
-    'get re:/mock/users/.+': { id: 1, name: '熊大', age: 22, job: 0, position: '1' },
-    'post /mock/users': true,
-    'put /mock/users': true,
-    'delete /mock/users': true,
-    'delete re:/mock/users/.+': true,
+    'get re:/users/.+': {id: 1, name: '熊大', age: 22, job: 0, position: '1'},
+    'post /users': true,
+    'put /users': true,
+    'delete /users': true,
+    'delete re:/users/.+': true,
 };

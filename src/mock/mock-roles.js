@@ -1,41 +1,40 @@
 import {getRolesByPageSize} from './mockdata/roles';
+import {randomNumber, randomArray} from './util';
 
 const allMenuKeys = ['antDesign', 'document', 'customer-header', 'user', 'role', 'menu', 'gen', 'page404', 'example', 'table-editable'];
 
-function randomNumber(max) {
-    return Math.ceil(Math.random() * max);
-}
-
-// 随机获取 数组中 count 个元素
-function randomArray(arr, count) {
-    const source = [...arr];
-    const result = [];
-
-    for (let i = 0; i < count; i++) {
-        const randomIndex = randomNumber(source.length - 1);
-        result.push(source.splice(randomIndex, 1));
-    }
-    return result.flat();
-}
-
 export default {
-    'get /mock/role': () => {
-        const pageSize = 30;
+    'get /roles': (config) => {
+        const {
+            pageSize,
+            pageNum,
+        } = config.params;
 
         return new Promise((resolve) => {
             setTimeout(() => {
-                resolve([200, getRolesByPageSize(pageSize)]);
+                Math.random() < 0 ?
+                    resolve([400, {message: '查询出错了！'}])
+                    :
+                    resolve([200, {
+                        pageNum,
+                        pageSize,
+                        total: 666,
+                        list: getRolesByPageSize(pageSize),
+                    }]);
             }, 1000);
         });
     },
-    'get /mock/roles/menus': () => {
+    'post /roles': true,
+    'put /roles': true,
+    'delete /roles': true,
+    'get /roleMenus': () => {
         return new Promise(resolve => {
             setTimeout(() => {
                 resolve([200, randomArray(allMenuKeys, randomNumber(5))]);
             }, 500);
         });
     },
-    'post /mock/roles/menus 1000': true,
-    'delete re:/mock/roles/.+': true,
-    'get re:/mock/roles/.+': {id: 1, name: '系统管理员', description: '描述'},
+    'get re:/roles/.+': {id: 1, name: '系统管理员', description: '描述'},
+    'post /roles/menus 1000': true,
+    'delete re:/roles/.+': true,
 };

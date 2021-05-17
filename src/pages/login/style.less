@@ -2,24 +2,24 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100vw;
+    margin: 0;
     height: 100vh;
-    background: #00021c;
-    overflow: hidden;
+    background-image: url("./login-bg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-.banner {
+.logo {
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    top: 16px;
+    left: 16px;
 }
 
 .box {
     padding: 16px 40px;
-    height: 350px;
     width: 350px;
+
     border-radius: 0;
     // background: #f8f8f9;
     z-index: 100;
@@ -27,35 +27,26 @@
     .header {
         font-size: 25px;
         text-align: center;
-        padding: 30px;
         color: #fff;
         font-weight: bolder;
     }
 
-    .submit-btn {
+    .submitBtn {
         width: 100%;
     }
 
-    .error-tip {
+    .errorTip {
         height: 30px;
         line-height: 30px;
         text-align: center;
         color: red;
     }
 
-    .tip {
-        color: #ccc;
-        text-align: center;
-
-        span {
-            margin-right: 8px;
-        }
-    }
-
-    .form-item {
+    .formItem {
         transition-delay: 5s;
         transition: 500ms;
         transform: translateX(100%);
+        margin-bottom: 24px;
 
         &:nth-child(2n) {
             transform: translateX(-100%);
@@ -67,18 +58,12 @@
     }
 
     :global {
-        .ant-input-affix-wrapper {
-            height: 42px;
-            align-items: center;
-
-            input {
-                height: 100%;
-            }
+        .ant-input {
+            height: 34px;
         }
 
         .ant-btn {
-            height: 42px;
-            font-size: 14px;
+            height: 44px;
         }
     }
 }

@@ -1,125 +1,187 @@
-import React, {Component} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {Helmet} from 'react-helmet';
-import {Input, Button, Form} from 'antd';
-import {LockOutlined, UserOutlined} from '@ant-design/icons';
+import {Button, Form} from 'antd';
+import {LockOutlined, UserOutlined, FileImageOutlined, MessageOutlined} from '@ant-design/icons';
+import {FormItem} from '@ra-lib/components';
 import {setLoginUser, toHome} from 'src/commons';
 import config from 'src/commons/config-hoc';
-import Banner from './banner/index';
-import './style.less';
+import {usePost} from 'src/commons/ajax';
+import classNames from 'classnames';
+import {Logo} from 'src/components';
+import styles from './style.less';
 
-@config({
+export default config({
     path: '/login',
-    ajax: true,
-    noFrame: true,
-    noAuth: true,
-})
-export default class Login extends Component {
-    state = {
-        loading: false,
-        message: '',
-        isMount: false,
-    };
+    auth: false,
+    header: false,
+    side: false,
+    pageHeader: false,
+    tab: false,
+})(function Login() {
+    const login = usePost('/login');
+    const [message, setMessage] = useState();
+    const [isMount, setIsMount] = useState(false);
+    const imageCodeRef = useRef(null);
+    const [form] = Form.useForm();
 
-    componentDidMount() {
-        // 开发时方便测试，填写表单
-        if (process.env.NODE_ENV === 'development' || process.env.PREVIEW) {
-            this.form.setFieldsValue({userName: 'admin', password: '111'});
-        }
+    // 测试图片验证码
+    const testImages = [
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAoCAIAAADmAupWAAABv0lEQVR42u3ZO04DMRAA0E3BCahScABOgYTEJWg4AhLiHpSkzhWouQDUaYKoOAhYmmBZHnt+zljZrK0ponxW+/ybWWf6XVibTuQ+Pm8ulwXuZh7g/7Z9+5IEcemn2zsccvPq4T3Gx9VPFsWfv+yei+ELLjoJMwCuH7/hRTBjXoqv3XBNm7EnVy2+dWKsghlIwZwKcRi00cyAiemnwuC+wBcMkmAOAWD8KQtmO6IK1mJSlXBVF8EQYCa+QExs2nwAY4xkhA2NAGcY1twEtk1pV3DNPCewcD6nmAAO7BawaJc2pNwjDm+GSc2qNVxLxZM2J3kML4uJGcuQmfhKq6W6smnpQY4Zywss6YLjajG4GJClbbWH+uHBAJaX0Kw5/QKYtWuYKS1Zs5wq1BJs/H62dbfu0o1gM1XeEbCNSdi+YCcqsYezZkewn5ZOWrTZDpYPb08tbRZtWkWP6jHYRjIk51SFl7QoLTkdcciraNVDP1YFs+6Ix1ZjdQDLky02W0pLVdbVggm2IdkS1JM7psXt4n6PY37n0kWGh603uCdjlv88DPAAD/AAD/C5gl836xiLG+EUj7tgEVM6lY81fO7tD3VbH+gso9PWAAAAAElFTkSuQmCC',
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAoCAIAAADmAupWAAAB2ElEQVR42u3Zu00EMRAGYEskZBRBCaQUcBEZBdAACRFC2pgmrguKoAUSCiAjgfDYk8F4x+OZf2zv3nLYmmjPOunbGT/X7f5Zcx3cwY3acHo+xh8ADy/PcSB/endzzUZgI/jh4iMOnPRw9pgGBCZUkJ3Txuw456mcUEE260zNrkArmFUtMRP5PvJawaxqg9mpWuQ5AasvQirjadpvtyc+QLD6LhyuBc1IqcuDNiD3zh+5nGSWyprXAp4gp6S04K0zswRWPa3AsTCu2Jzn+1dshj882DtjoTAzq6uUaXlTJi0Vo4Lv359ytapMV2K5Cm9EZktgJHtyn1FLalWdmZH0gn1UbTMwKwSXovnAgfr2+snvtExgMiBDJZu2HPOB49xWgX/n1agPGbfy3mtuMCnjWGsGsx0ELbgIy5jLq03Zdto/bAxGtMuA2bMR0daCQW0NeNQi+8rcXroKXKytBDfUGsCttDVg6zlJB+fM5CTMahscDBNY8/QqYDYErfXcr95yyOmVz/ojGL3isWpBsH55lgdbbzmIVr/TYi901HFbTGXNXlt2iWUGq2egBZpfkApabvQawMtrDwk+Ju16P7V0cBvtSsHzpfeowIh21z+XdnAHd3AHd/Cq2hc1CxHRUsOCMgAAAABJRU5ErkJggg==',
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAoCAIAAADmAupWAAAB1UlEQVR42u3YPU5DMQwH8I5MiIEZcQwugOAKnIGJmaniEHAddkYGhDgAKwsrpIoURY6f/bed99H2RR5eP6T2Jztxks3fkY3NCj6c8fF0voKHwW8/73iov335+5XD9I9vH0/aEL5/cf1aImnrlyVGBBdkHRGqyvaDg1qWCmpVKqL1ZFgePvDn95VVy37BN3v7gIVirp8TVdUScPflyg/G16oMTlSkpHtpWbC/pE3anFhkDk+jNfdhXFtqGFy0xgPXWhvYpM0Pp/c34BLdgvH2K4CJ1gAGtWRxAsEEZm1IuLYzmKzDtRYH+5pwZ7CqZbtOBCx8CoJZLQRGtO2bSdtxxQLBqlYHy1phO8Gm9+Xhjo2+YEGrgOX9Y6EOMdpQMxxsWmT/bANHGKZ67gVGtDvwEIPNLbIlztp5weYrHraYkd1/EMx6HPVsA7da8KxTa1vw89kWbEuOnlQfgM2XeAQMUrOQLM45EjWFnOrglgNMrwLGE8u2IkKN7LeQHSWiZcC11npMqcEt1TqZ8TMDXs98hq2JJbM3U2e/joXAPmoBT08Ngd3Uol3UhbsEjiR2lhp2a3fg/aU6wftLnQi8HKpDawMvijo6eGnUKTJ8ANoVfARjBR/6+AdF7ZppMTGUVgAAAABJRU5ErkJggg==',
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAoCAIAAADmAupWAAABh0lEQVR42u3YTU7DQAwF4NyAS8AFumTDEgmJW1TiEGWNWHEFbsER2FCp4gpcgiU/qjRyx/Gb58kMCa0jrzKjSl/tSWIPXyd2DQEO8MmCb3brfRR33m4u+LB+5Gx1EK7r7fpehgOckDJ6gzOqi51RNXtwUefVFs1Am8ztwa5/BGiZ+5YW3C+ANb4hmNQyq5ZWr/6CH7Yf/EnupG0Fvvy8SzE/uFprbZC8DOnI8OP7ZpmheXi/CcZJbpJe/q0LsmeVADi984CLWm3TxWnVPH5cUeDzp5d9dAKD1IG3Tkewlv9ENZh5riwFLDMs8Sn5DA8X82xgy2zVs8Rb2Sse3YnvJBJsfmm5wBY+JZ/ph/4f+Or1WYb2M9qlg7UQPJbJk/83X9F5e1hd0nwzZPkBqZh8AB5dOuiWtNkLdh1diR+FkZ3wKMwaeuRgqw0m5S4wSH7zvr87uOITRfIy/PTJjjnTmgKuTi+Y74CTXzQfyZiWwR/tXLpCHoP4AAc4wAEOcIADHOAAB7ju+gYSW9gRrGtiPAAAAABJRU5ErkJggg==',
+    ];
 
-        setTimeout(() => this.setState({isMount: true}), 300);
+    // 获取图片验证码
+    async function handleFetchImageCode() {
+        const index = Math.floor(Math.random() * (testImages.length + 2));
+        const url = testImages[index];
+        const key = 'xxx';
+        // return url; // value 为 code
+        return [key, url]; // value 为 [key, code]
     }
 
-    handleSubmit = (values) => {
-        if (this.state.loading) return;
+    // 发送短信验证码
+    async function handleSendMessage() {
+        // 返回true 或 promise.resolve(true) 则开始倒计时并按钮不可点击 返回其他不倒计时
+        return true;
+    }
+
+    function handleSubmit(values) {
+        if (login.loading) return;
 
         const {userName, password} = values;
         const params = {
+            ...values,
             userName,
             password,
         };
 
-        setLoginUser({
-            id: params.userName,
-            name: params.userName,
-        });
-        toHome();
+        // 可以刷新图片验证码
+        imageCodeRef.current.refresh();
+        console.log(values);
 
-        /*
-        this.setState({loading: true, message: ''});
-        this.props.ajax.post('/mock/login', params, {errorTip: false})
+        // TODO 测试数据
+        alert('TODO 用户登录');
+        login.run = () => Promise.resolve({
+            id: '1',
+            name: '管理员',
+            avatar: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+        });
+
+        login.run(params, {errorTip: false})
             .then(res => {
-                const {id, name} = res;
+                const {id, name, ...others} = res;
                 setLoginUser({
                     id,     // 必须字段
                     name,   // 必须字段
-                            // 其他字段按需添加
+                    ...others,
+                    // 其他字段按需添加
                 });
                 toHome();
             })
-            .catch(() => this.setState({message: '用户名或密码错误！'}))
-            .finally(() => this.setState({loading: false}));
-        */
-    };
-
-    render() {
-        const {loading, message, isMount} = this.state;
-        const formItemStyleName = isMount ? 'form-item active' : 'form-item';
-
-        return (
-            <div styleName="root">
-                <Helmet title="欢迎登陆"/>
-                <div styleName="banner">
-                    <Banner/>
-                </div>
-                <div styleName="box">
-                    <Form
-                        ref={form => this.form = form}
-                        name="login"
-                        className='inputLine'
-                        onFinish={this.handleSubmit}
-                    >
-                        <div styleName={formItemStyleName}>
-                            <div styleName="header">欢迎登录</div>
-                        </div>
-                        <div styleName={formItemStyleName}>
-                            <Form.Item
-                                name="userName"
-                                rules={[{required: true, message: '请输入用户名'}]}
-                            >
-                                <Input allowClear autoFocus prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="用户名"/>
-                            </Form.Item>
-                        </div>
-                        <div styleName={formItemStyleName}>
-                            <Form.Item
-                                name="password"
-                                rules={[{required: true, message: '请输入密码'}]}
-                            >
-                                <Input.Password prefix={<LockOutlined className="site-form-item-icon"/>} placeholder="密码"/>
-                            </Form.Item>
-                        </div>
-                        <div styleName={formItemStyleName}>
-                            <Form.Item shouldUpdate={true} style={{marginBottom: 0}}>
-                                {() => (
-                                    <Button
-                                        styleName="submit-btn"
-                                        loading={loading}
-                                        type="primary"
-                                        htmlType="submit"
-                                        disabled={
-                                            !this.form?.isFieldsTouched(true) ||
-                                            this.form?.getFieldsError().filter(({errors}) => errors.length).length
-                                        }
-                                    >
-                                        登录
-                                    </Button>
-                                )}
-                            </Form.Item>
-                        </div>
-                    </Form>
-                    <div styleName="error-tip">{message}</div>
-                </div>
-            </div>
-        );
+            .catch(() => setMessage('用户名或密码错误'));
     }
-}
+
+    useEffect(() => {
+        // 开发时默认填入数据
+        if (process.env.NODE_ENV === 'development' || process.env.REACT_APP_PREVIEW) {
+            form.setFieldsValue({
+                userName: 'admin',
+                password: '111',
+                imageCode: '0000',
+                messageCode: '0000',
+            });
+        }
+
+        setTimeout(() => setIsMount(true), 300);
+    }, [form]);
+
+    const formItemClass = classNames(styles.formItem, {[styles.active]: isMount});
+
+
+    return (
+        <div className={styles.root}>
+            <Helmet title="欢迎登陆"/>
+            <div className={styles.logo}>
+                <Logo/>
+            </div>
+            <div className={styles.box}>
+                <Form
+                    form={form}
+                    name="login"
+                    onFinish={handleSubmit}
+                >
+                    <div className={formItemClass}>
+                        <h1 className={styles.header}>欢迎登录</h1>
+                    </div>
+                    <div className={formItemClass}>
+                        <FormItem
+                            noStyle
+                            name="userName"
+                            allowClear
+                            autoFocus
+                            prefix={<UserOutlined/>}
+                            placeholder="用户名"
+                            required
+                        />
+                    </div>
+                    <div className={formItemClass}>
+                        <FormItem
+                            type="password"
+                            noStyle
+                            name="password"
+                            prefix={<LockOutlined/>}
+                            placeholder="密码"
+                            required
+                        />
+                    </div>
+                    <div className={formItemClass}>
+                        <FormItem
+                            type="image-code"
+                            noStyle
+                            name="imageCode"
+                            prefix={<FileImageOutlined/>}
+                            placeholder="请输入图片验证码"
+                            src={handleFetchImageCode}
+                            ref={imageCodeRef}
+                            required
+                        />
+                    </div>
+                    <div className={formItemClass}>
+                        <FormItem
+                            type="message-code"
+                            noStyle
+                            name="messageCode"
+                            prefix={<MessageOutlined/>}
+                            placeholder="请输入短信验证码"
+                            onSend={handleSendMessage}
+                            buttonType="text"
+                            required
+                        />
+                    </div>
+                    <div className={formItemClass}>
+                        <FormItem noStyle shouldUpdate style={{marginBottom: 0}}>
+                            {() => (
+                                <Button
+                                    className={styles.submitBtn}
+                                    loading={login.loading}
+                                    type="primary"
+                                    htmlType="submit"
+                                    disabled={
+                                        !form?.isFieldsTouched(true) ||
+                                        form?.getFieldsError().filter(({errors}) => errors.length).length
+                                    }
+                                >
+                                    登录
+                                </Button>
+                            )}
+                        </FormItem>
+                    </div>
+                </Form>
+                <div className={styles.errorTip}>{message}</div>
+            </div>
+        </div>
+    );
+});
 

@@ -1,5 +1,5 @@
 # Ajax 请求
-系统的ajax请求基于[axios](https://github.com/axios/axios)封装。
+系统的ajax请求基于[axios](https://github.com/axios/axios)进行了二次封装，参见[@ra-lib/ajax](// TODO)。
 
 ## 方法
 基于restful规范，提供了5个方法：
@@ -19,7 +19,7 @@
     import config from 'src/commons/config-hoc';
     
     @config({
-        ajax: true,
+        // ajax: true, // 默认为true
         ...
     })
     export default class SomePage extend Component {
@@ -31,6 +31,7 @@
         ...
     }
     ```
+    注: hooks `props.ajax.useGet`
 - ajax装饰器
     ```js
     import React, {Component} from 'react';
@@ -46,19 +47,20 @@
         ...
     } 
     ```
+  
 - 直接引入ajax对象
     ```js
     import React, {Component} from 'react';
-    import {sxAjax} from 'src/commpons/ajax';
+    import ajax from 'src/commpons/ajax';
     
     export default class SomePage extend Component {
         componentDidMount() {
-            sxAjax.post(...).then(...);
+            ajax.post(...).then(...);
         
             // 组件卸载或者其他什么情况，需要打算ajax请求，可以用如下方式
-            const ajax = sxAjax.get(...);
-            ajax.then(...).finally(...);
-            ajax.cancel();
+            const ajaxFunc = ajax.get(...);
+            ajaxFunc.then(...).finally(...);
+            ajaxFunc.cancel();
         }
         ...
     } 
