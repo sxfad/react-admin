@@ -1,2 +1,0 @@
-(this["webpackJsonpant-admin"]=this["webpackJsonpant-admin"]||[]).push([[29],{534:function(t,e,a){"use strict";a.r(e);var s=a(102),n=a(543),c=a(7);e.default=Object(s.a)({path:"/users/center/:id",selectedMenuPath:"/users",title:"\u7528\u6237\u4e2d\u5fc3"})((function(t){var e=t.match.params.id;return Object(c.jsxs)(n.a,{children:["\u7528\u6237\u4e2d\u5fc3-",e]})}))}}]);
-//# sourceMappingURL=29.f56d53f4.chunk.js.map
