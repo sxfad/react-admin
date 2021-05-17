@@ -1,5 +1,5 @@
 # Ajax 请求
-系统的ajax请求基于[axios](https://github.com/axios/axios)进行了二次封装，参见[@ra-lib/ajax](// TODO)。
+系统的ajax请求基于[axios](https://github.com/axios/axios)进行了二次封装，参见[@ra-lib/ajax](https://sxfad.github.io/ra-lib/ajax)。
 
 ## 方法
 基于restful规范，提供了5个方法：

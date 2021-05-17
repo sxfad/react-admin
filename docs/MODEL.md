@@ -3,4 +3,4 @@
 
 注：一般情况下，用不到redux~
 
-参见[@ra-lib/model](// TODO))
+参见[@ra-lib/model](https://sxfad.github.io/ra-lib/model)
