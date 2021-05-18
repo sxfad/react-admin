@@ -6,6 +6,7 @@ import styles from './style.less';
 import config from 'src/commons/config-hoc';
 import {toLogin} from 'src/commons';
 import LayoutSetting from 'src/components/layout/layout-setting';
+import {IS_MOBILE} from 'src/config';
 
 export default config({
     router: true,
@@ -32,15 +33,28 @@ export default config({
 
     const {avatar, name = ''} = loginUser;
 
+    const width = IS_MOBILE ? 100 : 160;
     return (
-        <Space className={styles.root} size={16}>
-            <div className={styles.action}>
-                <FullScreen/>
-            </div>
+        <Space
+            className={styles.root}
+            size={16}
+            style={{
+                // 两个宽度要同时设置，否则会被挤！！！
+                flex: `0 0 ${width}px`,
+                width,
+            }}
+        >
+            {IS_MOBILE ? null : (
+                <>
+                    <div className={styles.action}>
+                        <FullScreen/>
+                    </div>
 
-            <div className={styles.action}>
-                <LayoutSetting/>
-            </div>
+                    <div className={styles.action}>
+                        <LayoutSetting/>
+                    </div>
+                </>
+            )}
 
             <Dropdown overlay={menu}>
                 <div className={styles.action}>

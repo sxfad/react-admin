@@ -6,7 +6,7 @@ import moment from 'moment';
 import 'moment/dist/locale/zh-cn'; // 解决antd日期相关组件国际化问题
 import {ComponentProvider} from '@ra-lib/components';
 import AppRouter from './router/AppRouter';
-import {APP_NAME, CONFIG_HOC} from 'src/config';
+import {APP_NAME, CONFIG_HOC, IS_MOBILE} from 'src/config';
 import {RouteLoading} from 'src/components';
 import {MOCK} from 'src/config';
 import {store} from 'src/models';
@@ -47,7 +47,10 @@ export default function App() {
 
                 {loading ? (<RouteLoading tipe="加载中..."/>) : null}
 
-                <ComponentProvider layoutPageOtherHeight={CONFIG_HOC.pageOtherHeight}>
+                <ComponentProvider
+                    layoutPageOtherHeight={CONFIG_HOC.pageOtherHeight}
+                    isMobile={IS_MOBILE}
+                >
                     <AppRouter/>
                 </ComponentProvider>
             </ConfigProvider>

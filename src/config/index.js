@@ -13,7 +13,7 @@ export const APP_NAME = getConfigValue('APP_NAME', 'React Admin');
 // 页面路由前缀
 export const BASE_NAME = getConfigValue('BASE_NAME', '');
 // 是否使用hash路由
-export const HASH_ROUTER =  getConfigValue('HASH_ROUTER', false);
+export const HASH_ROUTER = getConfigValue('HASH_ROUTER', false);
 // ajax 请求前缀
 export const AJAX_PREFIX = getConfigValue('AJAX_PREFIX', '/api');
 // ajax 超时时间
@@ -30,10 +30,13 @@ export const CONFIG_ENV = process.env.REACT_APP_CONFIG_ENV;
 export const IS_DEV = NODE_ENV === 'development';
 // 是否作为乾坤子项目，或者嵌入在iframe中
 export const IS_SUB = getConfigValue('IS_SUB', window.__POWERED_BY_QIANKUN__ || window.self !== window.top);
-
+// 是否是手机布局
+export const IS_MOBILE = getConfigValue('IS_MOBILE', window.document.body.clientWidth <= 575);
 // config-hoc 高阶组件默认配置
 export const CONFIG_HOC_STORAGE_KEY = 'CONFIG_HOC_STORAGE_KEY';
+
 export const CONFIG_HOC = {
+
     // 是否需要登录
     auth: true,
     // props是否注入ajax
@@ -47,11 +50,11 @@ export const CONFIG_HOC = {
     // layoutType: LAYOUT_TYPE.TOP_MENU,
     // layoutType: LAYOUT_TYPE.TOP_SIDE_MENU,
     // 头部是否显示
-    header: false, // !IS_SUB,
+    header: IS_MOBILE, // ? true : false, // !IS_SUB,
     // 侧边栏是否显示
-    side: !IS_SUB,
+    side: IS_MOBILE ? false : !IS_SUB,
     // Tabs是否显示
-    tab: !IS_SUB,
+    tab: IS_MOBILE ? false : !IS_SUB,
     // 持久化 Tabs记录
     persistTab: true,
     // tab左侧显示展开收起菜单按钮
@@ -62,7 +65,7 @@ export const CONFIG_HOC = {
     pageHeader: false,
 
     // 头部主题
-    headerTheme: 'default', // default
+    headerTheme: IS_MOBILE ? 'dark' : 'default', // default
     // 侧边栏主题
     sideTheme: 'dark', // dark
 
