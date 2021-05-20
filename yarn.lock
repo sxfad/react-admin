@@ -1604,10 +1604,10 @@
   resolved "https://registry.npmjs.org/@ra-lib/ajax/-/ajax-0.1.5.tgz#4784e3dedc8d44910a49fa1a4cb692b8f7ebb8dc"
   integrity sha512-KFzQSSG83LG/0sFhB/0KM+5n3vTgXpN0A+oA+KmV4UgP7CBzq0sp7LoNhWG2P3aXD9h6jzLP4ppJ1cxV6GxUCA==
 
-"@ra-lib/components@^0.1.12":
-  version "0.1.12"
-  resolved "https://registry.npmjs.org/@ra-lib/components/-/components-0.1.12.tgz#b80ee62b2d7b1dc23ed99b6a188e8da723b35107"
-  integrity sha512-DxQVmbc257CG+47+QBzahrOAjt7XZpDTrvUU2r5SZutABSkWxratSVfDBC7YP8F77QAkTLIGn8BN0Aw6ROW/xQ==
+"@ra-lib/components@^0.1.15":
+  version "0.1.15"
+  resolved "https://registry.npmjs.org/@ra-lib/components/-/components-0.1.15.tgz#391009c199d0bd6eaa0534b1fa78618500753344"
+  integrity sha512-hk9luY6UNpIZeKRVzQ3HpDB9Z3Pjw4YfOcFbQA64GxE/AxnQ8oC3hfeOuU7HAM6pFKdNUqyeEqPMLf03f6IB3A==
 
 "@ra-lib/config-loader@^0.1.6":
   version "0.1.6"

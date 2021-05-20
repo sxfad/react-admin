@@ -63,6 +63,7 @@ export default function Layout(props) {
         appendBreadcrumb,
         headerTheme,
         sideTheme,
+        logoTheme,
     } = getOptions();
 
     if (auth && !getLoginUser()) toLogin();
@@ -102,6 +103,7 @@ export default function Layout(props) {
             appendBreadcrumb,
             headerTheme,
             sideTheme,
+            logoTheme,
         };
 
         // 过滤掉函数，函数由layoutHoc处理
@@ -132,6 +134,7 @@ export default function Layout(props) {
         showSearchMenu,
         headerTheme,
         sideTheme,
+        logoTheme,
         refresh,
     ]);
 
@@ -151,6 +154,7 @@ export default function Layout(props) {
             showSearchMenu={showSearchMenu}
             showSide={showSide}
             sideTheme={sideTheme}
+            logoTheme={logoTheme}
             keepMenuOpen={keepMenuOpen}
             showHeader={showHeader}
             showHeaderSideToggle={showHeaderSideToggle}
@@ -172,7 +176,7 @@ export default function Layout(props) {
 /**
  * 获取layout用到的配置
  * @param options
- * @returns {{showTab, sideTheme: string, selectedMenuPath, showPageHeader: boolean, showSearchMenu: boolean, auth: boolean, showHeader: boolean, pageTitle, headerTheme: string, persistTab: boolean, sideCollapsed: boolean, showTabHeaderExtra: boolean, appendBreadcrumb, keepMenuOpen: boolean, breadcrumb, showTabSideToggle: boolean, layoutType, showSide, showHeaderSideToggle: boolean}}
+ * @returns {{showTab, sideTheme: string, logoTheme: string, selectedMenuPath, showPageHeader: boolean, showSearchMenu: boolean, auth: boolean, showHeader: boolean, pageTitle, headerTheme: string, persistTab: boolean, sideCollapsed: boolean, showTabHeaderExtra: boolean, appendBreadcrumb, keepMenuOpen: boolean, breadcrumb, showTabSideToggle: boolean, layoutType, showSide, showHeaderSideToggle: boolean}}
  */
 function getOptions(options) {
     // 根据 config 高阶组件配置信息，进行Layout布局调整
@@ -198,6 +202,7 @@ function getOptions(options) {
         searchMenu: showSearchMenu,
         headerTheme,
         sideTheme,
+        logoTheme,
     } = {...CONFIG_HOC, ...currentPageConfig};
 
     pageTitle = queryTitle || pageTitle;
@@ -222,5 +227,6 @@ function getOptions(options) {
         appendBreadcrumb,
         headerTheme,
         sideTheme,
+        logoTheme,
     };
 }

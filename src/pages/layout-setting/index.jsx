@@ -71,6 +71,13 @@ export default config({
                             {value: LAYOUT_TYPE.TOP_SIDE_MENU, label: '头部 + 左侧菜单'},
                         ]}
                     />
+                    <FormItem
+                        {...layout}
+                        type="radio-button"
+                        label="Logo主题"
+                        name="logoTheme"
+                        options={themeOptions}
+                    />
                     <Row>
                         <Col span={6}>
                             <FormItem

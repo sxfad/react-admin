@@ -100,7 +100,7 @@ export default config({
                     name="user"
                     layout="inline"
                     form={form}
-                    onFinish={values => setPageNum(1) || setConditions(values)}
+                    onFinish={values => setSelectedRowKeys([]) || setPageNum(1) || setConditions(values)}
                 >
                     <FormItem
                         {...layout}

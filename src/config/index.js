@@ -68,6 +68,8 @@ export const CONFIG_HOC = {
     headerTheme: IS_MOBILE ? 'dark' : 'default', // default
     // 侧边栏主题
     sideTheme: 'dark', // dark
+    // logo主题
+    logoTheme: 'dark',
 
     // 头部显示菜单展开收起按钮
     headerSideToggle: true,
