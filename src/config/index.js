@@ -70,6 +70,8 @@ export const CONFIG_HOC = {
     sideTheme: 'dark', // dark
     // logo主题
     logoTheme: 'dark',
+    // 侧边栏展开宽度
+    sideMaxWidth: 210,
 
     // 头部显示菜单展开收起按钮
     headerSideToggle: true,
