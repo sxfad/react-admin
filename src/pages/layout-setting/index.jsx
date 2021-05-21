@@ -31,7 +31,11 @@ export default config({
             .forEach(([key, value]) => CONFIG_HOC[key] = value);
 
         layoutRef.current?.refresh && layoutRef.current.refresh();
-        setCode(json5.stringify(values, null, 4));
+        let code = json5.stringify(values, null, 4) || '';
+        code = code.replace(`layoutType: 'side-menu'`, `layoutType: LAYOUT_TYPE.SIDE_MENU`);
+        code = code.replace(`layoutType: 'top-menu'`, `layoutType: LAYOUT_TYPE.TOP_MENU`);
+        code = code.replace(`layoutType: 'top-side-menu'`, `layoutType: LAYOUT_TYPE.TOP_SIDE_MENU`);
+        setCode(code);
 
         // 延迟触发window 的 resize事件调整布局
         // setTimeout(() => window.dispatchEvent(new Event('resize')));
