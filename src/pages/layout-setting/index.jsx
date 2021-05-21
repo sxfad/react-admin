@@ -34,10 +34,7 @@ export default config({
         setCode(json5.stringify(values, null, 4));
 
         // 延迟触发window 的 resize事件调整布局
-        setTimeout(() => {
-            const resizeEvent = new Event('resize');
-            window.dispatchEvent(resizeEvent);
-        });
+        // setTimeout(() => window.dispatchEvent(new Event('resize')));
     }
 
     const layout = {

@@ -39,6 +39,11 @@ export default config({
         await fetchUser({name: '123'});
     }
 
+    async function handleDownload() {
+        props.ajax.download('/download');
+        // window.open('/api/download'); // 1. 瞬间打开新窗口，然后又关闭；2. 只支持get；3. 需要自己拼接 api前缀
+    }
+
     console.log('TestAjax render');
     console.log('users', users);
     console.log('users2', users2);
@@ -51,6 +56,7 @@ export default config({
                 <Button onClick={handleGet}>get</Button>
                 <Button onClick={() => setPageNum(pageNum + 1)}>下一页</Button>
                 <Button onClick={() => setTime(Date.now())}>设置时间</Button>
+                <Button onClick={handleDownload}>下载文件</Button>
             </Space>
             <div>loading: {loading ? '请求中。。。' : ''}</div>
             <div>成功结果:

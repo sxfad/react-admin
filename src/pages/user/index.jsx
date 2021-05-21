@@ -54,7 +54,7 @@ export default config({
         {title: '工作', dataIndex: 'job', width: 100},
         {title: '邮箱', dataIndex: 'email', width: 200},
         {title: '电话', dataIndex: 'mobile', width: 120},
-        {title: '备注', dataIndex: 'remark'},
+        {title: '备注备注备注备注备注', dataIndex: 'remark', width: 100},
         {
             title: '操作', dataIndex: 'operator', width: 100,
             render: (text, record) => {

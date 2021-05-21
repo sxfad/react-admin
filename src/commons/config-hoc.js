@@ -5,12 +5,11 @@ import {
     drawer as drawerHoc,
     // checkPropsKey as checkPropsKeyHoc,
 } from '@ra-lib/hoc';
-import {getQuery} from '@ra-lib/util';
 import {ajaxHoc} from 'src/commons/ajax';
 import {connect as reduxConnect} from 'src/models';
-import {getLoginUser} from 'src/commons';
 import {CONFIG_HOC} from 'src/config';
 import {layoutHoc} from 'src/components/layout';
+import commonHoc from './common-hoc';
 
 // const usedPropsKeys = ['action', 'query'];
 export default function configHoc(options = {}) {
@@ -56,6 +55,7 @@ export default function configHoc(options = {}) {
     if (modal && drawer) throw Error('[config hoc] modal and drawer config can not be used together!');
 
     const hoc = [
+        commonHoc(options),
         layoutHoc(options),
         // 强制保留props关键字，否则调用时传参同名props会覆盖高阶组件增加的props
         // checkPropsKeyHoc({keys: usedPropsKeys, usedBy: '[config hoc]'}),
@@ -71,13 +71,7 @@ export default function configHoc(options = {}) {
     return createConfigHoc({
         hoc,
         onConstructor: (options, props) => {
-            const extendProps = {};
-
-            // 默认添加属性到props中的属性
-            extendProps.query = getQuery();
-            extendProps.loginUser = getLoginUser();
-
-            return extendProps;
+            return {};
         },
         onDidMount: () => void 0,
         onUnmount: () => void 0,
