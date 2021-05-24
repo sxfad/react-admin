@@ -56,6 +56,7 @@
         "prop-types": "^15.7.2",
         "qs": "^6.10.1",
         "react": "^17.0.2",
+        "react-app-polyfill": "^2.0.0",
         "react-dom": "^17.0.2",
         "react-helmet": "^6.1.0",
         "react-redux": "^7.2.3",
@@ -97,12 +98,14 @@
         "production": [
             ">0.2%",
             "not dead",
-            "not op_mini all"
+            "not op_mini all",
+            "ie 11"
         ],
         "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
+            ">0.2%",
+            "not dead",
+            "not op_mini all",
+            "ie 11"
         ]
     }
 }

@@ -1,11 +1,22 @@
 //express_demo.js 文件
 const express = require('express');
+const bodyParser = require('body-parser');//解析,用req.body获取post参数
 const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 const fs = require('fs');
 
 app.get('/', function(req, res) {
+    console.log('get /');
     res.send('Hello World');
 });
+
+app.post('/', function(req, res) {
+    const {user, password} = req.body;
+    res.redirect(`http://172.16.40.72:3100/?user=${user}&password=${password}`);
+});
+
 app.get('/get', function(req, res) {
     const successResult = {
         code: '00',

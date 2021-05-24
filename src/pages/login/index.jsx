@@ -61,7 +61,7 @@ export default config({
         imageCodeRef.current.refresh();
         console.log(values);
 
-        // TODO 测试数据
+        // TODO 用户登录
         alert('TODO 用户登录');
         login.run = () => Promise.resolve({
             id: '1',

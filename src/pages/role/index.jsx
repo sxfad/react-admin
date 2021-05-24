@@ -152,7 +152,6 @@ export default config({
                     rowClassName={record => selectedRole?.id === record.id ? styles.selectedRow : styles.tableRow}
                 />
                 <Pagination
-                    size="small"
                     total={total}
                     pageNum={pageNum}
                     pageSize={pageSize}
