@@ -2,7 +2,9 @@
 
 基于[React17.x](https://reactjs.org)、[Ant Design4.x](https://ant.design/)的管理系统架构。
 
-[在线预览](https://sxfad.github.io/react-admin/build) [查看文档](https://sxfad.github.io/react-admin/#/) [组件库ra-lib](https://github.com/sxfad/ra-lib) 
+- [在线预览](https://sxfad.github.io/react-admin/build)
+- [查看文档](https://sxfad.github.io/react-admin/#/)
+- [组件库ra-lib文档](https://github.com/sxfad/ra-lib)
 
 ## 安装依赖
 
