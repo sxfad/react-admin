@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "cross-env PORT=3000 NODE_ENV=development craco start",
+        "dev": "cross-env NODE_ENV=development craco start",
         "start": "nodemon -w craco.config.js -w ./src/theme.less -w ./src/setupProxy.js --exec \"yarn dev\"",
         "build": "craco build",
         "build:analyzer": "cross-env ANALYZER=true yarn build",
