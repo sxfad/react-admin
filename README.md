@@ -1,5 +1,9 @@
 # React Admin
 
+基于[React17.x](https://reactjs.org)、[Ant Design4.x](https://ant.design/)的管理系统架构。
+
+[文档](https://sxfad.github.io/react-admin/#/)、[预览](https://sxfad.github.io/react-admin/build)
+
 ## 安装依赖
 
 ```bash
