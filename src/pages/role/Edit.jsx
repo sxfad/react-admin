@@ -4,10 +4,7 @@ import config from 'src/commons/config-hoc';
 import {ModalContent, FormItem} from '@ra-lib/components';
 
 export default config({
-    modal: props => {
-        console.log('role modal', props);
-        return props.isEdit ? '编辑角色' : '创建角色';
-    },
+    modal: props => props.isEdit ? '编辑角色' : '创建角色',
 })(function Edit(props) {
     const {id, isEdit, onOk} = props;
     const [loading, setLoading] = useState(false);
