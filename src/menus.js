@@ -1,5 +1,6 @@
 // import {ajax} from 'src/commons/ajax';
 import {Icon} from 'src/components';
+import {quickSort} from '@ra-lib/util';
 
 /**
  * 菜单数据，可以是 id + parentId 扁平结构，也可以是 id + children树状结构
@@ -37,6 +38,7 @@ export default async function getMenus(userId) {
         {id: 'user', parentId: 'system', title: '用户管理', path: '/users', order: 900},
         {id: 'role', parentId: 'system', title: '角色管理', path: '/roles', order: 900},
         {id: 'menu', parentId: 'system', title: '菜单管理', path: '/menus', order: 900},
+
         {id: 'demo', title: '实例', basePath: '/demo', order: 850},
         {id: 'layout', parentId: 'demo', title: '布局', path: '/layout', order: 900},
         {id: 'modal', parentId: 'demo', title: '弹框', path: '/modal', order: 900},
@@ -72,7 +74,7 @@ export default async function getMenus(userId) {
  */
 function loopMenus(nodes, basePath) {
     // 排序 order降序， 越大越靠前
-    nodes.sort((a, b) => a.order - b.order > 0 ? -1 : 0);
+    nodes = quickSort(nodes, (a, b) => b.order - a.order);
 
     nodes.forEach(item => {
         let itemBasePath = basePath;
