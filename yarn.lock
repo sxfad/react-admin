@@ -1599,25 +1599,25 @@
   resolved "https://registry.npmjs.org/@polka/url/-/url-1.0.0-next.12.tgz#431ec342a7195622f86688bbda82e3166ce8cb28"
   integrity sha512-6RglhutqrGFMO1MNUXp95RBuYIuc8wTnMAV5MUhLmjTOy78ncwOw7RgeQ/HeymkKXRhZd0s2DNrM1rL7unk3MQ==
 
-"@ra-lib/ajax@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.npmjs.org/@ra-lib/ajax/-/ajax-0.1.5.tgz#4784e3dedc8d44910a49fa1a4cb692b8f7ebb8dc"
-  integrity sha512-KFzQSSG83LG/0sFhB/0KM+5n3vTgXpN0A+oA+KmV4UgP7CBzq0sp7LoNhWG2P3aXD9h6jzLP4ppJ1cxV6GxUCA==
+"@ra-lib/ajax@^0.1.7":
+  version "0.1.7"
+  resolved "https://registry.npmjs.org/@ra-lib/ajax/-/ajax-0.1.7.tgz#03e15c5c1f3b28f8933daf464d818c0f0d20e815"
+  integrity sha512-nlattYlQ+zFZtLQMTZz2tO7wQd9rFRYHF6qW5ssgf6x2KKgyySdhGf9X9MZg+x+7KRCKhh9/BI80/QBvx8WKyQ==
 
-"@ra-lib/components@^0.1.15":
-  version "0.1.15"
-  resolved "https://registry.npmjs.org/@ra-lib/components/-/components-0.1.15.tgz#391009c199d0bd6eaa0534b1fa78618500753344"
-  integrity sha512-hk9luY6UNpIZeKRVzQ3HpDB9Z3Pjw4YfOcFbQA64GxE/AxnQ8oC3hfeOuU7HAM6pFKdNUqyeEqPMLf03f6IB3A==
+"@ra-lib/components@^0.1.20":
+  version "0.1.20"
+  resolved "https://registry.npmjs.org/@ra-lib/components/-/components-0.1.20.tgz#fa3c74e67073b2f4ed07585b54fbd479c5d34e87"
+  integrity sha512-4CwCQjsdFGykgnrZh2zrRNizh+eSkWFSk/EeA0OjCrLrCd4liNJvEflWAGQRRxLmf/YufvlasiY1TDxB8CjCKw==
 
 "@ra-lib/config-loader@^0.1.6":
   version "0.1.6"
   resolved "https://registry.npmjs.org/@ra-lib/config-loader/-/config-loader-0.1.6.tgz#5a3a75cf5625712dcbd51660c85158e8168d969b"
   integrity sha512-IvWujA3SSqmwHuJSk2R8Wna/fHL+P75JH8o4qxCA2LKPWX94b6Gykr+NUJPmfbREPqkSqNkN9x4dIiJf7TyiRQ==
 
-"@ra-lib/hoc@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/@ra-lib/hoc/-/hoc-0.1.1.tgz#425efb6a3a0f641ad1e504b71eba3a1040a1c925"
-  integrity sha512-R+WLgnUDva0jishmoL8DLffhwDzjfqGnzGMoVh5xGkmvnU26kV8VN78bW5jATcaES38vcvi/Dc7f4UzY0aneCw==
+"@ra-lib/hoc@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.npmjs.org/@ra-lib/hoc/-/hoc-0.1.2.tgz#474e57369efb174bbed1dd2027d6005c5c33c1e3"
+  integrity sha512-qUu9LdE/s/xxWXfbpgYMmwv3ikWfK5EFzaEmPWPe3dLVpu/Nufh7QvsYGs6E3QllbgARTpeh9PeoUNROkxippg==
 
 "@ra-lib/hooks@^0.1.3":
   version "0.1.3"
@@ -1629,10 +1629,10 @@
   resolved "https://registry.npmjs.org/@ra-lib/model/-/model-0.1.2.tgz#4889a0325eb82bea00fbfd9b80d5ec6f0256cb38"
   integrity sha512-M7j+QFOfpsyB6FUGF6azjX6WuH3/96ZYxHmKFiK6Oycjom6YTXJ5ry0YOwAymSQ+J8U3BLsYjsJEMu6764BPVA==
 
-"@ra-lib/util@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.npmjs.org/@ra-lib/util/-/util-0.1.2.tgz#995173e8f952625be2c80ea393aa3d2b299bc523"
-  integrity sha512-2YJKaBuE7PiEA7V/vfbVQ/ZJo/4k32AKw0JC5IyRX/qnYUCWZwb5Z9ESgVUk/ZMncVQyF2ppA2qKopqiB0Ra0A==
+"@ra-lib/util@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.npmjs.org/@ra-lib/util/-/util-0.1.5.tgz#751937d5e93872424af38496a377308dde30d2e6"
+  integrity sha512-3LiTDLbzMRUzwusP/Z5MB0Opy+ADWrqv4cKP8NsdZYEH8sdZoEbkBC/qXxmMsHS73X07B6W5vdihc6bCMwRj/Q==
 
 "@rollup/plugin-node-resolve@^7.1.1":
   version "7.1.3"
