@@ -72,21 +72,23 @@ export default async function getMenus(userId) {
  */
 function loopMenus(nodes, basePath) {
     // 排序 order降序， 越大越靠前
-    nodes.sort((a, b) => b.order - a.order);
+    nodes.sort((a, b) => a.order - b.order > 0 ? -1 : 0);
 
     nodes.forEach(item => {
+        let itemBasePath = basePath;
+
         let {icon, path, target, children} = item;
 
         // 非树结构，获取basePath
         const parentNode = nodes.find(it => it.id === item.parentId);
-        if (parentNode) basePath = parentNode.basePath;
+        if (parentNode?.basePath) itemBasePath = parentNode.basePath;
 
-        // bashPath向下透传
-        if (basePath && !('basePath' in item)) item.basePath = basePath;
+        // 树状结构bashPath向下透传
+        if (itemBasePath && !('basePath' in item)) item.basePath = itemBasePath;
 
         // 拼接基础路径
-        if (basePath && path && (!path.startsWith('http') || !path.startsWith('//'))) {
-            item.path = path = `${basePath}${path}`;
+        if (itemBasePath && path && (!path.startsWith('http') || !path.startsWith('//'))) {
+            item.path = path = `${itemBasePath}${path}`;
         }
 
         // 图标处理，数据库中持久换存储的是字符串
