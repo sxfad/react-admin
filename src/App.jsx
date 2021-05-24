@@ -18,10 +18,10 @@ import './App.less';
 moment.locale('zh-cn');
 
 // 开启mock，这个判断不要修改，否则会把mock相关js打入生产包，很大
-// if (process.env.NODE_ENV === 'development' && MOCK) {
+if (process.env.NODE_ENV === 'development' && MOCK) {
     require('./mock/index');
     console.warn('mock is enabled!!!');
-// }
+}
 
 export default function App() {
     const [loading, setLoading] = useState(true);

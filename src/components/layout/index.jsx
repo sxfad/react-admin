@@ -7,7 +7,6 @@ import Header from './header';
 import logo from './logo/logo.png';
 import getMenus from 'src/menus';
 
-
 /**
  * 获取layout用到的配置
  */
