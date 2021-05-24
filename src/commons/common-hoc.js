@@ -1,6 +1,11 @@
 import {getQuery} from '@ra-lib/util';
 import {getLoginUser} from 'src/commons/index';
 
+/**
+ * 通用高阶组件
+ * @param options
+ * @returns {function(*): function(*)}
+ */
 export default function commonHoc(options) {
     const {query, loginUser} = options;
     return WrappedComponent => {

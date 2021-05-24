@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import {Layout as RALayout} from '@ra-lib/components';
 import {getQuery} from '@ra-lib/util';
 import {APP_NAME, CONFIG_HOC, HASH_ROUTER} from 'src/config';
-import {getLoginUser, toLogin, getCurrentPageConfig} from 'src/commons';
+import {getLoginUser, isLogin, toLogin, getCurrentPageConfig} from 'src/commons';
 import Header from './header';
 import logo from './logo/logo.png';
 import getMenus from 'src/menus';
@@ -76,7 +76,7 @@ export default function Layout(props) {
         ...nextState
     } = getOptions();
 
-    if (auth && !getLoginUser()) toLogin();
+    if (auth && !isLogin()) toLogin();
 
     const [refresh, setRefresh] = useState({});
     const [menus, setMenus] = useState([]);

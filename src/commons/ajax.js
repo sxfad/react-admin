@@ -1,16 +1,10 @@
 import Ajax, {createHooks, createHoc} from '@ra-lib/ajax';
-import {getQuery} from '@ra-lib/util';
 import {AJAX_PREFIX, AJAX_TIMEOUT} from 'src/config';
 import handleError from './handle-error';
 import handleSuccess from './handle-success';
-import {getLoginUser} from './index';
+import {getToken} from './index';
 
-// token来源
-const query = getQuery();
-if (query?.token) {
-    window.sessionStorage.setItem('token', query.token);
-}
-const token = getLoginUser()?.token || window.sessionStorage.getItem('token');
+const token = getToken();
 
 // 创建Ajax实例，设置默认值
 const ajax = new Ajax({
@@ -56,10 +50,12 @@ export const post = ajax.post;
 export const put = ajax.put;
 export const del = ajax.del;
 export const patch = ajax.patch;
+export const download = ajax.download;
 
 export const useGet = hooks.useGet;
 export const usePost = hooks.usePost;
 export const usePut = hooks.usePut;
 export const useDel = hooks.useDel;
 export const usePatch = hooks.usePatch;
+export const useDownload = hooks.useDownload;
 

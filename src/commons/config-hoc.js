@@ -3,7 +3,6 @@ import {
     createConfigHoc,
     modal as modalHoc,
     drawer as drawerHoc,
-    // checkPropsKey as checkPropsKeyHoc,
 } from '@ra-lib/hoc';
 import {ajaxHoc} from 'src/commons/ajax';
 import {connect as reduxConnect} from 'src/models';
@@ -11,7 +10,6 @@ import {CONFIG_HOC} from 'src/config';
 import {layoutHoc} from 'src/components/layout';
 import commonHoc from './common-hoc';
 
-// const usedPropsKeys = ['action', 'query'];
 export default function configHoc(options = {}) {
     // config 所有可用参数，以及默认值
     const {
@@ -54,13 +52,9 @@ export default function configHoc(options = {}) {
     // config 传递 参数校验
     if (modal && drawer) throw Error('[config hoc] modal and drawer config can not be used together!');
 
-    const hoc = [
-        commonHoc(options),
-        layoutHoc(options),
-        // 强制保留props关键字，否则调用时传参同名props会覆盖高阶组件增加的props
-        // checkPropsKeyHoc({keys: usedPropsKeys, usedBy: '[config hoc]'}),
-    ];
+    const hoc = [];
 
+    hoc.push(commonHoc(options));
     if (modal) hoc.push(modalHoc(modal));
     if (drawer) hoc.push(drawerHoc(drawer));
     if (connect === true) hoc.push(reduxConnect());
@@ -68,11 +62,12 @@ export default function configHoc(options = {}) {
     if (ajax) hoc.push(ajaxHoc());
     if (router) hoc.push(withRouter);
 
+    // 放到最后，一些函数式配置，可以获取到更多的props数据
+    hoc.push(layoutHoc(options));
+
     return createConfigHoc({
         hoc,
-        onConstructor: (options, props) => {
-            return {};
-        },
+        onConstructor: () => void 0,
         onDidMount: () => void 0,
         onUnmount: () => void 0,
     })({...options, ...others});

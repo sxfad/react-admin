@@ -1,8 +1,9 @@
 import {match} from 'path-to-regexp';
 import {BASE_NAME, HASH_ROUTER} from 'src/config';
 import pageConfigs from 'src/pages/page-configs';
-import {Storage} from '@ra-lib/util';
+import {Storage, getQuery} from '@ra-lib/util';
 
+const TOKEN_STORAGE_KEY = 'token';
 const LOGIN_USER_STORAGE_KEY = 'login-user';
 const STORAGE_PREFIX = `${getLoginUser()?.id || ''}_`;
 
@@ -12,6 +13,28 @@ const STORAGE_PREFIX = `${getLoginUser()?.id || ''}_`;
  * @type {Storage}
  */
 export const storage = new Storage({prefix: STORAGE_PREFIX});
+
+/**
+ * 存储token到sessionStorage及loginUser中
+ * @param token
+ */
+export function setToken(token) {
+    window.sessionStorage.setItem(TOKEN_STORAGE_KEY, token);
+    const loginUser = getLoginUser();
+    if (loginUser) loginUser.token = token;
+}
+
+/**
+ * 获取token
+ * token来源: queryString > sessionStorage > loginUser
+ */
+export function getToken() {
+    const query = getQuery();
+    if (query?.token) {
+        window.sessionStorage.setItem(TOKEN_STORAGE_KEY, query.token);
+    }
+    return query?.token || window.sessionStorage.getItem(TOKEN_STORAGE_KEY) || getLoginUser()?.token;
+}
 
 /**
  * 浏览器跳转，携带baseName hash等
@@ -70,7 +93,7 @@ export function getLoginUser() {
 }
 
 /**
- * 判断用户是否登录 前端简单通过登录用户是否存在来判断
+ * 判断用户是否登录 前端简单通过登录用户或token是否存在来判断
  * @returns {boolean}
  */
 export function isLogin() {
@@ -81,13 +104,26 @@ export function isLogin() {
 }
 
 /**
+ * 判断当前页面是否是登录页面
+ * @param path
+ * @returns {string|*|boolean}
+ */
+export function isLoginPage(path) {
+    if (!path) path = window.location.href;
+    return path && path.endsWith('/login');
+}
+
+/**
  * 进入首页
  */
 export function toHome() {
     // 跳转页面，优先跳转上次登出页面
-    const lastHref = window.sessionStorage.getItem('last-href');
+    let lastHref = window.sessionStorage.getItem('last-href') || '/';
 
-    locationHref(lastHref || '/');
+    // 如果上次是登录页面，直接跳转首页
+    if (isLoginPage(lastHref)) lastHref = '/';
+
+    locationHref(lastHref);
 }
 
 /**
@@ -97,10 +133,7 @@ export function toLogin() {
     const loginPath = '/login';
 
     // 判断当前页面是否已经是login页面，如果是，直接返回，不进行跳转，防止出现跳转死循环
-    const href = window.location.href;
-    const isLogin = href.indexOf(loginPath) !== -1;
-
-    if (isLogin) return null;
+    if (isLoginPage()) return null;
 
     // 清除相关数据
     window.sessionStorage.clear();
@@ -136,7 +169,6 @@ export function checkPath(result) {
                 throw Error(`路由地址：${path} 与 ${exit.path} 配置冲突，对应文件文件如下：\n${filePath}\n${exit.filePath}`);
             }
         });
-
 }
 
 

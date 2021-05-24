@@ -7,6 +7,7 @@ const ERROR_FORBIDDEN = '您无权访问！';
 function getErrorTip(error, tip) {
     if (tip && tip !== true) return tip;
 
+    // ajax返回的错误信息
     if (error?.response) {
         const {status, data} = error.response;
 
