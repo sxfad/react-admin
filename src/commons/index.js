@@ -75,7 +75,7 @@ export function setLoginUser(loginUser = {}) {
         name,           // 用户名 必须
         avatar,         // 用头像 非必须
         token,          // 登录凭证 非必须 ajax请求有可能会用到，也许是cookie
-        permissions,    // 用户权限
+        permissions,    // 用户权限 如果控制权限，必传
         ...others,      // 其他属性
     });
 
