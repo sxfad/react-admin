@@ -27,7 +27,7 @@ export const NODE_ENV = process.env.NODE_ENV;
 // 配置环境
 export const CONFIG_ENV = process.env.REACT_APP_CONFIG_ENV;
 // 是否是开发环境
-export const IS_DEV = NODE_ENV === 'development';
+export const IS_DEV = getConfigValue('IS_DEV', NODE_ENV === 'development');
 // 是否作为乾坤子项目，或者嵌入在iframe中
 export const IS_SUB = getConfigValue('IS_SUB', window.__POWERED_BY_QIANKUN__ || window.self !== window.top);
 // 是否是手机布局
