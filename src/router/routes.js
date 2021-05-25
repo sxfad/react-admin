@@ -17,18 +17,18 @@ export const commonPaths = [
     '/login',
 ];
 
+/*
+* 非脚本抓取的路由，可以在这里编辑，
+* 脚本抓取的路由在./src/pages/page-configs.js中
+* */
 export default [
-    /*
-    * 非脚本抓取的路由，可以在这里编辑，
-    * 脚本抓取的路由在./src/pages/page-configs.js中
-    * */
-
     // {path: '/', component: ()=> import('./path-to-component')},
+    {path: '/iframe_page_/:src', component: () => import('../components/iframe')},
+    {path: '/layout/setting', component: () => import('../components/layout/layout-setting/SettingPage')},
 ].concat(pageRoutes)
     .map(item => {
         return {
             ...item,
-            path: item.path,
             component: loadable(item.component, {fallback: <RouteLoading/>}),
         };
     });

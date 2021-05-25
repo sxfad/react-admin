@@ -1,11 +1,8 @@
-import config from 'src/commons/config-hoc';
 import {Result} from 'antd';
 import {PageContent} from '@ra-lib/components';
 import styles from './style.less';
 
-export default config({
-    path: '/iframe_page_/:src',
-})(function IFrame(props) {
+export default function IFrame(props) {
     let {src} = props?.match?.params || {};
 
     src = window.decodeURIComponent(src);
@@ -14,6 +11,7 @@ export default config({
         <PageContent fitHeight className={styles.root}>
             {src && src !== 'undefined' ? (
                 <iframe
+                    key={src}
                     allowFullScreen
                     title={src}
                     src={src}
@@ -37,4 +35,4 @@ export default config({
             )}
         </PageContent>
     );
-});
+};

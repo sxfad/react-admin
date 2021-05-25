@@ -4,7 +4,6 @@ import {FormItem, LAYOUT_TYPE, PageContent} from '@ra-lib/components';
 import json5 from 'json5';
 import {storage} from 'src/commons';
 import {CONFIG_HOC_STORAGE_KEY, CONFIG_HOC} from 'src/config';
-import config from 'src/commons/config-hoc';
 import {layoutRef} from 'src/components/layout';
 
 const options = [
@@ -17,11 +16,7 @@ const themeOptions = [
     {value: 'dark', label: '暗'},
 ];
 
-export default config({
-    path: '/layout/setting',
-    title: '布局设置',
-})(function LayoutSetting(props) {
-
+export default function LayoutSetting(props) {
     const [code, setCode] = useState('');
 
     function handleChange(changedValues, values) {
@@ -236,4 +231,4 @@ export default config({
             </code>
         </PageContent>
     );
-});
+}
