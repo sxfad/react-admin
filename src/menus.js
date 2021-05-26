@@ -1,6 +1,6 @@
 // import {ajax} from 'src/commons/ajax';
 import {Icon} from 'src/components';
-import {quickSort} from '@ra-lib/util';
+import {quickSort, convertToTree} from '@ra-lib/util';
 
 /**
  * 菜单数据，可以是 id + parentId 扁平结构，也可以是 id + children树状结构
@@ -53,7 +53,8 @@ export default async function getMenus(userId) {
         {id: 'document', parentId: 'other-site', title: '文档', path: 'https://sxfad.github.io/react-admin/#/', target: '_blank', order: 1200},
     ];
 
-    return loopMenus(menus);
+    // 排序 order降序， 越大越靠前
+    return loopMenus(convertToTree(quickSort(menus, (a, b) => b.order - a.order)));
 }
 
 /**
@@ -62,24 +63,16 @@ export default async function getMenus(userId) {
  * @param basePath
  */
 function loopMenus(nodes, basePath) {
-    // 排序 order降序， 越大越靠前
-    nodes = quickSort(nodes, (a, b) => b.order - a.order);
 
     nodes.forEach(item => {
-        let itemBasePath = basePath;
-
         let {icon, path, target, children} = item;
 
-        // 非树结构，获取basePath
-        const parentNode = nodes.find(it => it.id === item.parentId);
-        if (parentNode?.basePath) itemBasePath = parentNode.basePath;
-
         // 树状结构bashPath向下透传
-        if (itemBasePath && !('basePath' in item)) item.basePath = itemBasePath;
+        if (basePath && !('basePath' in item)) item.basePath = basePath;
 
         // 拼接基础路径
-        if (itemBasePath && path && (!path.startsWith('http') || !path.startsWith('//'))) {
-            item.path = path = `${itemBasePath}${path}`;
+        if (basePath && path && (!path.startsWith('http') || !path.startsWith('//'))) {
+            item.path = path = `${basePath}${path}`;
         }
 
         // 图标处理，数据库中持久换存储的是字符串
