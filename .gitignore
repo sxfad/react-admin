@@ -10,6 +10,7 @@
 
 # production
 /build
+/deploy/rancher/build
 
 # misc
 .DS_Store
