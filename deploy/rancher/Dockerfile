@@ -6,7 +6,7 @@ RUN rm -rf /etc/nginx/conf.d/* \
 ADD build/ /usr/share/nginx/html
 ADD nginx.conf /etc/nginx/conf.d/
 
-RUN chmod 775 -R /usr/share/nginx/html/ \
+RUN chmod 775 -R /usr/share/nginx/html \
     && export LC_ALL=en_US.UTF-8 \
     && echo "设置时区" \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
