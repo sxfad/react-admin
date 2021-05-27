@@ -38,7 +38,7 @@ export default function configHoc(options = {}) {
         // 页面保持，不销毁，需要设置config.KEEP_PAGE_ALIVE === true 才生效
         keepAlive,
         // 是否添加withRouter高级组件
-        router = false,
+        router = true,
         // props是否注入ajax
         ajax = CONFIG_HOC.ajax,
         // 连接models，扩展 props.action

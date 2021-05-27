@@ -69,14 +69,13 @@ export function setLoginUser(loginUser = {}) {
     if (!loginUser?.name) throw Error('loginUser must has name property!');
 
     // 将用户属性在这里展开，方便查看系统都用到了那些用户属性
-    const {id, name, avatar, token, permissions, ...others} = loginUser;
     const userStr = JSON.stringify({
-        id,             // 用户id 必须
-        name,           // 用户名 必须
-        avatar,         // 用头像 非必须
-        token,          // 登录凭证 非必须 ajax请求有可能会用到，也许是cookie
-        permissions,    // 用户权限 如果控制权限，必传
-        ...others,      // 其他属性
+        id: loginUser.id,                   // 用户id 必须
+        name: loginUser.name,               // 用户名 必须
+        avatar: loginUser.avatar,           // 用头像 非必须
+        token: loginUser.token,             // 登录凭证 非必须 ajax请求有可能会用到，也许是cookie
+        permissions: loginUser.permissions, // 用户权限 如果控制权限，必传
+        ...loginUser,
     });
 
     window.sessionStorage.setItem(LOGIN_USER_STORAGE_KEY, userStr);

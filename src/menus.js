@@ -63,7 +63,6 @@ export default async function getMenus(userId) {
  * @param basePath
  */
 function loopMenus(nodes, basePath) {
-
     nodes.forEach(item => {
         let {icon, path, target, children} = item;
 
