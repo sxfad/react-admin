@@ -4,11 +4,11 @@ yarn
 # 前端构建
 yarn build
 
-# 将构建生成的静态文件copy到deploy/rancher目录，提升docker构建速度
-cp -r build/ deploy/rancher/build
+# 将构建生成的静态文件copy到rancher目录，提升docker构建速度
+cp -r build/ rancher/build
 
-# 进入deploy/rancher目录
-cd deploy/rancher
+# 进入rancher目录
+cd rancher
 
 # 构建docker镜像
 cat Dockerfile
