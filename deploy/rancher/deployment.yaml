@@ -1,5 +1,4 @@
 # 配合jenkins使用 http://172.16.175.93:8080/jenkins/job/front-center/configure
-# 构建参数 APP_PROFILE: test -> rancher命名空间 front-center-test docker容器名：front-center-test
 # 注意：rancher 要手动创建命名空间
 apiVersion: apps/v1
 kind: Deployment
@@ -19,14 +18,14 @@ spec:
                 app: JOB_BASE_NAME
         spec:
             imagePullSecrets:
-                - name: bh-harbor
+                -   name: bh-harbor
             containers:
-                - image: bh-harbor.suixingpay.com/zhaikun/JOB_BASE_NAME:BUILD_ID
-                  imagePullPolicy: IfNotPresent
-                  name: JOB_BASE_NAME
-                  ports:
-                      - containerPort: 80
-                        name: web
+                -   image: bh-harbor.suixingpay.com/zhaikun/JOB_BASE_NAME:BUILD_ID
+                    imagePullPolicy: IfNotPresent
+                    name: JOB_BASE_NAME
+                    ports:
+                        -   containerPort: 80
+                            name: web
 ---
 apiVersion: v1
 kind: Service
@@ -38,6 +37,6 @@ spec:
         app: JOB_BASE_NAME
     type: NodePort
     ports:
-        - port: 80
-          protocol: TCP
-          targetPort: 80
+        -   port: 80
+            protocol: TCP
+            targetPort: 80
