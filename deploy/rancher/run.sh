@@ -2,7 +2,7 @@
 yarn
 
 # 前端构建
-yarn build
+yarn build || exit
 
 # 将构建生成的静态文件copy到deploy目录，提升docker构建速度
 cp -r build/ deploy/build
