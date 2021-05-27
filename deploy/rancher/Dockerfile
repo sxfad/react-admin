@@ -1,7 +1,7 @@
 FROM bh-harbor.suixingpay.com/zhaikun/nginx:alpine
 
 RUN rm -rf /etc/nginx/conf.d/* \
-    && rm -rf /usr/share/nginx/html/* \
+    && rm -rf /usr/share/nginx/html/*
 
 ADD build/ /usr/share/nginx/html
 ADD nginx.conf /etc/nginx/conf.d/
