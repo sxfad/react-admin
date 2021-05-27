@@ -20,4 +20,4 @@ sed -i "s/NAMESPACE_NAME/front-center/g" deployment.yaml
 sed -i "s/JOB_BASE_NAME/${JOB_BASE_NAME}/g" deployment.yaml
 sed -i "s/BUILD_ID/${BUILD_ID}/g" deployment.yaml
 cat deployment.yaml
-kubectl  apply -f deployment.yaml
+kubectl apply -f deployment.yaml
