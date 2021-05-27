@@ -8,7 +8,7 @@ yarn build
 cp -r build/ deploy/rancher/build
 
 # 进入deploy/rancher目录
-cd deploy/rancher || exit
+cd deploy/rancher
 
 # 构建docker镜像
 cat Dockerfile
