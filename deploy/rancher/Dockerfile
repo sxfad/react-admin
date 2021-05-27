@@ -1,7 +1,7 @@
 FROM bh-harbor.suixingpay.com/zhaikun/nginx:alpine
 
 RUN rm -rf /etc/nginx/conf.d/* \
-    && rm -rf /usr/share/nginx/html/*
+    && rm -rf /usr/share/nginx/html/* \
     && sed -i "s/security.debian.org/mirrors.aliyun.com/g" /etc/apt/sources.list \
     && sed -i "s/deb.debian.org/mirrors.aliyun.com/g" /etc/apt/sources.list \
     && chmod 775 -R /usr/share/nginx/html/ \
