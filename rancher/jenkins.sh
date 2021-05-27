@@ -5,7 +5,7 @@ yarn
 yarn build
 
 # 将构建生成的静态文件copy到rancher目录，提升docker构建速度
-cp -r build/ rancher/build
+rm -rf rancher/build && cp -r build/ rancher/build
 
 # 进入rancher目录
 cd rancher
