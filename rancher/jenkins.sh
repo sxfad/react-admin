@@ -15,7 +15,8 @@ cat Dockerfile
 docker build --no-cache -t bh-harbor.suixingpay.com/zhaikun/${JOB_BASE_NAME}:${BUILD_ID} -f Dockerfile .
 docker push bh-harbor.suixingpay.com/zhaikun/${JOB_BASE_NAME}:${BUILD_ID}
 
-# rancher发布  TODO 注意修改 NAMESPACE_NAME
+# rancher发布
+# TODO 注意修改 NAMESPACE_NAME
 sed -i "s/NAMESPACE_NAME/front-center/g" deployment.yaml
 sed -i "s/JOB_BASE_NAME/${JOB_BASE_NAME}/g" deployment.yaml
 sed -i "s/BUILD_ID/${BUILD_ID}/g" deployment.yaml

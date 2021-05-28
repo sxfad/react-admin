@@ -1,19 +1,18 @@
+// create-react-app 配置修改
+// https://github.com/gsoft-inc/craco
+
 const path = require('path');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const WebpackBar = require('webpackbar');
 const CracoAntDesignPlugin = require('craco-antd');
 const CracoLessPlugin = require('craco-less'); // include in craco-antd
-
-// create-react-app 配置修改
-// https://github.com/gsoft-inc/craco
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const packageName = require(path.join(__dirname, 'package.json')).name;
 
 const SRC_PATH = path.join(__dirname, 'src');
 const NODE_MODULES_PATH = path.join(__dirname, 'node_modules');
 const PAGES_PATH = path.join(SRC_PATH, 'pages');
 const BUILD_PATH = path.join(__dirname, process.env.BUILD_PATH || 'build');
-
-// https://github.com/gajus/babel-plugin-react-css-modules/issues/291
-// const genericNames = require('generic-names'); // v3.0.0
 const CSS_MODULE_LOCAL_IDENT_NAME = '[local]_[hash:base64:5]';
 
 // Don't open the browser during development
@@ -28,10 +27,6 @@ module.exports = {
                 babelPluginImportOptions: {
                     libraryDirectory: 'es',
                 },
-                // 加这个 antd 样式就挂了
-                // cssLoaderOptions: {
-                //     modules: {localIdentName: CSS_MODULE_LOCAL_IDENT_NAME},
-                // },
                 modifyLessRule: function(lessRule, _context) {
                     // src 中less交给 CracoLessPlugin 处理
                     lessRule.exclude = SRC_PATH;
@@ -70,10 +65,12 @@ module.exports = {
             },
         },
     ],
+    devServer: (devServerConfig, {env, paths, proxy, allowedHost}) => {
+        if (!devServerConfig.headers) devServerConfig.headers = {};
+        devServerConfig.headers['Access-Control-Allow-Origin'] = '*';
+        return devServerConfig;
+    },
     webpack: {
-        output: {
-            path: BUILD_PATH,
-        },
         alias: {
             // 使所有的react 都访问主应用安装的包
             react: path.join(NODE_MODULES_PATH, 'react'),
@@ -97,6 +94,10 @@ module.exports = {
         configure: (webpackConfig, {env, paths}) => {
             paths.appBuild = webpackConfig.output.path = BUILD_PATH;
 
+            webpackConfig.output.library = packageName;
+            webpackConfig.output.libraryTarget = 'umd';
+            webpackConfig.output.jsonpFunction = `webpackJsonp_${packageName}`;
+
             webpackConfig.module.rules.push({
                 test: path.join(PAGES_PATH, 'page-configs.js'),
                 enforce: 'pre',
@@ -115,8 +116,13 @@ module.exports = {
                 const smp = new SpeedMeasurePlugin();
 
                 return smp.wrap(webpackConfig);
-
             }
+
+            // mini-css-extract-plugin 对css引入的顺序会有提示，如果我们并不依赖于css文件顺序，这个可以关闭
+            // https://github.com/webpack-contrib/mini-css-extract-plugin/issues/250#issuecomment-415345126
+            const instanceOfMiniCssExtractPlugin = webpackConfig.plugins.find((plugin) => plugin instanceof MiniCssExtractPlugin);
+            if (instanceOfMiniCssExtractPlugin) instanceOfMiniCssExtractPlugin.options.ignoreOrder = true;
+
             return webpackConfig;
         },
 
@@ -132,21 +138,6 @@ module.exports = {
                     'legacy': true,
                 },
             ],
-            // 不推荐使用
-            // [
-            //     'react-css-modules',
-            //     {
-            //         generateScopedName: genericNames(CSS_MODULE_LOCAL_IDENT_NAME),
-            //         'webpackHotModuleReloading': true,
-            //         'filetypes': {
-            //             '.less': {
-            //                 'syntax': 'postcss-less',
-            //             },
-            //         },
-            //         'handleMissingStyleName': 'throw',
-            //         'autoResolveMultipleImports': true,
-            //     },
-            // ],
         ],
     },
 };
