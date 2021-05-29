@@ -88,3 +88,38 @@ yarn build:time
 - 复杂的样式处理，推荐使用 [classnames](https://github.com/JedWatson/classnames)
 - 主题变量修改 theme.less [antd 样式变量](https://ant.design/docs/react/customize-theme-cn)
 
+## 作为乾坤子系统时
+
+约定：package.json name 作为:
+
+    - 子系统的BASE_NAME 
+    - 子系统注册到主系统中的 name 、 activeRule
+
+- ajax请求前缀设置为 `${window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__}api`
+- 接口服务器（后端按需设置）和 开发服务器devServer，设置跨域
+    ```js
+    {
+        headers: {
+            'Access-Control-Allow-Origin': '*', // 'https://some-site.com'
+            'Access-Control-Allow-Methods': '*', // 'GET, POST'
+            'Access-Control-Allow-Headers': '*', // 'X-Requested-With,content-type, Authorization, token, auto-token'
+        }
+    } 
+    ```
+- 子系统webpack配置
+    ```js
+    // craco.config.js
+    const packageName = require('./package.json').name;
+    
+    {
+        configure: (webpackConfig, {env, paths}) => {
+            webpackConfig.output.library = packageName;
+            webpackConfig.output.libraryTarget = 'umd';
+            webpackConfig.output.jsonpFunction = `webpackJsonp_${packageName}`;
+        }
+    }           
+    ```  
+
+## 乾坤微前端的坑
+
+-[ ] 子系统卸载时，控制台会报提醒 `[qiankun] Set window.event while sandbox destroyed or inactive in xxx! `

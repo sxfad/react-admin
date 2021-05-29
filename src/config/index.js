@@ -1,6 +1,7 @@
 import {LAYOUT_TYPE} from '@ra-lib/components';
 import {getConfigValue} from './util';
 import {storage} from 'src/commons';
+import appPackage from '../../package.json';
 
 /**
  * 所有配置均可通过命令行参数传递，需要添加 REACT_APP_ 前缀，比如：REACT_APP_CONFIG_ENV=test yarn build
@@ -11,11 +12,11 @@ import {storage} from 'src/commons';
 // 应用名称
 export const APP_NAME = getConfigValue('APP_NAME', 'React Admin');
 // 页面路由前缀
-export const BASE_NAME = getConfigValue('BASE_NAME', '');
+export const BASE_NAME = getConfigValue('BASE_NAME', window.__POWERED_BY_QIANKUN__ ? `/${appPackage.name}` : '');
 // 是否使用hash路由
 export const HASH_ROUTER = getConfigValue('HASH_ROUTER', false);
 // ajax 请求前缀
-export const AJAX_PREFIX = getConfigValue('AJAX_PREFIX', '/api');
+export const AJAX_PREFIX = getConfigValue('AJAX_PREFIX', window.__POWERED_BY_QIANKUN__ ? `${window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__}api` : '/api');
 // ajax 超时时间
 export const AJAX_TIMEOUT = getConfigValue('AJAX_TIMEOUT', 1000 * 60, Number);
 // 静态文件前缀

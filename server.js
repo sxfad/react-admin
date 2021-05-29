@@ -7,10 +7,49 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 const fs = require('fs');
 
+
+app.all('*', function(req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', '*');
+    res.setHeader('Access-Control-Allow-Headers', '*');
+    next();
+});
+
 app.get('/', function(req, res) {
     console.log('get /');
     res.send('Hello World');
 });
+
+app.get('/users', function(req, res) {
+    res.send({
+        total: 1,
+        list: [{id: '123', name: '张三'}],
+    });
+});
+
+app.get('/subApp', function(req, res) {
+    setTimeout(() => {
+        res.send([
+            {id: '123', name: 'react-admin', activeRule: '/react-admin', entry: 'http://localhost:3000', title: '测试子系统', remark: '这是个测试子系统'},
+        ]);
+    }, 2000);
+});
+
+app.get('/subApp/:id', function(req, res) {
+    res.send({id: '123', name: 'react-admin', activeRule: '/react-admin', entry: 'http://localhost:3000', title: '测试子系统', remark: '这是个测试子系统'});
+});
+
+app.put('/subApp', function(req, res) {
+    res.send(true);
+});
+app.post('/subApp', function(req, res) {
+    res.send(true);
+});
+
+app.del('/subApp', function(req, res) {
+    res.send(true);
+});
+
 
 app.post('/', function(req, res) {
     const {user, password} = req.body;
