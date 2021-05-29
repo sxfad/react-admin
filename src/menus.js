@@ -66,6 +66,9 @@ function loopMenus(nodes, basePath) {
     nodes.forEach(item => {
         let {icon, path, target, children} = item;
 
+        // 保存原始target数据
+        item._target = target;
+
         // 树状结构bashPath向下透传
         if (basePath && !('basePath' in item)) item.basePath = basePath;
 

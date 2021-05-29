@@ -20,11 +20,14 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-function render(props = {}) {
+function getRootDom(props) {
+    const rootId = '#root';
     const {container} = props;
-    const dom = container ? container.querySelector('#root') : document.querySelector('#root');
+    return container ? container.querySelector(rootId) : document.querySelector(rootId);
+}
 
-    ReactDOM.render(<App/>, dom);
+function render(props = {}) {
+    ReactDOM.render(<App/>, getRootDom(props));
 }
 
 // If you want to start measuring performance in your app, pass a function
@@ -32,6 +35,7 @@ function render(props = {}) {
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
 
+// 单独运行时，渲染
 if (!window.__POWERED_BY_QIANKUN__) {
     render();
 }
@@ -49,7 +53,6 @@ export async function unmount(props) {
     message.destroy();
     Modal.destroyAll();
 
-    const {container} = props;
-    ReactDOM.unmountComponentAtNode(container ? container.querySelector('#root') : document.querySelector('#root'));
+    ReactDOM.unmountComponentAtNode(getRootDom(props));
 }
 
