@@ -12,6 +12,7 @@ import {MOCK} from 'src/config';
 import {store} from 'src/models';
 import {Provider} from 'react-redux';
 import './App.less';
+import theme from 'src/theme.less';
 // import {getLoginUser} from 'src/commons';
 
 // 设置语言
@@ -22,6 +23,11 @@ if (process.env.NODE_ENV === 'development' && MOCK) {
     require('./mock/index');
     console.warn('mock is enabled!!!');
 }
+
+// 设置 Modal、Message、Notification rootPrefixCls。
+ConfigProvider.config({
+    prefixCls: theme.antPrefix,
+});
 
 export default function App() {
     const [loading, setLoading] = useState(true);
@@ -42,12 +48,13 @@ export default function App() {
 
     return (
         <Provider store={store}>
-            <ConfigProvider locale={zhCN}>
+            <ConfigProvider locale={zhCN} prefixCls={theme.antPrefix}>
                 <Helmet title={APP_NAME}/>
 
                 {loading ? (<RouteLoading tipe="加载中..."/>) : null}
 
                 <ComponentProvider
+                    prefixCls={theme.raLibPrefix}
                     layoutPageOtherHeight={CONFIG_HOC.pageOtherHeight}
                     isMobile={IS_MOBILE}
                 >

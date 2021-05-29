@@ -1,6 +1,11 @@
 // 样式前缀，做微前端，防止各个系统样式冲突时，可能会用到
-//@ant-prefix: ant;
-//@ra-lib-prefix: ra-lib; // 需要与 App.jsx 中 ComponentProvider.prefixCls 同步设置
+@ant-prefix: ant;
+@ra-lib-prefix: ra-lib;
+
+:export {
+    antPrefix: @ant-prefix;
+    raLibPrefix: @ra-lib-prefix;
+}
 
 // 自定义变量
 //@page-content-margin: 0;

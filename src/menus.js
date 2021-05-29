@@ -81,6 +81,9 @@ function loopMenus(nodes, basePath) {
         if (target === 'iframe') {
             // 页面跳转 : 内嵌iFrame
             item.path = `/iframe_page_/${encodeURIComponent(path)}`;
+        }
+
+        if (!['_self', '_blank'].includes(target)) {
             Reflect.deleteProperty(item, 'target');
         }
 

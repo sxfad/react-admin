@@ -15,6 +15,7 @@ if (window.__POWERED_BY_QIANKUN__) {
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import React from 'react';
+import {notification, message, Modal} from 'antd';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -43,6 +44,11 @@ export async function mount(props) {
 }
 
 export async function unmount(props) {
+    // 清理工作
+    notification.destroy();
+    message.destroy();
+    Modal.destroyAll();
+
     const {container} = props;
     ReactDOM.unmountComponentAtNode(container ? container.querySelector('#root') : document.querySelector('#root'));
 }

@@ -30,14 +30,15 @@ app.get('/users', function(req, res) {
 app.get('/subApp', function(req, res) {
     setTimeout(() => {
         res.send([
-            {id: '123', type: 'qiankun', name: 'react-admin', activeRule: '/react-admin', entry: 'http://localhost:3000', title: '测试子系统', remark: '这是个测试子系统'},
-            {id: '456', type: 'iframe', entry: 'http://localhost:3000', title: '测试子系统', remark: '这是个测试子系统'},
+            {id: '123', order: 1000, parentId: '789', target: 'qiankun', name: 'react-admin', activeRule: '/react-admin', baseName: '/react-admin', entry: 'http://localhost:3000', title: '测试子系统', remark: '这是个测试子系统'},
+            {id: '456', order: 2000, target: 'iframe', entry: 'http://localhost:3000', title: '测试子系统', remark: '这是个测试子系统'},
+            {id: '789', order: 800, target: 'menu', basePath: '/', title: '主系统中应用', remark: '这是个测试主系统应用'},
         ]);
-    }, 2000);
+    }, 100);
 });
 
 app.get('/subApp/:id', function(req, res) {
-    res.send({id: '123', type: 'qiankun', name: 'react-admin', activeRule: '/react-admin', entry: 'http://localhost:3000', title: '测试子系统', remark: '这是个测试子系统'});
+    res.send({id: '123', target: 'qiankun', name: 'react-admin', basePath: '/react-admin', entry: 'http://localhost:3000', title: '测试子系统', remark: '这是个测试子系统'});
 });
 
 app.put('/subApp', function(req, res) {
