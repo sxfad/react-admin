@@ -32,9 +32,12 @@ export default function handleError({error, tip}) {
     const description = getErrorTip(error, tip);
     if (!description) return;
 
-    notification.error({
-        message: '失败',
-        description,
-        duration: 2,
+    // 避免卡顿
+    setTimeout(() => {
+        notification.error({
+            message: '失败',
+            description,
+            duration: 2,
+        });
     });
 }
