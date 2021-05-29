@@ -30,13 +30,14 @@ app.get('/users', function(req, res) {
 app.get('/subApp', function(req, res) {
     setTimeout(() => {
         res.send([
-            {id: '123', name: 'react-admin', activeRule: '/react-admin', entry: 'http://localhost:3000', title: '测试子系统', remark: '这是个测试子系统'},
+            {id: '123', type: 'qiankun', name: 'react-admin', activeRule: '/react-admin', entry: 'http://localhost:3000', title: '测试子系统', remark: '这是个测试子系统'},
+            {id: '456', type: 'iframe', entry: 'http://localhost:3000', title: '测试子系统', remark: '这是个测试子系统'},
         ]);
     }, 2000);
 });
 
 app.get('/subApp/:id', function(req, res) {
-    res.send({id: '123', name: 'react-admin', activeRule: '/react-admin', entry: 'http://localhost:3000', title: '测试子系统', remark: '这是个测试子系统'});
+    res.send({id: '123', type: 'qiankun', name: 'react-admin', activeRule: '/react-admin', entry: 'http://localhost:3000', title: '测试子系统', remark: '这是个测试子系统'});
 });
 
 app.put('/subApp', function(req, res) {
