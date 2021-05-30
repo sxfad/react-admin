@@ -19,6 +19,7 @@ import {notification, message, Modal} from 'antd';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {setMainApp} from 'src/commons';
 
 function getRootDom(props) {
     const rootId = '#root';
@@ -40,10 +41,12 @@ if (!window.__POWERED_BY_QIANKUN__) {
     render();
 }
 
-export async function bootstrap() {
+export async function bootstrap(props) {
 }
 
 export async function mount(props) {
+    setMainApp(props.mainApp);
+
     render(props);
 }
 

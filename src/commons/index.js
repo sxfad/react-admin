@@ -2,10 +2,11 @@ import {match} from 'path-to-regexp';
 import {BASE_NAME, HASH_ROUTER} from 'src/config';
 import pageConfigs from 'src/pages/page-configs';
 import {Storage, getQuery} from '@ra-lib/util';
+import appPackage from '../../package.json';
 
-const TOKEN_STORAGE_KEY = 'token';
-const LOGIN_USER_STORAGE_KEY = 'login-user';
-const STORAGE_PREFIX = `${getLoginUser()?.id || ''}_`;
+const TOKEN_STORAGE_KEY = `${appPackage.name}_token`;
+const LOGIN_USER_STORAGE_KEY = `${appPackage.name}_login-user`;
+const STORAGE_PREFIX = `${appPackage.name}_${getLoginUser()?.id || ''}_`;
 
 /**
  * 前端存储对象 storage.local storage.session storage.global
@@ -13,6 +14,20 @@ const STORAGE_PREFIX = `${getLoginUser()?.id || ''}_`;
  * @type {Storage}
  */
 export const storage = new Storage({prefix: STORAGE_PREFIX});
+
+/**
+ * 乾坤主应用实例
+ */
+let _mainApp;
+
+export function setMainApp(mainApp) {
+    _mainApp = mainApp;
+    setLoginUser(mainApp?.loginUser);
+}
+
+export function getMainApp() {
+    return _mainApp;
+}
 
 /**
  * 存储token到sessionStorage及loginUser中
@@ -33,7 +48,7 @@ export function getToken() {
     if (query?.token) {
         window.sessionStorage.setItem(TOKEN_STORAGE_KEY, query.token);
     }
-    return query?.token || window.sessionStorage.getItem(TOKEN_STORAGE_KEY) || getLoginUser()?.token;
+    return query?.token || getMainApp()?.token || window.sessionStorage.getItem(TOKEN_STORAGE_KEY) || getLoginUser()?.token;
 }
 
 /**
@@ -97,9 +112,12 @@ export function getLoginUser() {
  */
 export function isLogin() {
     // 前端判断是否登录，基于不同项目，可能需要调整
-    return !!getLoginUser()
+    return !!(
+        getLoginUser()
         || window.sessionStorage.getItem('token')
-        || window.localStorage.getItem('token');
+        || window.localStorage.getItem('token')
+        || getMainApp()?.token
+    );
 }
 
 /**
@@ -138,6 +156,10 @@ export function toLogin() {
     window.sessionStorage.clear();
     window.sessionStorage.setItem('last-href', window.location.href);
 
+    const mainAppToLogin = getMainApp()?.toLogin;
+
+    if (mainAppToLogin) return mainAppToLogin();
+
     locationHref(loginPath);
 
     return null;
@@ -169,7 +191,6 @@ export function checkPath(result) {
             }
         });
 }
-
 
 /**
  * 基于 window.location.pathname pageConfig 获取当前页面config高级组件参数

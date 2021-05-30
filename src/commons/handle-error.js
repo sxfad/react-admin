@@ -1,4 +1,5 @@
 import {notification} from 'antd';
+import {toLogin} from 'src/commons';
 
 const ERROR_SERVER = '系统开小差了，请稍后再试或联系管理员！';
 const ERROR_NOT_FOUND = '您访问的资源不存在！';
@@ -10,6 +11,8 @@ function getErrorTip(error, tip) {
     // ajax返回的错误信息
     if (error?.response) {
         const {status, data} = error.response;
+
+        if (status === 401) return toLogin();
 
         if (status === 403) return ERROR_FORBIDDEN;
 
