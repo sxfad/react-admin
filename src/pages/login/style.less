@@ -1,3 +1,5 @@
+@import "src/theme";
+
 .root {
     display: flex;
     justify-content: center;
@@ -58,11 +60,11 @@
     }
 
     :global {
-        .ant-input {
+        .@{ant-prefix}-input {
             height: 34px;
         }
 
-        .ant-btn {
+        .@{ant-prefix}-btn {
             height: 44px;
         }
     }

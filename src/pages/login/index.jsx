@@ -102,7 +102,7 @@ export default config({
 
     return (
         <div className={styles.root}>
-            <Helmet title="欢迎登陆"/>
+            <Helmet title="欢迎登录"/>
             <div className={styles.logo}>
                 <Logo/>
             </div>
