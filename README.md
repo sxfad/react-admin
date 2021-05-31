@@ -97,6 +97,7 @@ yarn build:time
 
 - ajax请求前缀设置为 `${window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__}api`
 - 接口服务器（后端按需设置）和 开发服务器devServer，设置跨域
+
     ```js
     {
         headers: {
@@ -107,6 +108,7 @@ yarn build:time
     } 
     ```
 - 子系统webpack配置
+
     ```js
     // craco.config.js
     const packageName = require('./package.json').name;

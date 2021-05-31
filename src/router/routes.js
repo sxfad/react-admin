@@ -1,6 +1,5 @@
-import {RouteLoading} from 'src/components';
+import {RouteLoading} from '@ra-lib/components';
 import loadable from '@loadable/component';
-import React from 'react';
 import {checkPath} from 'src/commons';
 import pageConfigs from 'src/pages/page-configs';
 

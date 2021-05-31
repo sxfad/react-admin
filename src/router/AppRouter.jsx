@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {BrowserRouter, HashRouter, Route, Switch} from 'react-router-dom';
-import {Error404, Layout/*, Footer*/} from 'src/components';
-import routes from './routes';
+import {Error404} from '@ra-lib/components';
+import {Layout/*, Footer*/} from 'src/components';
 import {BASE_NAME, CONFIG_HOC, HASH_ROUTER} from 'src/config';
+import routes from './routes';
 
 const Router = HASH_ROUTER ? HashRouter : BrowserRouter;
 const baseName = HASH_ROUTER ? '' : BASE_NAME;

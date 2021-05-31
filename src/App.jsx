@@ -4,10 +4,9 @@ import {Helmet} from 'react-helmet';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn'; // 解决antd日期相关组件国际化问题
-import {ComponentProvider} from '@ra-lib/components';
+import {ComponentProvider, RouteLoading} from '@ra-lib/components';
 import AppRouter from './router/AppRouter';
 import {APP_NAME, CONFIG_HOC, IS_MOBILE} from 'src/config';
-import {RouteLoading} from 'src/components';
 import {MOCK} from 'src/config';
 import {store} from 'src/models';
 import {Provider} from 'react-redux';
