@@ -48,7 +48,10 @@ export function getToken() {
     if (query?.token) {
         window.sessionStorage.setItem(TOKEN_STORAGE_KEY, query.token);
     }
-    return query?.token || getMainApp()?.token || window.sessionStorage.getItem(TOKEN_STORAGE_KEY) || getLoginUser()?.token;
+    return query?.token
+        || getMainApp()?.token
+        || window.sessionStorage.getItem(TOKEN_STORAGE_KEY)
+        || getLoginUser()?.token;
 }
 
 /**
@@ -80,8 +83,13 @@ export function hasPermission(code) {
  * @param loginUser 当前登录用户信息
  */
 export function setLoginUser(loginUser = {}) {
-    if (!loginUser?.id) throw Error('loginUser must has id property!');
-    if (!loginUser?.name) throw Error('loginUser must has name property!');
+    // 必须字段
+    [
+        'id',
+        'name',
+    ].forEach(field => {
+        if (!loginUser[field]) throw Error(`loginUser must has ${field} property!`);
+    });
 
     // 将用户属性在这里展开，方便查看系统都用到了那些用户属性
     const userStr = JSON.stringify({

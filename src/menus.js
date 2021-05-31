@@ -1,6 +1,6 @@
 // import {ajax} from 'src/commons/ajax';
 import {Icon} from 'src/components';
-import {quickSort, convertToTree} from '@ra-lib/util';
+import {sort, convertToTree, checkSameField} from '@ra-lib/util';
 
 /**
  * 菜单数据，可以是 id + parentId 扁平结构，也可以是 id + children树状结构
@@ -53,8 +53,12 @@ export default async function getMenus(userId) {
         {id: 'document', parentId: 'other-site', title: '文档', path: 'https://sxfad.github.io/react-admin/#/', target: '_blank', order: 1200},
     ];
 
+    // 检测是否有重复id
+    const someId = checkSameField(menus, 'id');
+    if (someId) throw Error(`菜单中有重复id 「 ${someId} 」`);
+
     // 排序 order降序， 越大越靠前
-    return loopMenus(convertToTree(quickSort(menus, (a, b) => b.order - a.order)));
+    return loopMenus(convertToTree(sort(menus, (a, b) => b.order - a.order)));
 }
 
 /**

@@ -4,6 +4,9 @@ yarn
 # 前端构建
 yarn build
 
+# 虚拟机部署，直接copy
+#scp -r build/* app@172.16.175.134:/home/app/nginx/html
+
 # 将构建生成的静态文件copy到deploy目录，提升docker构建速度
 rm -rf deploy/build && cp -r build/ deploy/build
 

@@ -21,7 +21,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/users', function(req, res) {
-    res.statusCode = 401;
+    // res.statusCode = 401;
     res.send({
         total: 1,
         list: [{id: '123', name: '张三'}],
