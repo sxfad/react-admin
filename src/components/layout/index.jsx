@@ -129,30 +129,28 @@ export default function Layout(props) {
     }
 
     return (
-        <>
-            <RALayout
-                className="no-print"
-                ref={current => layoutRef.current = {...current, refresh: () => setRefresh({})}}
-                logo={logo}
-                title={APP_NAME}
-                menus={menus}
-                headerExtra={<Header/>}
-                keepPageAlive={CONFIG_HOC.keepAlive}
-                hashRouter={HASH_ROUTER}
-                {...nextState}
-                {...props}
-            />
-        </>
+        <RALayout
+            className="no-print"
+            ref={current => layoutRef.current = {...current, refresh: () => setRefresh({})}}
+            logo={logo}
+            title={APP_NAME}
+            menus={menus}
+            headerExtra={<Header/>}
+            keepPageAlive={CONFIG_HOC.keepAlive}
+            hashRouter={HASH_ROUTER}
+            {...nextState}
+            {...props}
+        />
     );
 };
 
 // 处理函数配置
-export function layoutHoc(options) {
+export function layoutHoc() {
     return WrappedComponent => {
         const componentName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
 
         const WithLayout = props => {
-            let nextState = getOptions(options);
+            let nextState = getOptions();
 
             nextState = Object.entries(nextState)
                 .reduce((prev, curr) => {
