@@ -31,6 +31,7 @@ export default class AppRouter extends Component {
                             {...props}
                             routes={userRoutes}
                             render404={props => <Error404 {...props}/>}
+                            baseName={baseName}
                         />
                     );
                 }}/>

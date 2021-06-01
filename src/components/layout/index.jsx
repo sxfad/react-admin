@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {Layout as RALayout} from '@ra-lib/components';
+import {Layout as RALayout, KeepPageAlive} from '@ra-lib/components';
 import {getQuery} from '@ra-lib/util';
 import {APP_NAME, CONFIG_HOC, HASH_ROUTER} from 'src/config';
 import {getLoginUser, isLogin, toLogin, getCurrentPageConfig} from 'src/commons';
@@ -110,28 +110,39 @@ export default function Layout(props) {
     ]);
 
     // 未使用 Layout 中任何功能，直接不渲染Layout
-    const hasLayout = [
+    const withoutLayout = [
         nextState.showHeader,
         nextState.showSide,
         nextState.showTab,
         nextState.showPageHeader,
-        CONFIG_HOC.keepAlive,
     ].every(item => !item);
-    if (window.location.pathname !== '/layout/setting' && hasLayout) return null;
+
+    if (window.location.pathname !== '/layout/setting' && withoutLayout) {
+        if (CONFIG_HOC.keepAlive) return (
+            <KeepPageAlive
+                hashRouter={HASH_ROUTER}
+                {...props}
+            />
+        );
+
+        return null;
+    }
 
     return (
-        <RALayout
-            className="no-print"
-            ref={current => layoutRef.current = {...current, refresh: () => setRefresh({})}}
-            logo={logo}
-            title={APP_NAME}
-            menus={menus}
-            headerExtra={<Header/>}
-            keepPageAlive={CONFIG_HOC.keepAlive}
-            hashRouter={HASH_ROUTER}
-            {...nextState}
-            {...props}
-        />
+        <>
+            <RALayout
+                className="no-print"
+                ref={current => layoutRef.current = {...current, refresh: () => setRefresh({})}}
+                logo={logo}
+                title={APP_NAME}
+                menus={menus}
+                headerExtra={<Header/>}
+                keepPageAlive={CONFIG_HOC.keepAlive}
+                hashRouter={HASH_ROUTER}
+                {...nextState}
+                {...props}
+            />
+        </>
     );
 };
 

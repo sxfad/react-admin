@@ -1,19 +1,11 @@
 import {match} from 'path-to-regexp';
 import {BASE_NAME, HASH_ROUTER} from 'src/config';
 import pageConfigs from 'src/pages/page-configs';
-import {Storage, getQuery} from '@ra-lib/util';
+import {getQuery} from '@ra-lib/util';
 import appPackage from '../../package.json';
 
 const TOKEN_STORAGE_KEY = `${appPackage.name}_token`;
 const LOGIN_USER_STORAGE_KEY = `${appPackage.name}_login-user`;
-const STORAGE_PREFIX = `${appPackage.name}_${getLoginUser()?.id || ''}_`;
-
-/**
- * 前端存储对象 storage.local storage.session storage.global
- * storage.local.setItem(key, value) storage.local.getItem(key, value)
- * @type {Storage}
- */
-export const storage = new Storage({prefix: STORAGE_PREFIX});
 
 /**
  * 乾坤主应用实例

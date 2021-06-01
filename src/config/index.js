@@ -1,6 +1,6 @@
 import {LAYOUT_TYPE} from '@ra-lib/components';
 import {getConfigValue} from './util';
-import {storage} from 'src/commons';
+import storage from 'src/commons/storage';
 import appPackage from '../../package.json';
 
 /**
@@ -44,7 +44,7 @@ export const CONFIG_HOC = {
     // 是否与model连接
     connect: true,
     // 启用页面保持功能，无特殊需求，尽量不要开启
-    keepAlive: false,
+    keepAlive: true,
     // layout布局方式 LAYOUT_TYPE.SIDE_MENU LAYOUT_TYPE.TOP_MENU LAYOUT_TYPE.TOP_SIDE_MENU
     layoutType: LAYOUT_TYPE.SIDE_MENU,
     // 头部是否显示

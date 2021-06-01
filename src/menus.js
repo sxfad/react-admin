@@ -39,7 +39,7 @@ export default async function getMenus(userId) {
         {id: 'role', parentId: 'system', title: '角色管理', path: '/roles', order: 900},
         {id: 'menu', parentId: 'system', title: '菜单管理', path: '/menus', order: 900},
 
-        {id: 'demo', title: '实例', basePath: '/demo', order: 850},
+        {id: 'demo', title: '实例', basePath: '/demo2', order: 850},
         {id: 'page404', parentId: 'demo', title: '404页面不存在', path: '/404', order: 700},
         {id: 'layout', parentId: 'demo', title: '布局', path: '/layout', order: 900},
         {id: 'modal', parentId: 'demo', title: '弹框', path: '/modal', order: 900},
