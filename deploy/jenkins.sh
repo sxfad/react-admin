@@ -4,9 +4,15 @@ yarn
 # 前端构建
 yarn build
 
-# 虚拟机部署，直接copy
-#scp -r build/* app@172.16.175.134:/home/app/nginx/html
+# 虚拟机部署
+# 直接copy，如果scp出现权限问题，需要将 ~/.ssh/id_rsa.pub内容添加到目标机的~/.ssh/authorized_keys文件中
+# nginx 配置修改后，要在目标机器上执行 nginx -s reload
+# TARGET="172.16.178.71"
+# scp -r build/* app@$TARGET:/home/app/nginx/html
+# scp deploy/nginx.conf app@$TARGET:/home/app/nginx/conf
+# ssh app@$TARGET "chmod 775 -R /home/app/nginx"
 
+# rancher部署
 # 将构建生成的静态文件copy到deploy目录，提升docker构建速度
 rm -rf deploy/build && cp -r build/ deploy/build
 
