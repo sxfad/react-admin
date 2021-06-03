@@ -57,8 +57,6 @@ export default config({
             password,
         };
 
-        // 可以刷新图片验证码
-        imageCodeRef.current.refresh();
         console.log(values);
 
         // TODO 用户登录
@@ -80,7 +78,11 @@ export default config({
                 });
                 toHome();
             })
-            .catch(() => setMessage('用户名或密码错误'));
+            .catch(() => {
+                setMessage('用户名或密码错误');
+                // 可以刷新图片验证码
+                imageCodeRef.current.refresh();
+            });
     }
 
     useEffect(() => {
