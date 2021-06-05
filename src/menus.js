@@ -17,7 +17,7 @@ export default async function getMenus() {
 }
 
 let CACHE_AJAX; // ajax请求（promise）缓存
-function getServerMenus() {
+export function getServerMenus() {
     // 登录页面，不加载
     if (isLoginPage()) return [];
 
