@@ -5,7 +5,6 @@ import styles from './style.less';
 
 const a = 123;
 const b = 456;
-const c = 789;
 
 export default config({
     path: '/',

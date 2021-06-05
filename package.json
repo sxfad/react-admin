@@ -10,7 +10,8 @@
         "build:time": "cross-env ANALYZER_TIME=true yarn build",
         "build:prev": "cross-env REACT_APP_PREVIEW=true REACT_APP_MOCK=true REACT_APP_HASH_ROUTER=true REACT_APP_BASE_NAME=/react-admin/build/ PUBLIC_URL=/react-admin/build/ BUILD_PATH=docs/build yarn build",
         "test": "craco test",
-        "docs": "docsify serve -p 3301"
+        "docs": "docsify serve -p 3301",
+        "prepare": "husky install"
     },
     "dependencies": {
         "@ant-design/icons": "^4.6.2",
