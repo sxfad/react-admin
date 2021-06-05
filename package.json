@@ -47,6 +47,7 @@
         "generic-names": "^3.0.0",
         "husky": "^6.0.0",
         "json5": "^2.2.0",
+        "lint-staged": "^11.0.0",
         "lodash": "^4.17.21",
         "mockjs": "^1.1.0",
         "moment": "^2.29.1",
@@ -112,7 +113,13 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "eslint \"src/**/*.{js,jsx}\""
+            "pre-commit": "lint-staged"
         }
+    },
+    "lint-staged": {
+        "*.{jsx, js}": [
+            "eslint --fix --quiet",
+            "git add"
+        ]
     }
 }
