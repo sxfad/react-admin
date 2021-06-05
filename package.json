@@ -45,6 +45,7 @@
         "craco-antd": "^1.19.0",
         "cross-env": "^7.0.3",
         "generic-names": "^3.0.0",
+        "husky": "^6.0.0",
         "json5": "^2.2.0",
         "lodash": "^4.17.21",
         "mockjs": "^1.1.0",
@@ -108,5 +109,10 @@
             "not op_mini all",
             "ie 11"
         ]
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "eslint \"src/**/*.{js,jsx}\""
+        }
     }
 }

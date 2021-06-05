@@ -3,6 +3,8 @@ import config from 'src/commons/config-hoc';
 import {PageContent} from '@ra-lib/components';
 import styles from './style.less';
 
+const a = 123;
+
 export default config({
     path: '/',
     title: '首页',
