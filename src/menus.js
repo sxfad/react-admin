@@ -2,26 +2,16 @@ import ajax from 'src/commons/ajax';
 import {isLoginPage, formatMenus} from 'src/commons';
 
 export default async function getMenus() {
-    const menus = await getServerMenus();
+    // const menus = await getServerMenus();
 
     // 前端硬编码菜单
-    // let menus = [
-    //     {id: 'system', title: '系统管理', order: 900},
-    //     {id: 'user', parentId: 'system', title: '用户管理', path: '/users', order: 900},
-    //     {id: 'role', parentId: 'system', title: '角色管理', path: '/roles', order: 900},
-    //     {id: 'menus', parentId: 'system', title: '菜单管理', path: '/menus', order: 900},
-    //
-    //     {
-    //         id: 'system2', title: 'React Admin', order: 900,
-    //         target: 'qiankun',
-    //         name: 'react-admin',
-    //         basePath: '/react-admin',
-    //         entry: 'http://172.16.40.72:3000',
-    //     },
-    //     {id: 'user2', parentId: 'system2', title: '用户管理', path: '/users', order: 900},
-    //     {id: 'role2', parentId: 'system2', title: '角色管理', path: '/roles', order: 900},
-    //     {id: 'menus2', parentId: 'system2', title: '菜单管理', path: '/menus', order: 900},
-    // ];
+    let menus = [
+        {id: 'system', title: '系统管理', order: 900},
+        {id: 'user', parentId: 'system', title: '用户管理', path: '/users', order: 900},
+        {id: 'role', parentId: 'system', title: '角色管理', path: '/roles', order: 900},
+        {id: 'menus', parentId: 'system', title: '菜单管理', path: '/menus', order: 900},
+        {id: 'menus2', parentId: 'system', title: '404', path: '/404', order: 900},
+    ];
 
     return formatMenus(menus);
 }
