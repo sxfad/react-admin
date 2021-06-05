@@ -1,6 +1,7 @@
 // import {ajax} from 'src/commons/ajax';
 import {Icon} from 'src/components';
 import {sort, convertToTree, checkSameField} from '@ra-lib/util';
+import {menuTargetOptions} from 'src/commons/options';
 
 /**
  * 菜单数据，可以是 id + parentId 扁平结构，也可以是 id + children树状结构
@@ -27,11 +28,14 @@ import {sort, convertToTree, checkSameField} from '@ra-lib/util';
  *  target: 第三方网站打开方式，如果为iframe，通过iframe内嵌到当前系统中
  *  order: 排序，越大越靠前
  */
+// let CACHE_AJAX; // ajax请求（promise）缓存
 export default async function getMenus(userId) {
     // userId 也许不用传递，后端可以根据 token 获取到当前用户信息
-    // const menus = await ajax.get('/menus', {userId}).then(res => {
+    // CACHE_AJAX = CACHE_AJAX || ajax.get('/menus', {userId}).then(res => {
     //     return (res || []);
     // });
+
+    // const menus = await CACHE_AJAX;
 
     const menus = [
         {id: 'system', title: '系统管理', order: 900},
@@ -41,6 +45,7 @@ export default async function getMenus(userId) {
 
         {id: 'demo', title: '实例', basePath: '/demo2', order: 850},
         {id: 'page404', parentId: 'demo', title: '404页面不存在', path: '/404', order: 700},
+        {id: 'page4042', parentId: 'system', title: '404页面不存在2', path: '/demo2/404', order: 700},
         {id: 'layout', parentId: 'demo', title: '布局', path: '/layout', order: 900},
         {id: 'modal', parentId: 'demo', title: '弹框', path: '/modal', order: 900},
         {id: 'query-bar', parentId: 'demo', title: '查询条件', path: '/query-bar', order: 900},
@@ -53,6 +58,15 @@ export default async function getMenus(userId) {
         {id: 'document', parentId: 'other-site', title: '文档', path: 'https://sxfad.github.io/react-admin/#/', target: '_blank', order: 1200},
     ];
 
+    return formatMenus(menus);
+}
+
+/**
+ * 处理菜单数据
+ * @param menus
+ * @returns {*}
+ */
+function formatMenus(menus) {
     // 检测是否有重复id
     const someId = checkSameField(menus, 'id');
     if (someId) throw Error(`菜单中有重复id 「 ${someId} 」`);
@@ -85,12 +99,12 @@ function loopMenus(nodes, basePath) {
         if (icon) item.icon = <Icon type={icon}/>;
 
         // 第三方页面处理，如果target为iframe，内嵌到当前系统中
-        if (target === 'iframe') {
+        if (target === menuTargetOptions.IFRAME) {
             // 页面跳转 : 内嵌iFrame
             item.path = `/iframe_page_/${encodeURIComponent(path)}`;
         }
 
-        if (!['_self', '_blank'].includes(target)) {
+        if (![menuTargetOptions.SELF, menuTargetOptions.BLANK].includes(target)) {
             Reflect.deleteProperty(item, 'target');
         }
 
