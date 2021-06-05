@@ -1219,7 +1219,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.10.1", "@babel/runtime@^7.10.4", "@babel/runtime@^7.11.1":
+"@babel/runtime@^7.10.1", "@babel/runtime@^7.10.4", "@babel/runtime@^7.10.5", "@babel/runtime@^7.11.1":
   version "7.14.0"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.14.0.tgz#46794bc20b612c5f75e62dd071e24dfd95f1cbe6"
   integrity sha512-JELkvo/DlpNdJ7dlyw/eY7E0suy5i5GQH+Vlxaq1nsNJ+H7f4Vtv3jMeCEgRhZZQFXTjldYfQgv2qmM6M1v5wA==
@@ -1604,10 +1604,10 @@
   resolved "https://registry.npmjs.org/@ra-lib/ajax/-/ajax-0.1.7.tgz#03e15c5c1f3b28f8933daf464d818c0f0d20e815"
   integrity sha512-nlattYlQ+zFZtLQMTZz2tO7wQd9rFRYHF6qW5ssgf6x2KKgyySdhGf9X9MZg+x+7KRCKhh9/BI80/QBvx8WKyQ==
 
-"@ra-lib/components@^0.1.40":
-  version "0.1.40"
-  resolved "https://registry.npmjs.org/@ra-lib/components/-/components-0.1.40.tgz#62c46a272a9002cc4db1e55db4777665a39fd963"
-  integrity sha512-lDUyB444JhuOCImPDw0yqd87fvmP1tMkONKoDugrQUb7L93pbQYXSjYBUoibZ/4NXC1JfbfiXuhwHi/KAzvrzQ==
+"@ra-lib/components@^0.1.44":
+  version "0.1.44"
+  resolved "https://registry.npmjs.org/@ra-lib/components/-/components-0.1.44.tgz#12573b1d8bbae42d6202b593daea48799fba2b76"
+  integrity sha512-UQ6Wf9GdMowQOIkxebWzoq/OJVRf+egtYkRR5tWa2Qpir7CMZMxlVb/HNKyW1lPZTz0xLjiavCG1z79zVWQPXw==
 
 "@ra-lib/config-loader@^0.1.6":
   version "0.1.6"
@@ -1629,10 +1629,10 @@
   resolved "https://registry.npmjs.org/@ra-lib/model/-/model-0.1.2.tgz#4889a0325eb82bea00fbfd9b80d5ec6f0256cb38"
   integrity sha512-M7j+QFOfpsyB6FUGF6azjX6WuH3/96ZYxHmKFiK6Oycjom6YTXJ5ry0YOwAymSQ+J8U3BLsYjsJEMu6764BPVA==
 
-"@ra-lib/util@^0.1.11":
-  version "0.1.11"
-  resolved "https://registry.npmjs.org/@ra-lib/util/-/util-0.1.11.tgz#e5be4c05bf5e6e84d99ac438695d532a8457bd80"
-  integrity sha512-1SKuGj30y0L2pQPH9LPhtlsEIbvszYTrIsegFBJcrta4G1TDAB5V4bVnYOxUptchVfXSnFR2puNW6c8SUQdhCA==
+"@ra-lib/util@^0.1.13":
+  version "0.1.13"
+  resolved "https://registry.npmjs.org/@ra-lib/util/-/util-0.1.13.tgz#5e7628b9460d0055927175dee5849bda912797b2"
+  integrity sha512-ncZXV7BfKqwRVTh+X5Kwt8Wma50PJbYnwCVwTMhA9+1ououSNiVS5MJ9gDphs7/cSVd+8bQEM0jZYfIDHHDhcQ==
 
 "@rollup/plugin-node-resolve@^7.1.1":
   version "7.1.3"
@@ -6391,6 +6391,13 @@ import-from@^2.1.0:
   dependencies:
     resolve-from "^3.0.0"
 
+import-html-entry@^1.9.0:
+  version "1.11.1"
+  resolved "https://registry.npmjs.org/import-html-entry/-/import-html-entry-1.11.1.tgz#3d8c5977926bdd122ab8e658965c102068b4af8d"
+  integrity sha512-O7mCUTwKdYU49/LH6nq1adWPnUlZQpKeGWIEcDq07KTcqP/v0jBLEIVc0oE0Mtlw3CEe0eeKGMyhl6LwfXCV7A==
+  dependencies:
+    "@babel/runtime" "^7.7.2"
+
 import-lazy@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/import-lazy/-/import-lazy-2.1.0.tgz#05698e3d45c88e8d7e9d92cb0584e77f096f3e43"
@@ -10020,6 +10027,17 @@ q@^1.1.2:
   resolved "https://registry.npmjs.org/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
 
+qiankun@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.npmjs.org/qiankun/-/qiankun-2.4.2.tgz#fa2ba2a99d24911930fcb6dc5a93fa3950275c47"
+  integrity sha512-TWkeybGnuqEcyc2abMkfO6IOrsDuO16/ojVaQ/uDper1/uMyxn+aYl/cJkgw/JGJBLM+zFZtcwrB2Yz0PaRqOg==
+  dependencies:
+    "@babel/runtime" "^7.10.5"
+    import-html-entry "^1.9.0"
+    lodash "^4.17.11"
+    single-spa "^5.9.2"
+    tslib "^1.10.0"
+
 qs@6.7.0:
   version "6.7.0"
   resolved "https://registry.npmjs.org/qs/-/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
@@ -11485,6 +11503,11 @@ simple-swizzle@^0.2.2:
   integrity sha1-pNprY1/8zMoz9w0Xy5JZLeleVXo=
   dependencies:
     is-arrayish "^0.3.1"
+
+single-spa@^5.9.2:
+  version "5.9.3"
+  resolved "https://registry.npmjs.org/single-spa/-/single-spa-5.9.3.tgz#2d151cbb3b273629a5b27b30a3b8ca847dcba4c5"
+  integrity sha512-qMGraRzIBsodV6569Fob4cQ4/yQNrcZ5Achh3SAQDljmqUtjAZ7BAA7GAyO/l5eizb7GtTmVq9Di7ORyKw82CQ==
 
 sirv@^1.0.7:
   version "1.0.11"

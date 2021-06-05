@@ -10,7 +10,7 @@ const token = getToken();
 const ajax = new Ajax({
     baseURL: AJAX_PREFIX,
     timeout: AJAX_TIMEOUT,
-    headers: {token},
+    headers: {'auth-token': token},
     onError: handleError,
     onSuccess: handleSuccess,
     // withCredentials: true, // 跨域携带cookie，对应后端 Access-Control-Allow-Origin不可以为 '*'，需要指定为具体域名
@@ -21,7 +21,12 @@ ajax.instance.interceptors.response.use(res => {
     // Do something before response
 
     // 后端自定义失败，前端直接抛出，走handleError逻辑
-    // if (res?.data?.code !== '00') return Promise.reject(res.data);
+    if (
+        res?.data
+        && 'code' in res.data
+        && typeof res.data.code === 'number'
+        && res.data.code !== 0
+    ) return Promise.reject(res.data);
 
     return res;
 }, error => {

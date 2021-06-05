@@ -1,250 +1,172 @@
 import {useEffect, useState, useMemo} from 'react';
-import {Menu, Button, Space, Form, Empty} from 'antd';
-import {MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
+import {Menu, Button, Space, Empty} from 'antd';
+import {PageContent, confirm} from '@ra-lib/components';
+import {convertToTree, sort, findNextNode} from '@ra-lib/util';
 import config from 'src/commons/config-hoc';
-import {PageContent, FormItem} from '@ra-lib/components';
-import {convertToTree} from '@ra-lib/util';
+import MenuEdit from './MenuEdit';
+import ActionEdit from './ActionEdit';
+import theme from 'src/theme.less';
 import styles from './style.less';
 
 export default config({
     path: '/menus',
-})(function Menus(props) {
-        const [selectedKey, setSelectedKey] = useState(null);
-        const [title, setTitle] = useState('添加顶级');
-        const {data: menus = [], run: fetchMenus} = props.ajax.useGet('/menus');
-        const {run: saveMenu} = props.ajax.usePost('/menus');
-        const {run: updateMenu} = props.ajax.usePut('/menus');
-        const {run: saveActions} = props.ajax.usePost('/actions');
-        const [menuForm] = Form.useForm();
-        const [actionForm] = Form.useForm();
+})(function MenuManager(props) {
+    const [isAdd, setIsAdd] = useState(true);
+    const [selectedMenu, setSelectedMenu] = useState(null);
+    const [hasUnSaveMenu, setHasUnSaveMenu] = useState(false);
+    const [hasUnSaveAction, setHasUnSaveAction] = useState(false);
+    const {loading, data: menus = [], run: fetchMenus} = props.ajax.useGet('/authority/getSystemMenuAll', null, {
+        formatResult: res => {
+            return (res || []).map(item => {
+                return {
+                    ...item,
+                    parentId: item.parentsId ? item.parentsId + '' : undefined,
+                    order: item.sort,
+                    status: item.status === 1,
+                };
+            });
+        },
+    });
 
-        async function handleMenuSubmit(values) {
-            console.log(values);
+    async function handleClick({key}, showTip = true) {
+        if (showTip && hasUnSaveMenu) await confirm('菜单有未保存数据，是否放弃？');
+        if (showTip && hasUnSaveAction) await confirm('功能列表有未保存数据，是否放弃？');
+        setHasUnSaveMenu(false);
+        setHasUnSaveAction(false);
 
-            if (values.id) {
-                await updateMenu(values);
-                await fetchMenus();
+        const menuData = menus.find(item => item.id === key);
+        setSelectedMenu(menuData);
+        setIsAdd(false);
+    }
+
+    const [menuItems, menuTreeData] = useMemo(() => {
+        const menuTreeData = convertToTree(sort(menus, (a, b) => b.order - a.order));
+        const loop = (nodes) => nodes.map(item => {
+            let {id, icon, title, children} = item;
+
+            if (children && children.length) {
+                return (
+                    <Menu.SubMenu
+                        key={id}
+                        title={(
+                            <span
+                                style={{display: 'inline-block', height: '100%'}}
+                                onClick={async e => {
+                                    e.stopPropagation();
+                                    await handleClick({key: id});
+                                }}
+                            >
+                                {title}
+                            </span>
+                        )}
+                        icon={icon}
+                        className={selectedMenu?.id === id ? `${theme.antPrefix}-menu-item-selected` : ''}
+                        data-menu={item}
+                    >
+                        {loop(children)}
+                    </Menu.SubMenu>
+                );
+            }
+            return (
+                <Menu.Item key={id} icon={icon} data-menu={item}>
+                    {title}
+                </Menu.Item>
+            );
+        });
+
+        return [loop(menuTreeData), menuTreeData];
+        // eslint-disable-next-line
+    }, [menus, selectedMenu, hasUnSaveMenu]);
+
+    useEffect(() => {
+        (async () => {
+            await fetchMenus();
+        })();
+        // eslint-disable-next-line
+    }, []);
+
+    async function handleMenuSubmit(data) {
+        setHasUnSaveMenu(false);
+        const {isAdd, isDelete, isUpdate, id} = data;
+
+        await fetchMenus();
+
+        if (isAdd) {
+            setSelectedMenu({...selectedMenu});
+        }
+
+        if (isUpdate) {
+
+        }
+
+        if (isDelete) {
+            const nextNode = findNextNode(menuTreeData, id);
+            if (nextNode) {
+                await handleClick({key: nextNode.id}, false);
             } else {
-                const res = await saveMenu(values);
-
-                await fetchMenus();
-                // 新增之后，选中刚新增的菜单
-                handleClick({key: res.id});
+                // 删没了
+                setSelectedMenu({});
+                setIsAdd(true);
             }
         }
+    }
 
-        async function handleActionSubmit(values) {
-            await saveActions(values);
+    async function handleActionSubmit() {
+        setHasUnSaveAction(false);
+    }
 
-            await fetchMenus();
-        }
-
-        function handleClick({key}) {
-            setSelectedKey(key);
-            const menuData = menus.find(item => item.id === key);
-
-            menuForm.resetFields();
-            menuForm.setFieldsValue(menuData);
-            setTitle('修改菜单');
-
-            actionForm.resetFields();
-
-            actionForm.setFieldsValue({
-                menuId: key,
-                actions: [],
-            });
-        }
-
-        function handleAddTop() {
-            menuForm.resetFields();
-            setTitle('添加顶级');
-
-            actionForm.setFieldsValue({
-                menuId: undefined,
-                actions: [],
-            });
-        }
-
-        function handleAddSub() {
-            menuForm.resetFields();
-            menuForm.setFieldsValue({parentId: selectedKey});
-            setTitle('添加子级');
-
-            actionForm.setFieldsValue({
-                menuId: undefined,
-                actions: [],
-            });
-        }
-
-        const menuItems = useMemo(() => {
-            const menuTreeData = convertToTree(menus);
-            const loop = (nodes) => nodes.map(item => {
-                let {id, icon, title, children} = item;
-
-                if (children && children.length) {
-                    return (
-                        <Menu.SubMenu
-                            key={id}
-                            title={title}
-                            icon={icon}
-                            onTitleClick={handleClick}
-                        >
-                            {loop(children)}
-                        </Menu.SubMenu>
-                    );
-                }
-                return (
-                    <Menu.Item key={id} icon={icon}>
-                        {title}
-                    </Menu.Item>
-                );
-            });
-
-            return loop(menuTreeData);
-            // eslint-disable-next-line
-        }, [menus]);
-
-        useEffect(() => {
-            (async () => {
-                await fetchMenus();
-            })();
-            // eslint-disable-next-line
-        }, []);
-
-        const layout = {
-            labelCol: {flex: '90px'},
-        };
-
-        return (
-            <PageContent fitHeight className={styles.root}>
-                <div className={styles.menu}>
-                    <Space className={styles.menuTop}>
-                        <Button type="primary" onClick={handleAddTop}>添加顶级</Button>
-                        <Button disabled={!selectedKey} onClick={handleAddSub}>添加子级</Button>
-                    </Space>
-                    <div className={styles.menuContent}>
+    return (
+        <PageContent loading={loading} fitHeight className={styles.menuRoot}>
+            <div className={styles.menu}>
+                <Space className={styles.menuTop}>
+                    <Button
+                        type="primary"
+                        onClick={() => {
+                            setIsAdd(true);
+                            setSelectedMenu(null);
+                        }}
+                    >
+                        添加顶级
+                    </Button>
+                    <Button
+                        disabled={!selectedMenu}
+                        type="primary"
+                        onClick={() => setIsAdd(true)}
+                    >
+                        添加子级
+                    </Button>
+                </Space>
+                <div className={styles.menuContent}>
+                    {menus?.length ? (
                         <Menu
                             mode="inline"
                             selectable
-                            selectedKeys={[selectedKey]}
-                            onClick={handleClick}
+                            selectedKeys={[selectedMenu?.id]}
+                            onClick={info => handleClick(info)}
                         >
                             {menuItems}
                         </Menu>
-                    </div>
+                    ) : (
+                        <Empty style={{marginTop: 58}} description="暂无数据"/>
+                    )}
                 </div>
-                <div className={styles.edit}>
-                    <h2>{title}</h2>
-                    <Form
-                        form={menuForm}
-                        onFinish={handleMenuSubmit}
-                    >
-                        <FormItem name="parentId" hidden/>
-                        <FormItem name="id" hidden/>
-                        <FormItem
-                            {...layout}
-                            label="标题"
-                            name="title"
-                            required
-                            tooltip="菜单标题"
-                        />
-                        <FormItem
-                            {...layout}
-                            label="基础路径"
-                            name="basePath"
-                            tooltip="所有子菜单将以此路径为前缀"
-                        />
-                        <FormItem
-                            {...layout}
-                            label="路径"
-                            name="path"
-                            tooltip="菜单路径，如果第三方网站，请指定目标"
-                        />
-                        <FormItem
-                            {...layout}
-                            label="目标"
-                            type="radio-button"
-                            name="target"
-                            initialValue={''}
-                            options={[
-                                {value: '', label: '无'},
-                                {value: 'iframe', label: '内嵌'},
-                                {value: '_self', label: '当前窗口'},
-                                {value: '_blank', label: '新开窗口'},
-                            ]}
-                            tooltip="指定目标之后，将以第三方网站方式打开"
-                        />
-                        <FormItem
-                            {...layout}
-                            type="number"
-                            label="排序"
-                            name="order"
-                            tooltip="越大越靠前"
-                        />
-                        <FormItem>
-                            <Space style={{paddingLeft: layout.labelCol.flex}}>
-                                <Button type="primary" htmlType="submit">保存</Button>
-                            </Space>
-                        </FormItem>
-                    </Form>
-                </div>
-                <div className={styles.action}>
-                    <h2>功能列表</h2>
-                    <Form
-                        form={actionForm}
-                        onFinish={handleActionSubmit}
-                    >
-                        <FormItem name="menuId" hidden/>
-                        <FormItem shouldUpdate noStyle>
-                            {({getFieldValue}) => {
-                                const menuId = getFieldValue('menuId');
+            </div>
+            <MenuEdit
+                isAdd={isAdd}
+                selectedMenu={selectedMenu}
+                onSubmit={handleMenuSubmit}
+                onValuesChange={() => {
 
-                                if (!menuId) return <Empty style={{marginTop: 100}} description="请选择或保存新增菜单"/>;
-
-                                return (
-                                    <>
-                                        <Form.List name="actions">
-                                            {(fields, {add, remove}) => (
-                                                <>
-                                                    {fields.map(({key, name}) => {
-                                                        return (
-                                                            <Space key={key} style={{display: 'flex', marginBottom: 8}} align="baseline">
-                                                                <FormItem
-                                                                    hidden
-                                                                    name={[name, 'id']}
-                                                                />
-                                                                <FormItem
-                                                                    name={[name, 'title']}
-                                                                    placeholder="名称"
-                                                                    rules={[{required: true, message: '请输入名称！'}]}
-                                                                />
-                                                                <FormItem
-                                                                    name={[name, 'code']}
-                                                                    placeholder="编码"
-                                                                    rules={[{required: true, message: '请输入编码！'}]}
-                                                                />
-                                                                <MinusCircleOutlined style={{color: 'red'}} onClick={() => remove(name)}/>
-                                                            </Space>
-                                                        );
-                                                    })}
-                                                    <FormItem>
-                                                        <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined/>}>
-                                                            新增编码
-                                                        </Button>
-                                                    </FormItem>
-                                                </>
-                                            )}
-                                        </Form.List>
-                                        <Space style={{display: 'flex', justifyContent: 'center'}}>
-                                            <Button type="primary" htmlType="submit">保存</Button>
-                                        </Space>
-                                    </>
-                                );
-                            }}
-                        </FormItem>
-                    </Form>
-                </div>
-            </PageContent>
-        );
-    },
-);
+                    console.log(123123);
+                    setHasUnSaveMenu(true);
+                }}
+            />
+            <ActionEdit
+                isAdd={isAdd}
+                selectedMenu={selectedMenu}
+                onValuesChange={() => setHasUnSaveAction(true)}
+                onSubmit={handleActionSubmit}
+            />
+        </PageContent>
+    );
+});

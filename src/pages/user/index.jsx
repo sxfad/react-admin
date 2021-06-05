@@ -5,12 +5,13 @@ import {
     PageContent,
     QueryBar,
     FormItem,
-    ToolBar,
     Table,
     Pagination,
-    batchDeleteConfirm,
     Operator,
+    ToolBar,
 } from '@ra-lib/components';
+import {IS_MOBILE} from 'src/config';
+import EditModal from './EditModal';
 
 export default config({
     path: '/users',
@@ -19,7 +20,8 @@ export default config({
     const [pageNum, setPageNum] = useState(1);
     const [pageSize, setPageSize] = useState(20);
     const [conditions, setConditions] = useState({});
-    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const [visible, setVisible] = useState(false);
+    const [record, setRecord] = useState(null);
     const [form] = Form.useForm();
 
     const params = {
@@ -34,115 +36,93 @@ export default config({
             dataSource,
             total,
         } = {},
-    } = props.ajax.useGet('/users', params, [conditions, pageNum, pageSize], {
+    } = props.ajax.useGet('/user/list', params, [conditions, pageNum, pageSize], {
         setLoading,
         // mountFire: false, // 初始化不查询
         formatResult: res => {
             return {
-                dataSource: res?.list || [],
-                total: res?.total || 0,
+                dataSource: res?.content || [],
+                total: window.parseInt(res?.totalElements, 10) || 0,
             };
         },
     });
 
-    // 批量删除
-    const {run: batchDelete} = props.ajax.useDel('/users', null, {setLoading, successTip: '批量删除成功！'});
-
     const columns = [
-        {title: '用户名', dataIndex: 'name', width: 100},
-        {title: '年龄', dataIndex: 'age', width: 100},
-        {title: '工作', dataIndex: 'job', width: 100},
-        {title: '邮箱', dataIndex: 'email', width: 200},
-        {title: '电话', dataIndex: 'mobile', width: 120},
-        {title: '备注', dataIndex: 'remark', width: 100},
+        {title: '姓名', dataIndex: 'realName'},
+        {title: '手机号', dataIndex: 'phone'},
+        {title: '邮箱', dataIndex: 'email'},
         {
-            title: '操作', dataIndex: 'operator', width: 100,
+            title: '状态', dataIndex: 'status',
             render: (text, record) => {
-                const {id, name} = record;
+                const {status} = record;
+                if (status === 'START') return '可用';
+                return '停用';
+            },
+        },
+        {
+            title: '操作',
+            key: 'operator',
+            render: (text, record) => {
                 const items = [
                     {
-                        label: '编辑',
-                        onClick: () => props.history.push(`/users/${id}?name=${name}`),
+                        label: '查看',
+                        onClick: () => setRecord({...record, isDetail: true}) || setVisible(true),
                     },
                     {
-                        label: '删除',
-                        color: 'red',
-                        confirm: {
-                            title: '您确定删除吗？',
-                            onConfirm: () => handleDelete(id),
-                        },
+                        label: '修改',
+                        onClick: () => setRecord(record) || setVisible(true),
                     },
                 ];
-                return <Operator items={items}/>;
+
+                return (<Operator items={items}/>);
             },
         },
     ];
 
-    async function handleDelete(id) {
-        await batchDelete({ids: id}, {successTip: '删除成功！'});
-    }
-
-    async function handleBatchDelete() {
-        await batchDeleteConfirm(selectedRowKeys.length);
-
-        await batchDelete({ids: selectedRowKeys.join(',')});
-    }
-
-    const layout = {
-        wrapperCol: {style: {width: 200}},
+    const queryItem = {
+        style: {width: 200},
     };
-    const disabled = !selectedRowKeys?.length;
 
     return (
         <PageContent loading={loading}>
-            <QueryBar>
-                <Form
-                    name="user"
-                    layout="inline"
-                    form={form}
-                    onFinish={values => setSelectedRowKeys([]) || setPageNum(1) || setConditions(values)}
-                >
-                    <FormItem
-                        {...layout}
-                        label="用户名"
-                        name="name"
-                    />
-                    <FormItem
-                        {...layout}
-                        type="number"
-                        label="年龄"
-                        name="age"
-                    />
-                    <FormItem
-                        {...layout}
-                        type="select"
-                        label="工作"
-                        name="job"
-                        options={[
-                            {value: '1', label: 'UI设计师'},
-                            {value: '2', label: '前端'},
-                            {value: '3', label: '后端'},
-                        ]}
-                    />
-                    <FormItem>
-                        <Space>
-                            <Button type="primary" htmlType="submit">查询</Button>
-                            <Button onClick={() => form.resetFields()}>重置</Button>
-                        </Space>
-                    </FormItem>
-                </Form>
+            <QueryBar showCollapsedBar={IS_MOBILE}>
+                {(collapsed) => {
+                    // const hidden = IS_MOBILE && collapsed;
+                    return (
+                        <Form
+                            name="user"
+                            layout="inline"
+                            form={form}
+                            onFinish={values => setPageNum(1) || setConditions(values)}
+                        >
+                            <FormItem
+                                {...queryItem}
+                                label="姓名"
+                                name="realName"
+                            />
+                            <FormItem>
+                                <Space>
+                                    <Button type="primary" htmlType="submit">查询</Button>
+                                    <Button onClick={() => form.resetFields()}>重置</Button>
+                                </Space>
+                            </FormItem>
+                        </Form>
+                    );
+                }}
             </QueryBar>
             <ToolBar>
-                <Button type="primary" onClick={() => props.history.push('/users/:id')}>添加</Button>
-                <Button danger disabled={disabled} onClick={handleBatchDelete}>删除</Button>
+                <Button type="primary" onClick={() => setRecord(null) || setVisible(true)}>添加</Button>
             </ToolBar>
             <Table
-                rowSelection={{selectedRowKeys, onChange: setSelectedRowKeys}}
-                fitHeight
+                serialNumber
+                pageNum={pageNum}
+                pageSize={pageSize}
+                fitHeight={!IS_MOBILE}
                 dataSource={dataSource}
                 columns={columns}
                 rowKey="id"
                 pagination={false}
+                scroll={IS_MOBILE ? {x: 1000} : undefined}
             />
             <Pagination
                 total={total}
@@ -150,6 +130,15 @@ export default config({
                 pageSize={pageSize}
                 onPageNumChange={setPageNum}
                 onPageSizeChange={pageSize => setPageNum(1) || setPageSize(pageSize)}
+            />
+            <EditModal
+                fullScreen={IS_MOBILE}
+                width={IS_MOBILE ? '100%' : '70%'}
+                visible={visible}
+                record={record}
+                isEdit={!!record}
+                onOk={() => setVisible(false) || setConditions({...conditions})}
+                onCancel={() => setVisible(false)}
             />
         </PageContent>
     );

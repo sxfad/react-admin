@@ -1,18 +1,21 @@
-.root {
-    display: flex;
+@import "src/theme";
 
+.menuRoot {
+    display: flex;
 }
 
 .menu {
     flex: 0 0 210px;
     display: flex;
     flex-direction: column;
+    border-right: 1px solid @border-color-base;
 
     .menuTop {
-        flex: 0 0 50px;
+        padding: 8px;
+        margin-right: 8px;
         display: flex;
         align-items: center;
-        border-bottom: 1px solid #e8e8e8;
+        border-bottom: 1px solid @border-color-base;
     }
 
     .menuContent {
@@ -21,27 +24,54 @@
     }
 }
 
-.edit {
+.pane {
     flex: 1;
-    overflow: auto;
-    padding: 0 32px;
-    border-left: 1px solid #e8e8e8;
-    border-right: 1px solid #e8e8e8;
-
-    h2 {
-        text-align: center;
-        padding: 8px;
-    }
-
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid @border-color-base;
 }
 
-.action {
+.title {
+    flex: 0 0 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 8px;
+}
+
+.content {
     flex: 1;
     overflow: auto;
-    padding: 0 32px;
+    padding: 8px 32px;
+}
 
-    h2 {
-        text-align: center;
-        padding: 8px;
+.footerAction {
+    flex: 0 0 50px;
+    justify-content: flex-end;
+    border-top: 1px solid @border-color-base;
+    padding: 0 10px;
+    margin: 0 8px;
+}
+
+:global {
+    .@{ant-prefix}-menu-submenu {
+        position: relative;
+
+        &:after {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 44px;
+            border-right: 3px solid @primary-color;
+            transform: scaleY(0.0001);
+            opacity: 0;
+            transition: transform 0.15s cubic-bezier(0.215, 0.61, 0.355, 1), opacity 0.15s cubic-bezier(0.215, 0.61, 0.355, 1);
+            content: '';
+        }
+    }
+
+    .@{ant-prefix}-menu-submenu.@{ant-prefix}-menu-item-selected:after {
+        opacity: 1;
+        transform: scaleY(1);
     }
 }

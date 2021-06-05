@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {Layout as RALayout, KeepPageAlive} from '@ra-lib/components';
 import {getQuery} from '@ra-lib/util';
-import {APP_NAME, CONFIG_HOC, HASH_ROUTER} from 'src/config';
+import {APP_NAME, CONFIG_HOC, HASH_ROUTER, IS_SUB} from 'src/config';
 import {getLoginUser, isLogin, toLogin, getCurrentPageConfig} from 'src/commons';
 import Header from './header';
 import logo from './logo/logo.png';
@@ -110,12 +110,14 @@ export default function Layout(props) {
     ]);
 
     // 未使用 Layout 中任何功能，直接不渲染Layout
-    const withoutLayout = [
+    let withoutLayout = [
         nextState.showHeader,
         nextState.showSide,
         nextState.showTab,
         nextState.showPageHeader,
     ].every(item => !item);
+
+    if (IS_SUB) withoutLayout = true;
 
     if (window.location.pathname !== '/layout/setting' && withoutLayout) {
         if (CONFIG_HOC.keepAlive) return (

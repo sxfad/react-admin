@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {BrowserRouter, HashRouter, Route, Switch} from 'react-router-dom';
-import {Error404} from '@ra-lib/components';
-import {Layout/*, Footer*/} from 'src/components';
+import {Error404, Layout/*, Footer*/, SubApp} from 'src/components';
 import {BASE_NAME, CONFIG_HOC, HASH_ROUTER} from 'src/config';
 import routes from './routes';
 
@@ -52,6 +51,7 @@ export default class AppRouter extends Component {
                         <Route component={Error404}/>
                     </Switch>
                 ) : null}
+                <SubApp/>
                 {/*<Footer/>*/}
             </Router>
         );

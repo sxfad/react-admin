@@ -88,6 +88,14 @@ yarn build:time
 - 复杂的样式处理，推荐使用 [classnames](https://github.com/JedWatson/classnames)
 - 主题变量修改 theme.less [antd 样式变量](https://ant.design/docs/react/customize-theme-cn)
 
+## 微前端
+
+当前框架既可以作为乾坤主项目，又可以作为乾坤子项目
+
+新创建项目注意修改：
+- package.json name 属性
+- src/theme.less 中 @ant-prefix 和 @ra-lib-prefix
+
 ## 作为乾坤子系统时
 
 约定：package.json name 作为:

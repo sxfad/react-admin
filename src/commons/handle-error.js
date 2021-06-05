@@ -1,5 +1,5 @@
 import {notification} from 'antd';
-import {toLogin} from 'src/commons';
+import {toLogin} from 'src/commons/index';
 
 const ERROR_SERVER = '系统开小差了，请稍后再试或联系管理员！';
 const ERROR_NOT_FOUND = '您访问的资源不存在！';

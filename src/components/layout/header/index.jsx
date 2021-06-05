@@ -5,7 +5,6 @@ import {getColor} from '@ra-lib/util';
 import styles from './style.less';
 import config from 'src/commons/config-hoc';
 import {toLogin} from 'src/commons';
-import LayoutSetting from 'src/components/layout/layout-setting';
 import {IS_MOBILE} from 'src/config';
 
 export default config({
@@ -33,25 +32,22 @@ export default config({
 
     const {avatar, name = ''} = loginUser;
 
-    const width = IS_MOBILE ? 100 : 160;
+    const width = IS_MOBILE ? 'auto' : '200px';
     return (
         <Space
             className={styles.root}
             size={16}
             style={{
                 // 两个宽度要同时设置，否则会被挤！！！
-                flex: `0 0 ${width}px`,
+                flex: `0 0 ${width}`,
                 width,
+                paddingRight: IS_MOBILE ? 0 : 12,
             }}
         >
             {IS_MOBILE ? null : (
                 <>
                     <div className={styles.action}>
                         <FullScreen/>
-                    </div>
-
-                    <div className={styles.action}>
-                        <LayoutSetting/>
                     </div>
                 </>
             )}
@@ -69,8 +65,12 @@ export default config({
                             {(name[0] || '').toUpperCase()}
                         </Avatar>
                     )}
-                    <span className={styles.userName}>{name}</span>
-                    <DownOutlined/>
+                    {IS_MOBILE ? null : (
+                        <>
+                            <span className={styles.userName}>{name}</span>
+                            <DownOutlined/>
+                        </>
+                    )}
                 </div>
             </Dropdown>
         </Space>

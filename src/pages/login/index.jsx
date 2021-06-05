@@ -18,7 +18,7 @@ export default config({
     pageHeader: false,
     tab: false,
 })(function Login() {
-    const login = usePost('/login');
+    const login = usePost('/login/login');
     const [message, setMessage] = useState();
     const [isMount, setIsMount] = useState(false);
     const imageCodeRef = useRef(null);
@@ -53,33 +53,27 @@ export default config({
         const {userName, password} = values;
         const params = {
             ...values,
-            userName,
+            id: userName,
             password,
+            captchaId: '8848',
+            captchaCode: '1234',
+            checkPicCaptchaCode: false,
         };
-
-        console.log(values);
-
-        // TODO 用户登录
-        alert('TODO 用户登录');
-        login.run = () => Promise.resolve({
-            id: '1',
-            name: '管理员',
-            avatar: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        });
 
         login.run(params, {errorTip: false})
             .then(res => {
-                const {id, name, ...others} = res;
+                const {id, realName: name, token, ...others} = res?.data;
                 setLoginUser({
                     id,     // 必须字段
                     name,   // 必须字段
+                    token,
                     ...others,
                     // 其他字段按需添加
                 });
                 toHome();
             })
-            .catch(() => {
-                setMessage('用户名或密码错误');
+            .catch((err) => {
+                setMessage(err.message || '用户名或密码错误');
                 // 可以刷新图片验证码
                 imageCodeRef.current.refresh();
             });
@@ -89,8 +83,8 @@ export default config({
         // 开发时默认填入数据
         if (process.env.NODE_ENV === 'development' || process.env.REACT_APP_PREVIEW) {
             form.setFieldsValue({
-                userName: 'admin',
-                password: '111',
+                userName: '18888888888',
+                password: 'Sxf123456_',
                 imageCode: '0000',
                 messageCode: '0000',
             });

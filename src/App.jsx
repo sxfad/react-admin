@@ -28,7 +28,8 @@ ConfigProvider.config({
     prefixCls: theme.antPrefix,
 });
 
-export default function App() {
+export default function App(props) {
+    const {children} = props;
     const [loading, setLoading] = useState(true);
     // 一些初始化工作
     useEffect(() => {
@@ -57,7 +58,7 @@ export default function App() {
                     layoutPageOtherHeight={CONFIG_HOC.pageOtherHeight}
                     isMobile={IS_MOBILE}
                 >
-                    <AppRouter/>
+                    {children ? children : <AppRouter/>}
                 </ComponentProvider>
             </ConfigProvider>
         </Provider>

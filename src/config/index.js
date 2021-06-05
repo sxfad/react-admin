@@ -46,13 +46,13 @@ export const CONFIG_HOC = {
     // 启用页面保持功能，无特殊需求，尽量不要开启
     keepAlive: false,
     // layout布局方式 LAYOUT_TYPE.SIDE_MENU LAYOUT_TYPE.TOP_MENU LAYOUT_TYPE.TOP_SIDE_MENU
-    layoutType: LAYOUT_TYPE.SIDE_MENU,
+    layoutType: LAYOUT_TYPE.TOP_SIDE_MENU,
     // 头部是否显示
-    header: IS_MOBILE, // ? true : false, // !IS_SUB,
+    header: true,
     // 侧边栏是否显示
-    side: IS_MOBILE ? false : !IS_SUB,
+    side: !IS_MOBILE,
     // Tabs是否显示
-    tab: IS_MOBILE ? false : !IS_SUB,
+    tab: false,
     // 持久化 Tabs记录
     persistTab: true,
     // tab左侧显示展开收起菜单按钮

@@ -15,11 +15,12 @@ if (window.__POWERED_BY_QIANKUN__) {
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import React from 'react';
-import {notification, message, Modal} from 'antd';
 import ReactDOM from 'react-dom';
+import {notification, Modal, message} from 'antd';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {setMainApp} from 'src/commons';
+import qiankunMain from './qiankun-main';
 
 function getRootDom(props) {
     const rootId = '#root';
@@ -41,12 +42,21 @@ if (!window.__POWERED_BY_QIANKUN__) {
     render();
 }
 
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
+
+// 乾坤主应用
+qiankunMain();
+
+
+// 作为乾坤子应用
 export async function bootstrap(props) {
 }
 
 export async function mount(props) {
     setMainApp(props.mainApp);
-
     render(props);
 }
 
@@ -58,4 +68,5 @@ export async function unmount(props) {
 
     ReactDOM.unmountComponentAtNode(getRootDom(props));
 }
+
 

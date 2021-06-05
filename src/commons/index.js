@@ -1,24 +1,32 @@
 import {match} from 'path-to-regexp';
+import {checkSameField, convertToTree, getQuery, sort} from '@ra-lib/util';
+import {menuTargetOptions} from 'src/commons/options';
+import {getSubApps, isActiveApp} from 'src/qiankun-main';
 import {BASE_NAME, HASH_ROUTER} from 'src/config';
 import pageConfigs from 'src/pages/page-configs';
-import {getQuery} from '@ra-lib/util';
+import {Icon} from 'src/components';
+import storage from 'src/commons/storage';
 import appPackage from '../../package.json';
 
 const TOKEN_STORAGE_KEY = `${appPackage.name}_token`;
 const LOGIN_USER_STORAGE_KEY = `${appPackage.name}_login-user`;
+const MAIN_APP_KEY = 'MAIN_APP';
 
 /**
- * 乾坤主应用实例
+ * 设置乾坤主应用实例
+ * @param mainApp
  */
-let _mainApp;
-
 export function setMainApp(mainApp) {
-    _mainApp = mainApp;
-    setLoginUser(mainApp?.loginUser);
+    storage.global.setItem(MAIN_APP_KEY, mainApp);
+    setLoginUser(mainApp?.loginUser || null);
 }
 
+/**
+ * 获取乾坤主应用实例
+ */
 export function getMainApp() {
-    return _mainApp;
+    const mainApp = storage.global.getItem(MAIN_APP_KEY);
+    return mainApp || null;
 }
 
 /**
@@ -30,6 +38,7 @@ export function setToken(token) {
     const loginUser = getLoginUser();
     if (loginUser) loginUser.token = token;
 }
+
 
 /**
  * 获取token
@@ -79,6 +88,8 @@ export function setLoginUser(loginUser = {}) {
     [
         'id',
         'name',
+        'token',
+        // 'permissions',
     ].forEach(field => {
         if (!loginUser[field]) throw Error(`loginUser must has ${field} property!`);
     });
@@ -171,10 +182,16 @@ export function toLogin() {
  * @param result
  * @returns {string|boolean}
  */
-export function checkPath(result) {
+export async function checkPath(result) {
+    const subApps = await getSubApps();
     result
         .filter(({path}) => !!path)
         .forEach(({path, filePath}) => {
+            // 是否与子项目配置冲突
+            const app = subApps.find(item => isActiveApp(item, path));
+            if (app) throw Error(`路由地址：「${path}」 与 子项目 「${app.title || app.name}」 激活规则配置冲突，对应文件文件如下：\n${filePath}`);
+
+            // 自身路由配置是否冲突
             const exit = result.find(({filePath: f, path: p}) => {
                 if (f === filePath) return false;
 
@@ -186,11 +203,10 @@ export function checkPath(result) {
                     || match(p, {decode: decodeURIComponent})(path);
 
             });
-            if (exit) {
-                throw Error(`路由地址：${path} 与 ${exit.path} 配置冲突，对应文件文件如下：\n${filePath}\n${exit.filePath}`);
-            }
+            if (exit) throw Error(`路由地址：「${path}」 与 「${exit.path}」 配置冲突，对应文件文件如下：\n${filePath}\n${exit.filePath}`);
         });
 }
+
 
 /**
  * 基于 window.location.pathname pageConfig 获取当前页面config高级组件参数
@@ -208,3 +224,60 @@ export function getCurrentPageConfig() {
 
     return config || {};
 }
+
+/**
+ * 处理菜单数据
+ * @param menus
+ * @returns {*}
+ */
+export function formatMenus(menus) {
+    // 检测是否有重复id
+    const someId = checkSameField(menus, 'id');
+    if (someId) throw Error(`菜单中有重复id 「 ${someId} 」`);
+
+    // 排序 order降序， 越大越靠前
+    return loopMenus(convertToTree(sort(menus, (a, b) => b.order - a.order)));
+}
+
+/**
+ * 菜单数据处理函数{}
+ * @param menus
+ * @param basePath
+ */
+function loopMenus(menus, basePath) {
+    menus.forEach(item => {
+        let {icon, path, target, children} = item;
+
+        // 保存原始target数据
+        item._target = target;
+
+        // 树状结构bashPath向下透传
+        if (basePath && !('basePath' in item)) item.basePath = basePath;
+
+        // 乾坤子项目约定
+        if (target === menuTargetOptions.QIANKUN) item.basePath = `/${item.name}`;
+
+        // 拼接基础路径
+        if (basePath && path && (!path.startsWith('http') || !path.startsWith('//'))) {
+            item.path = path = `${basePath}${path}`;
+        }
+
+        // 图标处理，数据库中持久换存储的是字符串
+        if (icon) item.icon = <Icon type={icon}/>;
+
+        // 第三方页面处理，如果target为iframe，内嵌到当前系统中
+        if (target === menuTargetOptions.IFRAME) {
+            // 页面跳转 : 内嵌iFrame
+            item.path = `/iframe_page_/${encodeURIComponent(path)}`;
+        }
+
+        if (![menuTargetOptions.SELF, menuTargetOptions.BLANK].includes(target)) {
+            Reflect.deleteProperty(item, 'target');
+        }
+
+        if (children?.length) loopMenus(children, item.basePath);
+    });
+
+    return menus;
+}
+
