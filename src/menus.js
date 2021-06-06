@@ -1,5 +1,5 @@
 import ajax from 'src/commons/ajax';
-import {isLoginPage, formatMenus} from 'src/commons';
+import {isLoginPage, formatMenus, getLoginUser} from 'src/commons';
 
 export default async function getMenus() {
     const serverMenus = await getServerMenus();
@@ -39,7 +39,7 @@ function getServerMenus() {
     if (isLoginPage()) return [];
 
     const run = () => {
-        CACHE_AJAX = CACHE_AJAX || ajax.get('/user/menus')
+        CACHE_AJAX = CACHE_AJAX || ajax.get('/user/menus', {userId: getLoginUser()?.id})
             .then(res => (res || []).map(item => ({
                 ...item,
             })));

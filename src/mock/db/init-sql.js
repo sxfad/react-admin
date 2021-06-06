@@ -1,3 +1,7 @@
+import moment from 'moment';
+
+const now = moment().format('YYYY-MM-DD HH:mm:ss');
+
 export default `
     create table if not exists menus
     (
@@ -72,47 +76,45 @@ export default `
 
 export const initRolesSql = `
     INSERT INTO roles (id, name, remark, createdAt, updatedAt)
-    VALUES (1, '管理员', '管理员拥有系统所有权限', '2021-06-06 17:31:24', '2021-06-06 17:31:24');
+    VALUES (1, '管理员', '管理员拥有系统所有权限', '${now}', '${now}');
 `;
 
 export const initRoleMenusSql = `
     INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
-    VALUES (1, 1, 1, '2021-06-06 17:35:08', '2021-06-06 17:35:08');
+    VALUES (1, 1, 1, '${now}', '${now}');
     INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
-    VALUES (2, 1, 2, '2021-06-06 17:35:08', '2021-06-06 17:35:08');
+    VALUES (2, 1, 2, '${now}', '${now}');
     INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
-    VALUES (3, 1, 3, '2021-06-06 17:35:08', '2021-06-06 17:35:08');
+    VALUES (3, 1, 3, '${now}', '${now}');
     INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
-    VALUES (4, 1, 4, '2021-06-06 17:35:08', '2021-06-06 17:35:08');
+    VALUES (4, 1, 4, '${now}', '${now}');
     INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
-    VALUES (5, 1, 5, '2021-06-06 17:35:08', '2021-06-06 17:35:08');
-    INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
-    VALUES (6, 1, 6, '2021-06-06 17:35:08', '2021-06-06 17:35:08');
+    VALUES (5, 1, 5, '${now}', '${now}');
 `;
 
 export const initUsersSql = `
     INSERT INTO users (id, account, name, password, mobile, email, enable, createdAt, updatedAt)
-    VALUES (1, 'admin', '管理员', '123456', '18888888888', 'email@qq.com', 1, '2021-06-06 17:30:56', '2021-06-06 17:30:56');
+    VALUES (1, 'admin', '管理员', '123456', '18888888888', 'email@qq.com', 1, '${now}', '${now}');
 `;
 
 export const initUserRolesSql = `
     INSERT INTO user_roles (id, userId, roleId, createdAt, updatedAt)
-    VALUES (1, 1, 1, '2021-06-06 17:34:29', '2021-06-06 17:34:29');
+    VALUES (1, 1, 1, '${now}', '${now}');
 `;
 
 export const initMenusql = `
     INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
-    VALUES (1, null, '系统管理', null, null, null, 'menu', 0, 1, null, null, null, '2021-06-06 17:32:44', '2021-06-06 17:32:44');
+    VALUES (1, null, '系统管理', null, null, null, 'menu', 0, 1, null, null, null, '${now}', '${now}');
     INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
-    VALUES (2, 1, '用户管理', null, null, '/users', 'menu', 0, 1, null, null, null, '2021-06-06 17:32:45', '2021-06-06 17:32:45');
+    VALUES (2, 1, '用户管理', null, null, '/users', 'menu', 0, 1, null, null, null, '${now}', '${now}');
     INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
-    VALUES (3, 1, '角色管理', null, null, '/roles', 'menu', 0, 1, null, null, null, '2021-06-06 17:32:45', '2021-06-06 17:32:45');
+    VALUES (3, 1, '角色管理', null, null, '/roles', 'menu', 0, 1, null, null, null, '${now}', '${now}');
     INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
-    VALUES (4, 1, '菜单管理', null, null, '/menus', 'menu', 0, 1, null, null, null, '2021-06-06 17:32:45', '2021-06-06 17:32:45');
+    VALUES (4, 1, '菜单管理', null, null, '/menus', 'menu', 0, 1, null, null, null, '${now}', '${now}');
     INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
-    VALUES (5, 2, '添加用户', null, null, null, null, 0, 2, 'ADD_USER', null, null, '2021-06-06 17:34:14', '2021-06-06 17:34:14');
+    VALUES (5, 2, '添加用户', null, null, null, null, 0, 2, 'ADD_USER', null, null, '${now}', '${now}');
     INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
-    VALUES (6, 2, '删除用户', null, null, null, null, 0, 2, 'UPDATE_USER', null, null, '2021-06-06 17:34:14', '2021-06-06 17:34:14');
+    VALUES (6, 2, '删除用户', null, null, null, null, 0, 2, 'UPDATE_USER', null, null, '${now}', '${now}');
 `;
 
 export const initDataSql = {

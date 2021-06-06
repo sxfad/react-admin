@@ -18,7 +18,7 @@ export default config({
     pageHeader: false,
     tab: false,
 })(function Login() {
-    const login = usePost('/login/login');
+    const login = usePost('/login');
     const [message, setMessage] = useState();
     const [isMount, setIsMount] = useState(false);
     const imageCodeRef = useRef(null);
@@ -50,19 +50,13 @@ export default config({
     function handleSubmit(values) {
         if (login.loading) return;
 
-        const {userName, password} = values;
         const params = {
             ...values,
-            id: userName,
-            password,
-            captchaId: '8848',
-            captchaCode: '1234',
-            checkPicCaptchaCode: false,
         };
 
         login.run(params, {errorTip: false})
             .then(res => {
-                const {id, realName: name, token, ...others} = res?.data;
+                const {id, name, token, ...others} = res;
                 setLoginUser({
                     id,     // 必须字段
                     name,   // 必须字段
@@ -73,7 +67,7 @@ export default config({
                 toHome();
             })
             .catch((err) => {
-                setMessage(err.message || '用户名或密码错误');
+                setMessage(err.response?.data?.message || '用户名或密码错误');
                 // 可以刷新图片验证码
                 imageCodeRef.current.refresh();
             });
@@ -83,8 +77,8 @@ export default config({
         // 开发时默认填入数据
         if (process.env.NODE_ENV === 'development' || process.env.REACT_APP_PREVIEW) {
             form.setFieldsValue({
-                userName: '18888888888',
-                password: 'Sxf123456_',
+                userName: 'admin',
+                password: '123456',
                 imageCode: '0000',
                 messageCode: '0000',
             });
@@ -94,7 +88,6 @@ export default config({
     }, [form]);
 
     const formItemClass = classNames(styles.formItem, {[styles.active]: isMount});
-
 
     return (
         <div className={styles.root}>

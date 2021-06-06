@@ -36,29 +36,21 @@ export default config({
             dataSource,
             total,
         } = {},
-    } = props.ajax.useGet('/user/list', params, [conditions, pageNum, pageSize], {
+    } = props.ajax.useGet('/users', params, [conditions, pageNum, pageSize], {
         setLoading,
-        // mountFire: false, // 初始化不查询
         formatResult: res => {
             return {
-                dataSource: res?.content || [],
-                total: window.parseInt(res?.totalElements, 10) || 0,
+                dataSource: res?.list || [],
+                total: res.total || 0,
             };
         },
     });
 
     const columns = [
-        {title: '姓名', dataIndex: 'realName'},
-        {title: '手机号', dataIndex: 'phone'},
+        {title: '账号', dataIndex: 'account'},
+        {title: '姓名', dataIndex: 'name'},
+        {title: '手机号', dataIndex: 'mobile'},
         {title: '邮箱', dataIndex: 'email'},
-        {
-            title: '状态', dataIndex: 'status',
-            render: (text, record) => {
-                const {status} = record;
-                if (status === 'START') return '可用';
-                return '停用';
-            },
-        },
         {
             title: '操作',
             key: 'operator',
@@ -87,7 +79,7 @@ export default config({
         <PageContent loading={loading}>
             <QueryBar showCollapsedBar={IS_MOBILE}>
                 {(collapsed) => {
-                    // const hidden = IS_MOBILE && collapsed;
+                    const hidden = IS_MOBILE && collapsed;
                     return (
                         <Form
                             name="user"
@@ -98,7 +90,13 @@ export default config({
                             <FormItem
                                 {...queryItem}
                                 label="姓名"
-                                name="realName"
+                                name="name"
+                            />
+                            <FormItem
+                                hidden={hidden}
+                                {...queryItem}
+                                label="手机号"
+                                name="mobile"
                             />
                             <FormItem>
                                 <Space>

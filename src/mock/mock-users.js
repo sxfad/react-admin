@@ -4,47 +4,42 @@ export default {
     /**
      * 查询用户列表
      * @param config
-     * @returns {Promise<unknown>}
+     * @returns {Promise<[number, {total: number, list: *}]>}
      */
     'get /users': async (config) => {
         const {
             pageSize,
             pageNum,
+            // name,
+            // mobile,
         } = config.params;
 
-        const result = await executeSql('select * from users');
+        const list = await executeSql('select * from users order by updatedAt desc limit ? offset ?', [pageSize, (pageNum - 1) * pageSize]);
+        const countResult = await executeSql('select count(*) from users');
+        const total = countResult[0]['count(*)'] || 0;
+
         return [200, {
-            pageNum,
-            pageSize,
-            total: 888,
-            list: result,
+            total,
+            list,
         }];
     },
 
-    'post /login': (config) => {
+    // 用户登录
+    'post /login': async (config) => {
         const {
             userName,
             password,
         } = JSON.parse(config.data);
-        return new Promise((resolve, reject) => {
-            if (userName !== 'admin' || password !== '111') {
-                setTimeout(() => {
-                    reject({
-                        code: 1001,
-                        message: '用户名或密码错误',
-                    });
-                }, 1000);
-            } else {
-                setTimeout(() => {
-                    resolve([200, {
-                        id: '1234567890abcde',
-                        name: 'MOCK 用户',
-                        loginName: 'MOCK 登录名',
-                    }]);
-                }, 1000);
-            }
-        });
+
+        const result = await executeSql('select * from users where account=? and password=?', [userName, password]);
+        if (!result?.length) return [400, {message: '用户名或密码错误'}];
+
+        const user = result[0];
+        user.token = 'test token';
+
+        return [200, user];
     },
+    // 退出登录
     'post /logout': {},
 
 
