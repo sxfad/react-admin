@@ -45,9 +45,9 @@ export default class RoleSelectTable extends Component {
 
         try {
             this.setState({loading: true});
-            const res = await this.props.ajax.get('/role/getSystemRoleTree', {pageNum: 1, pageSize: 100000});
+            const res = await this.props.ajax.get('/roles');
 
-            const roles = (res || []).map(item => ({...item, id: window.parseInt(item.id), isSystem: true, remark: '顶级系统'}));
+            const roles = (res || []);
 
             this.setState({dataSource: [...roles], roles, loading: false});
         } catch (e) {
@@ -60,8 +60,8 @@ export default class RoleSelectTable extends Component {
         const {roles} = this.state;
 
         const dataSource = filterTree(roles, node => {
-            const {name, description} = node;
-            return [name, description].some(val => {
+            const {name, remark} = node;
+            return [name, remark].some(val => {
                 const lowerValue = (val || '').toLowerCase();
                 return lowerValue.includes(value);
             });
@@ -87,7 +87,6 @@ export default class RoleSelectTable extends Component {
 
         const {value, onChange, fullValue, disabled, ...others} = this.props;
 
-        console.log(value, dataSource);
         return (
             <>
                 <div style={{padding: 8, display: 'flex', alignItems: 'center'}}>

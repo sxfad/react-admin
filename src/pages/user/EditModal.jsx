@@ -4,7 +4,6 @@ import {ModalContent, FormItem, Content} from '@ra-lib/components';
 import {validateRules} from '@ra-lib/util';
 import config from 'src/commons/config-hoc';
 import RoleSelectTable from 'src/pages/role/RoleSelectTable';
-import SystemSelect from 'src/pages/menus/SystemSelect';
 import {IS_MOBILE} from 'src/config';
 
 export default config({
@@ -23,39 +22,21 @@ export default config({
     const [form] = Form.useForm();
     const isDetail = record?.isDetail;
 
-    const {data = {status: true}} = props.ajax.useGet('/user/findById', {id: record?.id}, [], {
+    // 编辑时，查询用户详情数据
+    props.ajax.useGet('/users/:id', {id: record?.id}, [], {
         mountFire: isEdit,
         setLoading,
         formatResult: res => {
             if (!res) return;
-            const roleIdsArr = (res.roleId || '').split(',');
-            const systemIdsArr = (res.systemId || '').split(',');
-            const roleIds = [...roleIdsArr, ...systemIdsArr].filter(item => !!item).map(id => ({id: window.parseInt(id, 10)}));
-            const systemIds = (res.systems || []).filter(item => item.admin).map(item => item.id);
-
-            const values = {
-                ...res,
-                status: res.status === 'START',
-                systemIds,
-                roleIds,
-            };
-            form.setFieldsValue(values);
+            form.setFieldsValue(res);
         },
     });
-    const {run: save} = props.ajax.usePost('/user/add', null, {setLoading, successTip: '创建成功！'});
-    const {run: update} = props.ajax.usePost('/user/update', null, {setLoading, successTip: '修改成功！'});
+    const {run: save} = props.ajax.usePost('/users', null, {setLoading, successTip: '创建成功！'});
+    const {run: update} = props.ajax.usePut('/users', null, {setLoading, successTip: '修改成功！'});
 
     async function handleSubmit(values) {
-        const isAdminInSystems = (values.systemIds || []).join(',');
-        let systemId = (values.roleIds || []).filter(item => item.isSystem).map(item => item.id);
-        systemId = Array.from(new Set([...systemId, ...(values.systemIds || [])].map(item => window.parseInt(item, 10)))).join(',');
-
         const params = {
             ...values,
-            status: values.status ? '1' : '0',
-            isAdminInSystems,
-            systemId,
-            roleId: (values.roleIds || []).filter(item => !item.isSystem).map(item => item.id).join(','),
         };
 
         if (isEdit) {
@@ -90,7 +71,6 @@ export default config({
                 form={form}
                 name="roleEdit"
                 onFinish={handleSubmit}
-                initialValues={data}
             >
                 {isEdit ? <FormItem hidden name="id"/> : null}
                 <Row gutter={8}>
@@ -99,8 +79,22 @@ export default config({
                             <Content fitHeight={!IS_MOBILE} otherHeight={160}>
                                 <FormItem
                                     {...layout}
+                                    label="账号"
+                                    name="account"
+                                    required
+                                    noSpace
+                                />
+                                <FormItem
+                                    {...layout}
+                                    label="密码"
+                                    name="password"
+                                    required
+                                    noSpace
+                                />
+                                <FormItem
+                                    {...layout}
                                     label="姓名"
-                                    name="realName"
+                                    name="name"
                                     required
                                     noSpace
                                 />
@@ -108,7 +102,6 @@ export default config({
                                     {...layout}
                                     label="邮箱"
                                     name="email"
-                                    disabled={isEdit}
                                     rules={[validateRules.email()]}
                                     required
                                     noSpace
@@ -116,39 +109,11 @@ export default config({
                                 <FormItem
                                     {...layout}
                                     label="手机号"
-                                    name="phone"
+                                    name="mobile"
                                     rules={[validateRules.mobile()]}
                                     required
                                     noSpace
                                 />
-                                {isEdit ? null : (
-                                    <FormItem
-                                        {...layout}
-                                        label="密码"
-                                        name="password"
-                                        required
-                                        noSpace
-                                    />
-                                )}
-                                <FormItem
-                                    {...layout}
-                                    type="switch"
-                                    label="启用"
-                                    name="status"
-                                    required
-                                    valuePropName="checked"
-                                />
-                                <FormItem
-                                    {...layout}
-                                    label="系统管理员"
-                                    name="systemIds"
-                                >
-                                    <SystemSelect
-                                        disabled={disabled}
-                                        showSearch
-                                        mode="multiple"
-                                    />
-                                </FormItem>
                             </Content>
                         </Card>
                     </Col>
@@ -158,7 +123,11 @@ export default config({
                                 {...layout}
                                 name="roleIds"
                             >
-                                <RoleSelectTable disabled={disabled} fullValue fitHeight={!IS_MOBILE} otherHeight={200}/>
+                                <RoleSelectTable
+                                    disabled={disabled}
+                                    fitHeight={!IS_MOBILE}
+                                    otherHeight={200}
+                                />
                             </FormItem>
                         </Card>
                     </Col>

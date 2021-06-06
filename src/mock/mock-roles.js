@@ -1,28 +1,29 @@
-import {getRolesByPageSize} from './mockdata/roles';
 import {randomNumber, randomArray} from './util';
+import executeSql from 'src/mock/db';
 
 const allMenuKeys = ['antDesign', 'document', 'customer-header', 'user', 'role', 'menu', 'gen', 'page404', 'example', 'table-editable'];
 
 export default {
-    'get /roles': (config) => {
+    // 获取所有角色
+    'get /roles': async (config) => {
         const {
             pageSize,
             pageNum,
         } = config.params;
 
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                Math.random() < 0 ?
-                    resolve([400, {message: '查询出错了！'}])
-                    :
-                    resolve([200, {
-                        pageNum,
-                        pageSize,
-                        total: 666,
-                        list: getRolesByPageSize(pageSize),
-                    }]);
-            }, 1000);
-        });
+        if (!pageSize && !pageNum) {
+            const list = await executeSql('select * from roles order by updatedAt desc');
+            return [200, list];
+        }
+
+        const list = await executeSql('select * from roles order by updatedAt desc limit ? offset ?', [pageSize, (pageNum - 1) * pageSize]);
+        const countResult = await executeSql('select count(*) from roles');
+        const total = countResult[0]['count(*)'] || 0;
+
+        return [200, {
+            total,
+            list,
+        }];
     },
     'post /roles': true,
     'put /roles': true,

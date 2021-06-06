@@ -5,15 +5,15 @@ const now = moment().format('YYYY-MM-DD HH:mm:ss');
 export default `
     create table if not exists menus
     (
-        id        int auto_increment primary key,
-        parentId  int                                 null,
+        id        INTEGER PRIMARY KEY,
+        parentId  INTEGER                                 null,
         title     varchar(50)                         null,     -- comment '菜单标题或者权限码标题',
         icon      varchar(50)                         null,     -- comment '菜单图标',
         basePath  varchar(200)                        null,     -- comment '基础路径',
         path      varchar(200)                        null,     -- comment '菜单路径',
         target    varchar(50)                         null,     -- comment '目标：menu 应用菜单 qiankun 乾坤子项目 iframe 内嵌iframe _self 当前窗口打开第三方 _blank 新开窗口打开第三方',
-        \`order\` int       default 0                 null,     -- comment '排序，越大越靠前',
-        type      int       default 1                 not null, -- comment '类型： 1 菜单 2 权限码',
+        \`order\` INTEGER       default 0                 null,     -- comment '排序，越大越靠前',
+        type      INTEGER       default 1                 not null, -- comment '类型： 1 菜单 2 权限码',
         code      varchar(50)                         null,     -- comment '权限码',
         name      varchar(50)                         null,     -- comment '乾坤子应用注册名',
         entry     varchar(200)                        null,     -- comment '乾坤子应用入口地址',
@@ -25,9 +25,9 @@ export default `
 
     create table if not exists role_menus
     (
-        id        int auto_increment primary key,
-        roleId    int                                 not null,
-        menuId    int                                 not null,
+        id        INTEGER PRIMARY KEY,
+        roleId    INTEGER                                 not null,
+        menuId    INTEGER                                 not null,
         createdAt timestamp default CURRENT_TIMESTAMP not null,
         updatedAt timestamp default CURRENT_TIMESTAMP not null,
         constraint role_menus_id_uindex
@@ -36,7 +36,7 @@ export default `
 
     create table if not exists roles
     (
-        id        int auto_increment primary key,
+        id        INTEGER PRIMARY KEY,
         name      varchar(50)                         not null, -- comment '角色名称',
         remark    varchar(200)                        null,     -- comment '角色备注',
         createdAt timestamp default CURRENT_TIMESTAMP not null, -- comment '创建时间',
@@ -47,9 +47,9 @@ export default `
 
     create table if not exists user_roles
     (
-        id        int auto_increment primary key,
-        userId    int                                 not null,
-        roleId    int                                 not null,
+        id        INTEGER PRIMARY KEY,
+        userId    INTEGER                                 not null,
+        roleId    INTEGER                                 not null,
         createdAt timestamp default CURRENT_TIMESTAMP not null,
         updatedAt timestamp default CURRENT_TIMESTAMP not null,
         constraint user_roles_id_uindex
@@ -58,7 +58,7 @@ export default `
 
     create table if not exists users
     (
-        id        int auto_increment primary key,
+        id        INTEGER PRIMARY KEY,
         account   varchar(50)                         not null, -- comment '账号',
         name      varchar(50)                         not null, -- comment '用户名',
         password  varchar(20)                         null,     -- comment '密码',
@@ -102,7 +102,7 @@ export const initUserRolesSql = `
     VALUES (1, 1, 1, '${now}', '${now}');
 `;
 
-export const initMenusql = `
+export const initMenuSql = `
     INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
     VALUES (1, null, '系统管理', null, null, null, 'menu', 0, 1, null, null, null, '${now}', '${now}');
     INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
@@ -118,7 +118,7 @@ export const initMenusql = `
 `;
 
 export const initDataSql = {
-    menus: initMenusql,
+    menus: initMenuSql,
     roles: initRolesSql,
     users: initUsersSql,
     role_menus: initRoleMenusSql,

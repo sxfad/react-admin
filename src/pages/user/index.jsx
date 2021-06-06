@@ -30,7 +30,7 @@ export default config({
         pageSize,
     };
 
-    // 获取角色列表
+    // 获取列表
     const {
         data: {
             dataSource,
@@ -46,6 +46,9 @@ export default config({
         },
     });
 
+    // 删除
+    const {run: deleteRecord} = props.ajax.useDel('/users/:id', null, {setLoading, successTip: '删除成功！'});
+
     const columns = [
         {title: '账号', dataIndex: 'account'},
         {title: '姓名', dataIndex: 'name'},
@@ -55,6 +58,7 @@ export default config({
             title: '操作',
             key: 'operator',
             render: (text, record) => {
+                const {id, name} = record;
                 const items = [
                     {
                         label: '查看',
@@ -64,12 +68,26 @@ export default config({
                         label: '修改',
                         onClick: () => setRecord(record) || setVisible(true),
                     },
+                    {
+                        label: '删除',
+                        color: 'red',
+                        confirm: {
+                            title: `您确定删除「${name}」吗？`,
+                            onConfirm: () => handleDelete(id),
+                        },
+                    },
                 ];
 
                 return (<Operator items={items}/>);
             },
         },
     ];
+
+    async function handleDelete(id) {
+        await deleteRecord(id);
+        // 触发列表更新
+        setConditions({...conditions});
+    }
 
     const queryItem = {
         style: {width: 200},
