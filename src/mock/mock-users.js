@@ -1,6 +1,26 @@
-import {getUsersByPageSize} from './mockdata/user';
+import executeSql from './db';
 
 export default {
+    /**
+     * 查询用户列表
+     * @param config
+     * @returns {Promise<unknown>}
+     */
+    'get /users': async (config) => {
+        const {
+            pageSize,
+            pageNum,
+        } = config.params;
+
+        const result = await executeSql('select * from users');
+        return [200, {
+            pageNum,
+            pageSize,
+            total: 888,
+            list: result,
+        }];
+    },
+
     'post /login': (config) => {
         const {
             userName,
@@ -27,27 +47,7 @@ export default {
     },
     'post /logout': {},
 
-    'get /users': (config) => {
-        const {
-            pageSize,
-            pageNum,
-        } = config.params;
 
-
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                Math.random() < .3 ?
-                    resolve([400, {message: '查询出错了！'}])
-                    :
-                    resolve([200, {
-                        pageNum,
-                        pageSize,
-                        total: 888,
-                        list: getUsersByPageSize(pageSize),
-                    }]);
-            }, 1000);
-        });
-    },
     'get re:/users/.+': {id: 1, name: '熊大', age: 22, job: 0, position: '1'},
     'post /users': true,
     'put /users': true,

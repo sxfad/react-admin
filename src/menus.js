@@ -3,7 +3,7 @@ import {isLoginPage, formatMenus} from 'src/commons';
 
 export default async function getMenus() {
     const serverMenus = await getServerMenus();
-    const menus = serverMenus.filter(item => item.type === '1');
+    const menus = serverMenus.filter(item => item.type === 1);
 
     // 前端硬编码菜单
     // let menus = [
@@ -29,7 +29,7 @@ export default async function getMenus() {
 
 export async function getPermissions() {
     const serverMenus = await getServerMenus();
-    return serverMenus.filter(item => item.type === '2')
+    return serverMenus.filter(item => item.type === 2)
         .map(item => item.code);
 }
 
@@ -39,13 +39,9 @@ function getServerMenus() {
     if (isLoginPage()) return [];
 
     const run = () => {
-        CACHE_AJAX = CACHE_AJAX || ajax.get('/home/getMenuList')
+        CACHE_AJAX = CACHE_AJAX || ajax.get('/user/menus')
             .then(res => (res || []).map(item => ({
                 ...item,
-                id: `${item.key}`,
-                parentId: item.parentKey ? `${item.parentKey}` : null,
-                order: item.sort,
-                status: item.status === 1,
             })));
         return CACHE_AJAX;
     };

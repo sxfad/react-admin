@@ -1,0 +1,124 @@
+export default `
+    create table if not exists menus
+    (
+        id        int auto_increment primary key,
+        parentId  int                                 null,
+        title     varchar(50)                         null,     -- comment '菜单标题或者权限码标题',
+        icon      varchar(50)                         null,     -- comment '菜单图标',
+        basePath  varchar(200)                        null,     -- comment '基础路径',
+        path      varchar(200)                        null,     -- comment '菜单路径',
+        target    varchar(50)                         null,     -- comment '目标：menu 应用菜单 qiankun 乾坤子项目 iframe 内嵌iframe _self 当前窗口打开第三方 _blank 新开窗口打开第三方',
+        \`order\` int       default 0                 null,     -- comment '排序，越大越靠前',
+        type      int       default 1                 not null, -- comment '类型： 1 菜单 2 权限码',
+        code      varchar(50)                         null,     -- comment '权限码',
+        name      varchar(50)                         null,     -- comment '乾坤子应用注册名',
+        entry     varchar(200)                        null,     -- comment '乾坤子应用入口地址',
+        createdAt timestamp default CURRENT_TIMESTAMP not null, -- comment '创建时间',
+        updatedAt timestamp default CURRENT_TIMESTAMP null,     -- comment '更新时间',
+        constraint menus_id_uindex
+            unique (id)
+    );
+
+    create table if not exists role_menus
+    (
+        id        int auto_increment primary key,
+        roleId    int                                 not null,
+        menuId    int                                 not null,
+        createdAt timestamp default CURRENT_TIMESTAMP not null,
+        updatedAt timestamp default CURRENT_TIMESTAMP not null,
+        constraint role_menus_id_uindex
+            unique (id)
+    );
+
+    create table if not exists roles
+    (
+        id        int auto_increment primary key,
+        name      varchar(50)                         not null, -- comment '角色名称',
+        remark    varchar(200)                        null,     -- comment '角色备注',
+        createdAt timestamp default CURRENT_TIMESTAMP not null, -- comment '创建时间',
+        updatedAt timestamp default CURRENT_TIMESTAMP null,     -- comment '更新时间',
+        constraint roles_id_uindex
+            unique (id)
+    );
+
+    create table if not exists user_roles
+    (
+        id        int auto_increment primary key,
+        userId    int                                 not null,
+        roleId    int                                 not null,
+        createdAt timestamp default CURRENT_TIMESTAMP not null,
+        updatedAt timestamp default CURRENT_TIMESTAMP not null,
+        constraint user_roles_id_uindex
+            unique (id)
+    );
+
+    create table if not exists users
+    (
+        id        int auto_increment primary key,
+        account   varchar(50)                         not null, -- comment '账号',
+        name      varchar(50)                         not null, -- comment '用户名',
+        password  varchar(20)                         null,     -- comment '密码',
+        mobile    varchar(20)                         null,     -- comment '电话',
+        email     varchar(50)                         null,     -- comment '邮箱',
+        enable    tinyint(1)                          not null, -- comment '是否可用',
+        createdAt timestamp default CURRENT_TIMESTAMP not null, -- comment '创建时间',
+        updatedAt timestamp default CURRENT_TIMESTAMP not null,
+        constraint users_account_uindex
+            unique (account),
+        constraint users_id_uindex
+            unique (id)
+    );
+`;
+
+export const initRolesSql = `
+    INSERT INTO roles (id, name, remark, createdAt, updatedAt)
+    VALUES (1, '管理员', '管理员拥有系统所有权限', '2021-06-06 17:31:24', '2021-06-06 17:31:24');
+`;
+
+export const initRoleMenusSql = `
+    INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
+    VALUES (1, 1, 1, '2021-06-06 17:35:08', '2021-06-06 17:35:08');
+    INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
+    VALUES (2, 1, 2, '2021-06-06 17:35:08', '2021-06-06 17:35:08');
+    INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
+    VALUES (3, 1, 3, '2021-06-06 17:35:08', '2021-06-06 17:35:08');
+    INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
+    VALUES (4, 1, 4, '2021-06-06 17:35:08', '2021-06-06 17:35:08');
+    INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
+    VALUES (5, 1, 5, '2021-06-06 17:35:08', '2021-06-06 17:35:08');
+    INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
+    VALUES (6, 1, 6, '2021-06-06 17:35:08', '2021-06-06 17:35:08');
+`;
+
+export const initUsersSql = `
+    INSERT INTO users (id, account, name, password, mobile, email, enable, createdAt, updatedAt)
+    VALUES (1, 'admin', '管理员', '123456', '18888888888', 'email@qq.com', 1, '2021-06-06 17:30:56', '2021-06-06 17:30:56');
+`;
+
+export const initUserRolesSql = `
+    INSERT INTO user_roles (id, userId, roleId, createdAt, updatedAt)
+    VALUES (1, 1, 1, '2021-06-06 17:34:29', '2021-06-06 17:34:29');
+`;
+
+export const initMenusql = `
+    INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
+    VALUES (1, null, '系统管理', null, null, null, 'menu', 0, 1, null, null, null, '2021-06-06 17:32:44', '2021-06-06 17:32:44');
+    INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
+    VALUES (2, 1, '用户管理', null, null, '/users', 'menu', 0, 1, null, null, null, '2021-06-06 17:32:45', '2021-06-06 17:32:45');
+    INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
+    VALUES (3, 1, '角色管理', null, null, '/roles', 'menu', 0, 1, null, null, null, '2021-06-06 17:32:45', '2021-06-06 17:32:45');
+    INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
+    VALUES (4, 1, '菜单管理', null, null, '/menus', 'menu', 0, 1, null, null, null, '2021-06-06 17:32:45', '2021-06-06 17:32:45');
+    INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
+    VALUES (5, 2, '添加用户', null, null, null, null, 0, 2, 'ADD_USER', null, null, '2021-06-06 17:34:14', '2021-06-06 17:34:14');
+    INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
+    VALUES (6, 2, '删除用户', null, null, null, null, 0, 2, 'UPDATE_USER', null, null, '2021-06-06 17:34:14', '2021-06-06 17:34:14');
+`;
+
+export const initDataSql = {
+    menus: initMenusql,
+    roles: initRolesSql,
+    users: initUsersSql,
+    role_menus: initRoleMenusSql,
+    user_roles: initUserRolesSql,
+};
