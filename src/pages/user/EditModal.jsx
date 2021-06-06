@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {Form, Row, Col, Card, Button} from 'antd';
 import {ModalContent, FormItem, Content} from '@ra-lib/components';
 import {validateRules} from '@ra-lib/util';
+import {useDebounceValidator} from '@ra-lib/hooks';
 import config from 'src/commons/config-hoc';
 import RoleSelectTable from 'src/pages/role/RoleSelectTable';
 import {IS_MOBILE} from 'src/config';
@@ -22,7 +23,7 @@ export default config({
     const [form] = Form.useForm();
     const isDetail = record?.isDetail;
 
-    // 编辑时，查询用户详情数据
+    // 编辑时，查询详情数据
     props.ajax.useGet('/users/:id', {id: record?.id}, [], {
         mountFire: isEdit,
         setLoading,
@@ -33,6 +34,7 @@ export default config({
     });
     const {run: save} = props.ajax.usePost('/users', null, {setLoading, successTip: '创建成功！'});
     const {run: update} = props.ajax.usePut('/users', null, {setLoading, successTip: '修改成功！'});
+    const {run: fetchUserByAccount} = props.ajax.useGet('/usersByAccount');
 
     async function handleSubmit(values) {
         const params = {
@@ -47,6 +49,17 @@ export default config({
 
         onOk();
     }
+
+    const checkAccount = useDebounceValidator(async (rule, value) => {
+        if (!value) return;
+
+        const user = await fetchUserByAccount({account: value});
+        if (!user) return;
+
+        const id = form.getFieldValue('id');
+        if (isEdit && user.id !== id && user.account === value) throw Error('账号不能重复！');
+        if (!isEdit && user.account === value) throw Error('账号不能重复！');
+    });
 
     const disabled = isDetail;
     const layout = {
@@ -83,6 +96,9 @@ export default config({
                                     name="account"
                                     required
                                     noSpace
+                                    rules={[
+                                        {validator: checkAccount},
+                                    ]}
                                 />
                                 <FormItem
                                     {...layout}

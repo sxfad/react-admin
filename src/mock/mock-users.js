@@ -50,6 +50,17 @@ export default {
 
         return [200, result[0]];
     },
+    // 根据account获取用户
+    'get /usersByAccount': async config => {
+        console.log('get /usersByAccount');
+        const {
+            account,
+        } = config.params;
+
+
+        const result = await executeSql('select * from users where account = ?', [account]);
+        return [200, result[0]];
+    },
     // 保存用户
     'post /users': async config => {
         const {
