@@ -12,5 +12,6 @@
 * [权限控制](PERMISSION.md)
 * [Nginx配置](NGINX.md)
 * [开发代理](PROXY.md)
+* [微前端](QIANKUN.md)
 [comment]: <> (* [代码生成]&#40;GEN.md&#41;)
 * [其他](OTHER.md)

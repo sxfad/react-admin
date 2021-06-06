@@ -45,6 +45,7 @@ export default function ActionEdit(props) {
                                                 name={[name, 'status']}
                                                 checkedChildren="启"
                                                 unCheckedChildren="停"
+                                                initialValue={true}
                                             />
                                             <FormItem
                                                 name={[name, 'title']}

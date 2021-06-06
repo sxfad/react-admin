@@ -2,35 +2,64 @@ import ajax from 'src/commons/ajax';
 import {isLoginPage, formatMenus} from 'src/commons';
 
 export default async function getMenus() {
-    // const menus = await getServerMenus();
+    const serverMenus = await getServerMenus();
+    const menus = serverMenus.filter(item => item.type === '1');
 
     // 前端硬编码菜单
-    let menus = [
-        {id: 'system', title: '系统管理', order: 900},
-        {id: 'user', parentId: 'system', title: '用户管理', path: '/users', order: 900},
-        {id: 'role', parentId: 'system', title: '角色管理', path: '/roles', order: 900},
-        {id: 'menus', parentId: 'system', title: '菜单管理', path: '/menus', order: 900},
-        {id: 'menus2', parentId: 'system', title: '404', path: '/404', order: 900},
-    ];
+    // let menus = [
+    //     {id: 'system', title: '系统管理', order: 900},
+    //     {id: 'user', parentId: 'system', title: '用户管理', path: '/users', order: 900},
+    //     {id: 'role', parentId: 'system', title: '角色管理', path: '/roles', order: 900},
+    //     {id: 'menus', parentId: 'system', title: '菜单管理', path: '/menus', order: 900},
+    //
+    //     {
+    //         id: 'system2', title: 'React Admin', order: 900,
+    //         target: 'qiankun',
+    //         name: 'react-admin',
+    //         basePath: '/react-admin',
+    //         entry: 'http://172.16.40.72:3000',
+    //     },
+    //     {id: 'user2', parentId: 'system2', title: '用户管理', path: '/users', order: 900},
+    //     {id: 'role2', parentId: 'system2', title: '角色管理', path: '/roles', order: 900},
+    //     {id: 'menus2', parentId: 'system2', title: '菜单管理', path: '/menus', order: 900},
+    // ];
 
     return formatMenus(menus);
 }
 
+export async function getPermissions() {
+    const serverMenus = await getServerMenus();
+    return serverMenus.filter(item => item.type === '2')
+        .map(item => item.code);
+}
+
 let CACHE_AJAX; // ajax请求（promise）缓存
-export function getServerMenus() {
+function getServerMenus() {
     // 登录页面，不加载
     if (isLoginPage()) return [];
 
-    CACHE_AJAX = CACHE_AJAX || ajax.get('/home/getMenuList')
-        .then(res => (res || []).map(item => ({
-            ...item,
-            id: `${item.key}`,
-            parentId: item.parentKey ? `${item.parentKey}` : null,
-            order: item.sort,
-            status: item.status === 1,
-        })));
+    const run = () => {
+        CACHE_AJAX = CACHE_AJAX || ajax.get('/home/getMenuList')
+            .then(res => (res || []).map(item => ({
+                ...item,
+                id: `${item.key}`,
+                parentId: item.parentKey ? `${item.parentKey}` : null,
+                order: item.sort,
+                status: item.status === 1,
+            })));
+        return CACHE_AJAX;
+    };
 
-    return CACHE_AJAX;
+    // 开启Mock时，菜单请求会在mock生效之前执行，无法被mock捕获，通过setTimeout解决
+    if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_MOCK) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                run().then(resolve, reject);
+            });
+        });
+    }
+
+    return run();
 }
 
 /**

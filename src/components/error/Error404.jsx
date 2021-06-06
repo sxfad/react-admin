@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {Error404} from '@ra-lib/components';
 import {getCurrentActiveSubApp} from 'src/qiankun-main';
+import {IS_SUB} from 'src/config';
 
 export default function MyError404() {
     const [isSubApp, setIsSubApp] = useState(true);
@@ -14,7 +15,7 @@ export default function MyError404() {
         })();
     }, [pathname]);
 
-    if (isSubApp) return null;
+    if (isSubApp && !IS_SUB) return null;
 
     return <Error404/>;
 }

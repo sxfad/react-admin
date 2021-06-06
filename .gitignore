@@ -26,7 +26,6 @@ yarn-error.log*
 
 # ide
 .idea
-.vscode
 
 # ra-lib
 /src/ra-lib

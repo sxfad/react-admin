@@ -1,4 +1,4 @@
-import {RouteLoading} from '@ra-lib/components';
+import {Loading} from '@ra-lib/components';
 import loadable from '@loadable/component';
 import {checkPath} from 'src/commons';
 import pageConfigs from 'src/pages/page-configs';
@@ -28,6 +28,6 @@ export default [
     .map(item => {
         return {
             ...item,
-            component: loadable(item.component, {fallback: <RouteLoading/>}),
+            component: loadable(item.component, {fallback: <Loading/>}),
         };
     });

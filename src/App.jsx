@@ -4,24 +4,18 @@ import {Helmet} from 'react-helmet';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn'; // 解决antd日期相关组件国际化问题
-import {ComponentProvider, RouteLoading} from '@ra-lib/components';
+import {ComponentProvider, Loading} from '@ra-lib/components';
 import AppRouter from './router/AppRouter';
 import {APP_NAME, CONFIG_HOC, IS_MOBILE} from 'src/config';
-import {MOCK} from 'src/config';
 import {store} from 'src/models';
 import {Provider} from 'react-redux';
 import './App.less';
 import theme from 'src/theme.less';
-// import {getLoginUser} from 'src/commons';
+import {getLoginUser, setLoginUser} from 'src/commons';
+import getMenus, {getPermissions} from 'src/menus';
 
 // 设置语言
 moment.locale('zh-cn');
-
-// 开启mock，这个判断不要修改，否则会把mock相关js打入生产包，很大
-if (process.env.NODE_ENV === 'development' && MOCK) {
-    require('./mock/index');
-    console.warn('mock is enabled!!!');
-}
 
 // 设置 Modal、Message、Notification rootPrefixCls。
 ConfigProvider.config({
@@ -31,13 +25,21 @@ ConfigProvider.config({
 export default function App(props) {
     const {children} = props;
     const [loading, setLoading] = useState(true);
+    const [menus, setMenus] = useState([]);
+
     // 一些初始化工作
     useEffect(() => {
         (async () => {
             try {
-                // 用户权限
-                // const loginUser = getLoginUser();
-                // if(loginUser) loginUser.permissions = []
+                const loginUser = getLoginUser();
+
+                // 用户存在，获取菜单
+                if (loginUser) {
+                    const menus = await getMenus();
+                    loginUser.permissions = await getPermissions();
+                    setLoginUser(loginUser);
+                    setMenus(menus);
+                }
                 setLoading(false);
             } catch (e) {
                 setLoading(false);
@@ -50,15 +52,14 @@ export default function App(props) {
         <Provider store={store}>
             <ConfigProvider locale={zhCN} prefixCls={theme.antPrefix}>
                 <Helmet title={APP_NAME}/>
-
-                {loading ? (<RouteLoading tipe="加载中..."/>) : null}
+                {loading ? (<Loading progress={false} spin/>) : null}
 
                 <ComponentProvider
                     prefixCls={theme.raLibPrefix}
                     layoutPageOtherHeight={CONFIG_HOC.pageOtherHeight}
                     isMobile={IS_MOBILE}
                 >
-                    {children ? children : <AppRouter/>}
+                    {children ? children : <AppRouter menus={menus}/>}
                 </ComponentProvider>
             </ConfigProvider>
         </Provider>

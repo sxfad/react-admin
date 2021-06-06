@@ -4,7 +4,7 @@
 
 - [在线预览](https://sxfad.github.io/react-admin/build)
 - [查看文档](https://sxfad.github.io/react-admin/#/)
-- [组件库ra-lib文档](https://github.com/sxfad/ra-lib)
+- [组件库ra-lib文档](https://sxfad.github.io/ra-lib/)
 
 ## 安装依赖
 
@@ -15,7 +15,7 @@
 yarn
 ```
 
-注：如果由于网络等原因安装不成功，可以尝试 `tyarn` 或 `cnpm` 或 `npm`
+注：如果由于网络等原因安装不成功，可以尝试 `tyarn` 或 `cnpm` 或 `npm` 或 `yarn --registry https://registry.npm.taobao.org`
 
 设置环境变量，windows平台可以使用 [cross-env](https://github.com/kentcdodds/cross-env#)
 
@@ -87,49 +87,3 @@ yarn build:time
 
 - 复杂的样式处理，推荐使用 [classnames](https://github.com/JedWatson/classnames)
 - 主题变量修改 theme.less [antd 样式变量](https://ant.design/docs/react/customize-theme-cn)
-
-## 微前端
-
-当前框架既可以作为乾坤主项目，又可以作为乾坤子项目
-
-新创建项目注意修改：
-- package.json name 属性
-- src/theme.less 中 @ant-prefix 和 @ra-lib-prefix
-
-## 作为乾坤子系统时
-
-约定：package.json name 作为:
-
-    - 子系统的BASE_NAME 
-    - 子系统注册到主系统中的 name 、 activeRule
-
-- ajax请求前缀设置为 `${window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__}api`
-- 接口服务器（后端按需设置）和 开发服务器devServer，设置跨域
-
-    ```js
-    {
-        headers: {
-            'Access-Control-Allow-Origin': '*', // 'https://some-site.com'
-            'Access-Control-Allow-Methods': '*', // 'GET, POST'
-            'Access-Control-Allow-Headers': '*', // 'X-Requested-With,content-type, Authorization, token, auto-token'
-        }
-    } 
-    ```
-- 子系统webpack配置
-
-    ```js
-    // craco.config.js
-    const packageName = require('./package.json').name;
-    
-    {
-        configure: (webpackConfig, {env, paths}) => {
-            webpackConfig.output.library = packageName;
-            webpackConfig.output.libraryTarget = 'umd';
-            webpackConfig.output.jsonpFunction = `webpackJsonp_${packageName}`;
-        }
-    }           
-    ```  
-
-## 乾坤微前端的坑
-
--[ ] 子系统卸载时，控制台会报提醒 `[qiankun] Set window.event while sandbox destroyed or inactive in xxx! `

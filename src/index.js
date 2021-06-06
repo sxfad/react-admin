@@ -10,6 +10,11 @@ if (window.__POWERED_BY_QIANKUN__) {
     // eslint-disable-next-line no-undef
     __webpack_public_path__ = window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__ + publicUrl;
 }
+// 开启mock，这个判断不要修改，否则会把mock相关js打入生产包，很大
+if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_MOCK) {
+    require('./mock/index');
+    console.warn('mock is enabled!!!');
+}
 
 /* eslint-disable import/first */
 import 'react-app-polyfill/ie11';

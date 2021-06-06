@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "cross-env NODE_ENV=development craco start",
+        "dev": "cross-env PORT=3000 NODE_ENV=development craco start",
         "start": "nodemon -w craco.config.js -w ./src/theme.less -w ./src/setupProxy.js --exec \"yarn dev\"",
         "build": "craco build",
         "build:analyzer": "cross-env ANALYZER=true yarn build",
@@ -22,7 +22,7 @@
         "@craco/craco": "^6.1.1",
         "@loadable/component": "^5.14.1",
         "@ra-lib/ajax": "^0.1.7",
-        "@ra-lib/components": "^0.1.44",
+        "@ra-lib/components": "^0.1.50",
         "@ra-lib/config-loader": "^0.1.6",
         "@ra-lib/hoc": "^0.1.2",
         "@ra-lib/hooks": "^0.1.4",
@@ -39,7 +39,6 @@
         "babel-jest": "^26.6.3",
         "babel-plugin-import": "^1.13.3",
         "babel-plugin-named-asset-import": "^0.3.7",
-        "babel-plugin-prismjs": "^2.0.1",
         "babel-plugin-react-css-modules": "^5.2.6",
         "babel-preset-react-app": "^10.0.0",
         "classnames": "^2.3.1",
@@ -54,11 +53,7 @@
         "eslint-plugin-react": "^7.20.3",
         "eslint-plugin-react-hooks": "^4.0.8",
         "eslint-plugin-testing-library": "^3.9.0",
-        "generic-names": "^3.0.0",
-        "husky": "^6.0.0",
-        "jest": "^27.0.4",
         "json5": "^2.2.0",
-        "lint-staged": "^11.0.0",
         "lodash": "^4.17.21",
         "mockjs": "^1.1.0",
         "moment": "^2.29.1",
@@ -120,17 +115,6 @@
             "not dead",
             "not op_mini all",
             "ie 11"
-        ]
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
-    "lint-staged": {
-        "*.{jsx, js}": [
-            "eslint --fix --quiet",
-            "git add"
         ]
     }
 }

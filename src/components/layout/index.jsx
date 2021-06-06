@@ -2,10 +2,9 @@ import {useEffect, useState} from 'react';
 import {Layout as RALayout, KeepPageAlive} from '@ra-lib/components';
 import {getQuery} from '@ra-lib/util';
 import {APP_NAME, CONFIG_HOC, HASH_ROUTER, IS_SUB} from 'src/config';
-import {getLoginUser, isLogin, toLogin, getCurrentPageConfig} from 'src/commons';
+import {isLogin, toLogin, getCurrentPageConfig} from 'src/commons';
 import Header from './header';
 import logo from './logo/logo.png';
-import getMenus from 'src/menus';
 
 /**
  * 获取layout用到的配置
@@ -70,6 +69,7 @@ function getOptions(options) {
 export const layoutRef = {current: null};
 
 export default function Layout(props) {
+    const {menus} = props;
     const {
         auth,
         ...nextState
@@ -78,16 +78,6 @@ export default function Layout(props) {
     if (auth && !isLogin()) toLogin();
 
     const [refresh, setRefresh] = useState({});
-    const [menus, setMenus] = useState([]);
-
-    // 系统菜单只有layout会用到，放到这里来获取
-    useEffect(() => {
-        (async () => {
-            const loginUser = getLoginUser() || {};
-            const menus = await getMenus(loginUser.id);
-            setMenus(menus);
-        })();
-    }, []);
 
     useEffect(() => {
         // Layout有可能不渲染，layoutRef.current 有可能是null
