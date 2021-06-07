@@ -29,14 +29,15 @@ export default {
         const {
             pageSize,
             pageNum,
+            account = '',
             name = '',
             mobile = '',
         } = config.params;
 
-        // TODO 不起作用
         const where = `
-            where name like "${name}%"
-            and mobile like "${mobile}%"
+            where name like '%${name}%'
+                and mobile like '%${mobile}%'
+                and account like '%${account}%'
         `;
 
         const list = await executeSql(`

@@ -107,6 +107,12 @@ export default config({
                         >
                             <FormItem
                                 {...queryItem}
+                                label="账号"
+                                name="account"
+                            />
+                            <FormItem
+                                hidden={hidden}
+                                {...queryItem}
                                 label="姓名"
                                 name="name"
                             />

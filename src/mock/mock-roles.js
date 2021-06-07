@@ -7,15 +7,30 @@ export default {
         const {
             pageSize,
             pageNum,
+            name = '',
         } = config.params;
 
+        const where = `where name like '%${name}%'`;
+
         if (!pageSize && !pageNum) {
-            const list = await executeSql('select * from roles order by updatedAt desc');
+            const list = await executeSql(`
+                select *
+                from roles ${where}
+                order by updatedAt desc`);
+
             return [200, list];
         }
 
-        const list = await executeSql('select * from roles order by updatedAt desc limit ? offset ?', [pageSize, (pageNum - 1) * pageSize]);
-        const countResult = await executeSql('select count(*) from roles');
+        const list = await executeSql(`
+            select *
+            from roles ${where}
+            order by updatedAt desc
+            limit ? offset ?`, [pageSize, (pageNum - 1) * pageSize]);
+
+        const countResult = await executeSql(`
+            select count(*)
+            from roles ${where}`);
+
         const total = countResult[0]['count(*)'] || 0;
 
         return [200, {
