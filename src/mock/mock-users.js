@@ -1,7 +1,12 @@
 import moment from 'moment';
-import executeSql from './db';
+import executeSql, {initDB} from './db';
 
 export default {
+    // 重置数据库
+    'post /initDB': async config => {
+        await initDB(true);
+        return [200, true];
+    },
     // 用户登录
     'post /login': async (config) => {
         const {

@@ -1,10 +1,12 @@
 import createTableSql, {initDataSql} from './init-sql';
 
 const db = openDatabase('react-admin', '1.0', 'react-admin测试数据库', 2 * 1024 * 1024);
-let tableCreated = false;
+let CACHE_INI_DB;
 
 export default async function executeSql(sql, args, fullResult) {
-    if (!tableCreated) await initDB();
+    CACHE_INI_DB = CACHE_INI_DB || initDB();
+
+    await CACHE_INI_DB;
 
     return new Promise((resolve, reject) => {
         db.transaction(function(tx) {
@@ -30,7 +32,6 @@ export async function initDB(init) {
     await executeSplit(createTableSql, 'create table');
 
     if (init) await initTablesData();
-    tableCreated = true;
 }
 
 export async function dropAllTables() {

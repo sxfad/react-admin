@@ -1,48 +1,46 @@
 import {useState, useEffect} from 'react';
-import {Button, Form, Space, /*Tabs,*/ Popconfirm} from 'antd';
-import {v4 as uuid} from 'uuid';
+import {Button, Form, Space, Tabs, Popconfirm} from 'antd';
 import {FormItem, Content} from '@ra-lib/components';
+import {useHeight} from '@ra-lib/hooks';
 import config from 'src/commons/config-hoc';
 import {menuTargetOptions} from 'src/commons/options';
 import styles from './style.less';
 
-// const TabPane = Tabs.TabPane;
+const TabPane = Tabs.TabPane;
 
 export default config()(function MenuEdit(props) {
+    const {isAdd, selectedMenu, onSubmit, onValuesChange} = props;
+
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
-    const [addTabKey/*, setAddTabKey*/] = useState('1');
-    const {isAdd, selectedMenu, onSubmit, onValuesChange} = props;
-    const textAreaHeight = document.documentElement.clientHeight - 280;
+    const [addTabKey, setAddTabKey] = useState('1');
+    const [textAreaHeight] = useHeight(null, 285);
 
-    const isAddTop = isAdd && (!selectedMenu || !Object.keys(selectedMenu).length);
-    const isAddSub = isAdd && selectedMenu && Object.keys(selectedMenu).length;
+    const hasSelectedMenu = selectedMenu && Object.keys(selectedMenu).length;
+    const isAddTop = isAdd && !hasSelectedMenu;
+    const isAddSub = isAdd && hasSelectedMenu;
     const title = isAddTop ? '添加顶级' : isAddSub ? '添加子级' : '修改菜单';
-    const initialValues = isAddTop ? {target: menuTargetOptions.QIANKUN}
-        : isAddSub ? {target: menuTargetOptions.MENU, parentId: selectedMenu.id, systemId: selectedMenu.systemId}
-            : selectedMenu;
 
-    const {run: deleteMenu} = props.ajax.useGet('/authority/del', null, {setLoading});
-    const {run: saveMenu} = props.ajax.usePost('/authority/add', null, {setLoading});
-    const {run: updateMenu} = props.ajax.usePost('/authority/update', null, {setLoading});
+    const {run: deleteMenu} = props.ajax.useDel('/menus/:id', null, {setLoading});
+    const {run: saveMenu} = props.ajax.usePost('/menus', null, {setLoading});
+    const {run: updateMenu} = props.ajax.usePut('/menus', null, {setLoading});
 
+    // 表单回显
     useEffect(() => {
         form.resetFields();
-        form.setFieldsValue(isAdd ? {status: true} : selectedMenu);
-    }, [form, isAdd, selectedMenu]);
+        let initialValues = selectedMenu;
+        if (isAddTop) initialValues = {target: menuTargetOptions.QIANKUN};
+        if (isAddSub) initialValues = {target: menuTargetOptions.MENU, parentId: selectedMenu.id, systemId: selectedMenu.systemId};
+
+        form.setFieldsValue(initialValues);
+    }, [form, isAdd, isAddTop, isAddSub, selectedMenu]);
 
     async function handleSubmit(values) {
         if (loading) return;
 
         const params = {
             ...values,
-            sort: values.order || 0,
-            systemId: selectedMenu?.systemId,
-            parentsId: isAdd ? selectedMenu?.id : selectedMenu?.parentId,
-            type: '1', // 菜单
-            code: uuid(),
-            isFresh: isAdd ? false : values.status !== selectedMenu.status,
-            status: values.status ? 1 : 0,
+            type: 1, // 菜单
         };
 
         if (isAdd) {
@@ -73,20 +71,19 @@ export default config()(function MenuEdit(props) {
             name={`menu-form`}
             form={form}
             onFinish={handleSubmit}
-            initialValues={initialValues}
             onValuesChange={onValuesChange}
         >
             <h3 className={styles.title}>{title}</h3>
             <Content loading={loading} className={styles.content}>
-                {/*{isAddSub ? (*/}
-                {/*    <Tabs*/}
-                {/*        activeKey={addTabKey}*/}
-                {/*        onChange={key => setAddTabKey(key)}*/}
-                {/*    >*/}
-                {/*        <TabPane key="1" tab="单个添加"/>*/}
-                {/*        <TabPane key="2" tab="批量添加"/>*/}
-                {/*    </Tabs>*/}
-                {/*) : null}*/}
+                {isAddSub ? (
+                    <Tabs
+                        activeKey={addTabKey}
+                        onChange={key => setAddTabKey(key)}
+                    >
+                        <TabPane key="1" tab="单个添加"/>
+                        <TabPane key="2" tab="批量添加"/>
+                    </Tabs>
+                ) : null}
                 <FormItem name="id" hidden/>
                 {addTabKey === '1' ? (
                     <>
@@ -105,15 +102,6 @@ export default config()(function MenuEdit(props) {
                             name="title"
                             required
                             tooltip="菜单标题"
-                        />
-                        <FormItem
-                            {...layout}
-                            type="switch"
-                            label="启用"
-                            name="status"
-                            required
-                            tooltip="是否启用菜单"
-                            valuePropName="checked"
                         />
                         <FormItem shouldUpdate noStyle>
                             {({getFieldValue}) => {

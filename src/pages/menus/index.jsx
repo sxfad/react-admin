@@ -15,16 +15,17 @@ export default config({
     const [selectedMenu, setSelectedMenu] = useState(null);
     const [hasUnSaveMenu, setHasUnSaveMenu] = useState(false);
     const [hasUnSaveAction, setHasUnSaveAction] = useState(false);
-    const {loading, data: menus = [], run: fetchMenus} = props.ajax.useGet('/authority/getSystemMenuAll', null, {
+    const {loading, data: menus = [], run: fetchMenus} = props.ajax.useGet('/menus', null, {
         formatResult: res => {
-            return (res || []).map(item => {
+            return (res || []).map((item, index, arr) => {
+                const actions = arr.filter(it => it.type === 2 && it.parentId === item.id);
                 return {
                     ...item,
-                    parentId: item.parentsId ? item.parentsId + '' : undefined,
-                    order: item.sort,
-                    status: item.status === 1,
+                    id: '' + item.id,
+                    parentId: '' + item.parentId,
+                    actions,
                 };
-            });
+            }).filter(item => item.type === 1);
         },
     });
 

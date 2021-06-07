@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {Button, Empty, Form, Space} from 'antd';
 import {FormItem, Content} from '@ra-lib/components';
 import {MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
@@ -10,11 +10,21 @@ export default function ActionEdit(props) {
     const [loading/*, setLoading*/] = useState(false);
 
     function handleSubmit(values) {
-        // TODO
-        console.log(values);
+        const {actions} = values;
 
-        onSubmit && onSubmit(values);
+        // TODO ajax请求
+        console.log(actions);
+
+        onSubmit && onSubmit(actions);
     }
+
+    useEffect(() => {
+        form.resetFields();
+
+        if (!selectedMenu) return;
+
+        form.setFieldsValue({actions: selectedMenu?.actions});
+    }, [selectedMenu, form]);
 
     return (
         <Form
@@ -22,7 +32,6 @@ export default function ActionEdit(props) {
             name={`action-form`}
             form={form}
             onFinish={handleSubmit}
-            initialValues={{actions: selectedMenu?.actions}}
             onValuesChange={onValuesChange}
         >
             <h3 className={styles.title}>功能列表</h3>
@@ -41,11 +50,14 @@ export default function ActionEdit(props) {
                                                 name={[name, 'id']}
                                             />
                                             <FormItem
-                                                type="switch"
-                                                name={[name, 'status']}
-                                                checkedChildren="启"
-                                                unCheckedChildren="停"
-                                                initialValue={true}
+                                                hidden
+                                                name={[name, 'parentId']}
+                                                initialValue={selectedMenu?.id}
+                                            />
+                                            <FormItem
+                                                hidden
+                                                name={[name, 'type']}
+                                                initialValue={2}
                                             />
                                             <FormItem
                                                 name={[name, 'title']}
