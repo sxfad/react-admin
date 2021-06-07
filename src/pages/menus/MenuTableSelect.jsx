@@ -29,9 +29,9 @@ export default class MenuTableSelect extends Component {
     columns = [
         {title: '名称', dataIndex: 'title', key: 'title'},
         {
-            title: '类型', dataIndex: 'type', key: 'type', width: 80,
+            title: '类型', dataIndex: 'type', key: 'type', width: 100,
             render: (value, record) => {
-                if (value === '2') return '功能权限码';
+                if (value === 2) return '功能权限码';
 
                 const {target} = record;
 
@@ -47,16 +47,13 @@ export default class MenuTableSelect extends Component {
     }
 
     fetchMenus = async () => {
-        const res = await this.props.ajax.get('/authority/getSystemMenuAll');
+        const res = await this.props.ajax.get('/menus');
 
         return (res || []).map(item => {
             return {
                 ...item,
-                parentId: item.parentsId ? item.parentsId + '' : undefined,
-                order: item.sort,
-                status: item.status === 1,
             };
-        }).filter(item => item.status);
+        });
     };
 
     handleSearch = async () => {
@@ -157,6 +154,5 @@ export default class MenuTableSelect extends Component {
             </>
         );
     }
-
 }
 

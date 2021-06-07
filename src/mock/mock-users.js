@@ -1,3 +1,4 @@
+import moment from 'moment';
 import executeSql from './db';
 
 export default {
@@ -51,8 +52,8 @@ export default {
         return [200, result[0]];
     },
     // 根据account获取用户
-    'get /usersByAccount': async config => {
-        console.log('get /usersByAccount');
+    'get /userByAccount': async config => {
+        console.log('get /userByAccount');
         const {
             account,
         } = config.params;
@@ -94,9 +95,9 @@ export default {
             mobile,
             roleIds,
         } = JSON.parse(config.data);
-        const args = [account, name, password, mobile, email, id];
+        const args = [account, name, password, mobile, email, moment().format('YYYY-MM-DD HH:mm:ss'), id];
 
-        await executeSql('UPDATE users SET account=?, name=?, password=?, mobile=?, email=? WHERE id=?', args);
+        await executeSql('UPDATE users SET account=?, name=?, password=?, mobile=?, email=?, updatedAt=? WHERE id=?', args);
         await executeSql('DELETE FROM user_roles WHERE userId=?', [id]);
 
         if (roleIds?.length) {

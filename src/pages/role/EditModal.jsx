@@ -2,9 +2,8 @@ import {useState} from 'react';
 import {Card, Row, Col, Form} from 'antd';
 import config from 'src/commons/config-hoc';
 import {ModalContent, FormItem, Content} from '@ra-lib/components';
-import SystemSelect from 'src/pages/menus/SystemSelect';
+import {useDebounceValidator} from '@ra-lib/hooks';
 import MenuTableSelect from 'src/pages/menus/MenuTableSelect';
-import {v4 as uuid} from 'uuid';
 import {IS_MOBILE} from 'src/config';
 
 export default config({
@@ -19,31 +18,26 @@ export default config({
     const [form] = Form.useForm();
 
     // 获取详情 data为表单回显数据
-    const {data = {status: true}} = props.ajax.useGet(`role/detail?id=${record?.id}`, null, [], {
+    props.ajax.useGet(`/roles/${record?.id}`, null, [], {
         setLoading,
         mountFire: isEdit, // 组件didMount时，只有编辑时才触发请求
         formatResult: res => {
             if (!res) return;
             const values = {
                 ...res,
-                systemId: window.parseInt(res.systemId, 10) || 0,
-                status: res.status === '1',
-                menuIds: (res.authorityId || '').split(','),
             };
             form.setFieldsValue(values);
         },
     });
     // 添加请求
-    const {run: saveRole} = props.ajax.usePost('/role/add', null, {setLoading, successTip: '创建成功！'});
+    const {run: saveRole} = props.ajax.usePost('/roles', null, {setLoading, successTip: '创建成功！'});
     // 更新请求
-    const {run: updateRole} = props.ajax.usePost('/role/update', null, {setLoading, successTip: '修改成功！'});
+    const {run: updateRole} = props.ajax.usePut('/roles', null, {setLoading, successTip: '修改成功！'});
+    const {run: fetchRoleByName} = props.ajax.useGet('/roleByName');
 
     async function handleSubmit(values) {
         const params = {
             ...values,
-            code: uuid(),
-            status: values.status ? 1 : 0,
-            authorityId: (values.menuIds || []).join(','),
         };
 
         if (isEdit) {
@@ -54,6 +48,17 @@ export default config({
 
         onOk();
     }
+
+    const checkName = useDebounceValidator(async (rule, value) => {
+        if (!value) return;
+
+        const role = await fetchRoleByName({name: value});
+        if (!role) return;
+
+        const id = form.getFieldValue('id');
+        if (isEdit && role.id !== id && role.name === value) throw Error('角色名不能重复！');
+        if (!isEdit && role.name === value) throw Error('角色名不能重复！');
+    });
 
     const layout = {labelCol: {flex: '100px'}};
     const colLayout = {
@@ -72,7 +77,6 @@ export default config({
                 form={form}
                 name="roleEdit"
                 onFinish={handleSubmit}
-                initialValues={data}
             >
                 {isEdit ? <FormItem hidden name="id"/> : null}
 
@@ -82,28 +86,14 @@ export default config({
                             <Content fitHeight={!IS_MOBILE} otherHeight={160}>
                                 <FormItem
                                     {...layout}
-                                    label="所属系统"
-                                    name="systemId"
-                                    showSearch
-                                    required
-                                >
-                                    <SystemSelect/>
-                                </FormItem>
-                                <FormItem
-                                    {...layout}
                                     label="角色名称"
                                     name="name"
                                     required
                                     noSpace
                                     maxLength={50}
-                                />
-                                <FormItem
-                                    {...layout}
-                                    type="switch"
-                                    label="启用"
-                                    name="status"
-                                    valuePropName="checked"
-                                    required
+                                    rules={[
+                                        {validator: checkName},
+                                    ]}
                                 />
                                 <FormItem
                                     {...layout}

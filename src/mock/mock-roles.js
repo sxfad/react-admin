@@ -1,7 +1,5 @@
-import {randomNumber, randomArray} from './util';
+import moment from 'moment';
 import executeSql from 'src/mock/db';
-
-const allMenuKeys = ['antDesign', 'document', 'customer-header', 'user', 'role', 'menu', 'gen', 'page404', 'example', 'table-editable'];
 
 export default {
     // 获取所有角色
@@ -25,17 +23,73 @@ export default {
             list,
         }];
     },
-    'post /roles': true,
-    'put /roles': true,
-    'delete /roles': true,
-    'get /roleMenus': () => {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                resolve([200, randomArray(allMenuKeys, randomNumber(5))]);
-            }, 500);
-        });
+    // 获取详情
+    'get re:/roles/.+': async config => {
+        const id = config.url.split('/')[2];
+
+        const result = await executeSql('select * from roles where id = ?', [id]);
+
+        if (!result[0]) return [200, null];
+
+        const roleMenus = await executeSql('select * from role_menus where roleId = ?', [id]);
+        result[0].menuIds = roleMenus.map(item => item.menuId);
+
+        return [200, result[0]];
     },
-    'get re:/roles/.+': {id: 1, name: '系统管理员', description: '描述'},
-    'post /roles/menus 1000': true,
-    'delete re:/roles/.+': true,
+    // 根据name获取角色
+    'get /roleByName': async config => {
+        const {
+            name,
+        } = config.params;
+
+
+        const result = await executeSql('select * from roles where name = ?', [name]);
+        return [200, result[0]];
+    },
+    'post /roles': async config => {
+        const {
+            name,
+            remark = '',
+            menuIds,
+        } = JSON.parse(config.data);
+        const args = [name, remark];
+        const result = await executeSql('INSERT INTO roles (name, remark) VALUES (?, ?)', args, true);
+        const {insertId: roleId} = result;
+
+        if (menuIds?.length) {
+            for (let menuId of menuIds) {
+                await executeSql('INSERT INTO role_menus (roleId, menuId) VALUES (?,?)', [roleId, menuId]);
+            }
+        }
+
+        return [200, roleId];
+    },
+    'put /roles': async config => {
+        const {
+            id,
+            name,
+            remark = '',
+            menuIds,
+        } = JSON.parse(config.data);
+        const args = [name, remark, moment().format('YYYY-MM-DD HH:mm:ss'), id];
+
+        await executeSql('UPDATE roles SET name=?, remark=?, updatedAt=? WHERE id=?', args);
+        await executeSql('DELETE FROM role_menus WHERE roleId=?', [id]);
+
+        if (menuIds?.length) {
+            for (let menuId of menuIds) {
+                await executeSql('INSERT INTO role_menus (roleId, menuId) VALUES (?,?)', [id, menuId]);
+            }
+        }
+
+        return [200, true];
+
+    },
+    // 删除
+    'delete re:/roles/.+': async config => {
+        const id = config.url.split('/')[2];
+        await executeSql('DELETE FROM roles WHERE id=?', [id]);
+        await executeSql('DELETE FROM role_menus WHERE roleId=?', [id]);
+        return [200, true];
+    },
 };

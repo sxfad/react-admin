@@ -10,7 +10,6 @@ import {
     Operator,
     ToolBar,
 } from '@ra-lib/components';
-import SystemSelect from 'src/pages/menus/SystemSelect';
 import EditModal from './EditModal';
 import styles from './style.less';
 import {IS_MOBILE} from 'src/config';
@@ -32,39 +31,33 @@ export default config({
         pageSize,
     };
 
-    // 获取角色列表
+    // 获取列表
     const {
         data: {
             dataSource,
             total,
         } = {},
-    } = props.ajax.useGet('/role/get', params, [conditions, pageNum, pageSize], {
+    } = props.ajax.useGet('/roles', params, [conditions, pageNum, pageSize], {
         setLoading,
         // mountFire: false, // 初始化不查询
         formatResult: res => {
             return {
-                dataSource: res?.content || [],
-                total: window.parseInt(res?.totalElements, 10) || 0,
+                dataSource: res?.list || [],
+                total: res?.total || 0,
             };
         },
     });
 
-    // 批量删除
-    const {run: deleteRole} = props.ajax.useGet('/role/del', null, {setLoading, successTip: '批量删除成功！'});
+    // 删除
+    const {run: deleteRole} = props.ajax.useDel('/roles/:id', null, {setLoading, successTip: '删除成功！'});
 
     const columns = [
-        {title: '所属系统', dataIndex: 'systemName'},
         {title: '角色名称', dataIndex: 'name'},
-
-        {
-            title: '启用', dataIndex: 'status',
-            render: (value) => value === '1' || value === true ? '是' : '否',
-        },
         {title: '备注', dataIndex: 'remark'},
         {
             title: '操作', dataIndex: 'operator', width: 100,
             render: (text, record) => {
-                const {id} = record;
+                const {id, name} = record;
                 const items = [
                     {
                         label: '编辑',
@@ -74,7 +67,7 @@ export default config({
                         label: '删除',
                         color: 'red',
                         confirm: {
-                            title: '您确定删除吗？',
+                            title: `您确定删除「${name}」吗？`,
                             onConfirm: () => handleDelete(id),
                         },
                     },
@@ -85,7 +78,7 @@ export default config({
     ];
 
     async function handleDelete(id) {
-        await deleteRole({id: id}, {successTip: '删除成功！'});
+        await deleteRole(id);
 
         // 触发查询
         setConditions({...conditions});
@@ -97,52 +90,28 @@ export default config({
 
     return (
         <PageContent fitHeight className={styles.root} loading={loading}>
-            <QueryBar showCollapsedBar={IS_MOBILE}>
-                {(collapsed) => {
-                    const hidden = IS_MOBILE && collapsed;
-                    return (
-                        <Form
-                            name="user"
-                            layout="inline"
-                            form={form}
-                            onFinish={values => {
-                                setPageNum(1);
-                                setConditions(values);
-                            }}
-                        >
-                            <FormItem
-                                {...layout}
-                                label="角色名称"
-                                name="name"
-                            />
-                            <FormItem
-                                {...layout}
-                                hidden={hidden}
-                                type="select"
-                                label="角色状态"
-                                name="status"
-                                options={[
-                                    {value: '1', label: '启用'},
-                                    {value: '0', label: '停用'},
-                                ]}
-                            />
-                            <FormItem
-                                {...layout}
-                                hidden={hidden}
-                                label="所属系统"
-                                name="systemId"
-                            >
-                                <SystemSelect showSearch/>
-                            </FormItem>
-                            <FormItem>
-                                <Space>
-                                    <Button type="primary" htmlType="submit">查询</Button>
-                                    <Button htmlType="reset">重置</Button>
-                                </Space>
-                            </FormItem>
-                        </Form>
-                    );
-                }}
+            <QueryBar>
+                <Form
+                    name="role"
+                    layout="inline"
+                    form={form}
+                    onFinish={values => {
+                        setPageNum(1);
+                        setConditions(values);
+                    }}
+                >
+                    <FormItem
+                        {...layout}
+                        label="角色名称"
+                        name="name"
+                    />
+                    <FormItem>
+                        <Space>
+                            <Button type="primary" htmlType="submit">查询</Button>
+                            <Button htmlType="reset">重置</Button>
+                        </Space>
+                    </FormItem>
+                </Form>
             </QueryBar>
             <ToolBar>
                 <Button type="primary" onClick={() => setRecord(null) || setVisible(true)}>添加</Button>

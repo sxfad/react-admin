@@ -6,8 +6,6 @@ export default {
         const {
             userId,
         } = config.params;
-        // TODO 根据用户角色，获取菜单
-        // select menus.* from menus LEFT JOIN newscate as b on a.id=b.news_id;
         const userRoles = await executeSql('select * from user_roles where userId = ?', [userId]);
 
         if (!userRoles?.length) return [200, []];
@@ -26,7 +24,12 @@ export default {
 
         return [200, Array.from(menus)];
     },
-    'post /menus': {id: '123'},
+    // 获取所有菜单
+    'get /menus': async config => {
+        const result = await executeSql('select * from menus');
+
+        return [200, result];
+    },
     'put /menus': true,
     'delete re:/menus/.+': true,
 };

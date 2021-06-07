@@ -34,7 +34,7 @@ export default config({
     });
     const {run: save} = props.ajax.usePost('/users', null, {setLoading, successTip: '创建成功！'});
     const {run: update} = props.ajax.usePut('/users', null, {setLoading, successTip: '修改成功！'});
-    const {run: fetchUserByAccount} = props.ajax.useGet('/usersByAccount');
+    const {run: fetchUserByAccount} = props.ajax.useGet('/userByAccount');
 
     async function handleSubmit(values) {
         const params = {
