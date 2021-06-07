@@ -3,6 +3,14 @@ import createTableSql, {initDataSql} from './init-sql';
 const db = openDatabase('react-admin', '1.0', 'react-admin测试数据库', 2 * 1024 * 1024);
 let CACHE_INI_DB;
 
+const tables = [
+    'menus',
+    'roles',
+    'users',
+    'role_menus',
+    'user_roles',
+];
+
 export default async function executeSql(sql, args, fullResult) {
     CACHE_INI_DB = CACHE_INI_DB || initDB();
 
@@ -19,21 +27,17 @@ export default async function executeSql(sql, args, fullResult) {
     });
 }
 
-const tables = [
-    'menus',
-    'roles',
-    'users',
-    'role_menus',
-    'user_roles',
-];
-
+// 初始化数据库
 export async function initDB(init) {
     if (init) await dropAllTables();
+
+    // 创建表
     await executeSplit(createTableSql, 'create table');
 
     if (init) await initTablesData();
 }
 
+// 删除所有数据库表
 export async function dropAllTables() {
     tables.forEach(table => {
         db.transaction(function(tx) {
@@ -42,6 +46,7 @@ export async function dropAllTables() {
     });
 }
 
+// 插入初始化数据
 export async function initTablesData() {
     for (let table of tables) {
         const sql = initDataSql[table];

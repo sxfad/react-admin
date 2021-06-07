@@ -2,7 +2,7 @@ import moment from 'moment';
 import executeSql from 'src/mock/db';
 
 export default {
-    // 获取所有角色
+    // 获取列表
     'get /roles': async (config) => {
         const {
             pageSize,
@@ -36,7 +36,7 @@ export default {
 
         return [200, result[0]];
     },
-    // 根据name获取角色
+    // 根据name获取
     'get /roleByName': async config => {
         const {
             name,
@@ -46,6 +46,7 @@ export default {
         const result = await executeSql('select * from roles where name = ?', [name]);
         return [200, result[0]];
     },
+    // 添加
     'post /roles': async config => {
         const {
             name,
@@ -64,6 +65,7 @@ export default {
 
         return [200, roleId];
     },
+    // 修改
     'put /roles': async config => {
         const {
             id,

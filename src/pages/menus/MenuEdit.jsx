@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import {Button, Form, Space, Tabs, Popconfirm} from 'antd';
 import {FormItem, Content} from '@ra-lib/components';
-import {useHeight} from '@ra-lib/hooks';
+import {useHeight, useDebounceValidator} from '@ra-lib/hooks';
 import config from 'src/commons/config-hoc';
 import {menuTargetOptions} from 'src/commons/options';
 import styles from './style.less';
@@ -24,6 +24,7 @@ export default config()(function MenuEdit(props) {
     const {run: deleteMenu} = props.ajax.useDel('/menus/:id', null, {setLoading});
     const {run: saveMenu} = props.ajax.usePost('/menus', null, {setLoading});
     const {run: updateMenu} = props.ajax.usePut('/menus', null, {setLoading});
+    const {run: fetchMenuByName} = props.ajax.useGet('/menuByName');
 
     // 表单回显
     useEffect(() => {
@@ -53,6 +54,18 @@ export default config()(function MenuEdit(props) {
             onSubmit && onSubmit({...params, isUpdate: true});
         }
     }
+
+
+    const checkName = useDebounceValidator(async (rule, value) => {
+        if (!value) return;
+
+        const menu = await fetchMenuByName({name: value});
+        if (!menu) return;
+
+        const id = form.getFieldValue('id');
+        if (isAdd && menu.name === value) throw Error('注册名称不能重复！');
+        if (!isAdd && menu.id !== id && menu.name === value) throw Error('注册名称不能重复！');
+    });
 
     async function handleDelete() {
         const id = selectedMenu?.id;
@@ -115,6 +128,7 @@ export default config()(function MenuEdit(props) {
                                                 tooltip="要与子应用package.json中声明的name属性相同，唯一不可重复"
                                                 name="name"
                                                 rules={[
+                                                    {validator: checkName},
                                                     {pattern: /^[0-9A-Za-z_-]+$/, message: '只允许英文大小写、_、-！'},
                                                 ]}
                                                 required

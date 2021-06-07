@@ -24,7 +24,7 @@ export default {
     },
     // 退出登录
     'post /logout': {},
-    // 查询用户列表
+    // 获取列表
     'get /users': async (config) => {
         const {
             pageSize,
@@ -42,8 +42,7 @@ export default {
             list,
         }];
     },
-
-    // 获取用户详情
+    // 获取详情
     'get re:/users/.+': async config => {
         const id = config.url.split('/')[2];
 
@@ -56,9 +55,8 @@ export default {
 
         return [200, result[0]];
     },
-    // 根据account获取用户
+    // 根据account获取
     'get /userByAccount': async config => {
-        console.log('get /userByAccount');
         const {
             account,
         } = config.params;
@@ -67,7 +65,7 @@ export default {
         const result = await executeSql('select * from users where account = ?', [account]);
         return [200, result[0]];
     },
-    // 保存用户
+    // 保存
     'post /users': async config => {
         const {
             account,
@@ -89,7 +87,7 @@ export default {
 
         return [200, userId];
     },
-    // 修改用户
+    // 修改
     'put /users': async config => {
         const {
             id,
@@ -114,7 +112,7 @@ export default {
         return [200, true];
 
     },
-    // 删除用户
+    // 删除
     'delete re:/users/.+': async config => {
         const id = config.url.split('/')[2];
         await executeSql('DELETE FROM users WHERE id=?', [id]);

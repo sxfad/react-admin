@@ -2,18 +2,20 @@ import {useState, useEffect} from 'react';
 import {Button, Empty, Form, Space} from 'antd';
 import {FormItem, Content} from '@ra-lib/components';
 import {MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
+import config from 'src/commons/config-hoc';
 import styles from 'src/pages/menus/style.less';
 
-export default function ActionEdit(props) {
+export default config()(function ActionEdit(props) {
     const [form] = Form.useForm();
     const {isAdd, selectedMenu, onSubmit, onValuesChange} = props;
-    const [loading/*, setLoading*/] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const {run: save} = props.ajax.usePost('/actions', null, {setLoading, successTip: '功能保持成功！'});
 
-    function handleSubmit(values) {
+    async function handleSubmit(values) {
         const {actions} = values;
+        const parentId = selectedMenu?.id;
 
-        // TODO ajax请求
-        console.log(actions);
+        await save({actions, parentId});
 
         onSubmit && onSubmit(actions);
     }
@@ -50,16 +52,6 @@ export default function ActionEdit(props) {
                                                 name={[name, 'id']}
                                             />
                                             <FormItem
-                                                hidden
-                                                name={[name, 'parentId']}
-                                                initialValue={selectedMenu?.id}
-                                            />
-                                            <FormItem
-                                                hidden
-                                                name={[name, 'type']}
-                                                initialValue={2}
-                                            />
-                                            <FormItem
                                                 name={[name, 'title']}
                                                 placeholder="名称"
                                                 rules={[{required: true, message: '请输入名称！'}]}
@@ -88,4 +80,4 @@ export default function ActionEdit(props) {
             </Space>
         </Form>
     );
-}
+});
