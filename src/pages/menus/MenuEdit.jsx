@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {Button, Form, Modal, Space, Tabs, Popconfirm} from 'antd';
 import json5 from 'json5';
 import {FormItem, Content} from '@ra-lib/components';
@@ -16,6 +16,7 @@ export default config()(function MenuEdit(props) {
     const [loading, setLoading] = useState(false);
     const [addTabKey, setAddTabKey] = useState('1');
     const [textAreaHeight] = useHeight(null, 285);
+    const contentRef = useRef(null);
 
     const hasSelectedMenu = selectedMenu && Object.keys(selectedMenu).length;
     const isAddTop = isAdd && !hasSelectedMenu;
@@ -60,15 +61,11 @@ export default config()(function MenuEdit(props) {
                 }
 
                 const params = {menus, parentId};
-
-                console.log(params);
                 const res = await branchSaveMenu(params);
-
                 const {id} = res;
                 onSubmit && onSubmit({id, isAdd: true});
 
             } else {
-                console.log('params', params);
                 const res = await saveMenu(params);
                 const {id} = res;
                 onSubmit && onSubmit({...params, id, isAdd: true});
@@ -111,7 +108,7 @@ export default config()(function MenuEdit(props) {
             onValuesChange={onValuesChange}
         >
             <h3 className={styles.title}>{title}</h3>
-            <Content loading={loading} className={styles.content}>
+            <Content ref={contentRef} loading={loading} className={styles.content}>
                 {isAddSub ? (
                     <Tabs
                         activeKey={addTabKey}
@@ -133,6 +130,7 @@ export default config()(function MenuEdit(props) {
                             options={menuTargetOptions}
                             tooltip="指定类型之后，将以乾坤子项目或第三方网站方式打开"
                             required
+                            getPopupContainer={() => contentRef.current}
                         />
                         <FormItem
                             {...layout}
