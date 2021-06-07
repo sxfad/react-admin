@@ -29,12 +29,29 @@ export default async function executeSql(sql, args, fullResult) {
 
 // 初始化数据库
 export async function initDB(init) {
+    const dbOk = await hasTables();
     if (init) await dropAllTables();
 
     // 创建表
     await executeSplit(createTableSql, 'create table');
 
-    if (init) await initTablesData();
+    if (init || !dbOk) await initTablesData();
+}
+
+export async function hasTables() {
+    return new Promise((resolve, reject) => {
+        db.transaction(
+            function(tx) {
+                tx.executeSql(
+                    'select * from users',
+                    null,
+                    () => resolve(true),
+                    (transaction, error) => {
+                        resolve(false);
+                    });
+            },
+        );
+    });
 }
 
 // 删除所有数据库表
