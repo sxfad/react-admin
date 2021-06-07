@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react';
-import {Button, Form, Space, Tabs, Popconfirm} from 'antd';
+import {Button, Form, Modal, Space, Tabs, Popconfirm} from 'antd';
+import json5 from 'json5';
 import {FormItem, Content} from '@ra-lib/components';
 import {useHeight, useDebounceValidator} from '@ra-lib/hooks';
 import config from 'src/commons/config-hoc';
@@ -23,6 +24,7 @@ export default config()(function MenuEdit(props) {
 
     const {run: deleteMenu} = props.ajax.useDel('/menus/:id', null, {setLoading});
     const {run: saveMenu} = props.ajax.usePost('/menus', null, {setLoading});
+    const {run: branchSaveMenu} = props.ajax.usePost('/branchMenus', null, {setLoading});
     const {run: updateMenu} = props.ajax.usePut('/menus', null, {setLoading});
     const {run: fetchMenuByName} = props.ajax.useGet('/menuByName');
 
@@ -45,10 +47,32 @@ export default config()(function MenuEdit(props) {
         };
 
         if (isAdd) {
-            const res = await saveMenu(params);
-            const {id} = res;
-            onSubmit && onSubmit({...params, id, isAdd: true});
+            if (isAddSub && addTabKey === '2') {
+                let {menus, parentId} = values;
 
+                try {
+                    menus = json5.parse(menus);
+                } catch (e) {
+                    return Modal.error({
+                        title: '温馨提示',
+                        content: '批量添加的菜单数据有误，请修正后保存！',
+                    });
+                }
+
+                const params = {menus, parentId};
+
+                console.log(params);
+                const res = await branchSaveMenu(params);
+
+                const {id} = res;
+                onSubmit && onSubmit({id, isAdd: true});
+
+            } else {
+                console.log('params', params);
+                const res = await saveMenu(params);
+                const {id} = res;
+                onSubmit && onSubmit({...params, id, isAdd: true});
+            }
         } else {
             await updateMenu(params);
             onSubmit && onSubmit({...params, isUpdate: true});
@@ -98,6 +122,7 @@ export default config()(function MenuEdit(props) {
                     </Tabs>
                 ) : null}
                 <FormItem name="id" hidden/>
+                <FormItem name="parentId" hidden/>
                 {addTabKey === '1' ? (
                     <>
                         <FormItem
@@ -181,7 +206,7 @@ export default config()(function MenuEdit(props) {
                     <FormItem
                         labelCol={{flex: 0}}
                         type="textarea"
-                        name="subMenus"
+                        name="menus"
                         rows={16}
                         rules={[
                             {required: true, message: '请输入菜单数据！'},
@@ -209,7 +234,10 @@ export default config()(function MenuEdit(props) {
             </Content>
             <Space className={styles.footerAction}>
                 {!isAdd ? (
-                    <Popconfirm title="您确定删除？" onConfirm={handleDelete}>
+                    <Popconfirm
+                        title={`您确定删除「${selectedMenu?.title}」？`}
+                        onConfirm={handleDelete}
+                    >
                         <Button loading={loading} danger>删除</Button>
                     </Popconfirm>
                 ) : null}

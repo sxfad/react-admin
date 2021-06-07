@@ -1,4 +1,5 @@
 import moment from 'moment';
+import {convertToTree, findGenerationNodes} from '@ra-lib/util';
 import executeSql from 'src/mock/db';
 
 export default {
@@ -62,6 +63,58 @@ export default {
 
         return [200, menuId];
     },
+    // 批量添加
+    'post /branchMenus': async config => {
+        const {
+            menus,
+            parentId,
+        } = JSON.parse(config.data);
+
+        if (!menus?.length) return [200, true];
+
+        // 获取menu最大id
+        const result = await executeSql('select * from menus order by id desc limit ? offset ? ', [1, 0]);
+        const maxId = result[0] ? result[0].id : 0;
+
+        // 处理id
+        const idMap = {};
+        menus.forEach((menu, index) => {
+            const {id} = menu;
+            const nextId = menu.id = maxId + index + 1;
+            if (id) idMap[id] = nextId;
+
+            if (!menu.type) menu.type = 1;
+
+            if (!menu.parentId) menu.parentId = parentId;
+        });
+
+        // 处理parentId
+        menus.forEach((menu) => {
+            const {parentId} = menu;
+            if (idMap[parentId]) {
+                menu.parentId = idMap[parentId];
+            }
+        });
+
+        let menuId;
+        // 插入数据库
+        for (let i = 0; i < menus.length; i++) {
+            const menu = menus[i];
+            const {id} = menu;
+            const {keys, args, holders} = getMenuData({data: menu}, value => value);
+            keys.push('id');
+            args.push(id);
+            holders.push('?');
+
+            const result = await executeSql(`
+                INSERT INTO menus (${keys})
+                VALUES (${holders})
+            `, args, true);
+            if (i === 0) menuId = result.insertId;
+        }
+
+        return [200, menuId];
+    },
     // 修改
     'put /menus': async config => {
         const {id} = JSON.parse(config.data);
@@ -81,9 +134,20 @@ export default {
     },
     // 删除
     'delete re:/menus/.+': async config => {
-        const id = config.url.split('/')[2];
-        await executeSql('DELETE FROM menus WHERE id=?', [id]);
-        await executeSql('DELETE FROM role_menus WHERE menuId=?', [id]);
+        const id = parseInt(config.url.split('/')[2]);
+        const allMenus = await executeSql('select * from menus');
+        const menuTreeData = convertToTree(allMenus);
+
+        const nodes = findGenerationNodes(menuTreeData, id, 'id') || [];
+        const ids = nodes.map(item => item.id);
+        ids.push(id);
+
+        await executeSql(`DELETE
+                          FROM menus
+                          WHERE id in (${ids})`);
+        await executeSql(`DELETE
+                          FROM role_menus
+                          WHERE menuId in (${ids})`);
         return [200, true];
     },
     // 批量更新功能列表
@@ -135,9 +199,9 @@ export default {
     },
 };
 
-function getMenuData(config) {
+function getMenuData(config, parse = JSON.parse) {
     const {
-        target,
+        target = 'menu',
         parentId = '',
         title,
         basePath = '',
@@ -147,8 +211,8 @@ function getMenuData(config) {
         entry = '',
         icon = '',
         code = '',
-        type,
-    } = JSON.parse(config.data);
+        type = 1,
+    } = parse(config.data);
     const data = Object.entries({
         target,
         parentId,
