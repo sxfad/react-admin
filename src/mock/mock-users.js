@@ -29,12 +29,27 @@ export default {
         const {
             pageSize,
             pageNum,
-            // name,
-            // mobile,
+            name = '',
+            mobile = '',
         } = config.params;
 
-        const list = await executeSql('select * from users order by updatedAt desc limit ? offset ?', [pageSize, (pageNum - 1) * pageSize]);
-        const countResult = await executeSql('select count(*) from users');
+        // TODO 不起作用
+        const where = `
+            where name like "${name}%"
+            and mobile like "${mobile}%"
+        `;
+
+        const list = await executeSql(`
+            select *
+            from users ${where}
+            order by updatedAt desc
+            limit ? offset ?`, [pageSize, (pageNum - 1) * pageSize]);
+
+        const countResult = await executeSql(`
+            select count(*)
+            from users ${where}
+        `);
+
         const total = countResult[0]['count(*)'] || 0;
 
         return [200, {
