@@ -29,13 +29,14 @@ export default async function executeSql(sql, args, fullResult) {
 
 // 初始化数据库
 export async function initDB(init) {
-    const dbOk = await hasTables();
+    const hasInitData = await hasTables();
+
     if (init) await dropAllTables();
 
     // 创建表
     await executeSplit(createTableSql, 'create table');
 
-    if (init || !dbOk) await initTablesData();
+    if (init || !hasInitData) await initTablesData();
 }
 
 export async function hasTables() {
