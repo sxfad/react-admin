@@ -1,3 +1,4 @@
+import moment from 'moment';
 import executeSql from 'src/mock/db';
 
 export default {
@@ -30,6 +31,75 @@ export default {
 
         return [200, result];
     },
-    'put /menus': true,
-    'delete re:/menus/.+': true,
+    // 添加菜单
+    'post /menus': async config => {
+        const {keys, args, holders} = getMenuData(config);
+
+        const result = await executeSql(`
+            INSERT INTO menus (${keys})
+            VALUES (${holders})
+        `, args, true);
+        const {insertId: menuId} = result;
+
+        return [200, menuId];
+    },
+    'put /menus': async config => {
+        const {id} = JSON.parse(config.data);
+        const {keys, args} = getMenuData(config);
+
+        keys.push('updatedAt');
+        args.push(moment().format('YYYY-MM-DD HH:mm:ss'));
+        args.push(id);
+        const arr = keys.map(key => key + '=?');
+
+        await executeSql(`UPDATE menus
+                          SET ${arr}
+                          WHERE id = ?`, args);
+
+        return [200, true];
+
+    },
+    // 删除
+    'delete re:/menus/.+': async config => {
+        const id = config.url.split('/')[2];
+        await executeSql('DELETE FROM menus WHERE id=?', [id]);
+        await executeSql('DELETE FROM role_menus WHERE menuId=?', [id]);
+        return [200, true];
+    },
 };
+
+function getMenuData(config) {
+    const {
+        target,
+        parentId = '',
+        title,
+        basePath = '',
+        path = '',
+        order = 0,
+        name = '',
+        entry = '',
+        icon = '',
+        code = '',
+        type,
+    } = JSON.parse(config.data);
+    const data = Object.entries({
+        target,
+        parentId,
+        title,
+        basePath,
+        path,
+        ['`order`']: order, // 数据库关键字
+        name,
+        entry,
+        icon,
+        code,
+        type,
+    });
+
+
+    const keys = data.map(([key]) => key);
+    const args = data.map(([, value]) => value);
+    const holders = data.map(() => '?');
+
+    return {keys, args, holders};
+}
