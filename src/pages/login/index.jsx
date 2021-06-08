@@ -106,41 +106,45 @@ export default config({
                     </div>
                     <div className={formItemClass}>
                         <FormItem
-                            noStyle
                             name="userName"
                             allowClear
                             autoFocus
                             prefix={<UserOutlined/>}
-                            placeholder="用户名"
+                            placeholder="请输入用户名"
                             required
                         />
                     </div>
                     <div className={formItemClass}>
                         <FormItem
                             type="password"
-                            noStyle
                             name="password"
                             prefix={<LockOutlined/>}
-                            placeholder="密码"
+                            placeholder="请输入密码"
                             required
                         />
                     </div>
                     <div className={formItemClass}>
                         <FormItem
                             type="image-code"
-                            noStyle
                             name="imageCode"
                             prefix={<FileImageOutlined/>}
                             placeholder="请输入图片验证码"
                             src={handleFetchImageCode}
                             ref={imageCodeRef}
                             required
+                            rules={[
+                                {
+                                    validator: (rule, value) => {
+                                        if (Array.isArray(value) && !value[1]) return Promise.reject('请输入图片验证码');
+                                        return Promise.resolve();
+                                    },
+                                },
+                            ]}
                         />
                     </div>
                     <div className={formItemClass}>
                         <FormItem
                             type="message-code"
-                            noStyle
                             name="messageCode"
                             prefix={<MessageOutlined/>}
                             placeholder="请输入短信验证码"

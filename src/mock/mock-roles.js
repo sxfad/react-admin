@@ -1,5 +1,5 @@
 import moment from 'moment';
-import executeSql from 'src/mock/db';
+import executeSql from 'src/mock/web-sql';
 
 export default {
     // 获取列表

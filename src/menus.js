@@ -1,6 +1,22 @@
 import ajax from 'src/commons/ajax';
 import {isLoginPage, formatMenus, getLoginUser} from 'src/commons';
 
+/**
+ 说明：
+ 菜单数据，可以是 id + parentId 扁平结构，也可以是 id + children树状结构
+ id: string, 主键 必填
+ parentId: string, 父级id 非必填
+ icon: string, 菜单图标 非必填
+ title: string, 菜单标题 或 权限码标题 必填
+ basePath: string, 基础路径，所有后代节点都会拼接上 非必填
+ path: string, 路由地址或者第三方网站地址 非必填
+ target: string, 菜单目标，menu: 应用菜单，qiankun: 乾坤子应用，iframe: iframe内嵌第三方，_self: 当前窗口打开第三方, _blank: 新开窗口打开第三方 必填
+ order: number, 排序，越大越靠前 非必填，默认0
+ type: string, 类型，菜单或权限码 必填
+ name: string, 微前端子应用注册名称，唯一不可重复 target===qiankun 必填
+ entry: string, 微前端子应用入口地址 target===qiankun 必填
+ code: string, 权限码 type==权限码 必填
+ **/
 export default async function getMenus() {
     const serverMenus = await getServerMenus();
     const menus = serverMenus.filter(item => item.type === 1);
@@ -59,20 +75,3 @@ function getServerMenus() {
 
     return run();
 }
-
-/**
- 说明：
- 菜单数据，可以是 id + parentId 扁平结构，也可以是 id + children树状结构
- id: string, 主键 必填
- parentId: string, 父级id 非必填
- icon: string, 菜单图标 非必填
- title: string, 菜单标题 或 权限码标题 必填
- basePath: string, 基础路径，所有后代节点都会拼接上 非必填
- path: string, 路由地址或者第三方网站地址 非必填
- target: string, 菜单目标，menu: 应用菜单，qiankun: 乾坤子应用，iframe: iframe内嵌第三方，_self: 当前窗口打开第三方, _blank: 新开窗口打开第三方 必填
- order: number, 排序，越大越靠前 非必填，默认0
- type: string, 类型，菜单或权限码 必填
- name: string, 微前端子应用注册名称，唯一不可重复 target===qiankun 必填
- entry: string, 微前端子应用入口地址 target===qiankun 必填
- code: string, 权限码 type==权限码 必填
- **/

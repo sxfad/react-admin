@@ -25,7 +25,7 @@ import {notification, Modal, message} from 'antd';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {setMainApp} from 'src/commons';
-import qiankunMain from './qiankun-main';
+import qiankun from './qiankun';
 
 function getRootDom(props) {
     const rootId = '#root';
@@ -53,7 +53,7 @@ if (!window.__POWERED_BY_QIANKUN__) {
 reportWebVitals();
 
 // 乾坤主应用
-qiankunMain();
+qiankun();
 
 
 // 作为乾坤子应用

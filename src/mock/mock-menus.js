@@ -1,6 +1,6 @@
 import moment from 'moment';
 import {convertToTree, findGenerationNodes} from '@ra-lib/util';
-import executeSql from 'src/mock/db';
+import executeSql from 'src/mock/web-sql';
 
 export default {
     // 获取用户菜单

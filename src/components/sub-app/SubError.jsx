@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import {Result} from 'antd';
 import {PageContent} from '@ra-lib/components';
-import {getAppByName} from 'src/qiankun-main';
+import {getAppByName} from 'src/qiankun';
 import styles from './style.less';
 
 export default function SubError(props) {

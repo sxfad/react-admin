@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {getSubApps, isActiveApp, getCurrentActiveSubApp, getContainerId} from 'src/qiankun-main';
+import {getSubApps, isActiveApp, getCurrentActiveSubApp, getContainerId} from 'src/qiankun';
 import config from 'src/commons/config-hoc';
 
 export default config()(function SubApp() {

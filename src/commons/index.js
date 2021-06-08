@@ -1,7 +1,7 @@
 import {match} from 'path-to-regexp';
 import {checkSameField, convertToTree, getQuery, sort} from '@ra-lib/util';
 import {menuTargetOptions} from 'src/commons/options';
-import {getSubApps, isActiveApp} from 'src/qiankun-main';
+import {getSubApps, isActiveApp} from 'src/qiankun';
 import {BASE_NAME, HASH_ROUTER} from 'src/config';
 import pageConfigs from 'src/pages/page-configs';
 import {Icon} from 'src/components';
