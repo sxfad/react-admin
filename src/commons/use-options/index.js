@@ -59,6 +59,8 @@ export default function useOptions(...args) {
                     setResult(options);
                 });
         })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
     return result;
 }
