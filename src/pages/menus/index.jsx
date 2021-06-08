@@ -114,6 +114,8 @@ export default config({
 
     async function handleActionSubmit() {
         setHasUnSaveAction(false);
+
+        await fetchMenus();
     }
 
     return (

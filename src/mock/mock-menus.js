@@ -174,7 +174,7 @@ export default {
         await executeSql('delete  from menus where parentId=? and type=?', [parentId, 2]);
         // 插入新的action
         for (let action of actions) {
-            const {id, parentId, title, code, type = 2} = action;
+            const {id, title, code, type = 2} = action;
 
             const data = {parentId, title, code, type};
 

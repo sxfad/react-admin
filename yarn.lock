@@ -1614,15 +1614,15 @@
   resolved "https://registry.npmjs.org/@polka/url/-/url-1.0.0-next.12.tgz#431ec342a7195622f86688bbda82e3166ce8cb28"
   integrity sha512-6RglhutqrGFMO1MNUXp95RBuYIuc8wTnMAV5MUhLmjTOy78ncwOw7RgeQ/HeymkKXRhZd0s2DNrM1rL7unk3MQ==
 
-"@ra-lib/ajax@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.npmjs.org/@ra-lib/ajax/-/ajax-0.1.7.tgz#03e15c5c1f3b28f8933daf464d818c0f0d20e815"
-  integrity sha512-nlattYlQ+zFZtLQMTZz2tO7wQd9rFRYHF6qW5ssgf6x2KKgyySdhGf9X9MZg+x+7KRCKhh9/BI80/QBvx8WKyQ==
+"@ra-lib/ajax@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.npmjs.org/@ra-lib/ajax/-/ajax-0.1.8.tgz#903685fddef5b49f86b27d2ca8275e2a7530cab6"
+  integrity sha512-IOJCLyTtpBkCZkY65D2i6oy+tP8giyOzW9CEkCTz/Op5IF3N7U3aH/iy8kIKzc3FRXPPezqGIi5jU4/Gkdr/6Q==
 
-"@ra-lib/components@^0.1.50":
-  version "0.1.50"
-  resolved "https://registry.npmjs.org/@ra-lib/components/-/components-0.1.50.tgz#f3d9cc18d622c093cfaf48cece92f0304258d9a5"
-  integrity sha512-KWRsICOnIFWkFBGYQb2SkQnAXGwu6ebLMHcJTPdaRYs3XotKJgok+VMHHA6eTVrGeMunzsYf927mAb+bFC5CrQ==
+"@ra-lib/components@^0.1.52":
+  version "0.1.52"
+  resolved "https://registry.npmjs.org/@ra-lib/components/-/components-0.1.52.tgz#d2c0900ea13003ef3d73d1a8bea4f27b44760eff"
+  integrity sha512-N5Fs4/KwTtzJgromTJzFdoaIyjJhHvw5ztgT3m99A2IXrjLd3Ctg5tor0E1NUBlDwnH/1gz9tJ6Xs4AQhtxJTA==
 
 "@ra-lib/config-loader@^0.1.6":
   version "0.1.6"
@@ -1634,10 +1634,10 @@
   resolved "https://registry.npmjs.org/@ra-lib/hoc/-/hoc-0.1.2.tgz#474e57369efb174bbed1dd2027d6005c5c33c1e3"
   integrity sha512-qUu9LdE/s/xxWXfbpgYMmwv3ikWfK5EFzaEmPWPe3dLVpu/Nufh7QvsYGs6E3QllbgARTpeh9PeoUNROkxippg==
 
-"@ra-lib/hooks@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.npmjs.org/@ra-lib/hooks/-/hooks-0.1.4.tgz#779c007ff4dee928cb593abcc981121608383052"
-  integrity sha512-98I1L6vyVtSMYMWtoWIg/Uq/fWLJuhmDPF6V+8mNjHrgfNhe8b0Tr/89sttE8H1vXn+joVoDaIJgVBsp9jS9jA==
+"@ra-lib/hooks@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.npmjs.org/@ra-lib/hooks/-/hooks-0.1.6.tgz#8d44e11f26c52465a698d81019e20fc6be91c84e"
+  integrity sha512-ckbZdU5ye/q96A/YNSW9I83PYWa8wzA8iN3FiUOmI+9JJd/h2MnhqLFjNJm1ydA/hdmGiFFirxEW2IYkvFJLoQ==
 
 "@ra-lib/model@^0.1.2":
   version "0.1.2"
