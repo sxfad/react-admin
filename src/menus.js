@@ -66,11 +66,7 @@ function getServerMenus() {
 
     // 开启Mock时，菜单请求会在mock生效之前执行，无法被mock捕获，通过setTimeout解决
     if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_MOCK) {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                run().then(resolve, reject);
-            });
-        });
+        return new Promise((resolve, reject) => setTimeout(() => run().then(resolve, reject)));
     }
 
     return run();
