@@ -98,6 +98,7 @@ export default config()(function MenuEdit(props) {
     const layout = {
         labelCol: {flex: '100px'},
     };
+    console.log(123, form.isFieldsTouched(true));
 
     return (
         <Form

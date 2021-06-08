@@ -158,8 +158,10 @@ export default config({
                                     type="primary"
                                     htmlType="submit"
                                     disabled={
-                                        !form?.isFieldsTouched(true) ||
-                                        form?.getFieldsError().filter(({errors}) => errors.length).length
+                                        // 用户没有操作过，或者没有setFieldsValue
+                                        !form.isFieldsTouched(true)
+                                        // 表单中存在错误
+                                        || form.getFieldsError().filter(({errors}) => errors.length).length
                                     }
                                 >
                                     登录

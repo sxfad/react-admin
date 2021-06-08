@@ -158,11 +158,7 @@ export default config({
                 isAdd={isAdd}
                 selectedMenu={selectedMenu}
                 onSubmit={handleMenuSubmit}
-                onValuesChange={() => {
-
-                    console.log(123123);
-                    setHasUnSaveMenu(true);
-                }}
+                onValuesChange={() => setHasUnSaveMenu(true)}
             />
             <ActionEdit
                 isAdd={isAdd}
