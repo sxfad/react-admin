@@ -42,6 +42,8 @@ function getServerMenus() {
         CACHE_AJAX = CACHE_AJAX || ajax.get('/user/menus', {userId: getLoginUser()?.id})
             .then(res => (res || []).map(item => ({
                 ...item,
+                id: '' + item.id, // 需要转为字符串
+                parentId: '' + item.parentId,
             })));
         return CACHE_AJAX;
     };
