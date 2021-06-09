@@ -140,9 +140,9 @@ export default config({
                                 name="roleIds"
                             >
                                 <RoleSelectTable
-                                    disabled={disabled}
                                     fitHeight={!IS_MOBILE}
                                     otherHeight={200}
+                                    getCheckboxProps={() => ({disabled})}
                                 />
                             </FormItem>
                         </Card>

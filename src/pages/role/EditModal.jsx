@@ -111,7 +111,10 @@ export default config({
                                 {...layout}
                                 name="menuIds"
                             >
-                                <MenuTableSelect fitHeight otherHeight={200}/>
+                                <MenuTableSelect
+                                    fitHeight
+                                    otherHeight={200}
+                                />
                             </FormItem>
                         </Card>
                     </Col>

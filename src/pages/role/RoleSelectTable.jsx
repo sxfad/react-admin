@@ -85,7 +85,14 @@ export default class RoleSelectTable extends Component {
             loading,
         } = this.state;
 
-        const {value, onChange, fullValue, disabled, ...others} = this.props;
+        const {
+            value,
+            onChange,
+            fullValue,
+            disabled,
+            getCheckboxProps = () => ({}),
+            ...others
+        } = this.props;
 
         return (
             <>
@@ -102,9 +109,7 @@ export default class RoleSelectTable extends Component {
                     showHeader={true}
                     size="small"
                     rowSelection={{
-                        getCheckboxProps: () => {
-                            return {disabled};
-                        },
+                        getCheckboxProps,
                         selectedRowKeys: fullValue ? (value || []).map(item => item.id) : value,
                         onChange: (selectedRowKeys, selectedRows) => onChange(fullValue ? selectedRows : selectedRowKeys),
                     }}

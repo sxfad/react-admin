@@ -113,7 +113,7 @@ export default class MenuTableSelect extends Component {
             expandedAll,
         } = this.state;
 
-        const {value, onChange, disabled, ...others} = this.props;
+        const {value, onChange, getCheckboxProps, ...others} = this.props;
 
         return (
             <>
@@ -137,9 +137,7 @@ export default class MenuTableSelect extends Component {
                         onExpandedRowsChange: expandedRowKeys => this.setState({expandedRowKeys}),
                     }}
                     rowSelection={{
-                        getCheckboxProps: () => {
-                            return {disabled};
-                        },
+                        getCheckboxProps,
                         selectedRowKeys: value,
                         onChange: onChange,
                     }}

@@ -11,6 +11,7 @@ yarn build
 # scp -r build/* app@$TARGET:/home/app/nginx/html
 # scp deploy/nginx.conf app@$TARGET:/home/app/nginx/conf
 # ssh app@$TARGET "chmod 775 -R /home/app/nginx"
+# ssh app@$TARGET "nginx -s reload" # 重启ng，一般是ng配置改变了之后需要
 
 # rancher部署
 # 将构建生成的静态文件copy到deploy目录，提升docker构建速度
