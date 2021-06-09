@@ -1,11 +1,14 @@
 import {useEffect, useState} from 'react';
 // 项目中可能用到的一些枚举类数据
 // 约定只含有三个参数，其他数据通过record存储：{value: 1, label: '名称', record: {}};
+
+// 是否
 useOptions.yesNo = [
     {value: true, label: '是'},
     {value: false, label: '否'},
 ];
 
+// 性别
 useOptions.sex = [
     {value: '1', label: '男'},
     {value: '2', label: '女'},
@@ -44,7 +47,14 @@ export default function useOptions(...args) {
             });
             Promise.allSettled(functions)
                 .then(results => {
-                    const options = results.map(item => item.status === 'fulfilled' ? item.value : []);
+                    const options = results.map(item => {
+                        if (item.status === 'fulfilled') {
+                            return item.value;
+                        } else {
+                            console.error(item.reason);
+                            return [];
+                        }
+                    });
 
                     // 检测是否只含有 value label record? 三个参数
                     options.filter(item => !!item).forEach(arr => arr.forEach(obj => {

@@ -15,7 +15,6 @@ if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_MOCK) {
     require('./mock/index');
     console.warn('mock is enabled!!!');
 }
-
 /* eslint-disable import/first */
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';

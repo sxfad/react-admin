@@ -12,7 +12,6 @@ import {
 } from '@ra-lib/components';
 import {IS_MOBILE} from 'src/config';
 import EditModal from './EditModal';
-import useOptions from 'src/commons/use-options';
 
 export default config({
     path: '/users',
@@ -24,20 +23,6 @@ export default config({
     const [visible, setVisible] = useState(false);
     const [record, setRecord] = useState(null);
     const [form] = Form.useForm();
-
-    const [
-        userOptions,
-        menuOptions,
-        actionOptions,
-    ] = useOptions(
-        useOptions.user,
-        useOptions.menu,
-        useOptions.action,
-    );
-
-    console.log(userOptions,
-        menuOptions,
-        actionOptions);
 
     const params = {
         ...conditions,

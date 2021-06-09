@@ -27,8 +27,8 @@ export default {
     // 获取列表
     'get /users': async (config) => {
         const {
-            pageSize,
-            pageNum,
+            pageSize = 10,
+            pageNum = 1,
             account = '',
             name = '',
             mobile = '',

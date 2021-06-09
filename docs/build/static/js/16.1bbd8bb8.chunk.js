@@ -1,0 +1,2 @@
+(this["webpackJsonp_react-admin"]=this["webpackJsonp_react-admin"]||[]).push([[16],{933:function(e,t,a){"use strict";a.r(t);var s=a(192),c=a(329),r=a(8);t.default=Object(s.a)({path:"/users/center/:id",selectedMenuPath:"/users",title:"\u7528\u6237\u4e2d\u5fc3"})((function(e){var t=e.match.params.id;return Object(r.jsxs)(c.a,{children:["\u7528\u6237\u4e2d\u5fc3-",t]})}))}}]);
+//# sourceMappingURL=16.1bbd8bb8.chunk.js.map
