@@ -11,8 +11,7 @@ module.exports = function(app) {
             changeOrigin: true,
             secure: false, // 是否验证证书
             ws: true, // 启用websocket
-            // onProxyReq (proxyReq, req, res) {
-            // },
+            // 作为子系统时，需要设置允许跨域
             onProxyRes(proxyRes, req, res) {
                 proxyRes.headers['Access-Control-Allow-Origin'] = '*';
                 proxyRes.headers['Access-Control-Allow-Methods'] = '*';
