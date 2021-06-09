@@ -1,6 +1,9 @@
 import createTableSql, {initDataSql} from './init-sql';
+import appPackage from '../../../package.json';
 
-const db = openDatabase('react-admin', '1.0', 'react-admin测试数据库', 2 * 1024 * 1024);
+const packageName = appPackage.name;
+
+const db = openDatabase(packageName, '1.0', packageName + '测试数据库', 2 * 1024 * 1024);
 let CACHE_INI_DB;
 
 const tables = [
@@ -29,7 +32,7 @@ export default async function executeSql(sql, args, fullResult) {
 
 // 初始化数据库
 export async function initDB(init) {
-    const hasInitData = await hasTables();
+    const hasInitData = await usersHasData();
 
     if (init) await dropAllTables();
 
@@ -39,14 +42,16 @@ export async function initDB(init) {
     if (init || !hasInitData) await initTablesData();
 }
 
-export async function hasTables() {
+export async function usersHasData() {
     return new Promise((resolve, reject) => {
         db.transaction(
             function(tx) {
                 tx.executeSql(
                     'select * from users',
                     null,
-                    () => resolve(true),
+                    (transaction, resultSet) => {
+                        resultSet.rows.length ? resolve(true) : resolve(false);
+                    },
                     (transaction, error) => {
                         resolve(false);
                     });

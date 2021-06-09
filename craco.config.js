@@ -27,6 +27,13 @@ module.exports = {
                 babelPluginImportOptions: {
                     libraryDirectory: 'es',
                 },
+                lessLoaderOptions: {
+                    lessOptions: {
+                        modifyVars: {
+                            packageName,
+                        },
+                    },
+                },
                 modifyLessRule: function(lessRule, _context) {
                     // src 中less交给 CracoLessPlugin 处理
                     lessRule.exclude = SRC_PATH;
@@ -53,6 +60,9 @@ module.exports = {
                             loader: 'less-loader',
                             options: {
                                 lessOptions: {
+                                    modifyVars: {
+                                        packageName,
+                                    },
                                     javascriptEnabled: true,
                                 },
                             },

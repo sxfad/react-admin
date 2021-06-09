@@ -4,31 +4,13 @@
 
 ## 作为乾坤子系统时
 
-新创建子项目注意修改：
-
-- package.json name 属性
-- src/theme.less 中 @ant-prefix 和 @ra-lib-prefix
+**新创建子项目时注意修改 package.json 文件中 name 属性**
 
 约定：package.json name 作为:
 
     - 子系统的BASE_NAME 
     - 子系统注册到主系统中的 name 、 activeRule
-
-- ajax请求前缀设置为 `${window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__}api`
-- 子系统webpack配置
-
-    ```js
-    // craco.config.js
-    const packageName = require('./package.json').name;
-    
-    {
-        configure: (webpackConfig, {env, paths}) => {
-            webpackConfig.output.library = packageName;
-            webpackConfig.output.libraryTarget = 'umd';
-            webpackConfig.output.jsonpFunction = `webpackJsonp_${packageName}`;
-        }
-    }           
-    ```  
+    - ant、ra-lib组件库class前缀
 
 ## 服务器设置
 

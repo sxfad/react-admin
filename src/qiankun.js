@@ -12,48 +12,6 @@ import getMenus from 'src/menus';
 import App from 'src/App';
 import {menuTargetOptions} from 'src/commons/options';
 
-export default async function() {
-    // 获取子应用
-    const subApps = await getSubApps();
-
-    // 注册子应用
-    registerMicroApps(subApps, {
-        beforeLoad: (app) => {
-            const {title = '子应用', name} = app;
-
-            // 要通过App包裹，否则缺少必要环境
-            ReactDOM.render(
-                <App>
-                    <PageContent loading fitHeight loadingTip={`${title}加载中...`}/>
-                </App>,
-                document.getElementById(getContainerId(name)),
-            );
-        },
-    });
-
-    // 启动应用
-    start({
-        // 是否同时只加载一个应用
-        singular: !CONFIG_HOC.keepAlive,
-        // 是否预加载
-        prefetch: false,
-    });
-
-    // 全局错误处理
-    addGlobalUncaughtErrorHandler(event => {
-        // 子应用加载失败
-        if (event?.message?.includes('died in status LOADING_SOURCE_CODE')) {
-            const name = event.error.appOrParcelName;
-            ReactDOM.render(
-                <App>
-                    <SubError error={event} name={name}/>
-                </App>,
-                document.getElementById(getContainerId(name)),
-            );
-        }
-    });
-}
-
 /**
  * 获取子应用列表
  * @param disableCache 忽略缓存，直接从服务器获取
@@ -139,4 +97,46 @@ export async function getAppByName(name) {
  */
 export function getContainerId(name) {
     return `_sub_app_id__${name}`;
+}
+
+export default async function() {
+    // 获取子应用
+    const subApps = await getSubApps();
+
+    // 注册子应用
+    registerMicroApps(subApps, {
+        beforeLoad: (app) => {
+            const {title = '子应用', name} = app;
+
+            // 要通过App包裹，否则缺少必要环境
+            ReactDOM.render(
+                <App>
+                    <PageContent loading fitHeight loadingTip={`${title}加载中...`}/>
+                </App>,
+                document.getElementById(getContainerId(name)),
+            );
+        },
+    });
+
+    // 启动应用
+    start({
+        // 是否同时只加载一个应用
+        singular: !CONFIG_HOC.keepAlive,
+        // 是否预加载
+        prefetch: false,
+    });
+
+    // 全局错误处理
+    addGlobalUncaughtErrorHandler(event => {
+        // 子应用加载失败
+        if (event?.message?.includes('died in status LOADING_SOURCE_CODE')) {
+            const name = event.error.appOrParcelName;
+            ReactDOM.render(
+                <App>
+                    <SubError error={event} name={name}/>
+                </App>,
+                document.getElementById(getContainerId(name)),
+            );
+        }
+    });
 }
