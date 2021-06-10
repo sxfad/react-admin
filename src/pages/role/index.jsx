@@ -13,6 +13,7 @@ import {
 import EditModal from './EditModal';
 import styles from './style.less';
 import {IS_MOBILE} from 'src/config';
+import options from 'src/commons/options';
 
 export default config({
     path: '/roles',
@@ -53,6 +54,7 @@ export default config({
 
     const columns = [
         {title: '角色名称', dataIndex: 'name'},
+        {title: '启用', dataIndex: 'enable', render: value => options.enable.getTag(!!value)},
         {title: '备注', dataIndex: 'remark'},
         {
             title: '操作', dataIndex: 'operator', width: 100,

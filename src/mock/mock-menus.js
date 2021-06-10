@@ -174,13 +174,14 @@ export default {
         await executeSql('delete  from menus where parentId=? and type=?', [parentId, 2]);
         // 插入新的action
         for (let action of actions) {
-            const {id, title, code, type = 2} = action;
+            let {id, title, code, enable, type = 2} = action;
+            enable = enable ? 1 : 0;
 
-            const data = {parentId, title, code, type};
+            const data = {parentId, title, code, enable, type};
 
             const keys = Object.keys(data);
             const values = Object.values(data);
-            const holders = ['?', '?', '?', '?'];
+            const holders = values.map(() => '?');
 
             if (id) {
                 keys.push('id');
@@ -200,7 +201,7 @@ export default {
 };
 
 function getMenuData(config, parse = JSON.parse) {
-    const {
+    let {
         target = 'menu',
         parentId = '',
         title,
@@ -212,7 +213,9 @@ function getMenuData(config, parse = JSON.parse) {
         icon = '',
         code = '',
         type = 1,
+        enable,
     } = parse(config.data);
+    enable = enable ? 1 : 0;
     const data = Object.entries({
         target,
         parentId,
@@ -226,6 +229,7 @@ function getMenuData(config, parse = JSON.parse) {
         icon,
         code,
         type,
+        enable,
     });
 
 

@@ -11,6 +11,7 @@ import {
     ToolBar,
 } from '@ra-lib/components';
 import {IS_MOBILE} from 'src/config';
+import options from 'src/commons/options';
 import EditModal from './EditModal';
 
 export default config({
@@ -52,6 +53,7 @@ export default config({
     const columns = [
         {title: '账号', dataIndex: 'account'},
         {title: '姓名', dataIndex: 'name'},
+        {title: '启用', dataIndex: 'enable', render: value => options.enable.getTag(!!value)},
         {title: '手机号', dataIndex: 'mobile'},
         {title: '邮箱', dataIndex: 'email'},
         {

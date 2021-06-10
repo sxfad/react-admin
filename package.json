@@ -22,7 +22,7 @@
         "@craco/craco": "^6.1.1",
         "@loadable/component": "^5.14.1",
         "@ra-lib/ajax": "^0.1.9",
-        "@ra-lib/components": "^0.1.54",
+        "@ra-lib/components": "^0.1.55",
         "@ra-lib/config-loader": "^0.1.6",
         "@ra-lib/hoc": "^0.1.2",
         "@ra-lib/hooks": "^0.1.6",

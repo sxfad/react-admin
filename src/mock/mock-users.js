@@ -83,16 +83,19 @@ export default {
     },
     // 保存
     'post /users': async config => {
-        const {
+        let {
             account,
             name,
             password,
             email,
             mobile,
+            enable,
             roleIds,
         } = JSON.parse(config.data);
-        const args = [account, name, password, mobile, email, true];
-        const result = await executeSql('INSERT INTO users (account, name, password, mobile, email, enable) VALUES (?, ?, ?, ?, ?, ?)', args, true);
+        enable = enable ? 1 : 0;
+
+        const args = [account, name, password, mobile, email, enable, moment().format('YYYY-MM-DD HH:mm:ss'), moment().format('YYYY-MM-DD HH:mm:ss')];
+        const result = await executeSql('INSERT INTO users (account, name, password, mobile, email, enable, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', args, true);
         const {insertId: userId} = result;
 
         if (roleIds?.length) {
@@ -105,18 +108,20 @@ export default {
     },
     // 修改
     'put /users': async config => {
-        const {
+        let {
             id,
             account,
             name,
             password,
             email,
             mobile,
+            enable,
             roleIds,
         } = JSON.parse(config.data);
-        const args = [account, name, password, mobile, email, moment().format('YYYY-MM-DD HH:mm:ss'), id];
+        enable = enable ? 1 : 0;
+        const args = [account, name, password, mobile, email, enable, moment().format('YYYY-MM-DD HH:mm:ss'), id];
 
-        await executeSql('UPDATE users SET account=?, name=?, password=?, mobile=?, email=?, updatedAt=? WHERE id=?', args);
+        await executeSql('UPDATE users SET account=?, name=?, password=?, mobile=?, email=?, enable=?, updatedAt=? WHERE id=?', args);
         await executeSql('DELETE FROM user_roles WHERE userId=?', [id]);
 
         if (roleIds?.length) {

@@ -36,9 +36,10 @@ export default function App(props) {
                 // 用户存在，获取菜单
                 if (loginUser) {
                     const menus = await getMenus();
+                    setMenus(menus);
+
                     loginUser.permissions = await getPermissions();
                     setLoginUser(loginUser);
-                    setMenus(menus);
                 }
                 setLoading(false);
             } catch (e) {

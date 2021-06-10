@@ -16,13 +16,8 @@ const menuTargetOptions = options.menuTarget;
 
 /**
  * 获取子应用列表
- * @param disableCache 忽略缓存，直接从服务器获取
- * @returns {Promise<null|[{container: string, entry: string, activeRule: string, name: string, title: string}, {container: string, entry: string, activeRule: string, name: string}]>}
  */
-let _SUB_APPS_CATCH = null; // 做缓存，刷新之后才重新请求
-export async function getSubApps(disableCache) {
-    if (!disableCache && _SUB_APPS_CATCH) return _SUB_APPS_CATCH;
-
+export async function getSubApps() {
     // 传递给子应用的数据
     const props = {
         mainApp: {
@@ -55,9 +50,7 @@ export async function getSubApps(disableCache) {
     });
     loop(menuTreeData);
 
-    _SUB_APPS_CATCH = result;
-
-    return _SUB_APPS_CATCH;
+    return result;
 }
 
 /**

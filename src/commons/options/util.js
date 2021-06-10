@@ -42,6 +42,7 @@ export function wrapper(options, cacheTime) {
     Object.values(options)
         .forEach(item => {
             item.getOption = (value) => getField(item, value);
+            item.getTag = (value) => getField(item, value, 'tag');
             item.getLabel = (value) => getField(item, value, 'label');
             item.getMeta = (value) => getField(item, value, 'meta');
             item.clearCache = () => cacheMap.delete(item);

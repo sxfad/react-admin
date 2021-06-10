@@ -185,6 +185,10 @@ export function toLogin() {
  */
 export async function checkPath(result) {
     const subApps = await getSubApps();
+
+    const hasHome = result.some(({path}) => path === '/');
+    if (!hasHome) throw Error(`必须含有首页路由，path: '/'， 如果需要其他页面做首页，可以进行 Redirect`);
+
     result
         .filter(({path}) => !!path)
         .forEach(({path, filePath}) => {

@@ -108,6 +108,7 @@ export default config()(function MenuEdit(props) {
             form={form}
             onFinish={handleSubmit}
             onValuesChange={onValuesChange}
+            initialValues={{enable: true}}
         >
             <h3 className={styles.title}>{title}</h3>
             <Content ref={contentRef} loading={loading} className={styles.content}>
@@ -140,6 +141,15 @@ export default config()(function MenuEdit(props) {
                             name="title"
                             required
                             tooltip="菜单标题"
+                        />
+                        <FormItem
+                            {...layout}
+                            type="switch"
+                            label="启用"
+                            name="enable"
+                            checkedChildren="启"
+                            unCheckedChildren="禁"
+                            tooltip="是否启用"
                         />
                         <FormItem shouldUpdate noStyle>
                             {({getFieldValue}) => {

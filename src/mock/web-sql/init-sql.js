@@ -7,6 +7,7 @@ export default `
     (
         id        INTEGER PRIMARY KEY,
         parentId  INTEGER                             null,
+        enable    tinyint(1)                          not null, -- comment '是否可用',
         title     varchar(50)                         null,     -- comment '菜单标题或者权限码标题',
         icon      varchar(50)                         null,     -- comment '菜单图标',
         basePath  varchar(200)                        null,     -- comment '基础路径',
@@ -38,6 +39,7 @@ export default `
     (
         id        INTEGER PRIMARY KEY,
         name      varchar(50)                         not null, -- comment '角色名称',
+        enable    tinyint(1)                          not null, -- comment '是否可用',
         remark    varchar(200)                        null,     -- comment '角色备注',
         createdAt timestamp default CURRENT_TIMESTAMP not null, -- comment '创建时间',
         updatedAt timestamp default CURRENT_TIMESTAMP null,     -- comment '更新时间',
@@ -75,8 +77,8 @@ export default `
 `;
 
 export const initRolesSql = `
-    INSERT INTO roles (id, name, remark, createdAt, updatedAt)
-    VALUES (1, '管理员', '管理员拥有系统所有权限', '${now}', '${now}');
+    INSERT INTO roles (id, name, remark, enable, createdAt, updatedAt)
+    VALUES (1, '管理员', '管理员拥有系统所有权限', 1, '${now}', '${now}');
 `;
 
 export const initRoleMenusSql = `
@@ -103,18 +105,18 @@ export const initUserRolesSql = `
 `;
 
 export const initMenuSql = `
-    INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
-    VALUES (1, null, '系统管理', null, null, null, 'menu', 0, 1, null, null, null, '${now}', '${now}');
-    INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
-    VALUES (2, 1, '用户管理', null, null, '/users', 'menu', 0, 1, null, null, null, '${now}', '${now}');
-    INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
-    VALUES (3, 1, '角色管理', null, null, '/roles', 'menu', 0, 1, null, null, null, '${now}', '${now}');
-    INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
-    VALUES (4, 1, '菜单管理', null, null, '/menus', 'menu', 0, 1, null, null, null, '${now}', '${now}');
-    INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
-    VALUES (5, 2, '添加用户', null, null, null, null, 0, 2, 'ADD_USER', null, null, '${now}', '${now}');
-    INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
-    VALUES (6, 2, '删除用户', null, null, null, null, 0, 2, 'UPDATE_USER', null, null, '${now}', '${now}');
+    INSERT INTO menus (id, parentId, enable, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
+    VALUES (1, null, 1, '系统管理', null, null, null, 'menu', 0, 1, null, null, null, '${now}', '${now}');
+    INSERT INTO menus (id, parentId, enable, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
+    VALUES (2, 1, 1, '用户管理', null, null, '/users', 'menu', 0, 1, null, null, null, '${now}', '${now}');
+    INSERT INTO menus (id, parentId, enable, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
+    VALUES (3, 1, 1, '角色管理', null, null, '/roles', 'menu', 0, 1, null, null, null, '${now}', '${now}');
+    INSERT INTO menus (id, parentId, enable, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
+    VALUES (4, 1, 1, '菜单管理', null, null, '/menus', 'menu', 0, 1, null, null, null, '${now}', '${now}');
+    INSERT INTO menus (id, parentId, enable, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
+    VALUES (5, 2, 1, '添加用户', null, null, null, null, 0, 2, 'ADD_USER', null, null, '${now}', '${now}');
+    INSERT INTO menus (id, parentId, enable, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
+    VALUES (6, 2, 1, '删除用户', null, null, null, null, 0, 2, 'UPDATE_USER', null, null, '${now}', '${now}');
 `;
 
 export const initDataSql = {

@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';
+import {Tag} from 'antd';
 import {wrapper} from './util';
 
 /**
@@ -8,6 +9,7 @@ import {wrapper} from './util';
  *  value: 1,      // 必须且不可重复
  *  label: '名称', // 必须
  *  meta: {},     // 其他数据，可缺省
+ *  tag: Tag      // 标签
  * };
  * */
 const options = {
@@ -31,8 +33,13 @@ const options = {
     },
     // 是否
     yesNo: [
-        {value: true, label: '是'},
-        {value: false, label: '否'},
+        {value: true, label: '是', tag: <Tag color="green">是</Tag>},
+        {value: false, label: '否', tag: <Tag color="red">否</Tag>},
+    ],
+    // 启用、禁用
+    enable: [
+        {value: true, label: '启用', tag: <Tag color="green">启用</Tag>},
+        {value: false, label: '禁用', tag: <Tag color="red">禁用</Tag>},
     ],
     // 性别
     sex: [

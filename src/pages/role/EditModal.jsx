@@ -77,6 +77,7 @@ export default config({
                 form={form}
                 name="roleEdit"
                 onFinish={handleSubmit}
+                initialValues={{enable: true}}
             >
                 {isEdit ? <FormItem hidden name="id"/> : null}
 
@@ -94,6 +95,15 @@ export default config({
                                     rules={[
                                         {validator: checkName},
                                     ]}
+                                />
+                                <FormItem
+                                    {...layout}
+                                    type={'switch'}
+                                    label="启用"
+                                    name="enable"
+                                    checkedChildren="启"
+                                    unCheckedChildren="禁"
+                                    required
                                 />
                                 <FormItem
                                     {...layout}

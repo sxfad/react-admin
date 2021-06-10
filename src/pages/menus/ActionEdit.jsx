@@ -52,6 +52,13 @@ export default config()(function ActionEdit(props) {
                                                 name={[name, 'id']}
                                             />
                                             <FormItem
+                                                type="switch"
+                                                name={[name, 'enable']}
+                                                initialValue={true}
+                                                checkedChildren="启"
+                                                unCheckedChildren="禁"
+                                            />
+                                            <FormItem
                                                 name={[name, 'title']}
                                                 placeholder="名称"
                                                 rules={[{required: true, message: '请输入名称！'}]}

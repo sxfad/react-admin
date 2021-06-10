@@ -63,13 +63,16 @@ export default {
     },
     // 添加
     'post /roles': async config => {
-        const {
+        let {
             name,
             remark = '',
+            enable,
             menuIds,
         } = JSON.parse(config.data);
-        const args = [name, remark];
-        const result = await executeSql('INSERT INTO roles (name, remark) VALUES (?, ?)', args, true);
+        enable = enable ? 1 : 0;
+
+        const args = [name, remark, enable, moment().format('YYYY-MM-DD HH:mm:ss'), moment().format('YYYY-MM-DD HH:mm:ss')];
+        const result = await executeSql('INSERT INTO roles (name, remark, enable, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?)', args, true);
         const {insertId: roleId} = result;
 
         if (menuIds?.length) {
@@ -82,15 +85,17 @@ export default {
     },
     // 修改
     'put /roles': async config => {
-        const {
+        let {
             id,
             name,
             remark = '',
+            enable,
             menuIds,
         } = JSON.parse(config.data);
-        const args = [name, remark, moment().format('YYYY-MM-DD HH:mm:ss'), id];
+        enable = enable ? 1 : 0;
+        const args = [name, remark, enable, moment().format('YYYY-MM-DD HH:mm:ss'), id];
 
-        await executeSql('UPDATE roles SET name=?, remark=?, updatedAt=? WHERE id=?', args);
+        await executeSql('UPDATE roles SET name=?, remark=?, enable=?, updatedAt=? WHERE id=?', args);
         await executeSql('DELETE FROM role_menus WHERE roleId=?', [id]);
 
         if (menuIds?.length) {
