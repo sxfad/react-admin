@@ -5,6 +5,7 @@ import {FormItem, Content} from '@ra-lib/components';
 import {useHeight, useDebounceValidator} from '@ra-lib/hooks';
 import config from 'src/commons/config-hoc';
 import options from 'src/commons/options';
+import {IS_MAIN_APP} from 'src/config';
 import styles from './style.less';
 
 const menuTargetOptions = options.menuTarget;
@@ -23,7 +24,11 @@ export default config()(function MenuEdit(props) {
     const hasSelectedMenu = selectedMenu && Object.keys(selectedMenu).length;
     const isAddTop = isAdd && !hasSelectedMenu;
     const isAddSub = isAdd && hasSelectedMenu;
-    const title = isAddTop ? '添加顶级' : isAddSub ? '添加子级' : '修改菜单';
+    const title = (() => {
+        if (isAddTop) return IS_MAIN_APP ? '添加应用' : '添加顶级';
+
+        return isAddSub ? '添加菜单' : '修改菜单';
+    })();
 
     const {run: deleteMenu} = props.ajax.useDel('/menus/:id', null, {setLoading});
     const {run: saveMenu} = props.ajax.usePost('/menus', null, {setLoading});
@@ -36,7 +41,11 @@ export default config()(function MenuEdit(props) {
         form.resetFields();
         let initialValues = selectedMenu;
         if (isAddTop) initialValues = {target: menuTargetOptions.QIANKUN};
-        if (isAddSub) initialValues = {target: menuTargetOptions.MENU, parentId: selectedMenu.id, systemId: selectedMenu.systemId};
+        if (isAddSub) initialValues = {
+            target: menuTargetOptions.MENU,
+            parentId: selectedMenu.id,
+            systemId: selectedMenu.systemId,
+        };
 
         form.setFieldsValue(initialValues);
     }, [form, isAdd, isAddTop, isAddSub, selectedMenu]);

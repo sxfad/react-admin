@@ -9,6 +9,8 @@ import appPackage from '../../package.json';
  * 当前文件为默认配置，会被环境配置、命令行参数覆盖
  * */
 
+// 是否作为为前端主应用
+export const IS_MAIN_APP = getConfigValue('IS_MAIN_APP', true);
 // 应用名称
 export const APP_NAME = getConfigValue('APP_NAME', 'React Admin');
 // 页面路由前缀

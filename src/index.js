@@ -19,6 +19,7 @@ import {notification, Modal, message} from 'antd';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {setMainApp} from 'src/commons';
+import {IS_MAIN_APP} from 'src/config';
 import qiankun from './qiankun';
 
 // 开启mock，这个判断不要修改，否则会把mock相关js打入生产包，很大
@@ -53,8 +54,9 @@ if (!window.__POWERED_BY_QIANKUN__) {
 reportWebVitals();
 
 // 乾坤主应用
-qiankun();
-
+if(IS_MAIN_APP) {
+    qiankun();
+}
 
 // 作为乾坤子应用
 export async function bootstrap(props) {

@@ -7,6 +7,7 @@ import MenuEdit from './MenuEdit';
 import ActionEdit from './ActionEdit';
 import theme from 'src/theme.less';
 import styles from './style.less';
+import {IS_MAIN_APP} from '../../config';
 
 export default config({
     path: '/menus',
@@ -129,7 +130,7 @@ export default config({
                             setSelectedMenu(null);
                         }}
                     >
-                        添加顶级
+                        {IS_MAIN_APP ? '添加应用' : '添加顶级'}
                     </Button>
                     <Button
                         disabled={!selectedMenu}
