@@ -27,6 +27,9 @@ export default function UseOptionsDemo(props) {
             <Button
                 onClick={() => options.menu.getLabel('1').then(console.log)}
             >测试缓存</Button>
+            <Button
+                onClick={() => options.menu('123').then(console.log)}
+            >测试缓存2</Button>
             <pre>
             {JSON.stringify({
                 menuOptions,

@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';
+import {wrapper} from './util';
 
 /**
  * 项目中可能用到的一些枚举类数据
@@ -9,13 +10,6 @@ import {useEffect, useState} from 'react';
  *  meta: {},     // 其他数据，可缺省
  * };
  * */
-
-// 异步请求缓存字典
-const cacheMap = new Map();
-// const cacheTime = false; // 不使用缓存
-// const cacheTime = true; // 一直保持，刷新失效
-const cacheTime = 1000; // 缓存指定时间，毫秒，可以有效防止短时间内多次请求，又可避免脏数据
-
 const options = {
     // 菜单目标
     get menuTarget() {
@@ -54,7 +48,7 @@ const options = {
                     {value: '1', label: '用户管理' + Date.now()},
                     {value: '2', label: '菜单管理' + Date.now()},
                 ]);
-            }, 1500);
+            }, 1000);
         });
     },
     action() {
@@ -63,62 +57,9 @@ const options = {
         ];
         // throw Error('获取失败了');
     },
-    clearCache() {
-        console.log('清除缓存');
-        Object.values(options).forEach(item => cacheMap.delete(item));
-        console.log(cacheMap);
-    },
 };
 
-// 处理缓存
-if (cacheTime !== false) {
-    Object.entries(options)
-        .forEach(([key, item]) => {
-            if (typeof item === 'function') {
-                options[key] = function newItem() {
-                    let cache = cacheMap.get(newItem);
-                    if (!cache) {
-                        cache = item();
-                        cacheMap.set(newItem, cache);
-
-                        if (typeof cacheTime === 'number') {
-                            setTimeout(() => cacheMap.delete(newItem), cacheTime);
-                        }
-                    }
-                    return cache;
-                };
-            }
-        });
-}
-
-// 添加方法
-Object.values(options)
-    .forEach(item => {
-        item.getOption = (value) => getField(item, value);
-        item.getLabel = (value) => getField(item, value, 'label');
-        item.getMeta = (value) => getField(item, value, 'meta');
-        item.clearCache = () => cacheMap.delete(item);
-    });
-
-function getField(item, value, field) {
-    let opts = item;
-
-    if (typeof item === 'function') {
-        opts = cacheMap.get(item) || item();
-    }
-
-    if (Array.isArray(opts)) {
-        const result = opts.find(i => i.value === value) || {};
-        return field ? result[field] : result;
-    }
-    // 异步结果
-    if (opts.then) {
-        return opts.then(it => {
-            const result = it.find(i => i.value === value) || {};
-            return field ? result[field] : result;
-        });
-    }
-}
+wrapper(options, 1000 * 5);
 
 export default options;
 
@@ -126,7 +67,7 @@ export function useOptions(...args) {
     const [result, setResult] = useState([]);
     useEffect(() => {
         (async () => {
-            const functions = args.map(item => {
+            const promises = args.map(item => {
                 if (typeof item === 'function') {
 
                     const res = item();
@@ -137,10 +78,12 @@ export function useOptions(...args) {
                     return Promise.resolve(res);
                 }
 
+                if (item.then) return item;
+
                 // 不是函数，原样返回
                 return Promise.resolve(item);
             });
-            Promise.allSettled(functions)
+            Promise.allSettled(promises)
                 .then(results => {
                     const options = results.map(item => {
                         if (item.status === 'fulfilled') {
