@@ -114,7 +114,6 @@ export default class MenuTableSelect extends Component {
         } = this.state;
 
         const {value, onChange, getCheckboxProps, ...others} = this.props;
-
         return (
             <>
                 <div style={{padding: 8, width: '100%', display: 'flex', alignItems: 'center'}}>
