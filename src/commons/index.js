@@ -1,6 +1,6 @@
 import {match} from 'path-to-regexp';
 import {checkSameField, convertToTree, getQuery, sort} from '@ra-lib/util';
-import {menuTargetOptions} from 'src/commons/options';
+import options from 'src/commons/options';
 import {getSubApps, isActiveApp} from 'src/qiankun';
 import {BASE_NAME, HASH_ROUTER} from 'src/config';
 import pageConfigs from 'src/pages/page-configs';
@@ -8,6 +8,7 @@ import {Icon} from 'src/components';
 import storage from 'src/commons/storage';
 import appPackage from '../../package.json';
 
+const menuTargetOptions = options.menuTarget;
 const TOKEN_STORAGE_KEY = `${appPackage.name}_token`;
 const LOGIN_USER_STORAGE_KEY = `${appPackage.name}_login-user`;
 const MAIN_APP_KEY = 'MAIN_APP';

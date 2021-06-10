@@ -10,7 +10,9 @@ import {getLoginUser, getToken, toLogin} from 'src/commons';
 import {CONFIG_HOC} from 'src/config';
 import getMenus from 'src/menus';
 import App from 'src/App';
-import {menuTargetOptions} from 'src/commons/options';
+import options from 'src/commons/options';
+
+const menuTargetOptions = options.menuTarget;
 
 /**
  * 获取子应用列表

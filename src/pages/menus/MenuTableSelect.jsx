@@ -4,7 +4,9 @@ import {Input, Button} from 'antd';
 import {convertToTree, filterTree} from '@ra-lib/util';
 import {Table, renderTableCheckbox} from '@ra-lib/components';
 import config from 'src/commons/config-hoc';
-import {menuTargetOptions} from 'src/commons/options';
+import options from 'src/commons/options';
+
+const menuTargetOptions = options.menuTarget;
 
 const WithCheckboxTable = renderTableCheckbox(Table);
 
