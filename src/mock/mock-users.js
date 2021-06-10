@@ -14,7 +14,7 @@ export default {
             password,
         } = JSON.parse(config.data);
 
-        const result = await executeSql('select * from users where account=? and password=?', [userName, password]);
+        const result = await executeSql('select * from users where account=? and password=? and enable=1', [userName, password]);
         if (!result?.length) return [400, {message: '用户名或密码错误'}];
 
         const user = result[0];

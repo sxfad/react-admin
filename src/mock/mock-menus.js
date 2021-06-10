@@ -22,7 +22,7 @@ export default {
         const menusId = roleMenus.map(item => item.menuId).join(',');
         const menus = await executeSql(`select *
                                         from menus
-                                        where id in (${menusId})`);
+                                        where id in (${menusId}) and enable=1`);
 
         return [200, Array.from(menus)];
     },

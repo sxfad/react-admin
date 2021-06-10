@@ -15,7 +15,7 @@ export default {
         if (!pageSize && !pageNum) {
             const list = await executeSql(`
                 select *
-                from roles ${where}
+                from roles where enable = 1
                 order by updatedAt desc`);
 
             return [200, list];
