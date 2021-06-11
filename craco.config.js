@@ -148,6 +148,7 @@ module.exports = {
                     'legacy': true,
                 },
             ],
+            '@babel/plugin-syntax-jsx',
             '@ra-lib/babel-plugin-permission',
             '@ra-lib/babel-plugin-classnames',
         ],
