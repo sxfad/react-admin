@@ -148,6 +148,8 @@ module.exports = {
                     'legacy': true,
                 },
             ],
+            '@ra-lib/babel-plugin-permission',
+            '@ra-lib/babel-plugin-classnames',
         ],
     },
 };

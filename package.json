@@ -37,6 +37,7 @@
         "axios-mock-adapter": "^1.19.0",
         "babel-eslint": "^10.1.0",
         "babel-jest": "^26.6.3",
+        "babel-plugin-classnames": "^0.2.0",
         "babel-plugin-import": "^1.13.3",
         "babel-plugin-named-asset-import": "^0.3.7",
         "babel-plugin-react-css-modules": "^5.2.6",
