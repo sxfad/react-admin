@@ -11,7 +11,7 @@ import {
     ToolBar,
 } from '@ra-lib/components';
 import {IS_MOBILE} from 'src/config';
-import options from 'src/commons/options';
+import options from 'src/options';
 import EditModal from './EditModal';
 
 export default config({

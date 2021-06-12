@@ -1,6 +1,6 @@
 import { LAYOUT_TYPE } from '@ra-lib/components';
-import { getConfigValue } from './util';
 import storage from 'src/commons/storage';
+import { getConfigValue } from './util';
 import appPackage from '../../package.json';
 
 /**

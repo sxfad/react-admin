@@ -1,5 +1,5 @@
 import {getQuery} from '@ra-lib/util';
-import {getLoginUser} from 'src/commons/index';
+import {getLoginUser} from './index';
 
 /**
  * 通用高阶组件

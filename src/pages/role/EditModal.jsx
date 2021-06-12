@@ -5,7 +5,7 @@ import {ModalContent, FormItem, Content} from '@ra-lib/components';
 import {useDebounceValidator} from '@ra-lib/hooks';
 import MenuTableSelect from 'src/pages/menus/MenuTableSelect';
 import {IS_MOBILE, IS_MAIN_APP} from 'src/config';
-import options, {useOptions} from 'src/commons/options';
+import options, {useOptions} from 'src/options';
 
 export default config({
     modal: {

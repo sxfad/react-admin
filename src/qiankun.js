@@ -10,7 +10,7 @@ import {getLoginUser, getToken, toLogin} from 'src/commons';
 import {CONFIG_HOC} from 'src/config';
 import getMenus from 'src/menus';
 import App from 'src/App';
-import options from 'src/commons/options';
+import options from 'src/options';
 
 const menuTargetOptions = options.menuTarget;
 

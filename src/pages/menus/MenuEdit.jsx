@@ -4,7 +4,7 @@ import json5 from 'json5';
 import {FormItem, Content} from '@ra-lib/components';
 import {useHeight, useDebounceValidator} from '@ra-lib/hooks';
 import config from 'src/commons/config-hoc';
-import options from 'src/commons/options';
+import options from 'src/options';
 import {IS_MAIN_APP} from 'src/config';
 import styles from './style.less';
 

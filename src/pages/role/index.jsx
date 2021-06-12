@@ -13,7 +13,7 @@ import {
 import EditModal from './EditModal';
 import styles from './style.less';
 import {IS_MOBILE, IS_MAIN_APP} from 'src/config';
-import options from 'src/commons/options';
+import options from 'src/options';
 
 export default config({
     path: '/roles',

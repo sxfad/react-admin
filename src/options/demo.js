@@ -1,6 +1,6 @@
 import {Button} from 'antd';
 import {PageContent} from '@ra-lib/components';
-import options, {useOptions} from 'src/commons/options';
+import options, {useOptions} from 'src/options';
 
 export default function UseOptionsDemo(props) {
     // 直接获取

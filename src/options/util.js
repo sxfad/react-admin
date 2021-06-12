@@ -1,5 +1,6 @@
 /**
- * 如果函数有参数，不会被缓存！！！
+ * 如果函数有参数，不会被缓存！！
+ * ！
  * @param options
  * @param cacheTime
  *      false 不缓存
