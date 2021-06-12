@@ -1,5 +1,4 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React, {useState, useRef, useEffect} from 'react';
 import {Input, Button} from 'antd';
 import {convertToTree, filterTree} from '@ra-lib/util';
 import {Table, renderTableCheckbox} from '@ra-lib/components';
@@ -10,25 +9,21 @@ const menuTargetOptions = options.menuTarget;
 
 const WithCheckboxTable = renderTableCheckbox(Table);
 
-@config({
-    ajax: true,
-})
-export default class MenuTableSelect extends Component {
-    static propTypes = {
-        value: PropTypes.array,     // 选中的节点
-        onChange: PropTypes.func,   // 选择节点时，触发
-    };
+export default config()(function MenuTableSelect(props) {
+    const {menus, value, onChange, topId, getCheckboxProps, ...others} = props;
 
-    state = {
-        loading: false,
-        dataSource: [],     // 表格展示的数据，搜索时是 menuTreeData 子集
-        menuTreeData: [],   // 所有的菜单数据
-        allMenuKeys: [],
-        expandedRowKeys: [],
-        expandedAll: true,
-    };
+    console.log(value);
 
-    columns = [
+    const [loading, setLoading] = useState(false);
+    const [dataSource, setDataSource] = useState([]);
+    const [menuTreeData, setMenuTreeData] = useState([]);
+    const [allMenuKeys, setAllMenuKeys] = useState([]);
+    const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+    const [expandedAll, setExpandedAll] = useState(true);
+
+    const timerRef = useRef(0);
+
+    const columns = [
         {title: '名称', dataIndex: 'title', key: 'title'},
         {
             title: '类型', dataIndex: 'type', key: 'type', width: 100,
@@ -42,43 +37,55 @@ export default class MenuTableSelect extends Component {
         },
     ];
 
-    componentDidMount() {
+    useEffect(() => {
         (async () => {
-            await this.handleSearch();
+            await handleSearch();
         })();
-    }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    fetchMenus = async () => {
-        const res = await this.props.ajax.get('/menus');
+    useEffect(() => {
+        if (!topId) return;
+        const dataSource = [...menuTreeData].filter(item => item.id === topId);
+
+        setDataSource(dataSource);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [menuTreeData, topId]);
+
+    async function fetchMenus() {
+        const res = await props.ajax.get('/menus');
 
         return (res || []).map(item => {
             return {
                 ...item,
             };
         });
-    };
+    }
 
-    handleSearch = async () => {
-        this.setState({loading: true});
+    async function handleSearch() {
+        setLoading(true);
+
         try {
-            this.setState({loading: false});
-            const menus = this.props.menus || await this.fetchMenus();
-            const allMenuKeys = menus.map(item => item.id);
-            const menuTreeData = convertToTree(menus);
+            const menusRes = menus || await fetchMenus();
+            const allMenuKeys = menusRes.map(item => item.id);
+            const menuTreeData = convertToTree(menusRes);
 
             // 默认展开全部
             const expandedRowKeys = [...allMenuKeys];
-            this.setState({dataSource: menuTreeData, menuTreeData, allMenuKeys, expandedRowKeys});
+            setDataSource(menuTreeData);
+            setMenuTreeData(menuTreeData);
+            setAllMenuKeys(allMenuKeys);
+            setExpandedRowKeys(expandedRowKeys);
+
+            setLoading(false);
 
         } catch (e) {
-            this.setState({loading: false});
+            setLoading(false);
             throw e;
         }
-    };
+    }
 
-    handleSearchValue = (value) => {
-        const {menuTreeData, allMenuKeys} = this.state;
-
+    function handleSearchValue(value) {
         const dataSource = filterTree(menuTreeData, node => {
             let {title, path, name, code} = node;
 
@@ -87,71 +94,57 @@ export default class MenuTableSelect extends Component {
                 return lowerValue.includes(value);
             });
         });
-        this.setState({
-            dataSource,
-            expandedAll: true,
-            expandedRowKeys: allMenuKeys,
-        });
-    };
-
-    handleSearchChange = (e) => {
-        // 防抖
-        if (this.timer) clearTimeout(this.timer);
-
-        this.timer = setTimeout(() => this.handleSearchValue(e.target.value), 300);
-    };
-
-    handleToggleExpanded = () => {
-        const {expandedAll, allMenuKeys} = this.state;
-        const expandedRowKeys = !expandedAll ? allMenuKeys : [];
-        this.setState({expandedAll: !expandedAll, expandedRowKeys});
-    };
-
-    render() {
-        const {
-            dataSource,
-            loading,
-            expandedRowKeys,
-            expandedAll,
-        } = this.state;
-
-        const {value, onChange, getCheckboxProps, ...others} = this.props;
-        return (
-            <>
-                <div style={{padding: 8, width: '100%', display: 'flex', alignItems: 'center'}}>
-                    <Input.Search
-                        style={{flex: 1}}
-                        allowClear
-                        placeholder="输入关键字进行搜索"
-                        onSearch={this.handleSearchValue}
-                        onChange={this.handleSearchChange}
-                    />
-                    <Button
-                        type="text"
-                        style={{flex: 0, marginLeft: 16}}
-                        onClick={this.handleToggleExpanded}
-                    >全部{expandedAll ? '收起' : '展开'}</Button>
-                </div>
-                <WithCheckboxTable
-                    expandable={{
-                        expandedRowKeys: expandedRowKeys,
-                        onExpandedRowsChange: expandedRowKeys => this.setState({expandedRowKeys}),
-                    }}
-                    rowSelection={{
-                        getCheckboxProps,
-                        selectedRowKeys: value,
-                        onChange: onChange,
-                    }}
-                    loading={loading}
-                    columns={this.columns}
-                    dataSource={dataSource}
-                    pagination={false}
-                    rowKey="id"
-                    size="small"
-                    {...others}
-                />
-            </>
-        );
+        setDataSource(dataSource);
+        setExpandedAll(true);
+        setExpandedRowKeys(allMenuKeys);
     }
-}
 
+    function handleSearchChange(e) {
+        if (timerRef.current) clearTimeout(timerRef.current);
+
+        timerRef.current = setTimeout(() => handleSearchValue(e.target.value), 3000);
+    }
+
+    function handleToggleExpanded() {
+        const expandedRowKeys = !expandedAll ? allMenuKeys : [];
+        setExpandedAll(!expandedAll);
+        setExpandedRowKeys(expandedRowKeys);
+    }
+
+    return (
+        <>
+            <div style={{padding: 8, width: '100%', display: 'flex', alignItems: 'center'}}>
+                <Input.Search
+                    style={{flex: 1}}
+                    allowClear
+                    placeholder="输入关键字进行搜索"
+                    onSearch={handleSearchValue}
+                    onChange={handleSearchChange}
+                />
+                <Button
+                    type="text"
+                    style={{flex: 0, marginLeft: 16}}
+                    onClick={handleToggleExpanded}
+                >全部{expandedAll ? '收起' : '展开'}</Button>
+            </div>
+            <WithCheckboxTable
+                expandable={{
+                    expandedRowKeys: expandedRowKeys,
+                    onExpandedRowsChange: expandedRowKeys => setExpandedRowKeys(expandedRowKeys),
+                }}
+                rowSelection={{
+                    getCheckboxProps,
+                    selectedRowKeys: value,
+                    onChange: onChange,
+                }}
+                loading={loading}
+                columns={columns}
+                dataSource={dataSource}
+                pagination={false}
+                rowKey="id"
+                size="small"
+                {...others}
+            />
+        </>
+    );
+});

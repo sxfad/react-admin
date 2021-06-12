@@ -1,30 +1,75 @@
 import moment from 'moment';
 import {convertToTree, findGenerationNodes} from '@ra-lib/util';
 import executeSql from 'src/mock/web-sql';
+import {IS_MAIN_APP} from 'src/config';
 
 export default {
+    // 获取系统
+    'get /systems': async (config) => {
+        const list = await executeSql(`
+            select *
+            from menus
+            where parentId is null
+               or parentId = ?
+        `, ['']);
+
+        return [200, list];
+    },
     // 获取用户菜单
     'get /user/menus': async (config) => {
         const {
             userId,
         } = config.params;
-        const userRoles = await executeSql('select * from user_roles where userId = ?', [userId]);
+        const urs = await executeSql('select * from user_roles where userId = ?', [userId]);
+
+        const userRoles = await executeSql(`select *
+                                            from roles
+                                            where id in (${urs.map(item => item.roleId)})`);
 
         if (!userRoles?.length) return [200, []];
-        const roleIds = userRoles.map(item => item.roleId).join(',');
+
+        // type === 1 为超级管理员，返回所有权限，
+        // type === 2 为子系统管理员，返回当前子系统所有权限
+
+        const isSuperAdmin = userRoles.some(item => item.type === 1);
+        const allMenus = await executeSql(`select *
+                                           from menus
+                                           where enable = 1`);
+
+        if (isSuperAdmin) {
+            return [200, allMenus];
+        }
+
+        const adminRoles = userRoles.filter(item => item.type === 2);
+
+        console.log(adminRoles);
+
+        const systemIds = adminRoles.map(item => item.systemId).filter(id => !!id);
+
+        const allMenusTreeData = convertToTree(allMenus);
+
+        let menus = systemIds.map(id => allMenus.find(item => item.id === id));
+
+        systemIds.forEach(systemId => {
+            const nodes = findGenerationNodes(allMenusTreeData, systemId, 'id');
+            nodes.forEach(menu => {
+                if (!menus.some(it => it.id === menu.id)) menus.push(menu);
+            });
+        });
+
+        const roleIds = userRoles.map(item => item.id);
 
         const roleMenus = await executeSql(`select *
                                             from role_menus
                                             where roleId in (${roleIds})`);
 
-        if (!roleMenus?.length) return [200, []];
+        roleMenus.forEach(item => {
+            const menuId = item.menuId;
+            const menu = allMenus.find(item => item.id === menuId);
+            if (!menus.some(it => it.id === menu.id)) menus.push(menu);
+        });
 
-        const menusId = roleMenus.map(item => item.menuId).join(',');
-        const menus = await executeSql(`select *
-                                        from menus
-                                        where id in (${menusId}) and enable=1`);
-
-        return [200, Array.from(menus)];
+        return [200, menus];
     },
     // 获取所有
     'get /menus': async config => {
@@ -53,13 +98,22 @@ export default {
     },
     // 添加
     'post /menus': async config => {
-        const {keys, args, holders} = getMenuData(config);
+        const {keys, args, holders, data} = getMenuData(config);
 
         const result = await executeSql(`
             INSERT INTO menus (${keys})
             VALUES (${holders})
         `, args, true);
         const {insertId: menuId} = result;
+
+        // 如果是主应用并且创建的是顶级菜单，则创建一个系统管理员
+        if (IS_MAIN_APP && !data.parentId) {
+            const roleArgs = ['系统管理员', 1, '拥有当前子系统所有权限', 2, menuId];
+            await executeSql(`
+                INSERT INTO roles (name, enable, remark, type, systemId)
+                VALUES (?, ?, ?, ?, ?)
+            `, roleArgs);
+        }
 
         return [200, menuId];
     },
@@ -216,7 +270,8 @@ function getMenuData(config, parse = JSON.parse) {
         enable,
     } = parse(config.data);
     enable = enable ? 1 : 0;
-    const data = Object.entries({
+
+    const data = {
         target,
         parentId,
         title,
@@ -230,12 +285,13 @@ function getMenuData(config, parse = JSON.parse) {
         code,
         type,
         enable,
-    });
+    };
+    const keyValues = Object.entries(data);
 
 
-    const keys = data.map(([key]) => key);
-    const args = data.map(([, value]) => value);
-    const holders = data.map(() => '?');
+    const keys = keyValues.map(([key]) => key);
+    const args = keyValues.map(([, value]) => value);
+    const holders = keyValues.map(() => '?');
 
-    return {keys, args, holders};
+    return {keys, args, holders, data};
 }

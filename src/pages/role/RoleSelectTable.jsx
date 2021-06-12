@@ -4,6 +4,7 @@ import {Input} from 'antd';
 import {renderTableCheckbox, Table} from '@ra-lib/components';
 import config from 'src/commons/config-hoc';
 import {filterTree} from '@ra-lib/util';
+import {IS_MAIN_APP} from 'src/config';
 
 const WithCheckboxTable = renderTableCheckbox(Table);
 
@@ -47,7 +48,37 @@ export default class RoleSelectTable extends Component {
             this.setState({loading: true});
             const res = await this.props.ajax.get('/roles');
 
-            const roles = (res || []);
+            let roles = (res || []);
+            if (IS_MAIN_APP) {
+                const systems = [];
+                roles.forEach(item => {
+                    const {systemId, systemName} = item;
+                    if (!systemId) return systems.push(item);
+
+                    let system = systems.find(sys => sys.systemId === systemId);
+                    if (!system) {
+                        system = {
+                            id: `systemId-${systemId}`,
+                            systemId,
+                            name: systemName,
+                            type: 4,
+                            children: [
+                                item,
+                            ],
+                        };
+                        systems.push(system);
+                    } else {
+                        system.children.push(item);
+                    }
+                });
+                systems.sort((a, b) => a.type < b.type ? -1 : 1);
+                systems.forEach(({children}) => {
+                    if (!children) return;
+                    children.sort((a, b) => a.type < b.type ? -1 : 1);
+                });
+
+                roles = systems;
+            }
 
             this.setState({dataSource: [...roles], roles, loading: false});
         } catch (e) {

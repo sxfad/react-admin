@@ -4,7 +4,8 @@ import config from 'src/commons/config-hoc';
 import {ModalContent, FormItem, Content} from '@ra-lib/components';
 import {useDebounceValidator} from '@ra-lib/hooks';
 import MenuTableSelect from 'src/pages/menus/MenuTableSelect';
-import {IS_MOBILE} from 'src/config';
+import {IS_MOBILE, IS_MAIN_APP} from 'src/config';
+import options, {useOptions} from 'src/commons/options';
 
 export default config({
     modal: {
@@ -16,6 +17,7 @@ export default config({
     const {record, isEdit, onOk} = props;
     const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
+    const [systemOptions] = useOptions(options.system);
 
     // 获取详情 data为表单回显数据
     props.ajax.useGet(`/roles/${record?.id}`, null, [], {
@@ -52,7 +54,8 @@ export default config({
     const checkName = useDebounceValidator(async (rule, value) => {
         if (!value) return;
 
-        const role = await fetchRoleByName({name: value});
+        const systemId = form.getFieldValue('systemId');
+        const role = await fetchRoleByName({name: value, systemId});
         if (!role) return;
 
         const id = form.getFieldValue('id');
@@ -85,6 +88,18 @@ export default config({
                     <Col {...colLayout} style={{marginBottom: IS_MOBILE ? 16 : 0}}>
                         <Card title="基础信息">
                             <Content fitHeight={!IS_MOBILE} otherHeight={160}>
+                                {IS_MAIN_APP ? (
+                                    <FormItem
+                                        {...layout}
+                                        label="归属系统"
+                                        name="systemId"
+                                        required
+                                        options={systemOptions}
+                                        onChange={() => {
+                                            form.setFieldsValue({menuIds: []});
+                                        }}
+                                    />
+                                ) : null}
                                 <FormItem
                                     {...layout}
                                     label="角色名称"
@@ -117,14 +132,22 @@ export default config({
                     </Col>
                     <Col {...colLayout}>
                         <Card title="权限配置" bodyStyle={{padding: 0}}>
-                            <FormItem
-                                {...layout}
-                                name="menuIds"
-                            >
-                                <MenuTableSelect
-                                    fitHeight
-                                    otherHeight={200}
-                                />
+                            <FormItem shouldUpdate noStyle>
+                                {({getFieldValue}) => {
+                                    const systemId = getFieldValue('systemId');
+                                    return (
+                                        <FormItem
+                                            {...layout}
+                                            name="menuIds"
+                                        >
+                                            <MenuTableSelect
+                                                topId={systemId}
+                                                fitHeight
+                                                otherHeight={200}
+                                            />
+                                        </FormItem>
+                                    );
+                                }}
                             </FormItem>
                         </Card>
                     </Col>

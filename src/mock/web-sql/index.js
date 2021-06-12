@@ -73,6 +73,7 @@ export async function dropAllTables() {
 export async function initTablesData() {
     for (let table of tables) {
         const sql = initDataSql[table];
+        if (!sql || !sql.trim()) continue;
         await executeSplit(sql, 'INSERT INTO');
     }
 }

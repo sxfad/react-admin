@@ -5,20 +5,20 @@ import {getSubApps, isActiveApp} from 'src/qiankun';
 import {BASE_NAME, HASH_ROUTER} from 'src/config';
 import pageConfigs from 'src/pages/page-configs';
 import {Icon} from 'src/components';
-import storage from 'src/commons/storage';
 import appPackage from '../../package.json';
 
 const menuTargetOptions = options.menuTarget;
 const TOKEN_STORAGE_KEY = `${appPackage.name}_token`;
 const LOGIN_USER_STORAGE_KEY = `${appPackage.name}_login-user`;
-const MAIN_APP_KEY = 'MAIN_APP';
+let MAIN_APP = null;
+
 
 /**
  * 设置乾坤主应用实例
  * @param mainApp
  */
 export function setMainApp(mainApp) {
-    storage.global.setItem(MAIN_APP_KEY, mainApp);
+    MAIN_APP = mainApp;
     setLoginUser(mainApp?.loginUser || null);
 }
 
@@ -26,8 +26,7 @@ export function setMainApp(mainApp) {
  * 获取乾坤主应用实例
  */
 export function getMainApp() {
-    const mainApp = storage.global.getItem(MAIN_APP_KEY);
-    return mainApp || null;
+    return MAIN_APP;
 }
 
 /**

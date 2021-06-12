@@ -12,7 +12,7 @@ import {
 } from '@ra-lib/components';
 import EditModal from './EditModal';
 import styles from './style.less';
-import {IS_MOBILE} from 'src/config';
+import {IS_MOBILE, IS_MAIN_APP} from 'src/config';
 import options from 'src/commons/options';
 
 export default config({
@@ -43,7 +43,8 @@ export default config({
         // mountFire: false, // 初始化不查询
         formatResult: res => {
             return {
-                dataSource: res?.list || [],
+                // 只有自定义角色显示
+                dataSource: (res?.list || []).filter(item => item.type === 3),
                 total: res?.total || 0,
             };
         },
@@ -52,7 +53,7 @@ export default config({
     // 删除
     const {run: deleteRole} = props.ajax.useDel('/roles/:id', null, {setLoading, successTip: '删除成功！'});
 
-    const columns = [
+    let columns = [
         {title: '角色名称', dataIndex: 'name'},
         {title: '启用', dataIndex: 'enable', render: value => options.enable.getTag(!!value)},
         {title: '备注', dataIndex: 'remark'},
@@ -78,6 +79,12 @@ export default config({
             },
         },
     ];
+    if (IS_MAIN_APP) {
+        columns = [
+            {title: '归属系统', dataIndex: 'systemName'},
+            ...columns,
+        ];
+    }
 
     async function handleDelete(id) {
         await deleteRole(id);

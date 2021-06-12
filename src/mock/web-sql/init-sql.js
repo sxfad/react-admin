@@ -41,6 +41,8 @@ export default `
         name      varchar(50)                         not null, -- comment '角色名称',
         enable    tinyint(1)                          not null, -- comment '是否可用',
         remark    varchar(200)                        null,     -- comment '角色备注',
+        type      tinyint(1)                          not null, -- comment '角色类型，1 超级管理员 2 子系统管理员 3 用户自定义角色',
+        systemId  INTEGER,                                      -- comment '归属系统id（菜单顶级id）',
         createdAt timestamp default CURRENT_TIMESTAMP not null, -- comment '创建时间',
         updatedAt timestamp default CURRENT_TIMESTAMP null,     -- comment '更新时间',
         constraint roles_id_uindex
@@ -77,26 +79,18 @@ export default `
 `;
 
 export const initRolesSql = `
-    INSERT INTO roles (id, name, remark, enable, createdAt, updatedAt)
-    VALUES (1, '管理员', '管理员拥有系统所有权限', 1, '${now}', '${now}');
+    INSERT INTO roles (id, name, remark, enable, type, createdAt, updatedAt)
+    VALUES (1, '超级管理员', '拥有系统所有权限', 1, 1, '${now}', '${now}');
+    INSERT INTO roles (id, name, remark, enable, type, systemId, createdAt, updatedAt)
+    VALUES (2, '系统管理员', '拥有当前系统所有权限', 1, 1, 1, '${now}', '${now}');
 `;
 
 export const initRoleMenusSql = `
-    INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
-    VALUES (1, 1, 1, '${now}', '${now}');
-    INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
-    VALUES (2, 1, 2, '${now}', '${now}');
-    INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
-    VALUES (3, 1, 3, '${now}', '${now}');
-    INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
-    VALUES (4, 1, 4, '${now}', '${now}');
-    INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
-    VALUES (5, 1, 5, '${now}', '${now}');
 `;
 
 export const initUsersSql = `
     INSERT INTO users (id, account, name, password, mobile, email, enable, createdAt, updatedAt)
-    VALUES (1, 'admin', '管理员', '123456', '18888888888', 'email@qq.com', 1, '${now}', '${now}');
+    VALUES (1, 'admin', '超级管理员', '123456', '18888888888', 'email@qq.com', 1, '${now}', '${now}');
 `;
 
 export const initUserRolesSql = `

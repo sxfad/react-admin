@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import {Tag} from 'antd';
+import ajax from 'src/commons/ajax';
 import {wrapper} from './util';
 
 /**
@@ -47,6 +48,16 @@ const options = {
         {value: '2', label: '女'},
         {value: '3', label: '未知'},
     ],
+    async system() {
+        const list = await ajax.get('/systems');
+        return list.map(item => {
+            return {
+                value: item.id,
+                label: item.title,
+                meta: item,
+            };
+        });
+    },
     // 可以是函数，异步或同步都可以
     async menu() {
         return new Promise((resolve) => {

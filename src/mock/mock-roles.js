@@ -10,13 +10,27 @@ export default {
             name = '',
         } = config.params;
 
-        const where = `where name like '%${name}%'`;
+        const where = `where roles.name like '%${name}%'`;
+
+        async function addSystem(list) {
+            const menus = await executeSql(`
+                select *
+                from menus
+                where id in (${list.map(item => item.systemId).filter(systemId => !!systemId)})
+            `);
+            list.forEach(role => {
+                const system = menus.find(menu => menu.id === role.systemId);
+                role.systemName = system?.title;
+            });
+        }
 
         if (!pageSize && !pageNum) {
             const list = await executeSql(`
                 select *
-                from roles where enable = 1
+                from roles
+                where enable = 1
                 order by updatedAt desc`);
+            await addSystem(list);
 
             return [200, list];
         }
@@ -26,6 +40,8 @@ export default {
             from roles ${where}
             order by updatedAt desc
             limit ? offset ?`, [pageSize, (pageNum - 1) * pageSize]);
+
+        await addSystem(list);
 
         const countResult = await executeSql(`
             select count(*)
@@ -55,11 +71,18 @@ export default {
     'get /roleByName': async config => {
         const {
             name,
+            systemId,
         } = config.params;
 
+        // 系统内不可重复
+        if (systemId) {
+            const result = await executeSql('select * from roles where name = ? and systemId=?', [name, systemId]);
+            return [200, result[0]];
+        }
 
         const result = await executeSql('select * from roles where name = ?', [name]);
         return [200, result[0]];
+
     },
     // 添加
     'post /roles': async config => {
@@ -68,11 +91,13 @@ export default {
             remark = '',
             enable,
             menuIds,
+            systemId = null,
+            type = 3,
         } = JSON.parse(config.data);
         enable = enable ? 1 : 0;
 
-        const args = [name, remark, enable, moment().format('YYYY-MM-DD HH:mm:ss'), moment().format('YYYY-MM-DD HH:mm:ss')];
-        const result = await executeSql('INSERT INTO roles (name, remark, enable, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?)', args, true);
+        const args = [name, remark, enable, systemId, type, moment().format('YYYY-MM-DD HH:mm:ss'), moment().format('YYYY-MM-DD HH:mm:ss')];
+        const result = await executeSql('INSERT INTO roles (name, remark, enable, systemId, type, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)', args, true);
         const {insertId: roleId} = result;
 
         if (menuIds?.length) {
@@ -91,11 +116,12 @@ export default {
             remark = '',
             enable,
             menuIds,
+            systemId,
         } = JSON.parse(config.data);
         enable = enable ? 1 : 0;
-        const args = [name, remark, enable, moment().format('YYYY-MM-DD HH:mm:ss'), id];
+        const args = [name, remark, enable, systemId, moment().format('YYYY-MM-DD HH:mm:ss'), id];
 
-        await executeSql('UPDATE roles SET name=?, remark=?, enable=?, updatedAt=? WHERE id=?', args);
+        await executeSql('UPDATE roles SET name=?, remark=?, enable=?, systemId=?, updatedAt=? WHERE id=?', args);
         await executeSql('DELETE FROM role_menus WHERE roleId=?', [id]);
 
         if (menuIds?.length) {

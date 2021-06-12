@@ -37,8 +37,10 @@ export default config({
     const {run: fetchUserByAccount} = props.ajax.useGet('/userByAccount');
 
     async function handleSubmit(values) {
+        const roleIds = values.roleIds.filter(id => !`${id}`.startsWith('systemId'));
         const params = {
             ...values,
+            roleIds,
         };
 
         if (isEdit) {
