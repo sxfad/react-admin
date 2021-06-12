@@ -1,10 +1,10 @@
-import {match} from 'path-to-regexp';
-import {checkSameField, convertToTree, getQuery, sort} from '@ra-lib/util';
+import { match } from 'path-to-regexp';
+import { checkSameField, convertToTree, getQuery, sort } from '@ra-lib/util';
 import options from 'src/commons/options';
-import {getSubApps, isActiveApp} from 'src/qiankun';
-import {BASE_NAME, HASH_ROUTER} from 'src/config';
+import { getSubApps, isActiveApp } from 'src/qiankun';
+import { BASE_NAME, HASH_ROUTER } from 'src/config';
 import pageConfigs from 'src/pages/page-configs';
-import {Icon} from 'src/components';
+import { Icon } from 'src/components';
 import appPackage from '../../package.json';
 
 const menuTargetOptions = options.menuTarget;
@@ -185,26 +185,26 @@ export function toLogin() {
 export async function checkPath(result) {
     const subApps = await getSubApps();
 
-    const hasHome = result.some(({path}) => path === '/');
+    const hasHome = result.some(({ path }) => path === '/');
     if (!hasHome) throw Error(`必须含有首页路由，path: '/'， 如果需要其他页面做首页，可以进行 Redirect`);
 
     result
-        .filter(({path}) => !!path)
-        .forEach(({path, filePath}) => {
+        .filter(({ path }) => !!path)
+        .forEach(({ path, filePath }) => {
             // 是否与子项目配置冲突
             const app = subApps.find(item => isActiveApp(item, path));
             if (app) throw Error(`路由地址：「${path}」 与 子项目 「${app.title || app.name}」 激活规则配置冲突，对应文件文件如下：\n${filePath}`);
 
             // 自身路由配置是否冲突
-            const exit = result.find(({filePath: f, path: p}) => {
+            const exit = result.find(({ filePath: f, path: p }) => {
                 if (f === filePath) return false;
 
                 if (!p || !path) return false;
 
                 if (p === path) return true;
 
-                return match(path, {decode: decodeURIComponent})(p)
-                    || match(p, {decode: decodeURIComponent})(path);
+                return match(path, { decode: decodeURIComponent })(p)
+                    || match(p, { decode: decodeURIComponent })(path);
 
             });
             if (exit) throw Error(`路由地址：「${path}」 与 「${exit.path}」 配置冲突，对应文件文件如下：\n${filePath}\n${exit.filePath}`);
@@ -217,14 +217,14 @@ export async function checkPath(result) {
  * @returns {{}|*}
  */
 export function getCurrentPageConfig() {
-    let {pathname, hash} = window.location;
+    let { pathname, hash } = window.location;
     if (HASH_ROUTER) {
         pathname = hash.replace('#', '').split('?')[0];
     } else if (BASE_NAME) {
         pathname = pathname.replace(BASE_NAME, '');
     }
 
-    const config = pageConfigs.find(({path}) => path && match(path, {decode: decodeURIComponent})(pathname));
+    const config = pageConfigs.find(({ path }) => path && match(path, { decode: decodeURIComponent })(pathname));
 
     return config || {};
 }
@@ -235,6 +235,11 @@ export function getCurrentPageConfig() {
  * @returns {*}
  */
 export function formatMenus(menus) {
+    // id转字符串
+    menus.forEach(item => {
+        item.id = `${item.id}`;
+        item.parentId = `${item.parentId}`;
+    });
     // 检测是否有重复id
     const someId = checkSameField(menus, 'id');
     if (someId) throw Error(`菜单中有重复id 「 ${someId} 」`);
@@ -250,7 +255,7 @@ export function formatMenus(menus) {
  */
 function loopMenus(menus, basePath) {
     menus.forEach(item => {
-        let {icon, path, target, children} = item;
+        let { icon, path, target, children } = item;
 
         // 保存原始target数据
         item._target = target;
@@ -267,7 +272,7 @@ function loopMenus(menus, basePath) {
         }
 
         // 图标处理，数据库中持久换存储的是字符串
-        if (icon) item.icon = <Icon type={icon}/>;
+        if (icon) item.icon = <Icon type={icon} />;
 
         // 第三方页面处理，如果target为iframe，内嵌到当前系统中
         if (target === menuTargetOptions.IFRAME) {

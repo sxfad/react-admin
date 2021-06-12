@@ -27,7 +27,7 @@ export default function App(props) {
     const { children } = props;
     const [loading, setLoading] = useState(true);
     const [menus, setMenus] = useState([]);
-    const [collectedMenus, setCollectedMenus] = useState([]);
+    const [collectedMenus, setCollectedMenus] = useState(CONFIG_HOC.showCollectedMenus ? [] : null);
 
     async function handleMenuCollect(menu, collected) {
         const loginUser = getLoginUser();
@@ -39,6 +39,8 @@ export default function App(props) {
 
     useEffect(() => {
         (async () => {
+            if (!CONFIG_HOC.showCollectedMenus) return;
+
             const collectedMenus = await getCollectedMenus();
             setCollectedMenus(collectedMenus);
         })();

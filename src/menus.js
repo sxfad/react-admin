@@ -53,14 +53,7 @@ export default async function getMenus() {
     }
 
     const serverMenus = await getMenuData();
-    const menus = serverMenus.filter(item => item.type === 1)
-        .map(item => {
-            return {
-                ...item,
-                id: `${item.id}`, // 需要转为字符串
-                parentId: `${item.parentId}`,
-            };
-        });
+    const menus = serverMenus.filter(item => item.type === 1);
 
     return formatMenus(menus);
 }

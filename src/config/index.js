@@ -79,6 +79,8 @@ export const CONFIG_HOC = {
     sideCollapsed: false,
     // 是否显示搜索菜单
     searchMenu: true,
+    // 是否显示我的收藏菜单
+    showCollectedMenus: true,
     // PageContent组件 fitHeight 时，计算高度所用到的额外高度值，如果页面显示统一的footer，这里设置footer的高度
     pageOtherHeight: 0, // 默认footer高度 26
 
