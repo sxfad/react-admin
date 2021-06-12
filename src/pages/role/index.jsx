@@ -12,7 +12,7 @@ import {
 } from '@ra-lib/components';
 import EditModal from './EditModal';
 import styles from './style.less';
-import {IS_MOBILE, IS_MAIN_APP} from 'src/config';
+import {IS_MOBILE, WITH_SYSTEMS} from 'src/config';
 import options from 'src/options';
 
 export default config({
@@ -79,7 +79,7 @@ export default config({
             },
         },
     ];
-    if (IS_MAIN_APP) {
+    if (WITH_SYSTEMS) {
         columns = [
             {title: '归属系统', dataIndex: 'systemName'},
             ...columns,

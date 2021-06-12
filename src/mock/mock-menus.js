@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { convertToTree, findGenerationNodes } from '@ra-lib/util';
 import executeSql from 'src/mock/web-sql';
-import { IS_MAIN_APP } from 'src/config';
+import { WITH_SYSTEMS } from 'src/config';
 
 export default {
     // 获取系统
@@ -142,7 +142,7 @@ export default {
         const { insertId: menuId } = result;
 
         // 如果是主应用并且创建的是顶级菜单，则创建一个系统管理员
-        if (IS_MAIN_APP && !data.parentId) {
+        if (WITH_SYSTEMS && !data.parentId) {
             const roleArgs = ['系统管理员', 1, '拥有当前子系统所有权限', 2, menuId];
             await executeSql(`
                 INSERT INTO roles (name, enable, remark, type, systemId)

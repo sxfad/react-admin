@@ -5,7 +5,7 @@ import {FormItem, Content} from '@ra-lib/components';
 import {useHeight, useDebounceValidator} from '@ra-lib/hooks';
 import config from 'src/commons/config-hoc';
 import options from 'src/options';
-import {IS_MAIN_APP} from 'src/config';
+import {WITH_SYSTEMS} from 'src/config';
 import styles from './style.less';
 
 const menuTargetOptions = options.menuTarget;
@@ -25,7 +25,7 @@ export default config()(function MenuEdit(props) {
     const isAddTop = isAdd && !hasSelectedMenu;
     const isAddSub = isAdd && hasSelectedMenu;
     const title = (() => {
-        if (isAddTop) return IS_MAIN_APP ? '添加应用' : '添加顶级';
+        if (isAddTop) return WITH_SYSTEMS ? '添加应用' : '添加顶级';
 
         return isAddSub ? '添加菜单' : '修改菜单';
     })();

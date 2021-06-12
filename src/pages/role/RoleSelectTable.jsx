@@ -4,7 +4,7 @@ import {Input} from 'antd';
 import {renderTableCheckbox, Table} from '@ra-lib/components';
 import config from 'src/commons/config-hoc';
 import {filterTree} from '@ra-lib/util';
-import {IS_MAIN_APP} from 'src/config';
+import {WITH_SYSTEMS} from 'src/config';
 
 const WithCheckboxTable = renderTableCheckbox(Table);
 
@@ -49,7 +49,7 @@ export default class RoleSelectTable extends Component {
             const res = await this.props.ajax.get('/roles');
 
             let roles = (res || []);
-            if (IS_MAIN_APP) {
+            if (WITH_SYSTEMS) {
                 const systems = [];
                 roles.forEach(item => {
                     const {systemId, systemName} = item;

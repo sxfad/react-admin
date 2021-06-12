@@ -4,7 +4,7 @@ import config from 'src/commons/config-hoc';
 import {ModalContent, FormItem, Content} from '@ra-lib/components';
 import {useDebounceValidator} from '@ra-lib/hooks';
 import MenuTableSelect from 'src/pages/menus/MenuTableSelect';
-import {IS_MOBILE, IS_MAIN_APP} from 'src/config';
+import {IS_MOBILE, WITH_SYSTEMS} from 'src/config';
 import options, {useOptions} from 'src/options';
 
 export default config({
@@ -88,7 +88,7 @@ export default config({
                     <Col {...colLayout} style={{marginBottom: IS_MOBILE ? 16 : 0}}>
                         <Card title="基础信息">
                             <Content fitHeight={!IS_MOBILE} otherHeight={160}>
-                                {IS_MAIN_APP ? (
+                                {WITH_SYSTEMS ? (
                                     <FormItem
                                         {...layout}
                                         label="归属系统"
@@ -141,7 +141,7 @@ export default config({
                                             name="menuIds"
                                         >
                                             <MenuTableSelect
-                                                topId={IS_MAIN_APP ? systemId : undefined}
+                                                topId={WITH_SYSTEMS ? systemId : undefined}
                                                 fitHeight
                                                 otherHeight={200}
                                             />
