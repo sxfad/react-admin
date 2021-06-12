@@ -42,8 +42,6 @@ export default {
 
         const adminRoles = userRoles.filter(item => item.type === 2);
 
-        console.log(adminRoles);
-
         const systemIds = adminRoles.map(item => item.systemId).filter(id => !!id);
 
         const allMenusTreeData = convertToTree(allMenus);

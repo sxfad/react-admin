@@ -141,7 +141,7 @@ export default config({
                                             name="menuIds"
                                         >
                                             <MenuTableSelect
-                                                topId={systemId}
+                                                topId={IS_MAIN_APP ? systemId : undefined}
                                                 fitHeight
                                                 otherHeight={200}
                                             />

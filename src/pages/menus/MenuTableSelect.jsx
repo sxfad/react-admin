@@ -12,8 +12,6 @@ const WithCheckboxTable = renderTableCheckbox(Table);
 export default config()(function MenuTableSelect(props) {
     const {menus, value, onChange, topId, getCheckboxProps, ...others} = props;
 
-    console.log(value);
-
     const [loading, setLoading] = useState(false);
     const [dataSource, setDataSource] = useState([]);
     const [menuTreeData, setMenuTreeData] = useState([]);

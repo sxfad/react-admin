@@ -82,7 +82,7 @@ export const initRolesSql = `
     INSERT INTO roles (id, name, remark, enable, type, createdAt, updatedAt)
     VALUES (1, '超级管理员', '拥有系统所有权限', 1, 1, '${now}', '${now}');
     INSERT INTO roles (id, name, remark, enable, type, systemId, createdAt, updatedAt)
-    VALUES (2, '系统管理员', '拥有当前系统所有权限', 1, 1, 1, '${now}', '${now}');
+    VALUES (2, '系统管理员', '拥有当前系统所有权限', 1, 2, 1, '${now}', '${now}');
 `;
 
 export const initRoleMenusSql = `

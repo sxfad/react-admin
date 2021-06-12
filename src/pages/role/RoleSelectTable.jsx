@@ -78,7 +78,11 @@ export default class RoleSelectTable extends Component {
                 });
 
                 roles = systems;
+            } else {
+                roles = roles.filter(item => item.type !== 2);
             }
+
+            roles.sort((a, b) => a.type < b.type ? -1 : 1);
 
             this.setState({dataSource: [...roles], roles, loading: false});
         } catch (e) {
