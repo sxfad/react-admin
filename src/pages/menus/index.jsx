@@ -1,13 +1,13 @@
-import {useEffect, useState, useMemo} from 'react';
-import {Menu, Button, Space, Empty} from 'antd';
-import {PageContent, confirm} from '@ra-lib/components';
-import {convertToTree, sort, findNextNode} from '@ra-lib/util';
+import { useEffect, useState, useMemo } from 'react';
+import { Menu, Button, Space, Empty } from 'antd';
+import { PageContent, confirm } from '@ra-lib/components';
+import { convertToTree, sort, findNextNode } from '@ra-lib/util';
 import config from 'src/commons/config-hoc';
 import MenuEdit from './MenuEdit';
 import ActionEdit from './ActionEdit';
 import theme from 'src/theme.less';
 import styles from './style.less';
-import {IS_MAIN_APP} from '../../config';
+import { IS_MAIN_APP } from '../../config';
 
 export default config({
     path: '/menus',
@@ -16,7 +16,7 @@ export default config({
     const [selectedMenu, setSelectedMenu] = useState(null);
     const [hasUnSaveMenu, setHasUnSaveMenu] = useState(false);
     const [hasUnSaveAction, setHasUnSaveAction] = useState(false);
-    const {loading, data: menus = [], run: fetchMenus} = props.ajax.useGet('/menus', null, {
+    const { loading, data: menus = [], run: fetchMenus } = props.ajax.useGet('/menus', null, {
         formatResult: res => {
             return (res || []).map((item, index, arr) => {
                 const actions = arr.filter(it => it.type === 2 && it.parentId === item.id);
@@ -30,11 +30,16 @@ export default config({
         },
     });
 
-    async function handleClick({key}, showTip = true) {
+    async function checkUnSave(showTip = true) {
         if (showTip && hasUnSaveMenu) await confirm('菜单有未保存数据，是否放弃？');
-        if (showTip && hasUnSaveAction) await confirm('功能列表有未保存数据，是否放弃？');
         setHasUnSaveMenu(false);
+
+        if (showTip && hasUnSaveAction) await confirm('功能列表有未保存数据，是否放弃？');
         setHasUnSaveAction(false);
+    }
+
+    async function handleClick({ key }, showTip = true) {
+        await checkUnSave(showTip);
 
         const menuData = menus.find(item => item.id === key);
         setSelectedMenu(menuData);
@@ -44,7 +49,7 @@ export default config({
     const [menuItems, menuTreeData] = useMemo(() => {
         const menuTreeData = convertToTree(sort(menus, (a, b) => b.order - a.order));
         const loop = (nodes) => nodes.map(item => {
-            let {id, icon, title, children} = item;
+            let { id, icon, title, children } = item;
 
             if (children && children.length) {
                 return (
@@ -52,10 +57,10 @@ export default config({
                         key={id}
                         title={(
                             <span
-                                style={{display: 'inline-block', height: '100%'}}
+                                style={{ display: 'inline-block', height: '100%' }}
                                 onClick={async e => {
                                     e.stopPropagation();
-                                    await handleClick({key: id});
+                                    await handleClick({ key: id });
                                 }}
                             >
                                 {title}
@@ -89,12 +94,12 @@ export default config({
 
     async function handleMenuSubmit(data) {
         setHasUnSaveMenu(false);
-        const {isAdd, isDelete, isUpdate, id} = data;
+        const { isAdd, isDelete, isUpdate, id } = data;
 
         await fetchMenus();
 
         if (isAdd) {
-            setSelectedMenu({...selectedMenu});
+            setSelectedMenu({ ...selectedMenu });
         }
 
         if (isUpdate) {
@@ -104,7 +109,7 @@ export default config({
         if (isDelete) {
             const nextNode = findNextNode(menuTreeData, id);
             if (nextNode) {
-                await handleClick({key: nextNode.id}, false);
+                await handleClick({ key: nextNode.id }, false);
             } else {
                 // 删没了
                 setSelectedMenu({});
@@ -125,7 +130,8 @@ export default config({
                 <Space className={styles.menuTop}>
                     <Button
                         type="primary"
-                        onClick={() => {
+                        onClick={async () => {
+                            await checkUnSave();
                             setIsAdd(true);
                             setSelectedMenu(null);
                         }}
@@ -135,7 +141,10 @@ export default config({
                     <Button
                         disabled={!selectedMenu}
                         type="primary"
-                        onClick={() => setIsAdd(true)}
+                        onClick={async () => {
+                            await checkUnSave();
+                            setIsAdd(true);
+                        }}
                     >
                         添加子级
                     </Button>
@@ -151,7 +160,7 @@ export default config({
                             {menuItems}
                         </Menu>
                     ) : (
-                        <Empty style={{marginTop: 58}} description="暂无数据"/>
+                        <Empty style={{ marginTop: 58 }} description="暂无数据" />
                     )}
                 </div>
             </div>
