@@ -28,6 +28,7 @@ function getOptions(options) {
         appendBreadcrumb,
         tab: showTab,
         persistTab,
+        tabHeight,
         tabSideToggle: showTabSideToggle,
         tabHeaderExtra: showTabHeaderExtra,
         searchMenu: showSearchMenu,
@@ -51,6 +52,7 @@ function getOptions(options) {
         showPageHeader,
         showSearchMenu,
         persistTab,
+        tabHeight,
         keepMenuOpen,
         sideCollapsed,
         selectedMenuPath,
@@ -69,7 +71,11 @@ function getOptions(options) {
 export const layoutRef = {current: null};
 
 export default function Layout(props) {
-    const {menus} = props;
+    const {
+        menus,
+        collectedMenus,
+        onMenuCollect,
+    } = props;
     const {
         auth,
         ...nextState
@@ -127,6 +133,8 @@ export default function Layout(props) {
             logo={logo}
             title={APP_NAME}
             menus={menus}
+            collectedMenus={collectedMenus}
+            onMenuCollect={onMenuCollect}
             headerExtra={<Header/>}
             keepPageAlive={CONFIG_HOC.keepAlive}
             hashRouter={HASH_ROUTER}

@@ -1,13 +1,17 @@
-import {BrowserRouter, HashRouter, Route, Switch} from 'react-router-dom';
-import {Error404, Layout/*, Footer*/, SubApp} from 'src/components';
-import {BASE_NAME, CONFIG_HOC, HASH_ROUTER} from 'src/config';
+import { BrowserRouter, HashRouter, Route, Switch } from 'react-router-dom';
+import { Error404, Layout/*, Footer*/, SubApp } from 'src/components';
+import { BASE_NAME, CONFIG_HOC, HASH_ROUTER } from 'src/config';
 import routes from './routes';
 
 const Router = HASH_ROUTER ? HashRouter : BrowserRouter;
 const baseName = HASH_ROUTER ? '' : BASE_NAME;
 
 export default function AppRouter(props) {
-    const {menus} = props;
+    const {
+        menus,
+        collectedMenus,
+        onMenuCollect,
+    } = props;
 
     return (
         <Router basename={baseName}>
@@ -16,16 +20,18 @@ export default function AppRouter(props) {
                     <Layout
                         {...props}
                         routes={routes}
-                        render404={props => <Error404 {...props}/>}
+                        render404={props => <Error404 {...props} />}
                         baseName={baseName}
                         menus={menus}
+                        collectedMenus={collectedMenus}
+                        onMenuCollect={onMenuCollect}
                     />
                 );
-            }}/>
+            }} />
             {!CONFIG_HOC.keepAlive ? (
                 <Switch>
                     {routes.map(item => {
-                        const {path, component} = item;
+                        const { path, component } = item;
 
                         return (
                             <Route
@@ -36,10 +42,10 @@ export default function AppRouter(props) {
                             />
                         );
                     })}
-                    <Route component={Error404}/>
+                    <Route component={Error404} />
                 </Switch>
             ) : null}
-            <SubApp/>
+            <SubApp />
             {/*<Footer/>*/}
         </Router>
     );

@@ -35,6 +35,17 @@ export default `
             unique (id)
     );
 
+    create table if not exists user_menus
+    (
+        id        INTEGER PRIMARY KEY,
+        userId    INTEGER                             not null,
+        menuId    INTEGER                             not null,
+        createdAt timestamp default CURRENT_TIMESTAMP not null,
+        updatedAt timestamp default CURRENT_TIMESTAMP not null,
+        constraint role_menus_id_uindex
+            unique (id)
+    );
+
     create table if not exists roles
     (
         id        INTEGER PRIMARY KEY,

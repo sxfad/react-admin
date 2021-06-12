@@ -59,6 +59,8 @@ export const CONFIG_HOC = {
     tabSideToggle: true,
     // tab右侧显示额外头部内容
     tabHeaderExtra: true,
+    // tab高度
+    tabHeight: 40,
     // 页面头部是否显示
     pageHeader: false,
     // 头部主题

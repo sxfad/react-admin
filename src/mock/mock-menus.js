@@ -1,7 +1,7 @@
 import moment from 'moment';
-import {convertToTree, findGenerationNodes} from '@ra-lib/util';
+import { convertToTree, findGenerationNodes } from '@ra-lib/util';
 import executeSql from 'src/mock/web-sql';
-import {IS_MAIN_APP} from 'src/config';
+import { IS_MAIN_APP } from 'src/config';
 
 export default {
     // 获取系统
@@ -16,7 +16,7 @@ export default {
         return [200, list];
     },
     // 获取用户菜单
-    'get /user/menus': async (config) => {
+    'get /userMenus': async (config) => {
         const {
             userId,
         } = config.params;
@@ -69,6 +69,43 @@ export default {
 
         return [200, menus];
     },
+    // 获取用户收藏菜单
+    'get /userCollectedMenus': async config => {
+        const {
+            userId,
+        } = config.params;
+
+        const userMenus = await executeSql('select * from user_menus where userId = ?', [userId]);
+        const menuIds = userMenus.map(item => item.menuId);
+
+        const result = await executeSql(`select * from menus where id in(${menuIds})`);
+        return [200, result];
+    },
+    // 修改用户收藏菜单
+    'post /userCollectMenu': async config => {
+        let { userId, menuId, collected } = JSON.parse(config.data);
+        menuId = parseInt(menuId);
+
+        const menus = await executeSql('select * from menus');
+        const nodes = findGenerationNodes(convertToTree(menus), menuId);
+        const menuIds = nodes.filter(item => item.type === 1).map(item => item.id);
+        menuIds.push(menuId);
+
+        if (collected) {
+            // 子菜单全部加入
+            for (let mId of menuIds) {
+                await executeSql('insert into user_menus (userId, menuId) values (?, ?)', [userId, mId]);
+            }
+        } else {
+            // 子菜单全部取消
+            for (let mId of menuIds) {
+                await executeSql('delete from user_menus where userId=? and menuId = ?', [userId, mId]);
+            }
+        }
+
+        return [200, true];
+    },
+
     // 获取所有
     'get /menus': async config => {
         const result = await executeSql('select * from menus');
@@ -96,13 +133,13 @@ export default {
     },
     // 添加
     'post /menus': async config => {
-        const {keys, args, holders, data} = getMenuData(config);
+        const { keys, args, holders, data } = getMenuData(config);
 
         const result = await executeSql(`
             INSERT INTO menus (${keys})
             VALUES (${holders})
         `, args, true);
-        const {insertId: menuId} = result;
+        const { insertId: menuId } = result;
 
         // 如果是主应用并且创建的是顶级菜单，则创建一个系统管理员
         if (IS_MAIN_APP && !data.parentId) {
@@ -131,7 +168,7 @@ export default {
         // 处理id
         const idMap = {};
         menus.forEach((menu, index) => {
-            const {id} = menu;
+            const { id } = menu;
             const nextId = menu.id = maxId + index + 1;
             if (id) idMap[id] = nextId;
 
@@ -142,7 +179,7 @@ export default {
 
         // 处理parentId
         menus.forEach((menu) => {
-            const {parentId} = menu;
+            const { parentId } = menu;
             if (idMap[parentId]) {
                 menu.parentId = idMap[parentId];
             }
@@ -152,8 +189,8 @@ export default {
         // 插入数据库
         for (let i = 0; i < menus.length; i++) {
             const menu = menus[i];
-            const {id} = menu;
-            const {keys, args, holders} = getMenuData({data: menu}, value => value);
+            const { id } = menu;
+            const { keys, args, holders } = getMenuData({ data: menu }, value => value);
             keys.push('id');
             args.push(id);
             holders.push('?');
@@ -169,8 +206,8 @@ export default {
     },
     // 修改
     'put /menus': async config => {
-        const {id} = JSON.parse(config.data);
-        const {keys, args} = getMenuData(config);
+        const { id } = JSON.parse(config.data);
+        const { keys, args } = getMenuData(config);
 
         keys.push('updatedAt');
         args.push(moment().format('YYYY-MM-DD HH:mm:ss'));
@@ -204,13 +241,13 @@ export default {
     },
     // 批量更新功能列表
     'post /actions': async config => {
-        const {actions, parentId} = JSON.parse(config.data);
+        const { actions, parentId } = JSON.parse(config.data);
         if (actions && actions.length) {
             const codes = [];
 
             for (let action of actions) {
-                const {code} = action;
-                if (codes.includes(action.code)) return [400, {message: `权限码：「${code} 」不能重复`}];
+                const { code } = action;
+                if (codes.includes(action.code)) return [400, { message: `权限码：「${code} 」不能重复` }];
                 codes.push(code);
             }
         }
@@ -218,7 +255,7 @@ export default {
 
         // 保持id
         actions.forEach(item => {
-            const {code} = item;
+            const { code } = item;
             const action = oldActions.find(it => it.code === code);
             item.id = action?.id;
         });
@@ -226,10 +263,10 @@ export default {
         await executeSql('delete  from menus where parentId=? and type=?', [parentId, 2]);
         // 插入新的action
         for (let action of actions) {
-            let {id, title, code, enable, type = 2} = action;
+            let { id, title, code, enable, type = 2 } = action;
             enable = enable ? 1 : 0;
 
-            const data = {parentId, title, code, enable, type};
+            const data = { parentId, title, code, enable, type };
 
             const keys = Object.keys(data);
             const values = Object.values(data);
@@ -241,7 +278,7 @@ export default {
                 holders.push('?');
             }
             const oldAction = await executeSql('select * from menus where code=? and type=2', [code]);
-            if (oldAction?.length) return [400, {message: `权限码：「${code} 」不能重复`}];
+            if (oldAction?.length) return [400, { message: `权限码：「${code} 」不能重复` }];
 
             await executeSql(`insert into menus (${keys})
                               values (${holders})`,
@@ -291,5 +328,5 @@ function getMenuData(config, parse = JSON.parse) {
     const args = keyValues.map(([, value]) => value);
     const holders = keyValues.map(() => '?');
 
-    return {keys, args, holders, data};
+    return { keys, args, holders, data };
 }

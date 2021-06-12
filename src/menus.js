@@ -1,5 +1,5 @@
 import ajax from 'src/commons/ajax';
-import {isLoginPage, formatMenus, getLoginUser} from 'src/commons';
+import { isLoginPage, formatMenus, getLoginUser } from 'src/commons';
 
 /**
  说明：
@@ -23,7 +23,7 @@ async function getMenuData() {
     if (isLoginPage()) return [];
 
     // 获取服务端数据，并做缓存，防止多次调用接口
-    return getMenuData.__CACHE = getMenuData.__CACHE || ajax.get('/user/menus', {userId: getLoginUser()?.id});
+    return getMenuData.__CACHE = getMenuData.__CACHE || ajax.get('/userMenus', { userId: getLoginUser()?.id });
 
     // 前端硬编码菜单
     // return [
@@ -45,6 +45,7 @@ async function getMenuData() {
     // ];
 }
 
+
 export default async function getMenus() {
     // 启用mock时，getMenuData，会早于mock生效前调用，这里做个延迟
     if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_MOCK) {
@@ -62,6 +63,12 @@ export default async function getMenus() {
         });
 
     return formatMenus(menus);
+}
+
+export async function getCollectedMenus() {
+    const loginUser = getLoginUser();
+    const collectedMenus = await ajax.get('/userCollectedMenus', { userId: loginUser?.id });
+    return formatMenus(collectedMenus);
 }
 
 export async function getPermissions() {
