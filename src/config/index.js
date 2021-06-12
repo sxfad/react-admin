@@ -1,5 +1,5 @@
-import {LAYOUT_TYPE} from '@ra-lib/components';
-import {getConfigValue} from './util';
+import { LAYOUT_TYPE } from '@ra-lib/components';
+import { getConfigValue } from './util';
 import storage from 'src/commons/storage';
 import appPackage from '../../package.json';
 
@@ -35,6 +35,15 @@ export const IS_SUB = getConfigValue('IS_SUB', window.__POWERED_BY_QIANKUN__ || 
 export const IS_MOBILE = getConfigValue('IS_MOBILE', window.document.body.clientWidth <= 575);
 // config-hoc 配置存储key
 export const CONFIG_HOC_STORAGE_KEY = 'CONFIG_HOC_STORAGE_KEY';
+
+const mobileConfig = IS_MOBILE ? {
+    layoutType: LAYOUT_TYPE.SIDE_MENU,
+    header: true,
+    side: false,
+    tab: false,
+    headerTheme: 'dark',
+} : {};
+
 // config-hoc 高阶组件、布局默认配置
 export const CONFIG_HOC = {
     // 是否需要登录
@@ -48,11 +57,11 @@ export const CONFIG_HOC = {
     // layout布局方式 LAYOUT_TYPE.SIDE_MENU LAYOUT_TYPE.TOP_MENU LAYOUT_TYPE.TOP_SIDE_MENU
     layoutType: LAYOUT_TYPE.SIDE_MENU,
     // 头部是否显示
-    header: IS_MOBILE,
+    header: false,
     // 侧边栏是否显示
-    side: !IS_MOBILE,
+    side: true,
     // Tabs是否显示
-    tab: !IS_MOBILE,
+    tab: true,
     // 持久化 Tabs记录
     persistTab: true,
     // tab左侧显示展开收起菜单按钮
@@ -64,7 +73,7 @@ export const CONFIG_HOC = {
     // 页面头部是否显示
     pageHeader: false,
     // 头部主题
-    headerTheme: IS_MOBILE ? 'dark' : 'default', // default
+    headerTheme: 'default', // dark
     // 侧边栏主题
     sideTheme: 'dark', // dark
     // logo主题
@@ -84,5 +93,6 @@ export const CONFIG_HOC = {
     // PageContent组件 fitHeight 时，计算高度所用到的额外高度值，如果页面显示统一的footer，这里设置footer的高度
     pageOtherHeight: 0, // 默认footer高度 26
 
+    ...mobileConfig,
     ...(storage.local.getItem(CONFIG_HOC_STORAGE_KEY) || {}),
 };
