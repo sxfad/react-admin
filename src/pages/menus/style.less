@@ -6,6 +6,7 @@
 
 .menu {
     flex: 0 0 210px;
+    width: 210px;
     display: flex;
     flex-direction: column;
     border-right: 1px solid @border-color-base;
@@ -21,6 +22,29 @@
     .menuContent {
         flex: 1;
         overflow: auto;
+    }
+
+    :global {
+        .@{ant-prefix}-menu-submenu {
+            position: relative;
+
+            &:after {
+                position: absolute;
+                top: 0;
+                right: 0;
+                height: 44px;
+                border-right: 3px solid @primary-color;
+                transform: scaleY(0.0001);
+                opacity: 0;
+                transition: transform 0.15s cubic-bezier(0.215, 0.61, 0.355, 1), opacity 0.15s cubic-bezier(0.215, 0.61, 0.355, 1);
+                content: '';
+            }
+        }
+
+        .@{ant-prefix}-menu-submenu.@{ant-prefix}-menu-item-selected:after {
+            opacity: 1;
+            transform: scaleY(1);
+        }
     }
 }
 
@@ -53,25 +77,3 @@
     margin: 0 8px;
 }
 
-:global {
-    .@{ant-prefix}-menu-submenu {
-        position: relative;
-
-        &:after {
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: 44px;
-            border-right: 3px solid @primary-color;
-            transform: scaleY(0.0001);
-            opacity: 0;
-            transition: transform 0.15s cubic-bezier(0.215, 0.61, 0.355, 1), opacity 0.15s cubic-bezier(0.215, 0.61, 0.355, 1);
-            content: '';
-        }
-    }
-
-    .@{ant-prefix}-menu-submenu.@{ant-prefix}-menu-item-selected:after {
-        opacity: 1;
-        transform: scaleY(1);
-    }
-}

@@ -108,8 +108,9 @@ export default config()(function MenuEdit(props) {
         if (!menu) return;
 
         const id = form.getFieldValue('id');
+        const menuId = `${menu.id}`;
         if (isAdd && menu.name === value) throw Error('注册名称不能重复！');
-        if (!isAdd && menu.id !== id && menu.name === value) throw Error('注册名称不能重复！');
+        if (!isAdd && menuId !== id && menu.name === value) throw Error('注册名称不能重复！');
     });
 
     async function handleDelete() {
