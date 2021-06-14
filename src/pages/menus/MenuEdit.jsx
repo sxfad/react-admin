@@ -35,6 +35,7 @@ export default config()(function MenuEdit(props) {
     const {run: branchSaveMenu} = props.ajax.usePost('/branchMenus', null, {setLoading});
     const {run: updateMenu} = props.ajax.usePut('/menus', null, {setLoading});
     const {run: fetchMenuByName} = props.ajax.useGet('/menuByName');
+    const {run: saveRole} = props.ajax.usePost('/roles', null, {setLoading});
 
     // 表单回显
     useEffect(() => {
@@ -80,6 +81,18 @@ export default config()(function MenuEdit(props) {
                 const res = await saveMenu(params);
                 const {id} = res;
                 onSubmit && onSubmit({...params, id, isAdd: true});
+
+                // 有系统的概念，并且是添加顶级，创建一个系统管理员
+                if (WITH_SYSTEMS && isAddTop) {
+                    console.log('id', id);
+                    await saveRole({
+                        systemId: id,
+                        name: '系统管理员',
+                        enable: true,
+                        remark: '拥有当前子系统所有权限',
+                        type: 2,
+                    });
+                }
             }
         } else {
             await updateMenu(params);

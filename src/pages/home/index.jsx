@@ -16,7 +16,10 @@ export default config({
         <PageContent className={styles.root}>
             <h1>首页</h1>
             {process.env.REACT_APP_MOCK ? (
-                <Button onClick={() => props.ajax.post('/initDB', null, {successTip: '数据库重置成功！'})}>重置数据库</Button>
+                <Button onClick={async () => {
+                    await props.ajax.post('/initDB', null, {successTip: '数据库重置成功！'});
+                    setTimeout(() => window.location.reload(), 2000);
+                }}>重置数据库</Button>
             ) : null}
         </PageContent>
     );
