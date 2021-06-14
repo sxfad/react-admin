@@ -125,15 +125,15 @@ export default {
         console.log('getUser state', state);
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                Math.random() > 0.5 ? resolve({user: {name: 123, age: 23}}) : reject(new Error('获取用户失败！'))
-            }, 2000)
-        })
+                Math.random() > 0.5 ? resolve({user: {name: 123, age: 23}}) : reject(new Error('获取用户失败！'));
+            }, 2000);
+        });
     },
     testAsync: async (time) => {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve({asyncResult: `${time}秒执行结果`});
-            }, time)
-        })
+            }, time);
+        });
     },
 };

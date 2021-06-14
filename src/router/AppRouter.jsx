@@ -1,6 +1,6 @@
-import { BrowserRouter, HashRouter, Route, Switch } from 'react-router-dom';
-import { Error404, Layout/*, Footer*/, SubApp } from 'src/components';
-import { BASE_NAME, CONFIG_HOC, HASH_ROUTER } from 'src/config';
+import {BrowserRouter, HashRouter, Route, Switch} from 'react-router-dom';
+import {Error404, Layout/*, Footer*/, SubApp} from 'src/components';
+import {BASE_NAME, CONFIG_HOC, HASH_ROUTER} from 'src/config';
 import routes from './routes';
 
 const Router = HASH_ROUTER ? HashRouter : BrowserRouter;
@@ -27,11 +27,11 @@ export default function AppRouter(props) {
                         onMenuCollect={onMenuCollect}
                     />
                 );
-            }} />
+            }}/>
             {!CONFIG_HOC.keepAlive ? (
                 <Switch>
                     {routes.map(item => {
-                        const { path, component } = item;
+                        const {path, component} = item;
 
                         return (
                             <Route
@@ -42,10 +42,10 @@ export default function AppRouter(props) {
                             />
                         );
                     })}
-                    <Route component={Error404} />
+                    <Route component={Error404}/>
                 </Switch>
             ) : null}
-            <SubApp />
+            <SubApp/>
             {/*<Footer/>*/}
         </Router>
     );

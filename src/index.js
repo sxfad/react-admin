@@ -1,7 +1,7 @@
 if (window.__POWERED_BY_QIANKUN__) {
     // 动态设置 webpack publicPath，防止资源加载出错
 
-    const { PUBLIC_URL = '' } = process.env;
+    const {PUBLIC_URL = ''} = process.env;
 
     let publicUrl = PUBLIC_URL.replace('/', '');
 
@@ -15,10 +15,10 @@ import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { notification, Modal, message } from 'antd';
+import {notification, Modal, message} from 'antd';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { setMainApp } from 'src/commons';
+import {setMainApp} from 'src/commons';
 import qiankun from './qiankun';
 
 // 开启mock，这个判断不要修改，否则会把mock相关js打入生产包，很大
@@ -29,12 +29,12 @@ if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_MOCK) {
 
 function getRootDom(props) {
     const rootId = '#root';
-    const { container } = props;
+    const {container} = props;
     return container ? container.querySelector(rootId) : document.querySelector(rootId);
 }
 
 function render(props = {}) {
-    ReactDOM.render(<App />, getRootDom(props));
+    ReactDOM.render(<App/>, getRootDom(props));
 }
 
 // If you want to start measuring performance in your app, pass a function

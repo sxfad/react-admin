@@ -23,7 +23,7 @@ function Icon(props) {
     // const AntdIcon = antdIcons[type];
     // if (AntdIcon) return <AntdIcon {...props}/>
 
-    return <IconFont {...props}/>
+    return <IconFont {...props}/>;
 }
 
 Icon.propTypes = {
