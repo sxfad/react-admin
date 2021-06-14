@@ -166,7 +166,7 @@ module.exports = {
                 'permission-remove',
             ],
             ['@ra-lib/babel-plugin-attribute-wrapper',
-                { // 添加disabled={_method(xxx)}属性
+                { // 添加disabled={!_method(xxx)}属性
                     importName: 'hasPermission',
                     packageName: 'src/commons',
                     attributeName: 'd-code',

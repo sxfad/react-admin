@@ -74,6 +74,10 @@ export function locationHref(href) {
  * @param code
  */
 export function hasPermission(code) {
+    if (typeof code === 'boolean') return code;
+
+    if (!code) return true;
+
     const loginUser = getLoginUser();
     return loginUser?.permissions?.includes(code);
 }

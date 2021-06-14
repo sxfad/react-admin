@@ -61,6 +61,7 @@ export default async function getMenus() {
 export async function getCollectedMenus() {
     const loginUser = getLoginUser();
     const collectedMenus = await ajax.get('/userCollectedMenus', {userId: loginUser?.id});
+    collectedMenus.forEach(item => item.isCollectedMenu = true);
     return formatMenus(collectedMenus);
 }
 
