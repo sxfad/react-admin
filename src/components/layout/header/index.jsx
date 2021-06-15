@@ -20,11 +20,11 @@ export default config({
 
     const menu = (
         <Menu>
-            <Menu.Item icon={<UserOutlined/>} onClick={() => props.history.push(`/users/center/${loginUser.id}`)}>
+            <Menu.Item key="user-center" icon={<UserOutlined/>} onClick={() => props.history.push(`/users/center/${loginUser.id}`)}>
                 用户中心
             </Menu.Item>
             <Menu.Divider/>
-            <Menu.Item danger icon={<LogoutOutlined/>} onClick={handleLogout}>
+            <Menu.Item key="logout" danger icon={<LogoutOutlined/>} onClick={handleLogout}>
                 退出登录
             </Menu.Item>
         </Menu>

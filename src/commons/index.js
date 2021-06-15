@@ -38,7 +38,6 @@ export function setToken(token) {
     if (loginUser) loginUser.token = token;
 }
 
-
 /**
  * 获取token
  * token来源: queryString > sessionStorage > loginUser
@@ -180,7 +179,6 @@ export function toLogin() {
     return null;
 }
 
-
 /**
  * 检测路由配置冲突
  * @param result
@@ -214,7 +212,6 @@ export async function checkPath(result) {
             if (exit) throw Error(`路由地址：「${path}」 与 「${exit.path}」 配置冲突，对应文件文件如下：\n${filePath}\n${exit.filePath}`);
         });
 }
-
 
 /**
  * 基于 window.location.pathname pageConfig 获取当前页面config高级组件参数
