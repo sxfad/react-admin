@@ -13,10 +13,7 @@ import styles from './style.less';
 export default config({
     path: '/login',
     auth: false,
-    header: false,
-    side: false,
-    pageHeader: false,
-    tab: false,
+    layout: false,
 })(function Login() {
     const login = usePost('/login');
     const [message, setMessage] = useState();
@@ -35,10 +32,7 @@ export default config({
     // 获取图片验证码
     async function handleFetchImageCode() {
         const index = Math.floor(Math.random() * (testImages.length + 2));
-        const url = testImages[index];
-        const key = 'xxx';
-        // return url; // value 为 code
-        return [key, url]; // value 为 [key, code]
+        return testImages[index];
     }
 
     // 发送短信验证码
@@ -135,14 +129,6 @@ export default config({
                             src={handleFetchImageCode}
                             ref={imageCodeRef}
                             required
-                            rules={[
-                                {
-                                    validator: (rule, value) => {
-                                        if (Array.isArray(value) && !value[1]) return Promise.reject('请输入图片验证码');
-                                        return Promise.resolve();
-                                    },
-                                },
-                            ]}
                         />
                     </div>
                     <div className={formItemClass}>

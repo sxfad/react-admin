@@ -15,6 +15,7 @@ function getOptions(options) {
     const {title: queryTitle} = getQuery();
     let {
         auth,
+        layout,
         layoutType,
         header: showHeader,
         headerSideToggle: showHeaderSideToggle,
@@ -40,8 +41,16 @@ function getOptions(options) {
 
     pageTitle = queryTitle || pageTitle;
 
+    if (layout === false) {
+        showHeader = false;
+        showSide = false;
+        showPageHeader = false;
+        showTab = false;
+    }
+
     return {
         auth,
+        layout,
         layoutType,
         showHeader,
         showHeaderSideToggle,

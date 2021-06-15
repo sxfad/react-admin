@@ -12,11 +12,13 @@ import commonHoc from './common-hoc';
 
 export default function configHoc(options = {}) {
     // config 所有可用参数，以及默认值
-    const {
+    let {
         // 路由地址
         path,
         // 是否需要登录
         auth,
+        // 是否显示布局框架
+        layout,
         // 是否显示顶部
         header,
         // 是否显示标签
@@ -49,6 +51,7 @@ export default function configHoc(options = {}) {
         drawer,
         ...others
     } = options;
+
     // config 传递 参数校验
     if (modal && drawer) throw Error('[config hoc] modal and drawer config can not be used together!');
 
