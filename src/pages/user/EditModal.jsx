@@ -24,7 +24,7 @@ export default config({
     const isDetail = record?.isDetail;
 
     // 编辑时，查询详情数据
-    props.ajax.useGet('/users/:id', {id: record?.id}, [], {
+    props.ajax.useGet('/user/getUserById', {id: record?.id}, [], {
         mountFire: isEdit,
         setLoading,
         formatResult: res => {
@@ -32,12 +32,12 @@ export default config({
             form.setFieldsValue(res);
         },
     });
-    const {run: save} = props.ajax.usePost('/users', null, {setLoading, successTip: '创建成功！'});
-    const {run: update} = props.ajax.usePut('/users', null, {setLoading, successTip: '修改成功！'});
-    const {run: fetchUserByAccount} = props.ajax.useGet('/userByAccount');
+    const {run: save} = props.ajax.usePost('/user/addUser', null, {setLoading, successTip: '创建成功！'});
+    const {run: update} = props.ajax.usePost('/user/updateUserById', null, {setLoading, successTip: '修改成功！'});
+    const {run: fetchUserByAccount} = props.ajax.useGet('/user/getOneUser');
 
     async function handleSubmit(values) {
-        const roleIds = values.roleIds.filter(id => !`${id}`.startsWith('systemId'));
+        const roleIds = values.roleIds?.filter(id => !`${id}`.startsWith('systemId'));
         const params = {
             ...values,
             roleIds,
@@ -86,7 +86,7 @@ export default config({
                 form={form}
                 name="roleEdit"
                 onFinish={handleSubmit}
-                initialValues={{enable: true}}
+                initialValues={{enabled: true}}
             >
                 {isEdit ? <FormItem hidden name="id"/> : null}
                 <Row gutter={8}>
@@ -114,7 +114,7 @@ export default config({
                                     {...layout}
                                     type={'switch'}
                                     label="启用"
-                                    name="enable"
+                                    name="enabled"
                                     checkedChildren="启"
                                     unCheckedChildren="禁"
                                     required

@@ -9,7 +9,7 @@ export default config()(function ActionEdit(props) {
     const [form] = Form.useForm();
     const {isAdd, selectedMenu, onSubmit, onValuesChange} = props;
     const [loading, setLoading] = useState(false);
-    const {run: save} = props.ajax.usePost('/actions', null, {setLoading, successTip: '功能保存成功！'});
+    const {run: save} = props.ajax.usePost('/menu/updateSubActions', null, {setLoading, successTip: '功能保存成功！'});
 
     async function handleSubmit(values) {
         const {actions} = values;
@@ -53,7 +53,7 @@ export default config()(function ActionEdit(props) {
                                             />
                                             <FormItem
                                                 type="switch"
-                                                name={[name, 'enable']}
+                                                name={[name, 'enabled']}
                                                 initialValue={true}
                                                 checkedChildren="启"
                                                 unCheckedChildren="禁"

@@ -6,11 +6,11 @@ export default function SystemSelect(props) {
         placeholder = '请选择系统',
         ...others
     } = props;
-    const {data: options} = useGet('/systems', {pageNum: 1, pageSize: 100000}, [], {
+    const {data: options} = useGet('/menu/queryTopMenus', {pageNum: 1, pageSize: 100000}, [], {
         formatResult: res => {
             return (res.content || []).map(item => {
                 return {
-                    data: item,
+                    meta: item,
                     value: item.id,
                     label: item.name,
                 };

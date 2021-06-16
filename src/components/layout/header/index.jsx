@@ -12,9 +12,8 @@ export default config({
 })(function Header(props) {
     const {loginUser = {}} = props;
 
-    function handleLogout() {
-        // TODO 退出登录
-        alert('TODO 退出登录');
+    async function handleLogout() {
+        await props.ajax.post('/logout');
         toLogin();
     }
 

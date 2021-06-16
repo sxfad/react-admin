@@ -38,24 +38,24 @@ export default config({
             dataSource,
             total,
         } = {},
-    } = props.ajax.useGet('/roles', params, [conditions, pageNum, pageSize], {
+    } = props.ajax.useGet('/role/queryRoleByPage', params, [conditions, pageNum, pageSize], {
         setLoading,
         // mountFire: false, // 初始化不查询
         formatResult: res => {
             return {
                 // 只有自定义角色显示
-                dataSource: (res?.list || []).filter(item => item.type === 3),
-                total: res?.total || 0,
+                dataSource: (res?.content || []).filter(item => item.type === 3),
+                total: res?.totalElements || 0,
             };
         },
     });
 
     // 删除
-    const {run: deleteRole} = props.ajax.useDel('/roles/:id', null, {setLoading, successTip: '删除成功！'});
+    const {run: deleteRole} = props.ajax.useDel('/role/:id', null, {setLoading, successTip: '删除成功！'});
 
     let columns = [
         {title: '角色名称', dataIndex: 'name'},
-        {title: '启用', dataIndex: 'enable', render: value => options.enable.getTag(!!value)},
+        {title: '启用', dataIndex: 'enabled', render: value => options.enabled.getTag(!!value)},
         {title: '备注', dataIndex: 'remark'},
         {
             title: '操作', dataIndex: 'operator', width: 100,

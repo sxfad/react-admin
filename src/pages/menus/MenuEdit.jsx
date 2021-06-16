@@ -30,12 +30,12 @@ export default config()(function MenuEdit(props) {
         return isAddSub ? '添加菜单' : '修改菜单';
     })();
 
-    const {run: deleteMenu} = props.ajax.useDel('/menus/:id', null, {setLoading});
-    const {run: saveMenu} = props.ajax.usePost('/menus', null, {setLoading});
-    const {run: branchSaveMenu} = props.ajax.usePost('/branchMenus', null, {setLoading});
-    const {run: updateMenu} = props.ajax.usePut('/menus', null, {setLoading});
-    const {run: fetchMenuByName} = props.ajax.useGet('/menuByName');
-    const {run: saveRole} = props.ajax.usePost('/roles', null, {setLoading});
+    const {run: deleteMenu} = props.ajax.useDel('/menu/:id', null, {setLoading});
+    const {run: saveMenu} = props.ajax.usePost('/menu/addMenu', null, {setLoading});
+    const {run: branchSaveMenu} = props.ajax.usePost('/menu/addSubMenus', null, {setLoading});
+    const {run: updateMenu} = props.ajax.usePost('/menu/updateMenuById', null, {setLoading});
+    const {run: fetchMenuByName} = props.ajax.useGet('/menu/getOneMenu');
+    const {run: saveRole} = props.ajax.usePost('/role/addRole', null, {setLoading});
 
     // 表单回显
     useEffect(() => {
@@ -57,6 +57,7 @@ export default config()(function MenuEdit(props) {
         const params = {
             ...values,
             type: 1, // 菜单
+            ord: values.order,
         };
 
         if (isAdd) {
@@ -84,11 +85,10 @@ export default config()(function MenuEdit(props) {
 
                 // 有系统的概念，并且是添加顶级，创建一个系统管理员
                 if (WITH_SYSTEMS && isAddTop) {
-                    console.log('id', id);
                     await saveRole({
                         systemId: id,
                         name: '系统管理员',
-                        enable: true,
+                        enabled: true,
                         remark: '拥有当前子系统所有权限',
                         type: 2,
                     });
@@ -131,7 +131,7 @@ export default config()(function MenuEdit(props) {
             form={form}
             onFinish={handleSubmit}
             onValuesChange={onValuesChange}
-            initialValues={{enable: true}}
+            initialValues={{enabled: true}}
         >
             <h3 className={styles.title}>{title}</h3>
             <Content ref={contentRef} loading={loading} className={styles.content}>
@@ -169,7 +169,7 @@ export default config()(function MenuEdit(props) {
                             {...layout}
                             type="switch"
                             label="启用"
-                            name="enable"
+                            name="enabled"
                             checkedChildren="启"
                             unCheckedChildren="禁"
                             tooltip="是否启用"

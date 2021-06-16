@@ -28,7 +28,7 @@ export default {
             const list = await executeSql(`
                 select *
                 from roles
-                where enable = 1
+                where enabled = 1
                 order by updatedAt desc`);
             await addSystem(list);
 
@@ -89,15 +89,15 @@ export default {
         let {
             name,
             remark = '',
-            enable,
+            enabled,
             menuIds,
             systemId = null,
             type = 3,
         } = JSON.parse(config.data);
-        enable = enable ? 1 : 0;
+        enabled = enabled ? 1 : 0;
 
-        const args = [name, remark, enable, systemId, type, moment().format('YYYY-MM-DD HH:mm:ss'), moment().format('YYYY-MM-DD HH:mm:ss')];
-        const result = await executeSql('INSERT INTO roles (name, remark, enable, systemId, type, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)', args, true);
+        const args = [name, remark, enabled, systemId, type, moment().format('YYYY-MM-DD HH:mm:ss'), moment().format('YYYY-MM-DD HH:mm:ss')];
+        const result = await executeSql('INSERT INTO roles (name, remark, enabled, systemId, type, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)', args, true);
         const {insertId: roleId} = result;
 
         if (menuIds?.length) {
@@ -114,14 +114,14 @@ export default {
             id,
             name,
             remark = '',
-            enable,
+            enabled,
             menuIds,
             systemId,
         } = JSON.parse(config.data);
-        enable = enable ? 1 : 0;
-        const args = [name, remark, enable, systemId, moment().format('YYYY-MM-DD HH:mm:ss'), id];
+        enabled = enabled ? 1 : 0;
+        const args = [name, remark, enabled, systemId, moment().format('YYYY-MM-DD HH:mm:ss'), id];
 
-        await executeSql('UPDATE roles SET name=?, remark=?, enable=?, systemId=?, updatedAt=? WHERE id=?', args);
+        await executeSql('UPDATE roles SET name=?, remark=?, enabled=?, systemId=?, updatedAt=? WHERE id=?', args);
         await executeSql('DELETE FROM role_menus WHERE roleId=?', [id]);
 
         if (menuIds?.length) {

@@ -48,7 +48,7 @@ export default config({
             ...values,
         };
 
-        // alert('// TODO 登录');
+        // alert('TODO 登录');
         // login.run = async () => ({id: 1, name: '测试', token: 'test'});
 
         login.run(params, {errorTip: false})
@@ -64,6 +64,7 @@ export default config({
                 toHome();
             })
             .catch((err) => {
+                console.error(err);
                 setMessage(err.response?.data?.message || '用户名或密码错误');
                 // 可以刷新图片验证码
                 imageCodeRef.current.refresh();
@@ -74,7 +75,7 @@ export default config({
         // 开发时默认填入数据
         if (process.env.NODE_ENV === 'development' || process.env.REACT_APP_PREVIEW) {
             form.setFieldsValue({
-                userName: 'admin',
+                account: 'admin',
                 password: '123456',
                 imageCode: '0000',
                 messageCode: '0000',
@@ -103,7 +104,7 @@ export default config({
                     </div>
                     <div className={formItemClass}>
                         <FormItem
-                            name="userName"
+                            name="account"
                             allowClear
                             autoFocus
                             prefix={<UserOutlined/>}

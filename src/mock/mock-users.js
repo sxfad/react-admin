@@ -14,7 +14,7 @@ export default {
             password,
         } = JSON.parse(config.data);
 
-        const result = await executeSql('select * from users where account=? and password=? and enable=1', [userName, password]);
+        const result = await executeSql('select * from users where account=? and password=? and enabled=1', [userName, password]);
         if (!result?.length) return [400, {message: '用户名或密码错误'}];
 
         const user = result[0];
@@ -89,13 +89,13 @@ export default {
             password,
             email,
             mobile,
-            enable,
+            enabled,
             roleIds,
         } = JSON.parse(config.data);
-        enable = enable ? 1 : 0;
+        enabled = enabled ? 1 : 0;
 
-        const args = [account, name, password, mobile, email, enable, moment().format('YYYY-MM-DD HH:mm:ss'), moment().format('YYYY-MM-DD HH:mm:ss')];
-        const result = await executeSql('INSERT INTO users (account, name, password, mobile, email, enable, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', args, true);
+        const args = [account, name, password, mobile, email, enabled, moment().format('YYYY-MM-DD HH:mm:ss'), moment().format('YYYY-MM-DD HH:mm:ss')];
+        const result = await executeSql('INSERT INTO users (account, name, password, mobile, email, enabled, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', args, true);
         const {insertId: userId} = result;
 
         if (roleIds?.length) {
@@ -115,13 +115,13 @@ export default {
             password,
             email,
             mobile,
-            enable,
+            enabled,
             roleIds,
         } = JSON.parse(config.data);
-        enable = enable ? 1 : 0;
-        const args = [account, name, password, mobile, email, enable, moment().format('YYYY-MM-DD HH:mm:ss'), id];
+        enabled = enabled ? 1 : 0;
+        const args = [account, name, password, mobile, email, enabled, moment().format('YYYY-MM-DD HH:mm:ss'), id];
 
-        await executeSql('UPDATE users SET account=?, name=?, password=?, mobile=?, email=?, enable=?, updatedAt=? WHERE id=?', args);
+        await executeSql('UPDATE users SET account=?, name=?, password=?, mobile=?, email=?, enabled=?, updatedAt=? WHERE id=?', args);
         await executeSql('DELETE FROM user_roles WHERE userId=?', [id]);
 
         if (roleIds?.length) {

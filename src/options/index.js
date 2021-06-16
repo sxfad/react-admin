@@ -37,7 +37,7 @@ const options = {
         {value: false, label: '否', tag: <Tag color="red">否</Tag>},
     ],
     // 启用、禁用
-    enable: [
+    enabled: [
         {value: true, label: '启用', tag: <Tag color="green">启用</Tag>},
         {value: false, label: '禁用', tag: <Tag color="red">禁用</Tag>},
     ],
@@ -48,7 +48,7 @@ const options = {
         {value: '3', label: '未知'},
     ],
     async system() {
-        const list = await ajax.get('/systems');
+        const list = await ajax.get('/menu/queryTopMenus');
         return list.map(item => {
             return {
                 value: item.id,

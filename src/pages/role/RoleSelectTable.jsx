@@ -46,7 +46,7 @@ export default class RoleSelectTable extends Component {
 
         try {
             this.setState({loading: true});
-            const res = await this.props.ajax.get('/roles');
+            const res = await this.props.ajax.get('/role/queryEnabledRoles', {pageNum: 1, pageSize: 10000});
 
             let roles = (res || []);
             if (WITH_SYSTEMS) {

@@ -33,7 +33,7 @@ export default {
         const isSuperAdmin = userRoles.some(item => item.type === 1);
         const allMenus = await executeSql(`select *
                                            from menus
-                                           where enable = 1`);
+                                           where enabled = 1`);
 
         if (isSuperAdmin) {
             return [200, allMenus];
@@ -256,10 +256,10 @@ export default {
         await executeSql('delete  from menus where parentId=? and type=?', [parentId, 2]);
         // 插入新的action
         for (let action of actions) {
-            let {id, title, code, enable, type = 2} = action;
-            enable = enable ? 1 : 0;
+            let {id, title, code, enabled, type = 2} = action;
+            enabled = enabled ? 1 : 0;
 
-            const data = {parentId, title, code, enable, type};
+            const data = {parentId, title, code, enabled, type};
 
             const keys = Object.keys(data);
             const values = Object.values(data);
@@ -295,9 +295,9 @@ function getMenuData(config, parse = JSON.parse) {
         icon = '',
         code = '',
         type = 1,
-        enable,
+        enabled,
     } = parse(config.data);
-    enable = enable ? 1 : 0;
+    enabled = enabled ? 1 : 0;
 
     const data = {
         target,
@@ -312,7 +312,7 @@ function getMenuData(config, parse = JSON.parse) {
         icon,
         code,
         type,
-        enable,
+        enabled,
     };
     const keyValues = Object.entries(data);
 

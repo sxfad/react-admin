@@ -31,7 +31,8 @@ export default function App(props) {
 
     async function handleMenuCollect(menu, collected) {
         const loginUser = getLoginUser();
-        await ajax.post('/userCollectMenu', {userId: loginUser?.id, menuId: menu.id, collected});
+        console.log(loginUser);
+        await ajax.post('/authority/addUserCollectMenu', {userId: loginUser?.id, menuId: menu.id, collected});
 
         const collectedMenus = await getCollectedMenus();
         setCollectedMenus(collectedMenus);

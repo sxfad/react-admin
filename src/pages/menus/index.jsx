@@ -7,7 +7,7 @@ import MenuEdit from './MenuEdit';
 import ActionEdit from './ActionEdit';
 import theme from 'src/theme.less';
 import styles from './style.less';
-import {WITH_SYSTEMS} from '../../config';
+import {WITH_SYSTEMS} from 'src/config';
 
 export default config({
     path: '/menus',
@@ -16,14 +16,15 @@ export default config({
     const [selectedMenu, setSelectedMenu] = useState(null);
     const [hasUnSaveMenu, setHasUnSaveMenu] = useState(false);
     const [hasUnSaveAction, setHasUnSaveAction] = useState(false);
-    const {loading, data: menus = [], run: fetchMenus} = props.ajax.useGet('/menus', null, {
+    const {loading, data: menus = [], run: fetchMenus} = props.ajax.useGet('/menu/queryMenus', null, {
         formatResult: res => {
             return (res || []).map((item, index, arr) => {
                 const actions = arr.filter(it => it.type === 2 && it.parentId === item.id);
                 return {
                     ...item,
                     id: '' + item.id,
-                    parentId: '' + item.parentId,
+                    parentId: item.parentId ? '' + item.parentId : item.parentId,
+                    order: item.ord,
                     actions,
                 };
             }).filter(item => item.type === 1);

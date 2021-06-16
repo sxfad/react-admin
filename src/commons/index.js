@@ -1,13 +1,10 @@
 import {match} from 'path-to-regexp';
-import {checkSameField, convertToTree, getQuery, sort} from '@ra-lib/util';
-import options from 'src/options';
+import {getQuery} from '@ra-lib/util';
 import {getSubApps, isActiveApp} from 'src/qiankun';
 import {BASE_NAME, HASH_ROUTER} from 'src/config';
 import pageConfigs from 'src/pages/page-configs';
-import {Icon} from 'src/components';
 import appPackage from '../../package.json';
 
-const menuTargetOptions = options.menuTarget;
 const TOKEN_STORAGE_KEY = `${appPackage.name}_token`;
 const LOGIN_USER_STORAGE_KEY = `${appPackage.name}_login-user`;
 let MAIN_APP = null;
@@ -229,65 +226,3 @@ export function getCurrentPageConfig() {
 
     return config || {};
 }
-
-/**
- * 处理菜单数据
- * @param menus
- * @returns {*}
- */
-export function formatMenus(menus) {
-    // id转字符串
-    menus.forEach(item => {
-        item.id = `${item.id}`;
-        item.parentId = `${item.parentId}`;
-    });
-    // 检测是否有重复id
-    const someId = checkSameField(menus, 'id');
-    if (someId) throw Error(`菜单中有重复id 「 ${someId} 」`);
-
-    // 排序 order降序， 越大越靠前
-    return loopMenus(convertToTree(sort(menus, (a, b) => b.order - a.order)));
-}
-
-/**
- * 菜单数据处理函数{}
- * @param menus
- * @param basePath
- */
-function loopMenus(menus, basePath) {
-    menus.forEach(item => {
-        let {icon, path, target, children} = item;
-
-        // 保存原始target数据
-        item._target = target;
-
-        // 树状结构bashPath向下透传
-        if (basePath && !('basePath' in item)) item.basePath = basePath;
-
-        // 乾坤子项目约定
-        if (target === menuTargetOptions.QIANKUN) item.basePath = `/${item.name}`;
-
-        // 拼接基础路径
-        if (basePath && path && (!path.startsWith('http') || !path.startsWith('//'))) {
-            item.path = path = `${basePath}${path}`;
-        }
-
-        // 图标处理，数据库中持久换存储的是字符串
-        if (icon) item.icon = <Icon type={icon}/>;
-
-        // 第三方页面处理，如果target为iframe，内嵌到当前系统中
-        if (target === menuTargetOptions.IFRAME) {
-            // 页面跳转 : 内嵌iFrame
-            item.path = `/iframe_page_/${encodeURIComponent(path)}`;
-        }
-
-        if (![menuTargetOptions.SELF, menuTargetOptions.BLANK].includes(target)) {
-            Reflect.deleteProperty(item, 'target');
-        }
-
-        if (children?.length) loopMenus(children, item.basePath);
-    });
-
-    return menus;
-}
-

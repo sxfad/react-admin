@@ -4,7 +4,9 @@ const proxy = require('http-proxy-middleware');
 module.exports = function(app) {
     app.use(proxy('/api',
         {
-            target: 'http://172.16.40.72:8080',
+            // target: 'http://172.16.40.72:8080',
+            // target: 'http://172.16.41.190:8080', // 张强
+            target: 'http://172.16.174.35:8080', // 测试环境
             pathRewrite: {
                 '^/api': '', // 如果后端接口无前缀，可以通过这种方式去掉
             },

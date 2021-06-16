@@ -51,7 +51,7 @@ export default config()(function MenuTableSelect(props) {
     }, [menuTreeData, topId]);
 
     async function fetchMenus() {
-        const res = await props.ajax.get('/menus');
+        const res = await props.ajax.get('/menu/queryMenus', {enabled: true});
 
         return (res || []).map(item => {
             return {
