@@ -2,7 +2,8 @@ import {useEffect, useState} from 'react';
 import {Layout as RALayout, KeepPageAlive} from '@ra-lib/components';
 import {getQuery} from '@ra-lib/util';
 import {APP_NAME, CONFIG_HOC, HASH_ROUTER, IS_SUB} from 'src/config';
-import {isLogin, toLogin, getCurrentPageConfig} from 'src/commons';
+import {toLogin, getCurrentPageConfig} from 'src/commons';
+import {isLogin} from 'src/commons/util';
 import Header from './header';
 import logo from './logo/logo.png';
 

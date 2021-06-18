@@ -1,54 +1,8 @@
 import {match} from 'path-to-regexp';
-import {getQuery} from '@ra-lib/util';
-import {getSubApps, isActiveApp} from 'src/qiankun';
-import {BASE_NAME, HASH_ROUTER} from 'src/config';
+import {getSubApps, isActiveApp} from '../qiankun';
+import {BASE_NAME, HASH_ROUTER} from '../config';
 import pageConfigs from 'src/pages/page-configs';
-import appPackage from '../../package.json';
-
-const TOKEN_STORAGE_KEY = `${appPackage.name}_token`;
-const LOGIN_USER_STORAGE_KEY = `${appPackage.name}_login-user`;
-let MAIN_APP = null;
-
-/**
- * 设置乾坤主应用实例
- * @param mainApp
- */
-export function setMainApp(mainApp) {
-    MAIN_APP = mainApp;
-    setLoginUser(mainApp?.loginUser || null);
-}
-
-/**
- * 获取乾坤主应用实例
- */
-export function getMainApp() {
-    return MAIN_APP;
-}
-
-/**
- * 存储token到sessionStorage及loginUser中
- * @param token
- */
-export function setToken(token) {
-    window.sessionStorage.setItem(TOKEN_STORAGE_KEY, token);
-    const loginUser = getLoginUser();
-    if (loginUser) loginUser.token = token;
-}
-
-/**
- * 获取token
- * token来源: queryString > sessionStorage > loginUser
- */
-export function getToken() {
-    const query = getQuery();
-    if (query?.token) {
-        window.sessionStorage.setItem(TOKEN_STORAGE_KEY, query.token);
-    }
-    return query?.token
-        || getMainApp()?.token
-        || window.sessionStorage.getItem(TOKEN_STORAGE_KEY)
-        || getLoginUser()?.token;
-}
+import {getMainApp, isLoginPage} from './util';
 
 /**
  * 浏览器跳转，携带baseName hash等
@@ -63,82 +17,6 @@ export function locationHref(href) {
     const hash = HASH_ROUTER ? '#' : '';
 
     return window.location.href = `${BASE_NAME}${hash}${href}`;
-}
-
-/**
- * 判断是否有权限
- * @param code
- */
-export function hasPermission(code) {
-    if (typeof code === 'boolean') return code;
-
-    if (!code) return true;
-
-    const loginUser = getLoginUser();
-    return loginUser?.permissions?.includes(code);
-}
-
-/**
- * 设置当前用户信息
- * @param loginUser 当前登录用户信息
- */
-export function setLoginUser(loginUser = {}) {
-    // 必须字段
-    [
-        'id',
-        'name',
-        'token',
-        // 'permissions',
-    ].forEach(field => {
-        if (!loginUser[field]) throw Error(`loginUser must has ${field} property!`);
-    });
-
-    // 将用户属性在这里展开，方便查看系统都用到了那些用户属性
-    const userStr = JSON.stringify({
-        id: loginUser.id,                   // 用户id 必须
-        name: loginUser.name,               // 用户名 必须
-        avatar: loginUser.avatar,           // 用头像 非必须
-        token: loginUser.token,             // 登录凭证 非必须 ajax请求有可能会用到，也许是cookie
-        permissions: loginUser.permissions, // 用户权限 如果控制权限，必传
-        ...loginUser,
-    });
-
-    window.sessionStorage.setItem(LOGIN_USER_STORAGE_KEY, userStr);
-    window.sessionStorage.setItem('loginUserId', loginUser.id);
-}
-
-/**
- * 获取当前用户信息
- * @returns {any}
- */
-export function getLoginUser() {
-    const loginUser = window.sessionStorage.getItem(LOGIN_USER_STORAGE_KEY);
-
-    return loginUser ? JSON.parse(loginUser) : undefined;
-}
-
-/**
- * 判断用户是否登录 前端简单通过登录用户或token是否存在来判断
- * @returns {boolean}
- */
-export function isLogin() {
-    // 前端判断是否登录，基于不同项目，可能需要调整
-    return !!(
-        getLoginUser()
-        || window.sessionStorage.getItem('token')
-        || window.localStorage.getItem('token')
-        || getMainApp()?.token
-    );
-}
-
-/**
- * 判断当前页面是否是登录页面
- * @param path
- * @returns {string|*|boolean}
- */
-export function isLoginPage(path) {
-    if (!path) path = window.location.href;
-    return path && path.endsWith('/login');
 }
 
 /**

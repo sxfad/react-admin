@@ -2,7 +2,7 @@ import {createStoreByModels} from '@ra-lib/model';
 import models from './models';
 import handleSuccess from 'src/commons/handle-success';
 import handleError from 'src/commons/handle-error';
-import storage from 'src/commons/storage';
+import {storage} from 'src/commons/util';
 
 const result = createStoreByModels(models, {
     // middlewares: [

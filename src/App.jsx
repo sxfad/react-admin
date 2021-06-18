@@ -11,7 +11,7 @@ import {store} from 'src/models';
 import {Provider} from 'react-redux';
 import './App.less';
 import theme from 'src/theme.less';
-import {getLoginUser, setLoginUser} from 'src/commons';
+import {getLoginUser, setLoginUser} from 'src/commons/util';
 import getMenus, {getCollectedMenus, getPermissions} from 'src/menus';
 import ajax from 'src/commons/ajax';
 

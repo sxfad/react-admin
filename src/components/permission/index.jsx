@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {hasPermission} from 'src/commons';
+import {hasPermission} from 'src/commons/util';
 
 /**
  * 根据hasPermission 和code 来判断children是否显示

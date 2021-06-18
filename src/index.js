@@ -18,7 +18,7 @@ import ReactDOM from 'react-dom';
 import {notification, Modal, message} from 'antd';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {setMainApp} from 'src/commons';
+import {setMainApp} from 'src/commons/util';
 import qiankun from './qiankun';
 
 // 开启mock，这个判断不要修改，否则会把mock相关js打入生产包，很大

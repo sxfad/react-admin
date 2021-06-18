@@ -1,6 +1,6 @@
 import {checkSameField, convertToTree, sort} from '@ra-lib/util';
 import ajax from 'src/commons/ajax';
-import {isLoginPage, getLoginUser} from 'src/commons';
+import {getLoginUser, isLoginPage} from 'src/commons/util';
 import {Icon} from 'src/components';
 import options from 'src/options';
 

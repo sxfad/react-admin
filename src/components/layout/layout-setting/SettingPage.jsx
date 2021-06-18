@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {Form, Row, Col, Alert} from 'antd';
 import {FormItem, LAYOUT_TYPE, PageContent} from '@ra-lib/components';
 import json5 from 'json5';
-import storage from 'src/commons/storage';
+import {storage} from 'src/commons/util';
 import {CONFIG_HOC_STORAGE_KEY, CONFIG_HOC} from 'src/config';
 import {layoutRef} from 'src/components/layout';
 

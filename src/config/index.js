@@ -1,5 +1,5 @@
 import {LAYOUT_TYPE} from '@ra-lib/components';
-import storage from 'src/commons/storage';
+import {storage, getConfigValue as gc} from 'src/commons/util';
 import appPackage from '../../package.json';
 import * as development from './config.development';
 import * as production from './config.production';
@@ -7,6 +7,7 @@ import * as production from './config.production';
 const allEnvConfig = {development, production};
 const env = process.env.REACT_APP_CONFIG_ENV || process.env.NODE_ENV;
 const envConfig = allEnvConfig[env] || {};
+const getConfigValue = (key, defaultValue, parse) => gc(envConfig, key, defaultValue, parse);
 
 /**
  * 所有配置均可通过命令行参数传递，需要添加 REACT_APP_ 前缀，比如：REACT_APP_CONFIG_ENV=test yarn build
@@ -101,25 +102,3 @@ export const CONFIG_HOC = {
     ...mobileConfig,
     ...(storage.local.getItem(CONFIG_HOC_STORAGE_KEY) || {}),
 };
-
-
-function getConfigValue(key, defaultValue, parse) {
-    const evnKey = `REACT_APP_${key}`;
-
-    // 命令行参数 优先级最高
-    const envValue = process.env[evnKey];
-    if (envValue !== void 0) {
-        if (parse) return parse(envValue);
-        if (envValue === 'true') return true;
-        if (envValue === 'false') return false;
-
-        return envValue;
-    }
-
-    // 区分环境配置
-    const envConfigValue = envConfig[key];
-    if (envConfigValue !== void 0) return envConfigValue;
-
-    // 默认配置
-    return defaultValue;
-}

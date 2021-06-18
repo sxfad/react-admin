@@ -6,7 +6,8 @@ import {
 } from 'qiankun';
 import {PageContent} from '@ra-lib/components';
 import {SubError} from 'src/components';
-import {getLoginUser, getToken, toLogin} from 'src/commons';
+import {toLogin} from 'src/commons';
+import {getLoginUser, getToken} from 'src/commons/util';
 import {CONFIG_HOC} from 'src/config';
 import getMenus from 'src/menus';
 import App from 'src/App';

@@ -2,7 +2,7 @@ import Ajax, {createHooks, createHoc} from '@ra-lib/ajax';
 import {AJAX_PREFIX, AJAX_TIMEOUT} from 'src/config';
 import handleError from './handle-error';
 import handleSuccess from './handle-success';
-import {getToken} from './index';
+import {getToken} from './util';
 
 const token = getToken();
 
