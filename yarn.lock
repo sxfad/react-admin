@@ -1614,10 +1614,10 @@
   resolved "https://registry.npmjs.org/@polka/url/-/url-1.0.0-next.12.tgz#431ec342a7195622f86688bbda82e3166ce8cb28"
   integrity sha512-6RglhutqrGFMO1MNUXp95RBuYIuc8wTnMAV5MUhLmjTOy78ncwOw7RgeQ/HeymkKXRhZd0s2DNrM1rL7unk3MQ==
 
-"@ra-lib/admin@^0.0.21":
-  version "0.0.21"
-  resolved "https://registry.npmjs.org/@ra-lib/admin/-/admin-0.0.21.tgz#f24e3797ddc2ae3f1ad35724ee17efa46a4e6fac"
-  integrity sha512-lG9i353A+d4//K/QB+I4XFEtCa0OnCect685IybchtCp1SHUhkM8HeblR0YE3mStGJwKg61cirfvljRgiQFrXw==
+"@ra-lib/admin@^0.0.22":
+  version "0.0.22"
+  resolved "https://registry.npmjs.org/@ra-lib/admin/-/admin-0.0.22.tgz#ab6771ca6794bef8332fbe656b120648365698ce"
+  integrity sha512-XK0yb4sW2di9OQG0E+k8xGNPNY/FlUMjK22aimxAjTnhee84TdyDUHbTQVSaemzovbSlL4vmWdI5II7tGXXRsg==
   dependencies:
     "@ra-lib/ajax" "^0.1.10"
     "@ra-lib/babel-plugin-attribute-wrapper" "^0.0.6"
