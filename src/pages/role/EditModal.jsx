@@ -104,6 +104,7 @@ export default config({
                                         onChange={() => {
                                             form.setFieldsValue({menuIds: []});
                                         }}
+                                        noSpace
                                     />
                                 ) : null}
                                 <FormItem
@@ -112,7 +113,7 @@ export default config({
                                     name="name"
                                     required
                                     noSpace
-                                    maxLength={50}
+                                    maxLength={5}
                                     rules={[
                                         {validator: checkName},
                                     ]}
