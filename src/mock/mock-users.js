@@ -1,5 +1,5 @@
 import moment from 'moment';
-import executeSql, {initDB} from 'src/mock/web-sql';
+import executeSql, {initDB} from './web-sql';
 
 export default {
     // 重置数据库

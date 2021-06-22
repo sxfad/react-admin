@@ -1,8 +1,8 @@
-export Error404 from './error/Error404';
-export Layout from './layout';
+/**
+ * 公共组件
+ * Icon Footer Logo Header 系统框架会用到，不要删除
+ * */
 export Icon from './icon';
-export Footer from './layout/footer';
-export Logo from './layout/logo';
-export Permission from './permission';
-export SubApp from './sub-app';
-export SubError from './sub-app/SubError';
+export Footer from './footer';
+export Logo from './logo';
+export Header from './header';

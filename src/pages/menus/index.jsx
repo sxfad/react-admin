@@ -1,13 +1,18 @@
 import {useEffect, useState, useMemo} from 'react';
 import {Menu, Button, Space, Empty} from 'antd';
-import {PageContent, confirm} from '@ra-lib/components';
-import {convertToTree, sort, findNextNode} from '@ra-lib/util';
-import config from 'src/commons/config-hoc';
+import {
+    PageContent,
+    confirm,
+    convertToTree,
+    sort,
+    findNextNode,
+    config,
+    WITH_SYSTEMS,
+} from '@ra-lib/admin';
 import MenuEdit from './MenuEdit';
 import ActionEdit from './ActionEdit';
 import theme from 'src/theme.less';
 import styles from './style.less';
-import {WITH_SYSTEMS} from 'src/config';
 
 export default config({
     path: '/menus',

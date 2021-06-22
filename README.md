@@ -62,6 +62,9 @@ module.exports = function(app) {
 # 正常构建
 yarn build
 
+# 构建到指定目录
+BUILD_PATH=./dist yarn build
+
 # 指定配置环境
 REACT_APP_CONFIG_ENV=test yarn build
 

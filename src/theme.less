@@ -1,7 +1,7 @@
 // 样式前缀，做微前端，防止各个系统样式冲突时，各个系统修改为不同的值
 @packageName: ''; // lessLoader 会改为 package.json name属性
-@ant-prefix: ~'ant-@{packageName}';
-@ra-lib-prefix: ~'ra-lib-@{packageName}';
+@ant-prefix: ~'@{packageName}';
+@ra-lib-prefix: ~'@{packageName}';
 
 :export {
     antPrefix: @ant-prefix;

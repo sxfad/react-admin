@@ -1,11 +1,17 @@
 import {useState} from 'react';
 import {Card, Row, Col, Form} from 'antd';
-import config from 'src/commons/config-hoc';
-import {ModalContent, FormItem, Content} from '@ra-lib/components';
-import {useDebounceValidator} from '@ra-lib/hooks';
+import {
+    ModalContent,
+    FormItem,
+    Content,
+    config,
+    useDebounceValidator,
+    IS_MOBILE,
+    WITH_SYSTEMS,
+    useOptions,
+} from '@ra-lib/admin';
 import MenuTableSelect from 'src/pages/menus/MenuTableSelect';
-import {IS_MOBILE, WITH_SYSTEMS} from 'src/config';
-import options, {useOptions} from 'src/options';
+import options from 'src/options';
 
 export default config({
     modal: {

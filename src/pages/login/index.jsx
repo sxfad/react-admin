@@ -2,12 +2,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import {Helmet} from 'react-helmet';
 import {Button, Form} from 'antd';
 import {LockOutlined, UserOutlined, FileImageOutlined, MessageOutlined} from '@ant-design/icons';
-import {FormItem} from '@ra-lib/components';
-import {toHome} from 'src/commons';
-import {setLoginUser} from 'src/commons/util';
-import config from 'src/commons/config-hoc';
-import {usePost} from 'src/commons/ajax';
-import classNames from 'classnames';
+import {FormItem, toHome, setLoginUser, config} from '@ra-lib/admin';
 import {Logo} from 'src/components';
 import styles from './style.less';
 
@@ -15,8 +10,8 @@ export default config({
     path: '/login',
     auth: false,
     layout: false,
-})(function Login() {
-    const login = usePost('/login');
+})(function Login(props) {
+    const login = props.ajax.usePost('/login');
     const [message, setMessage] = useState();
     const [isMount, setIsMount] = useState(false);
     const imageCodeRef = useRef(null);
@@ -86,7 +81,7 @@ export default config({
         setTimeout(() => setIsMount(true), 300);
     }, [form]);
 
-    const formItemClass = classNames(styles.formItem, {[styles.active]: isMount});
+    const formItemClass = [styles.formItem, {[styles.active]: isMount}];
 
     return (
         <div className={styles.root}>

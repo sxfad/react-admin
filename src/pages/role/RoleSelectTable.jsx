@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Input} from 'antd';
-import {renderTableCheckbox, Table} from '@ra-lib/components';
-import config from 'src/commons/config-hoc';
-import {filterTree} from '@ra-lib/util';
-import {WITH_SYSTEMS} from 'src/config';
+import {
+    renderTableCheckbox,
+    Table,
+    config,
+    filterTree,
+    WITH_SYSTEMS,
+} from '@ra-lib/admin';
 
 const WithCheckboxTable = renderTableCheckbox(Table);
 

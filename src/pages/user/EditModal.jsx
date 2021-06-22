@@ -1,11 +1,15 @@
 import {useState} from 'react';
 import {Form, Row, Col, Card, Button} from 'antd';
-import {ModalContent, FormItem, Content} from '@ra-lib/components';
-import {validateRules} from '@ra-lib/util';
-import {useDebounceValidator} from '@ra-lib/hooks';
-import config from 'src/commons/config-hoc';
+import {
+    ModalContent,
+    FormItem,
+    Content,
+    validateRules,
+    useDebounceValidator,
+    config,
+    IS_MOBILE,
+} from '@ra-lib/admin';
 import RoleSelectTable from 'src/pages/role/RoleSelectTable';
-import {IS_MOBILE} from 'src/config';
 
 export default config({
     modal: {

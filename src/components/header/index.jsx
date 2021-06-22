@@ -1,16 +1,15 @@
+import {useState} from 'react';
 import {Space, Dropdown, Menu, Avatar} from 'antd';
-import {DownOutlined, UserOutlined, LogoutOutlined} from '@ant-design/icons';
-import {FullScreen} from '@ra-lib/components';
-import {getColor} from '@ra-lib/util';
+import {DownOutlined, LockOutlined, LogoutOutlined} from '@ant-design/icons';
+import {getColor, FullScreen, config, toLogin, IS_MOBILE} from '@ra-lib/admin';
+import PasswordModal from './PasswordModal';
 import styles from './style.less';
-import config from 'src/commons/config-hoc';
-import {toLogin} from 'src/commons';
-import {IS_MOBILE} from 'src/config';
 
 export default config({
     router: true,
 })(function Header(props) {
     const {loginUser = {}} = props;
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     async function handleLogout() {
         await props.ajax.post('/logout');
@@ -19,8 +18,8 @@ export default config({
 
     const menu = (
         <Menu>
-            <Menu.Item key="user-center" icon={<UserOutlined/>} onClick={() => props.history.push(`/users/center/${loginUser.id}`)}>
-                用户中心
+            <Menu.Item key="modify-password" icon={<LockOutlined/>} onClick={() => setPasswordVisible(true)}>
+                修改密码
             </Menu.Item>
             <Menu.Divider/>
             <Menu.Item key="logout" danger icon={<LogoutOutlined/>} onClick={handleLogout}>
@@ -72,6 +71,11 @@ export default config({
                     )}
                 </div>
             </Dropdown>
+            <PasswordModal
+                visible={passwordVisible}
+                onCancel={() => setPasswordVisible(false)}
+                onOk={() => setPasswordVisible(false)}
+            />
         </Space>
     );
 });

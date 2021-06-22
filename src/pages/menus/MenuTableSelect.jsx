@@ -1,8 +1,12 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {Input, Button} from 'antd';
-import {convertToTree, filterTree} from '@ra-lib/util';
-import {Table, renderTableCheckbox} from '@ra-lib/components';
-import config from 'src/commons/config-hoc';
+import {
+    convertToTree,
+    filterTree,
+    Table,
+    renderTableCheckbox,
+    config,
+} from '@ra-lib/admin';
 import options from 'src/options';
 
 const menuTargetOptions = options.menuTarget;

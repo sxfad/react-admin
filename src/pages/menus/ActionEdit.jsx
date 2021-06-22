@@ -1,9 +1,8 @@
 import {useState, useEffect} from 'react';
 import {Button, Empty, Form, Space} from 'antd';
-import {FormItem, Content} from '@ra-lib/components';
 import {MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
-import config from 'src/commons/config-hoc';
-import styles from 'src/pages/menus/style.less';
+import {FormItem, Content, config} from '@ra-lib/admin';
+import styles from './style.less';
 
 export default config()(function ActionEdit(props) {
     const [form] = Form.useForm();

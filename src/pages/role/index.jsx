@@ -1,5 +1,4 @@
 import {useState} from 'react';
-import config from 'src/commons/config-hoc';
 import {Button, Form, Space} from 'antd';
 import {
     PageContent,
@@ -9,10 +8,12 @@ import {
     Pagination,
     Operator,
     ToolBar,
-} from '@ra-lib/components';
+    IS_MOBILE,
+    WITH_SYSTEMS,
+    config,
+} from '@ra-lib/admin';
 import EditModal from './EditModal';
 import styles from './style.less';
-import {IS_MOBILE, WITH_SYSTEMS} from 'src/config';
 import options from 'src/options';
 
 export default config({
@@ -131,7 +132,6 @@ export default config({
                 dataSource={dataSource}
                 columns={columns}
                 rowKey="id"
-                pagination={false}
             />
             <Pagination
                 total={total}

@@ -1,5 +1,4 @@
 import {useState} from 'react';
-import config from 'src/commons/config-hoc';
 import {Button, Form, Space} from 'antd';
 import {
     PageContent,
@@ -9,14 +8,15 @@ import {
     Pagination,
     Operator,
     ToolBar,
-} from '@ra-lib/components';
-import {IS_MOBILE} from 'src/config';
+    config,
+    IS_MOBILE,
+} from '@ra-lib/admin';
 import options from 'src/options';
 import EditModal from './EditModal';
 
 export default config({
     path: '/users',
-})(function Role(props) {
+})(function User(props) {
     const [loading, setLoading] = useState(false);
     const [pageNum, setPageNum] = useState(1);
     const [pageSize, setPageSize] = useState(20);
@@ -145,7 +145,6 @@ export default config({
                 dataSource={dataSource}
                 columns={columns}
                 rowKey="id"
-                pagination={false}
                 scroll={IS_MOBILE ? {x: 1000} : undefined}
             />
             <Pagination

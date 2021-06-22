@@ -1,5 +1,5 @@
 import createTableSql, {initDataSql} from './init-sql';
-import appPackage from '../../../package.json';
+import appPackage from 'root/package.json';
 
 const packageName = appPackage.name;
 

@@ -1,11 +1,15 @@
 import {useState, useEffect, useRef} from 'react';
 import {Button, Form, Modal, Space, Tabs, Popconfirm} from 'antd';
 import json5 from 'json5';
-import {FormItem, Content} from '@ra-lib/components';
-import {useHeight, useDebounceValidator} from '@ra-lib/hooks';
-import config from 'src/commons/config-hoc';
+import {
+    FormItem,
+    Content,
+    useHeight,
+    useDebounceValidator,
+    config,
+    WITH_SYSTEMS,
+} from '@ra-lib/admin';
 import options from 'src/options';
-import {WITH_SYSTEMS} from 'src/config';
 import styles from './style.less';
 
 const menuTargetOptions = options.menuTarget;
@@ -41,9 +45,9 @@ export default config()(function MenuEdit(props) {
     useEffect(() => {
         form.resetFields();
         let initialValues = selectedMenu;
-        if (isAddTop) initialValues = {target: menuTargetOptions.QIANKUN};
+        if (isAddTop) initialValues = {target: 'qiankun'};
         if (isAddSub) initialValues = {
-            target: menuTargetOptions.MENU,
+            target: 'menu',
             parentId: selectedMenu.id,
             systemId: selectedMenu.systemId,
         };
@@ -177,7 +181,7 @@ export default config()(function MenuEdit(props) {
                         <FormItem shouldUpdate noStyle>
                             {({getFieldValue}) => {
                                 const target = getFieldValue('target');
-                                if (target === menuTargetOptions.QIANKUN) {
+                                if (target === 'qiankun') {
                                     return (
                                         <>
                                             <FormItem
