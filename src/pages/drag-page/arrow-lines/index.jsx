@@ -139,17 +139,19 @@ export default config({
                     key,
                 } = item;
 
-                const styleNames = classNames({
-                    [styles.root]: true,
-                    [styles.showEndPoint]: showEndPoint,
-                    [styles.remove]: remove,
-                    [styles.dragging]: dragging,
-                });
-
                 const style = getStyle(item);
 
                 return (
-                    <div key={key} className={styleNames} style={style}>
+                    <div
+                        key={key}
+                        className={{
+                            [styles.root]: true,
+                            [styles.showEndPoint]: showEndPoint,
+                            [styles.remove]: remove,
+                            [styles.dragging]: dragging,
+                        }}
+                        style={style}
+                    >
                         <LinkPoint
                             className={styles.point}
                             movingPoint={item}

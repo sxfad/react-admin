@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FontIcon from '../../font-icon';
 import {Tooltip} from 'antd';
-import classNames from 'classnames';
-import './style.less';
+import styles from './style.less';
 
 const quickPositionOptions = [
     {value: 'topLeft', icon: <FontIcon type="icon-layout-top-left"/>, label: '左上角'},
@@ -21,24 +20,19 @@ function QuickPosition(props) {
     const {onClick, type, selectedKey} = props;
     const isLine = type === 'line';
 
-    const styleName = classNames(['root', type]);
-
     return (
-        <div styleName={styleName}>
+        <div className={[styles.root, styles[type]]}>
             {quickPositionOptions.map(item => {
                 const {value, placement, label, icon} = item;
 
                 const sk = typeof selectedKey === 'function' ? selectedKey(item) : selectedKey;
 
                 const isSelected = value === sk;
-                const styleName = classNames({
-                    isSelected,
-                });
 
                 return (
                     <Tooltip key={value} placement={isLine ? 'top' : placement || value} title={label}>
                         <div
-                            styleName={styleName}
+                            className={styles[isSelected]}
                             style={{cursor: 'pointer'}}
                             onClick={() => onClick(item)}
                         >

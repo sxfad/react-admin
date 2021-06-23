@@ -9,7 +9,7 @@ import {
     BarsOutlined,
 } from '@ant-design/icons';
 import FontIcon from 'src/pages/drag-page/font-icon';
-import {useHeight} from 'ra-lib';
+import {useHeight} from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
 import ComponentTree from '../component-tree';
 import ComponentStore from '../component-store';
@@ -18,7 +18,7 @@ import CanvasSetting from '../canvas-setting';
 import PageMenu from '../page-menu';
 import {OTHER_HEIGHT} from 'src/pages/drag-page/util';
 import DragBar from 'src/pages/drag-page/drag-bar';
-import './style.less';
+import styles from './style.less';
 
 export default config({
     connect: state => {
@@ -106,7 +106,13 @@ export default config({
 
             return (
                 <Tooltip placement="right" title={title}>
-                    <div styleName={`toolItem ${active ? 'active' : ''}`} onClick={() => handleToolClick(key)}>
+                    <div
+                        className={[
+                            styles.toolItem,
+                            {[styles.active]: active},
+                        ]}
+                        onClick={() => handleToolClick(key)}
+                    >
                         {icon}
                     </div>
                 </Tooltip>
@@ -117,23 +123,23 @@ export default config({
     const rightWidth = showSide ? sideWidth : 0;
     return (
         <div
-            styleName="root"
+            className={styles.root}
         >
             {showSide ? <DragBar onDragging={handleDragging}/> : null}
-            <div styleName="left">
-                <div styleName="leftTop">
+            <div className={styles.left}>
+                <div className={styles.leftTop}>
                     <Tooltip placement="right" title={showSide ? '收起' : '展开'}>
-                        <div styleName="toggle toolItem" onClick={() => handleToggle()}>
+                        <div className={[styles.toggle, styles.toolItem]} onClick={() => handleToggle()}>
                             {showSide ? <MenuFoldOutlined/> : <MenuUnfoldOutlined/>}
                         </div>
                     </Tooltip>
                     {renderTools(tools)}
                 </div>
-                <div styleName="leftBottom">
+                <div className={styles.leftBottom}>
                     {renderTools(tools, true)}
                 </div>
             </div>
-            <div styleName="right" ref={rightRef} style={{height, width: rightWidth}}>
+            <div className={styles.right} ref={rightRef} style={{height, width: rightWidth}}>
                 {tools.map(item => {
                     const {key, component} = item;
                     return (

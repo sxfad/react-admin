@@ -5,7 +5,7 @@ import CodeEditor from 'src/pages/drag-page/code-editor';
 import JSON5 from 'json5';
 import {cloneDeep} from 'lodash';
 import {getComponentConfig} from 'src/pages/drag-page/component-config';
-import './style.less';
+import styles from './style.less';
 
 export default config({
     connect: state => {
@@ -86,7 +86,7 @@ export default config({
     if (!visible) return null;
 
     return (
-        <div styleName="root" ref={rootRef}>
+        <div className={styles.root} ref={rootRef}>
             <CodeEditor
                 title="属性源码开发"
                 editorWidth={rightSideWidth}

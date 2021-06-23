@@ -2,7 +2,7 @@ import React, {useRef, useEffect, useState} from 'react';
 import config from 'src/commons/config-hoc';
 import {getComponentConfig} from 'src/pages/drag-page/component-config';
 import FormEditor from './form-editor';
-import {useHeight} from 'ra-lib';
+import {useHeight} from '@ra-lib/admin';
 import {Button} from 'antd';
 import {OTHER_HEIGHT /*, scrollElement*/} from 'src/pages/drag-page/util';
 import {isNode} from 'src/pages/drag-page/node-util';

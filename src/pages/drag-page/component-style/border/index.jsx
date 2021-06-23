@@ -12,7 +12,7 @@ import RadioGroup from '../radio-group';
 import UnitInput from '../unit-input';
 import ColorInput from '../color-input';
 
-import './style.less';
+import styles from './style.less';
 
 const borderStyleOptions = [
     {value: 'none', label: '无边框'},
@@ -133,7 +133,7 @@ export default function Background(props) {
     }, [value]);
 
     return (
-        <div styleName="root">
+        <div className={styles.root}>
             <Form
                 form={form}
                 onValuesChange={handleChange}

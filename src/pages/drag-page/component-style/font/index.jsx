@@ -9,7 +9,7 @@ import {
 import FontIcon from '../../font-icon';
 import RadioGroup from '../radio-group';
 import SliderInput from '../slider-input';
-import './style.less';
+import styles from './style.less';
 import UnitInput from 'src/pages/drag-page/component-style/unit-input';
 import ColorInput from 'src/pages/drag-page/component-style/color-input';
 
@@ -36,7 +36,7 @@ export default function Font(props) {
         form.setFieldsValue(value);
     }, [value]);
     return (
-        <div styleName="root">
+        <div className={styles.root}>
             <Form
                 form={form}
                 onValuesChange={handleChange}

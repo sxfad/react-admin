@@ -5,7 +5,7 @@ import {showFieldByAppend} from 'src/pages/drag-page/component-config';
 import {getLabelWidth} from 'src/pages/drag-page/util';
 import {v4 as uuid} from 'uuid';
 import config from 'src/commons/config-hoc';
-import './style.less';
+import styles from './style.less';
 
 export default config({
     connect: state => {
@@ -108,11 +108,11 @@ export default config({
                 const {category, fields} = item;
                 return (
                     <Col span={24}>
-                        <div styleName="category">
-                            <div styleName="label" style={{flex: `0 0 ${labelCol.flex}`}}>
+                        <div className={styles.category}>
+                            <div className={styles.label} style={{flex: `0 0 ${labelCol.flex}`}}>
                                 {category}
                             </div>
-                            <div styleName="wrapper">
+                            <div className={styles.wrapper}>
                                 {fields.map(it => {
                                     const {field} = it;
                                     const FormElement = elementMap.button({...it, node});

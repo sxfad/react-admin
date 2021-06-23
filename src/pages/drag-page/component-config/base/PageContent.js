@@ -4,6 +4,6 @@ import React from 'react';
 export default {
     withHolder: true,
     // renderComponentName: 'div',
-    componentType: 'ra-lib',
+    componentType: '@ra-lib/admin',
     icon: <PicCenterOutlined/>,
 };

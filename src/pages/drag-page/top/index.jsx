@@ -12,7 +12,7 @@ import config from 'src/commons/config-hoc';
 import {isMac} from '../util';
 import Undo from '../undo';
 import SourceCode from '../source-code';
-import './style.less';
+import styles from './style.less';
 
 export default config({
     router: true,
@@ -78,14 +78,14 @@ export default config({
         },
     ];
     return (
-        <div styleName="root">
-            <div styleName="left">
+        <div className={styles.root}>
+            <div className={styles.left}>
                 <Button onClick={() => props.history.goBack()}>返回</Button>
             </div>
-            <div styleName="center">
+            <div className={styles.center}>
                 {tools.map(item => {
                     if (item === 'divider') {
-                        return <div styleName="divider"/>;
+                        return <div className={styles.divider}/>;
                     }
 
                     let {key, icon, label, onClick, disabled} = item;
@@ -95,15 +95,19 @@ export default config({
 
                     if (disabled) onClick = undefined;
 
-                    const styleNames = ['toolItem'];
-                    if (isActive) styleNames.push('active');
-                    if (disabled) styleNames.push('disabled');
-                    if (showLabel) styleNames.push('showLabel');
-
                     const itemComponent = (
-                        <div key={key} styleName={styleNames.join(' ')} onClick={onClick}>
-                            <span styleName="icon">{icon}</span>
-                            {showLabel ? <span styleName="label">{label}</span> : null}
+                        <div
+                            key={key}
+                            className={{
+                                [styles.toolItem]: true,
+                                [styles.active]: isActive,
+                                [styles.disabled]: disabled,
+                                [styles.showLabel]: showLabel,
+                            }}
+                            onClick={onClick}
+                        >
+                            <span className={styles.icon}>{icon}</span>
+                            {showLabel ? <span className={styles.label}>{label}</span> : null}
                         </div>
                     );
 
@@ -116,7 +120,7 @@ export default config({
                 })}
                 <SourceCode/>
             </div>
-            <div styleName="right"/>
+            <div className={styles.right}/>
         </div>
     );
 });

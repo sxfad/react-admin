@@ -8,7 +8,7 @@ import RadioGroup from '../radio-group';
 import UnitInput from '../unit-input';
 import RectInputsWrapper from '../rect-inputs-wrapper';
 import {handleSyncFields} from '../util';
-import './style.less';
+import styles from './style.less';
 
 const displayOptions = [
     {value: 'inline', label: '内联布局', icon: <FontIcon type="icon-display-inline"/>},
@@ -97,7 +97,7 @@ export default function Layout(props) {
     }, [componentId, iframeDocument]);
 
     return (
-        <div styleName="root">
+        <div className={styles.root}>
             <Form
                 form={form}
                 onValuesChange={handleChange}
@@ -180,7 +180,7 @@ export default function Layout(props) {
                                 />
                             </Form.Item>
                         ))}
-                        <div styleName="innerInput">
+                        <div className={styles.innerInput}>
                             <Form.Item
                                 label="宽"
                                 name="width"

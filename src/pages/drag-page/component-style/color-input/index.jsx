@@ -33,7 +33,7 @@ function ColorInput(props) {
     } = props;
 
     return (
-        <div styleName="root">
+        <div className={styles.root}>
             <Input
                 value={value}
                 onChange={onChange}
@@ -56,7 +56,7 @@ function ColorInput(props) {
                             />
                         )}
                     >
-                        <div styleName="colorPreview" style={{backgroundColor: value}}/>
+                        <div className={styles.colorPreview} style={{backgroundColor: value}}/>
                     </Popover>
                 )}
                 {...others}

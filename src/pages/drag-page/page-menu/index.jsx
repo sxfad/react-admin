@@ -8,20 +8,12 @@ import {
     QuestionCircleOutlined,
 } from '@ant-design/icons';
 import config from 'src/commons/config-hoc';
-import {tree} from 'ra-lib';
+import {convertToTree, renderNode, findGenerationNodes, findNode, removeNode} from '@ra-lib/admin';
 import Pane from '../pane';
-import {isMac} from '@/pages/drag-page/util';
+import {isMac} from 'src/pages/drag-page/util';
 
 import styles from './style.less';
-import LinkPoint from '@/pages/drag-page/link-point';
-
-const {
-    convertToTree,
-    renderNode,
-    getGenerationKeys,
-    getNodeByKey,
-    removeNodeByKey,
-} = tree;
+import LinkPoint from 'src/pages/drag-page/link-point';
 
 const {SubMenu} = Menu;
 
@@ -64,6 +56,8 @@ export default config({
         menus.forEach(item => {
             item.key = `${item.id}`;
             item.parentKey = `${item.parentId}`;
+            item.id = `${item.id}`;
+            item.parentId = `${item.parentId}`;
             allKeys.push(item.key);
         });
         const menuData = convertToTree(menus);
@@ -80,7 +74,7 @@ export default config({
 
         let currentKey = currentMenuKey;
 
-        const menu = getNodeByKey(menuData, currentMenuKey);
+        const menu = findNode(menuData, currentMenuKey);
 
         if (!menu && menuData?.length) {
             currentKey = menuData[0]?.key;
@@ -98,7 +92,7 @@ export default config({
     // 菜单选中改变，渲染页面
     useEffect(() => {
         if (pageLoading) return;
-        const node = getNodeByKey(menuData, currentMenuKey);
+        const node = findNode(menuData, currentMenuKey);
         if (!node) return;
 
         (async () => {
@@ -162,7 +156,7 @@ export default config({
                 parentId,
                 text: '新增页面',
             };
-            const parentCollection = parentId ? getNodeByKey(menuData, `${parentId}`).children : menuData;
+            const parentCollection = parentId ? findNode(menuData, `${parentId}`).children : menuData;
             const index = parentCollection.findIndex(item => item.id === node.id);
 
             parentCollection.splice(index + 1, 0, newMenu);
@@ -191,7 +185,7 @@ export default config({
             title: '温馨提示',
             content: `您确定删除「${node.text}」吗`,
             onOk: async () => {
-                const keys = getGenerationKeys(menuData, node.key) || [];
+                const keys = (findGenerationNodes(menuData, node.key) || []).map(item => item.key);
                 await deleteMenu({id: node.id, ids: keys.join(',')});
 
                 const menus = await fetchMenus();
@@ -209,7 +203,7 @@ export default config({
         if (draggingMenu?.id === node?.id) return false;
 
         // 放到子级上了
-        if (getNodeByKey([draggingMenu], node.key)) return false;
+        if (findNode([draggingMenu], node.key)) return false;
 
         return true;
     }
@@ -273,9 +267,9 @@ export default config({
     function handleDrop(e, node) {
         clearDragGuide(e, node);
         if (!draggingMenu?.accept) return;
-        removeNodeByKey(menuData, draggingMenu.key);
+        removeNode(menuData, draggingMenu.key);
 
-        const targetCollection = node.parentId ? getNodeByKey(menuData, node.parentKey).children : menuData;
+        const targetCollection = node.parentId ? findNode(menuData, node.parentKey).children : menuData;
         const index = targetCollection.findIndex(item => item.key === node.key);
 
         const {isTop} = draggingMenu;
@@ -325,7 +319,7 @@ export default config({
                 title = (
                     <div
                         id={`menu_${node.id}`}
-                        styleName="menuTitle"
+                        className={styles.menuTitle}
                         draggable
                         onDragStart={e => handleDragStart(e, node)}
                         onDragOver={e => handleDragOver(e, node)}
@@ -334,14 +328,14 @@ export default config({
                         onDrop={e => handleDrop(e, node)}
                     >
                         <div
-                            styleName="title"
+                            className={styles.title}
                             onClick={e => handleClick(e, node)}
                         >
                             {title}
                         </div>
-                        <div styleName="tool">
+                        <div className={styles.tool}>
                             <DeleteOutlined
-                                styleName="icon"
+                                className={styles.icon}
                                 onClick={e => handleDelete(e, node)}
                             />
                             <LinkPoint
@@ -371,7 +365,7 @@ export default config({
     return (
         <Pane
             header={
-                <div styleName="header">
+                <div className="styles.header">
                     <div>
                         <AppstoreOutlined/>
                         <span style={{margin: '0 4px'}}>菜单</span>
@@ -394,7 +388,7 @@ export default config({
                     <div>
                         <Tooltip placement="top" title={isAllExpanded ? '收起所有' : '展开所有'}>
                             <div
-                                styleName="tool"
+                                className="styles.tool"
                                 onClick={() => {
                                     const nextKeys = isAllExpanded ? [] : allKeys;
                                     setOpenKeys(nextKeys);
@@ -408,7 +402,7 @@ export default config({
                 </div>
             }
         >
-            <div styleName="root">
+            <div className="styles.root">
                 <Menu
                     onClick={({key}) => dragPageAction.setCurrentMenuKey(key)}
                     style={{width: '100%'}}

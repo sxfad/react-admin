@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react';
 import {Form, Button, Select, Row, Col} from 'antd';
 import {PlusOutlined, MinusCircleOutlined} from '@ant-design/icons';
-import {validationRule} from 'ra-lib';
+import {validateRules} from '@ra-lib/admin';
 import PropTypes from 'prop-types';
 import styles from './style.less';
 
 export const options = [
     {value: 'required', label: '必填', rule: {required: true, message: '必填项！'}, ruleStr: '{required: true, message: \'必填项！\'}'},
-    {value: 'mobile', label: '手机号', rule: validationRule.mobile(), ruleStr: 'validationRule.mobile()'},
+    {value: 'mobile', label: '手机号', rule: validateRules.mobile(), ruleStr: 'validateRules.mobile()'},
 ];
 
 const Rule = props => {

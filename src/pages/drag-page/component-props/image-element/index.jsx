@@ -2,7 +2,7 @@ import React from 'react';
 import {Upload, Button} from 'antd';
 import {UploadOutlined, CloseCircleFilled} from '@ant-design/icons';
 import PropTypes from 'prop-types';
-import './style.less';
+import styles from './style.less';
 
 function getBase64(file) {
     return new Promise((resolve, reject) => {
@@ -37,7 +37,7 @@ const ArrayElement = props => {
 
     return (
         <Upload
-            styleName="root"
+            className={styles.root}
             name="image"
             showUploadList={false}
             beforeUpload={() => false}
@@ -46,7 +46,7 @@ const ArrayElement = props => {
             <Button icon={<UploadOutlined/>}>{placeholder}</Button>
             {value && allowClear ? (
                 <CloseCircleFilled
-                    styleName="close"
+                    className={styles.close}
                     onClick={(e) => {
                         e.stopPropagation();
                         onChange(undefined);

@@ -2,7 +2,7 @@ import React from 'react';
 import {Tooltip} from 'antd';
 import PropTypes from 'prop-types';
 import {scrollElement} from 'src/pages/drag-page/util';
-import './style.less';
+import styles from './style.less';
 
 const StyleNavigator = props => {
     const {
@@ -13,7 +13,7 @@ const StyleNavigator = props => {
     } = props;
 
     return (
-        <div styleName="root" {...others}>
+        <div className={styles.root} {...others}>
             {dataSource.map(item => {
                 const {key, title, icon} = item;
                 const id = `style-${key}`;

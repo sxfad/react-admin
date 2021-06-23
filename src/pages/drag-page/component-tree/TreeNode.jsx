@@ -10,7 +10,7 @@ import {
 import {throttle} from 'lodash';
 import classNames from 'classnames';
 
-import './style.less';
+import styles from './style.less';
 
 export default config({
     connect: state => {
@@ -32,7 +32,7 @@ export default config({
 
     let {key, name, icon, isContainer, draggable, nodeData} = node;
 
-    name = <span styleName="nodeTitle">{icon}{name}</span>;
+    name = <span className={styles.nodeTitle}>{icon}{name}</span>;
 
     const hoverRef = useRef(0);
     const nodeRef = useRef(null);
@@ -207,16 +207,6 @@ export default config({
     const isSelected = selectedKey === key;
     const isDragging = draggingNode?.id === key;
 
-    const styleNames = classNames(dropPosition, {
-        treeNode: true,
-        selected: isSelected,
-        dragging: isDragging,
-        dragIn: dragIn && draggingNode,
-        unDraggable: !draggable,
-        hasDraggingNode: !!draggingNode,
-        unAccept: !accept,
-    });
-
 
     const positionMap = {
         top: '前',
@@ -228,7 +218,18 @@ export default config({
             ref={nodeRef}
             key={key}
             id={`treeNode_${key}`}
-            styleName={styleNames}
+            className={[
+                styles[dropPosition],
+                {
+                    [styles.treeNode]: true,
+                    [styles.selected]: isSelected,
+                    [styles.dragging]: isDragging,
+                    [styles.dragIn]: dragIn && draggingNode,
+                    [styles.unDraggable]: !draggable,
+                    [styles.hasDraggingNode]: !!draggingNode,
+                    [styles.unAccept]: !accept,
+                },
+            ]}
             draggable
             data-component-id={key}
             data-is-container={isContainer}
@@ -241,7 +242,7 @@ export default config({
         >
             {name}
             {dropPosition ? (
-                <div styleName="dragGuide" style={{display: dragIn && draggingNode ? 'flex' : 'none'}}>
+                <div className={styles.dragGuide} style={{display: dragIn && draggingNode ? 'flex' : 'none'}}>
                     <span>{positionMap[dropPosition]}</span>
                 </div>
             ) : null}

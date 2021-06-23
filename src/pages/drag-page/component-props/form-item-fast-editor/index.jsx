@@ -1,6 +1,6 @@
 import React, {useState, useRef} from 'react';
 import {Button, Modal, Input, Alert} from 'antd';
-import {useHeight} from 'ra-lib';
+import {useHeight} from '@ra-lib/admin';
 import {v4 as uuid} from 'uuid';
 import {findNodesByName} from 'src/pages/drag-page/node-util';
 import './style.less';

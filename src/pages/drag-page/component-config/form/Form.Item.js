@@ -1,8 +1,8 @@
 import {isMac, getFormItemName, getFieldOption} from 'src/pages/drag-page/util';
 import {findParentNodeByName} from 'src/pages/drag-page/node-util';
-import {getComponentConfig} from '@/pages/drag-page/component-config';
+import {getComponentConfig} from 'src/pages/drag-page/component-config';
 import {colFields, getOnKeyDown} from '../common/Col';
-import {formElementTypes} from 'ra-lib';
+import {formElementTypes} from '@ra-lib/admin';
 
 import {options as ruleOptions} from 'src/pages/drag-page/component-props/item-rules';
 
@@ -92,7 +92,7 @@ export default {
                             if (!objSets) {
                                 const set = new Set();
                                 set.add(options);
-                                imports.set('ra-lib', set);
+                                imports.set('@ra-lib/admin', set);
                             } else {
                                 objSets.add(options);
                             }
@@ -108,11 +108,11 @@ export default {
             if (useRaFormItem) {
                 node.componentName = 'FormItem';
                 const options = {name: 'FormItem'};
-                const objSets = imports.get('ra-lib');
+                const objSets = imports.get('@ra-lib/admin');
                 if (!objSets) {
                     const set = new Set();
                     set.add(options);
-                    imports.set('ra-lib', set);
+                    imports.set('@ra-lib/admin', set);
                 } else {
                     objSets.add(options);
                 }

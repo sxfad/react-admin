@@ -5,7 +5,6 @@ import {
     ShrinkOutlined,
     ArrowsAltOutlined,
 } from '@ant-design/icons';
-import classNames from 'classnames';
 import config from 'src/commons/config-hoc';
 import TreeNode from './TreeNode';
 import {scrollElement} from '../util';
@@ -14,7 +13,7 @@ import Pane from '../pane';
 
 import {convertNodeToTreeData} from './util';
 
-import './style.less';
+import styles from './style.less';
 
 export default config({
     connect: state => {
@@ -98,15 +97,10 @@ export default config({
 
     }, [selectedNodeId]);
 
-    const styleName = classNames({
-        root: true,
-        hasDraggingNode: !!draggingNode,
-    });
-
     return (
         <Pane
             header={
-                <div styleName="header">
+                <div className={styles.header}>
                     <div>
                         <AppstoreOutlined style={{marginRight: 4}}/>
                         组件树({nodeCount})
@@ -114,7 +108,7 @@ export default config({
                     <div>
                         <Tooltip placement="top" title={isAllExpanded ? '收起所有' : '展开所有'}>
                             <div
-                                styleName="tool"
+                                className={styles.tool}
                                 onClick={() => {
                                     const nextKeys = isAllExpanded ? [] : allKeys;
                                     dragPageAction.setComponentTreeExpendedKeys(nextKeys);
@@ -129,7 +123,10 @@ export default config({
             }
         >
             <div
-                styleName={styleName}
+                className={{
+                    [styles.root]: true,
+                    [styles.hasDraggingNode]: !!draggingNode,
+                }}
                 ref={mainRef}
             >
                 <Tree

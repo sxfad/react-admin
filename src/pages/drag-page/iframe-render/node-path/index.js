@@ -4,7 +4,7 @@ import {RightOutlined} from '@ant-design/icons';
 import config from 'src/commons/config-hoc';
 import {findParentNodes} from 'src/pages/drag-page/node-util';
 import {getComponentDisplayName} from 'src/pages/drag-page/component-config';
-import './style.less';
+import styles from './style.less';
 
 export default config({
     connect: state => {
@@ -40,7 +40,7 @@ export default config({
     const SHOW_COUNT = 5;
 
     return (
-        <div styleName="root">
+        <div className={styles.root}>
             {paths.map((node, index) => {
                 const componentDisplayName = getComponentDisplayName(node);
                 if (paths.length > SHOW_COUNT && index < paths.length - SHOW_COUNT) return '.';

@@ -1,7 +1,7 @@
 import React from 'react';
-import {PageContent} from 'ra-lib';
-import './style.less';
+import {PageContent} from '@ra-lib/admin';
 import {OTHER_HEIGHT} from 'src/pages/drag-page/util';
+import styles from './style.less';
 
 export default function Pane(props) {
     const {header, fitHeight, children} = props;
@@ -9,7 +9,7 @@ export default function Pane(props) {
         <PageContent
             fitHeight={fitHeight}
             otherHeight={OTHER_HEIGHT}
-            styleName="root"
+            className={styles.root}
             style={{width: '100%'}}
         >
             <header>

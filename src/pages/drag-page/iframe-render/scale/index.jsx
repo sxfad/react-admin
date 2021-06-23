@@ -5,7 +5,7 @@ import {
     RetweetOutlined,
 } from '@ant-design/icons';
 import UnitInput from 'src/pages/drag-page/component-style/unit-input';
-import './style.less';
+import styles from './style.less';
 
 const INIT = 100;
 const STEP = 10;
@@ -39,11 +39,11 @@ export default function Index(props) {
     }, [element, value]);
 
     return (
-        <div styleName="root">
+        <div className={styles.root}>
             <PlusCircleOutlined disabled={value >= MAX} onClick={handlePlus}/>
             <MinusCircleOutlined disabled={value <= MIN} onClick={handleMinus}/>
             <RetweetOutlined onClick={handleReset}/>
-            <span styleName="inputWrapper">
+            <span className={styles.inputWrapper}>
                 <UnitInput
                     allowClear={false}
                     value={value}

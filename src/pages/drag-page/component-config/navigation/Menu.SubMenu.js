@@ -1,4 +1,4 @@
-import {findParentNodeByName} from '@/pages/drag-page/node-util';
+import {findParentNodeByName} from 'src/pages/drag-page/node-util';
 
 export default {
     isContainer: true,

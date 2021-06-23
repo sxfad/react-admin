@@ -11,9 +11,9 @@ import Border from './border';
 import StyleEditor from './style-editor';
 import StyleNavigator from './style-navigator';
 import {v4 as uuid} from 'uuid';
-import {useHeight} from 'ra-lib';
+import {useHeight} from '@ra-lib/admin';
 import CurrentSelectedNode from '../current-selected-node';
-import './style.less';
+import styles from  './style.less';
 import {OTHER_HEIGHT} from 'src/pages/drag-page/util';
 import {debounce} from 'lodash';
 
@@ -98,11 +98,11 @@ export default config({
             <Pane
                 fitHeight
                 header={(
-                    <div styleName="header">
+                    <div className={styles.header}>
                         <CurrentSelectedNode/>
                         <FontIcon
                             type="icon-code"
-                            styleName="tool"
+                            className={styles.tool}
                             onClick={() => setStyleEditorVisible(!styleEditorVisible)}
                         />
                     </div>
@@ -114,7 +114,7 @@ export default config({
                     visible={styleEditorVisible}
                     onCancel={() => setStyleEditorVisible(false)}
                 />
-                <div styleName="root">
+                <div className={styles.root}>
                     <StyleNavigator
                         containerRef={boxRef}
                         dataSource={options}
@@ -125,7 +125,7 @@ export default config({
                     />
                     <div
                         ref={boxRef}
-                        styleName="collapseBox"
+                        className={styles.collapseBox}
                         id="styleCollapseBox"
                         style={{height}}
                     >

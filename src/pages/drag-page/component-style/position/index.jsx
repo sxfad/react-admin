@@ -10,7 +10,7 @@ import {
 import FontIcon from '../../font-icon';
 import RadioGroup from '../radio-group';
 import RectInputsWrapper from '../rect-inputs-wrapper';
-import './style.less';
+import styles from './style.less';
 import UnitInput from 'src/pages/drag-page/component-style/unit-input';
 import {handleSyncFields} from 'src/pages/drag-page/component-style/util';
 import QuickPosition from '../quick-position';
@@ -111,7 +111,7 @@ export default function Position(props) {
     }, [value]);
 
     return (
-        <div styleName="root">
+        <div className={styles.root}>
             <Form
                 form={form}
                 onValuesChange={handleChange}
@@ -223,7 +223,7 @@ export default function Position(props) {
                                         >
                                             <UnitInput
                                                 allowClear={false}
-                                                placeholder='auto'
+                                                placeholder="auto"
                                                 onClick={event => handleSyncFields({event, form, fields: directionOptions, field: item, onChange: handleChange})}
                                                 onKeyDown={event => handleSyncFields({enter: true, event, form, fields: directionOptions, field: item, onChange: handleChange})}
                                             />

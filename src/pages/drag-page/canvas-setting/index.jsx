@@ -7,7 +7,7 @@ import UnitInput from 'src/pages/drag-page/component-style/unit-input';
 import RadioGroup from 'src/pages/drag-page/component-style/radio-group';
 import {isMac} from 'src/pages/drag-page/util';
 
-import './style.less';
+import styles from  './style.less';
 
 const layout = {
     labelCol: {flex: '60px'},
@@ -78,7 +78,7 @@ export default config({
                 </div>
             }
         >
-            <div styleName="root">
+            <div className={styles.root}>
                 <Form
                     form={form}
                     onValuesChange={handleChange}

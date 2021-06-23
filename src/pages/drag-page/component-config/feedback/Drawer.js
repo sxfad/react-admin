@@ -1,7 +1,7 @@
 import React from 'react';
-import {getNextField} from '@/pages/drag-page/util';
+import {getNextField} from 'src/pages/drag-page/util';
 import inflection from 'inflection';
-import {loopNode} from '@/pages/drag-page/node-util';
+import {loopNode} from 'src/pages/drag-page/node-util';
 
 export default {
     isContainer: true,

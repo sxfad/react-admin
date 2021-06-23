@@ -2,7 +2,7 @@ import React, {useRef, useEffect} from 'react';
 import {Tooltip} from 'antd';
 import {SwapLeftOutlined, SwapRightOutlined} from '@ant-design/icons';
 import config from 'src/commons/config-hoc';
-import '../top/style.less';
+import styles from '../top/style.less';
 
 // 触发记录的频率
 const FREQUENCY = 1000;
@@ -67,8 +67,6 @@ export default config({
 
     const disabledPrev = !pageConfigHistory?.length || historyCursor <= 0;
     const disabledNext = !pageConfigHistory?.length || historyCursor >= pageConfigHistory?.length - 1;
-    const styleNames = ['toolItem'];
-    if (showLabel) styleNames.push('showLabel');
 
     const tools = [
         {
@@ -90,9 +88,19 @@ export default config({
     return tools.map(item => {
         const {key, label, icon, disabled, onClick} = item;
         const itemComponent = (
-            <div key={key} styleName={[...styleNames, disabled ? 'disabled' : ''].join(' ')} onClick={disabled ? undefined : onClick}>
-                <span styleName="icon">{icon}</span>
-                {showLabel ? <span styleName="label">{label}</span> : null}
+            <div
+                key={key}
+                className={[
+                    styles.toolItem,
+                    {
+                        [styles.showLabel]: showLabel,
+                        [styles.disabled]: disabled,
+                    },
+                ]}
+                onClick={disabled ? undefined : onClick}
+            >
+                <span className={styles.icon}>{icon}</span>
+                {showLabel ? <span className={styles.label}>{label}</span> : null}
             </div>
         );
         if (showLabel) return itemComponent;

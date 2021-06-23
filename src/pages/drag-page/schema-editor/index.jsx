@@ -15,7 +15,7 @@ import {
 } from 'src/pages/drag-page/node-util';
 import {deleteDefaultProps, getComponentConfig} from '../component-config';
 import {cloneDeep} from 'lodash';
-import './style.less';
+import styles from './style.less';
 
 const EDIT_TYPE = {
     CURRENT_NODE: 'CURRENT_NODE',
@@ -214,11 +214,11 @@ export default config({
     if (!visible) return null;
 
     return (
-        <div styleName="root" id="schemaEditor">
+        <div className={styles.root} id="schemaEditor">
             <CodeEditor
                 editorWidth={sideWidth}
                 title={(
-                    <div styleName="title">
+                    <div className={styles.title}>
                         <span style={{marginRight: 8}}>Schema 源码开发</span>
                         <Switch
                             checkedChildren="选中"

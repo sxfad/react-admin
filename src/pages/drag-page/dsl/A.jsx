@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import config from 'src/commons/config-hoc';
-import {PageContent, QueryBar, ToolBar} from 'ra-lib';
+import {PageContent, QueryBar, ToolBar} from '@ra-lib/admin';
 import {
     Form,
     Input,

@@ -13,7 +13,7 @@ import SelectedGuide from './selected-guide';
 import EditableAction from './editable-action';
 import NodePath from './node-path';
 import {getComponentConfig} from 'src/pages/drag-page/component-config';
-import './style.less';
+import styles from './style.less';
 
 // 构建iframe内容
 function getIframeSrcDoc() {
@@ -221,15 +221,14 @@ export default config({
     }, [selectedNodeId, iframeRef.current]);
 
     return (
-        <div styleName="root">
+        <div className={styles.root}>
             <main>
                 <div
-                    styleName="container"
-                    className="grid-background"
+                    className={[styles.container, 'grid-background']}
                     ref={containerRef}
                 >
                     <iframe
-                        styleName="dndIframe"
+                        className={styles.dndIframe}
                         id="dnd-iframe"
                         title="页面设计"
                         ref={iframeRef}
@@ -241,7 +240,7 @@ export default config({
                         }}
                     />
                 </div>
-                <div styleName="scale">
+                <div className={styles.scale}>
                     <Scale element={scaleElement} value={canvasScale} onChange={scale => dragPageAction.setCanvasScale(scale)}/>
                 </div>
                 <footer>

@@ -1,4 +1,4 @@
 export default {
-    componentType: 'ra-lib',
+    componentType: '@ra-lib/admin',
     fields: [],
 };

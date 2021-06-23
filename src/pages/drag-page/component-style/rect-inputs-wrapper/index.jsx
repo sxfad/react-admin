@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import './style.less';
+import styles from './style.less';
 
 const RectInputsWrapper = props => {
     const {children, inner, large, tip, ...others} = props;
 
-    const styleName = classNames({
-        root: true,
-        inner,
-        large,
-        tip,
-    });
     return (
-        <div styleName={styleName} {...others}>
+        <div className={{
+            [styles.root]: true,
+            [styles.inner]: true,
+            [styles.large]: large,
+            [styles.tip]: tip
+        }}
+             {...others}
+        >
             {children.flat().map(item => (<div data-tip={tip}>{item}</div>))}
         </div>
     );

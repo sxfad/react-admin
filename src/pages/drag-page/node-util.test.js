@@ -152,7 +152,7 @@ const node = {
             expect(result?.length).toBe(1);
         });
 
-        test('findNodeCollection', () => {
+        test('findNodeCollection2', () => {
             const result = findNodeCollection(node, '2');
             expect(result?.length).toBe(undefined);
         });
@@ -272,7 +272,8 @@ const node = {
             const paths = findNodeFieldPaths(node, '9');
 
             expect(paths).toMatchObject(['$', 'props', 'render', 'renderField']);
-        });test('findNodeFieldPaths', () => {
+        });
+        test('findNodeFieldPaths2', () => {
             const paths = findNodeFieldPaths(node, '8264aa83-e1fd-4bcc-9f41-642cddb2e5ff');
             console.log(paths);
 

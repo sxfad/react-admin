@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Empty, Button} from 'antd';
 import config from 'src/commons/config-hoc';
-import {PageContent} from 'ra-lib';
+import {PageContent} from '@ra-lib/admin';
 import Top from './top';
 import Left from './left';
 import Right from './right';
 import IframeRender from './iframe-render';
 import ArrowLines from './arrow-lines';
 import KeyMap from './KeyMap';
-import './style.less';
+import styles from './style.less';
 
 export default config({
     path: '/drag-page',
@@ -58,9 +58,9 @@ export default config({
     }, []);
 
     return (
-        <PageContent fitHeight styleName="root" loading={loading}>
+        <PageContent fitHeight className={styles.root} loading={loading}>
             {showEmpty && !loading ? (
-                <div styleName="emptyBox">
+                <div className={styles.emptyBox}>
                     <Empty description={
                         <div>
                             <div>项目已经不存在！</div>
@@ -77,17 +77,17 @@ export default config({
             ) : (
                 <>
                     <KeyMap/>
-                    <div styleName="top">
+                    <div className={styles.top}>
                         <Top/>
                     </div>
-                    <div styleName="main">
-                        <div styleName="left">
+                    <div className={styles.main}>
+                        <div className={styles.left}>
                             <Left/>
                         </div>
-                        <div styleName="center">
+                        <div className={styles.center}>
                             <IframeRender/>
                         </div>
-                        <div styleName="right">
+                        <div className={styles.right}>
                             <Right/>
                         </div>
                     </div>

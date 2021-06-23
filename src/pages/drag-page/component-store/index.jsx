@@ -9,7 +9,7 @@ import ComponentItem from './ComponentItem';
 import Draggable from './Draggable';
 import Pane from '../pane';
 
-import './style.less';
+import styles from './style.less';
 
 export default config({
     connect: state => {
@@ -117,7 +117,7 @@ export default config({
                 </div>
             }
         >
-            <div styleName="root" ref={rootRef}>
+            <div className={styles.root} ref={rootRef}>
                 <header>
                     <Input
                         allowClear
@@ -144,14 +144,14 @@ export default config({
                     </main>
                 ) : (
                     <main>
-                        <div styleName="category" ref={categoryRef}>
+                        <div className={styles.category} ref={categoryRef}>
                             {components.map(baseCategory => {
                                 const {id: baseCategoryId, title, children = [], hiddenInStore} = baseCategory;
                                 if (hiddenInStore) return null;
 
                                 return (
                                     <div key={baseCategoryId} id={`baseCategory_${baseCategoryId}`}>
-                                        <div styleName='baseCategory'>{title}</div>
+                                        <div className={styles.baseCategory}>{title}</div>
                                         {children.map(item => {
                                             const {id: subCategoryId, hiddenInStore, children = []} = item;
                                             if (hiddenInStore) return null;
@@ -173,14 +173,14 @@ export default config({
                                                 <div
                                                     key={subCategoryId}
                                                     id={`subCategory_${subCategoryId}`}
-                                                    styleName={`subCategory ${isActive ? 'active' : ''}`}
+                                                    className={[styles.subCategory, {[styles.active]: isActive}]}
                                                     onClick={() => handleCategoryClick()}
                                                 >
                                                     <Draggable
                                                         data={data}
                                                         onDragEnd={() => setTimeout(handleCategoryClick)} // 等待组件面板显示出来
                                                     >
-                                                        <div styleName="title">
+                                                        <div className={styles.title}>
                                                             {item.title}
                                                         </div>
                                                     </Draggable>
@@ -192,7 +192,7 @@ export default config({
                             })}
                         </div>
                         <div
-                            styleName="components"
+                            className={styles.components}
                             id="storeComponents"
                             ref={componentRef}
                             onScroll={handleComponentScroll}
@@ -219,7 +219,7 @@ export default config({
                                         >
                                             <div
                                                 id={`componentCategory_${subCategoryId}`}
-                                                styleName="componentCategoryTitle"
+                                                className={styles.componentCategoryTitle}
                                             >
                                                 {subTitle}
                                             </div>

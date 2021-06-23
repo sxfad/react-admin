@@ -1,8 +1,8 @@
 import {buttonTypeOptions} from '../options';
-import inputConfig from '@/pages/drag-page/component-config/data-input/Input';
+import inputConfig from 'src/pages/drag-page/component-config/data-input/Input';
 
 export default {
-    componentType: 'ra-lib',
+    componentType: '@ra-lib/admin',
     fields: [
         {label: '倒计时', field: 'time', type: 'number', defaultValue: 60},
         {

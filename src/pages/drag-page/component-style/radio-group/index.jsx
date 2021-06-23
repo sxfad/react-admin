@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Radio, Tooltip} from 'antd';
-import './style.less';
+import styles from './style.less';
 
 const RadioGroup = props => {
     const {
@@ -69,9 +69,9 @@ const RadioGroup = props => {
     }
 
     return (
-        <div styleName="root">
+        <div className={styles.root}>
             <Radio.Group
-                styleName="root"
+                className={styles.root}
                 options={renderOptions(options)}
                 optionType="button"
                 buttonStyle="solid"

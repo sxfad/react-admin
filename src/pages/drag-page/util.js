@@ -1,7 +1,7 @@
 import {useRef, useEffect, createElement} from 'react';
 import ReactDOM from 'react-dom';
 import inflection from 'inflection';
-import * as raLibComponent from 'ra-lib';
+import * as raLibComponent from '@ra-lib/admin';
 import * as components from './components';
 import * as antdComponent from 'antd/es';
 import * as antdIcon from '@ant-design/icons';
@@ -912,9 +912,9 @@ export function getComponent(options) {
         };
     };
 
-    if (componentType === 'ra-lib') {
+    if (componentType === '@ra-lib/admin') {
         const raCom = raLibComponent[name];
-        if (raCom) return com(raCom, 'ra-lib');
+        if (raCom) return com(raCom, '@ra-lib/admin');
     }
 
     const Com = components[name];

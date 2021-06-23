@@ -7,7 +7,7 @@ import {
     tableRowDraggable,
     Operator,
     ModalContent,
-} from 'ra-lib';
+} from '@ra-lib/admin';
 import styles from './style.less';
 
 const EditTable = tableEditable(tableRowDraggable(Table));

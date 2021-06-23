@@ -2,14 +2,14 @@ import React, {useRef, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Button} from 'antd';
 import MonacoEditor from 'react-monaco-editor';
-import './style.less';
+import styles from  './style.less';
 import {
     DesktopOutlined,
     FullscreenExitOutlined,
     FullscreenOutlined,
 } from '@ant-design/icons';
 import Pane from 'src/pages/drag-page/pane';
-import {useHeight} from 'ra-lib';
+import {useHeight} from '@ra-lib/admin';
 import prettier from 'prettier/standalone';
 import parserPostCss from 'prettier/parser-postcss';
 import {isMac, OTHER_HEIGHT} from '../util';
@@ -203,14 +203,14 @@ function CodeEditor(props) {
     const width = fullScreen ? '100%' : editorWidth;
 
     return (
-        <div styleName={fullScreen ? 'fullScreen' : ''}>
+        <div className={{[styles.fullScreen]: fullScreen}}>
             <Pane
                 header={
-                    <div styleName="header">
-                        <div styleName="title">
+                    <div className={styles.header}>
+                        <div className={styles.title}>
                             <DesktopOutlined style={{marginRight: 4}}/> {title}
                         </div>
-                        <div styleName="tool">
+                        <div className={styles.tool}>
                             <span onClick={handleFullScreen}>
                                 {fullScreen ? <FullscreenExitOutlined/> : <FullscreenOutlined/>}
                             </span>
@@ -218,7 +218,7 @@ function CodeEditor(props) {
                     </div>
                 }
             >
-                <div styleName="root" ref={mainRef}>
+                <div className={styles.root} ref={mainRef}>
                     <main>
                         <MonacoEditor
                             width={width}

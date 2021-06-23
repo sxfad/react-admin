@@ -3,11 +3,6 @@
 @ant-prefix: ~'@{packageName}';
 @ra-lib-prefix: ~'@{packageName}';
 
-:export {
-    antPrefix: @ant-prefix;
-    raLibPrefix: @ra-lib-prefix;
-}
-
 // 自定义变量
 //@page-content-margin: 0;
 //@page-content-padding: 0;
@@ -19,6 +14,7 @@
 // ant 官方变量
 // https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less
 @border-color-base: hsv(0, 0, 85%);
+@border-radius-base: 2px;
 
 //@primary-color: #42b983;
 //@layout-header-background: #42b983;
@@ -31,3 +27,9 @@
 // 字体颜色
 @text-color: fade(#000, 65%);
 @body-background: #f0f2f5;
+
+:export {
+    antPrefix: @ant-prefix;
+    raLibPrefix: @ra-lib-prefix;
+    primaryColor: @primary-color;
+}

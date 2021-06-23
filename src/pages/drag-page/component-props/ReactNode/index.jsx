@@ -5,7 +5,7 @@ import config from 'src/commons/config-hoc';
 import styles from './style.less';
 import {findNodeById, deleteNodeById} from 'src/pages/drag-page/node-util';
 import {getComponentConfig, getComponentDisplayName} from 'src/pages/drag-page/component-config';
-import {action} from 'src/models';
+import {actions} from 'src/models';
 
 const ReactNode = config({
     connect: state => {
@@ -59,7 +59,7 @@ const ReactNode = config({
             // 删除拖过来的节点
             deleteNodeById(pageConfig, sourceNodeId);
 
-            const {dragPage: dragPageAction} = action;
+            const {dragPage: dragPageAction} = actions;
             dragPageAction.render(true);
 
             // 等待属性改变完成，右侧表单更新

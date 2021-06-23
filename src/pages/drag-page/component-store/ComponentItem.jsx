@@ -4,7 +4,7 @@ import config from 'src/commons/config-hoc';
 import NodeRender from '../iframe-render/node-render/NodeRender';
 import Draggable from './Draggable';
 
-import './ComponentItem.less';
+import styles from './ComponentItem.less';
 
 export default config({})(function DraggableComponent(props) {
     const {data} = props;
@@ -49,9 +49,9 @@ export default config({})(function DraggableComponent(props) {
         }
 
         return (
-            <div styleName="preview" style={previewWrapperStyle}>
+            <div className="styles.preview" style={previewWrapperStyle}>
                 {previewZoom ? (
-                    <div styleName="previewZoom" style={{zoom: previewZoom || 1}}>
+                    <div className="styles.previewZoom" style={{zoom: previewZoom || 1}}>
                         {preview}
                     </div>
                 ) : preview}
@@ -63,16 +63,16 @@ export default config({})(function DraggableComponent(props) {
 
     return (
         <Draggable data={data}>
-            <div styleName="root">
-                <div styleName="title">
+            <div className={styles.root}>
+                <div className={styles.title}>
                     {icon} {title}
                 </div>
 
                 {image ? (
-                    <div styleName="preview">
+                    <div className={styles.preview}>
                         <img
                             draggable={false}
-                            styleName="img"
+                            className={styles.img}
                             src={image}
                             alt="组件预览图"
                         />

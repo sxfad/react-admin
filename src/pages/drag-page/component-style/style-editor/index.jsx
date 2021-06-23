@@ -3,7 +3,7 @@ import {message} from 'antd';
 import config from 'src/commons/config-hoc';
 import CodeEditor from 'src/pages/drag-page/code-editor';
 import {objectToCss, cssToObject} from '../../util';
-import './style.less';
+import styles from './style.less';
 
 export default config({
     connect: state => {
@@ -53,7 +53,7 @@ export default config({
     const code = objectToCss(obj).then(code => `* {${code}}`);
 
     return (
-        <div styleName="root">
+        <div className={styles.root}>
             <CodeEditor
                 editorWidth={rightSideWidth}
                 language="css"

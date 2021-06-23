@@ -10,7 +10,7 @@ import {
     MenuUnfoldOutlined,
 } from '@ant-design/icons';
 import {isNode} from 'src/pages/drag-page/node-util';
-import './style.less';
+import styles from  './style.less';
 
 const {TabPane} = Tabs;
 
@@ -67,16 +67,19 @@ export default config({
     return (
         <div
             ref={rootRef}
-            styleName={`root ${rightSideExpended ? 'expended' : ''}`}
+            className={{
+                [styles.root]: true,
+                [styles.expended] : rightSideExpended,
+            }}
             style={{width: rightSideExpended ? rightSideWidth : 45}}
         >
-            <div styleName="toolBar">
+            <div className={styles.toolBar}>
                 <Tooltip
                     placement="right"
                     title={'展开'}
                     onClick={handleToggleClick}
                 >
-                    <div styleName="tool">
+                    <div className={styles.tool}>
                         <MenuFoldOutlined/>
                     </div>
                 </Tooltip>
@@ -94,19 +97,22 @@ export default config({
                                 handleToggleClick();
                             }}
                         >
-                            <div key={key} styleName={`tool ${isActive ? 'active' : ''}`}>
+                            <div
+                                key={key}
+                                className={{[styles.tool]: true, [styles.active]: isActive}}
+                            >
                                 {icon}
                             </div>
                         </Tooltip>
                     );
                 })}
             </div>
-            <div styleName="toolTabs">
+            <div className={styles.toolTabs}>
                 <DragBar left onDragging={handleDragging}/>
                 <Tabs
                     tabBarExtraContent={{
                         left: (
-                            <div styleName="toggle" onClick={handleToggleClick}>
+                            <div className={styles.toggle} onClick={handleToggleClick}>
                                 <MenuUnfoldOutlined/>
                             </div>
                         ),

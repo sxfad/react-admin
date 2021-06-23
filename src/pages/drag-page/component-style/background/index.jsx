@@ -13,7 +13,7 @@ import QuickPosition from '../quick-position';
 import ColorInput from '../color-input';
 
 
-import './style.less';
+import styles from './style.less';
 
 const backgroundSizeOptions = [
     {value: 'width height', label: '宽高'},
@@ -127,7 +127,7 @@ export default function Background(props) {
 
 
     return (
-        <div styleName="root">
+        <div className={styles.root}>
             <Form
                 form={form}
                 onValuesChange={handleChange}
@@ -140,7 +140,7 @@ export default function Background(props) {
                 >
                     <ColorInput
                         allowClear
-                        placeholder='background-color'
+                        placeholder="background-color"
                     />
                 </Form.Item>
                 <Form.Item
@@ -151,7 +151,7 @@ export default function Background(props) {
                 >
                     <Input
                         allowClear
-                        placeholder='background-image'
+                        placeholder="background-image"
                     />
                 </Form.Item>
                 <Form.Item shouldUpdate noStyle>
@@ -175,7 +175,7 @@ export default function Background(props) {
                                         if (backgroundSize !== 'width height') return null;
 
                                         return (
-                                            <Row styleName="backgroundSize" style={{paddingLeft: layout.labelCol.flex}}>
+                                            <Row className={styles.backgroundSize} style={{paddingLeft: layout.labelCol.flex}}>
                                                 <Col span={12}>
                                                     <Form.Item
                                                         labelCol={{flex: 0}}
