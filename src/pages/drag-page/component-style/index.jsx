@@ -90,6 +90,7 @@ export default config({
         if (styleEditorVisible && rightSideWidth < 440) {
             dragPageAction.setRightSideWidth(440);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [styleEditorVisible, rightSideWidth]);
 
 

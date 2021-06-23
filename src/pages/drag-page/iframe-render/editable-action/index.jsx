@@ -182,10 +182,8 @@ export default function EditableAction(props) {
                     });
             });
         };
-    }, [
-        pageConfig,
-        iframeDocument,
-    ]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pageConfig, iframeDocument]);
 
     return null;
 }

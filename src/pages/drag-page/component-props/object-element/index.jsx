@@ -65,6 +65,7 @@ export default config({
         // 设置表单
         form.setFieldsValue(fieldValues);
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value, node, refreshProps]);
 
     // 基于fields 构建表单
@@ -213,7 +214,7 @@ export default config({
 
             return [category, field];
         });
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fields, node]);
 
     return (

@@ -36,6 +36,7 @@ const pageConfigInitialState = {
     dragOverInfo: null, // 悬停节点信息
     arrowLines: [
         {
+            key: 'init',
             startX: 0,
             startY: 0,
             endX: 0,
@@ -80,27 +81,27 @@ const initialState = {
     ...pageConfigInitialState,
 };
 
-const syncStorage = {
-    showSide: true,
-    sideWidth: true,
-    rightSideWidth: true,
-    rightSideExpended: true,
-    canvasScale: true,
-    // currentMenuKey: true,
+const syncStorage = [
+    'showSide',
+    'sideWidth',
+    'rightSideWidth',
+    'rightSideExpended',
+    'canvasScale',
 
-    // contentEditable: true,
-    // nodeSelectType: true,
-    // canvasWidth: true,
-    // canvasHeight: true,
+    // 'currentMenuKey',
+    // 'contentEditable',
+    // 'nodeSelectType',
+    // 'canvasWidth',
+    // 'canvasHeight',
 
-    pageConfig: true,
-    pageConfigHistory: true,
-    historyCursor: true,
-};
+    'pageConfig',
+    'pageConfigHistory',
+    'historyCursor',
+];
 
 export default {
-    initialState,
-    syncStorage,
+    state: initialState,
+    syncLocal: syncStorage,
     initDesignPage: (options) => {
         let {pageConfig, ...others} = options;
 

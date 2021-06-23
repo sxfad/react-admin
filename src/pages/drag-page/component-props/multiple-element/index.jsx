@@ -27,6 +27,7 @@ const MultipleElement = props => {
             type = typeOption;
         }
         return getElement({...fieldOption, type, node});
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentType]);
 
     return (

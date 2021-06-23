@@ -100,6 +100,7 @@ export default config({
         if (editVisible && rightSideWidth < 440) {
             dragPageAction.setRightSideWidth(440);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [editVisible, rightSideWidth]);
 
     // 将属性面板滚动到顶部，并隐藏滚动条
@@ -117,6 +118,7 @@ export default config({
         // scrollElement(rootEle, editorRootEle, true, true);
         rootEle.scrollTop = 0;
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [editVisible, editNode, rootRef.current]);
 
     const propsNodes = selectedNode?.props ? Object.entries(selectedNode?.props)

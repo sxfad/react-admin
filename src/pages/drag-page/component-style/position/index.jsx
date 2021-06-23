@@ -108,6 +108,7 @@ export default function Position(props) {
         const [, translateX] = (/translateX\(([^)]+)\)/.exec(transform) || []);
 
         form.setFieldsValue({translateY, translateX});
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
 
     return (

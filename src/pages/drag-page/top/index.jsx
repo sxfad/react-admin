@@ -83,13 +83,13 @@ export default config({
                 <Button onClick={() => props.history.goBack()}>返回</Button>
             </div>
             <div className={styles.center}>
-                {tools.map(item => {
+                {tools.map((item, index) => {
                     if (item === 'divider') {
-                        return <div className={styles.divider}/>;
+                        return <div key={index} className={styles.divider}/>;
                     }
 
                     let {key, icon, label, onClick, disabled} = item;
-                    if (key === 'undo') return <Undo showLabel={showLabel}/>;
+                    if (key === 'undo') return <Undo key={key} showLabel={showLabel}/>;
 
                     const isActive = key === activeToolKey;
 
@@ -113,7 +113,7 @@ export default config({
 
                     if (showLabel) return itemComponent;
                     return (
-                        <Tooltip title={label}>
+                        <Tooltip key={key} title={label}>
                             {itemComponent}
                         </Tooltip>
                     );

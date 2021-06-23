@@ -52,6 +52,7 @@ export default config({
             || (prevActiveSideKey !== key && activeSideKey === key);
 
         setVisible(visible);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeSideKey]);
 
     // 将代码转换为对象

@@ -115,6 +115,7 @@ export default config({
             leaveElement(targetElement);
             timeRef.current = setTimeout(() => hideDropGuide(), 100);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dragOverInfo, draggingNode, iframeDocument]);
 
     return null;

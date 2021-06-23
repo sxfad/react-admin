@@ -90,6 +90,7 @@ export default config({
 
                     return (
                         <Tooltip
+                            key={key}
                             placement="right"
                             title={title}
                             onClick={() => {

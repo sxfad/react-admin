@@ -12,8 +12,6 @@ import styles from './style.less';
 
 export default config({
     path: '/drag-page',
-    side: false,
-    noFrame: true,
 })(function DragPage(props) {
     const {
         action: {dragPage: dragPageAction},
@@ -22,16 +20,19 @@ export default config({
     const {teamId, projectId} = props.match.params;
     const [showEmpty, setShowEmpty] = useState(true);
 
-    const [loading, fetchProject] = props.ajax.useGet(`/teams/${teamId}/project/${projectId}`);
+    const {loading, run: fetchProject} = props.ajax.useGet(`/teams/${teamId}/project/${projectId}`);
 
     useEffect(() => {
         (async () => {
 
-            const res = await fetchProject();
+            // const res = await fetchProject();
             // if (!res) {
             //     setShowEmpty(true);
             //     return;
             // }
+
+            console.log(fetchProject);
+            const res = {};
 
             setShowEmpty(false);
             const {projectSetting, menus} = res;
@@ -55,6 +56,7 @@ export default config({
 
             dragPageAction.initDesignPage(options);
         })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

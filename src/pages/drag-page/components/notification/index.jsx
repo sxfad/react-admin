@@ -43,6 +43,7 @@ export default function Notification(props) {
                 };
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id, iframeDocument]);
 
 

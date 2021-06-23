@@ -33,7 +33,7 @@ export default config({
     const fromUndoRef = useRef(true);
     const timeRef = useRef(0);
 
-    const [, updatePage] = props.ajax.usePut(`/project/${projectId}/menus/${currentMenuKey}/page`);
+    const {run: updatePage} = props.ajax.usePut(`/project/${projectId}/menus/${currentMenuKey}/page`);
 
     function handlePrev() {
         fromUndoRef.current = true;
@@ -63,6 +63,7 @@ export default config({
             })();
         }, FREQUENCY);
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [JSON.stringify(pageConfig), refreshProps, currentMenuKey]);
 
     const disabledPrev = !pageConfigHistory?.length || historyCursor <= 0;

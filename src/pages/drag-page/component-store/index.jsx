@@ -52,6 +52,7 @@ export default config({
                 await handleStoreChange(stores[0].value);
             }
         })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleComponentScroll = debounce(() => {
@@ -214,7 +215,7 @@ export default config({
                                         <div
                                             className="componentCategory"
                                             key={`${baseCategoryId}_${subCategoryId}`}
-                                            data-subCategoryId={subCategoryId}
+                                            data-subcategoryid={subCategoryId}
                                             style={{height: isLast ? '100%' : 'auto'}}
                                         >
                                             <div
@@ -228,6 +229,7 @@ export default config({
 
                                                 return (
                                                     <div
+                                                        key={`component_${item.id}`}
                                                         id={`component_${item.id}`}
                                                         onClick={() => {
                                                             const element = document.getElementById(`subCategory_${subCategoryId}`);

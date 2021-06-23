@@ -14,6 +14,8 @@ export default config({
         onDragStart,
         onDragEnd,
         action: {dragPage: dragPageAction},
+        loginUser,
+        staticContext,
         ...others
     } = props;
 

@@ -30,6 +30,8 @@ export default config({
         pageConfig,
         source = false,
         id,
+        loginUser,
+        staticContext,
         ...others
     } = props;
 
@@ -162,6 +164,7 @@ export default config({
             iframeDocument.removeEventListener('dragover', handleIframeOver, true);
             window.removeEventListener('dragover', handleOver, true);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [iframeDocument, dragging]);
 
     const links = movingPoint ? [] : findLinkTargetsPosition({

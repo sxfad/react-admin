@@ -105,6 +105,7 @@ function CodeEditor(props) {
         } else {
             setCode(value);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
 
     useEffect(() => {
@@ -119,6 +120,7 @@ function CodeEditor(props) {
         // console.log(monaco.KeyCode);
         // console.log(editorRef.current.getSupportedActions());
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [code, errors, monacoRef.current, fullScreen]);
 
     function handleFormat() {
@@ -277,7 +279,7 @@ CodeEditor.propTypes = {
     onChange: PropTypes.func,
     onSave: PropTypes.func,
     onClose: PropTypes.func,
-    editorWidth: PropTypes.number,
+    editorWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     readOnly: PropTypes.bool,
 };
 

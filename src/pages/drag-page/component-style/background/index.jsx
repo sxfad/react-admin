@@ -123,6 +123,7 @@ export default function Background(props) {
                 form.setFieldsValue({backgroundPositionX, backgroundPositionY});
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
 
 

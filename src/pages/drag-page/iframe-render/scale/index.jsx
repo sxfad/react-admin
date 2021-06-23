@@ -36,6 +36,7 @@ export default function Index(props) {
         element.style.transform = `scale(${value / 100})`;
         // element.style.zoom = value / 100;
         onChange(value);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [element, value]);
 
     return (

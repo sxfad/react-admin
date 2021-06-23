@@ -48,6 +48,7 @@ export default type => function ModalMethod(props) {
                 };
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id, iframeDocument]);
 
     return children;

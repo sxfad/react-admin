@@ -98,6 +98,7 @@ export default config({
 
         dragPageAction.setIFrameDocument(iframeDocument);
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [iframeRef.current]);
 
     useEffect(() => {
@@ -165,6 +166,7 @@ export default config({
         });
 
         setState(state);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageConfig]);
 
 
@@ -200,10 +202,8 @@ export default config({
             </ConfigProvider>,
             iframeRootEle,
         );
-    }, [
-        ...Object.values(draggableNodeProps),
-        iframeRootRef.current,
-    ]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [...Object.values(draggableNodeProps), iframeRootRef.current]);
 
     // 选中组件之后，调整左侧组件树滚动
     useEffect(() => {
@@ -217,7 +217,7 @@ export default config({
 
             scrollElement(containerEle, element);
         }, 200);
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedNodeId, iframeRef.current]);
 
     return (

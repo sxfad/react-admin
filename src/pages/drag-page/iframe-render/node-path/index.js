@@ -35,6 +35,7 @@ export default config({
 
         const parentNodes = findParentNodes(pageConfig, selectedNode.id);
         setPaths([...parentNodes, selectedNode]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedNode]);
 
     const SHOW_COUNT = 5;

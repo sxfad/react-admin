@@ -77,6 +77,7 @@ export default config({
         const nextKeys = Array.from(new Set([...componentTreeExpendedKeys, ...keys, selectedNodeId]));
 
         dragPageAction.setComponentTreeExpendedKeys(nextKeys);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedNodeId, treeData]);
 
     // 当有节点选中，树滚动到相应位置

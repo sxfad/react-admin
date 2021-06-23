@@ -44,12 +44,12 @@ export default config({
     const [allKeys, setAllKeys] = useState([]);
     const [draggingMenu, setDraggingMenu] = useState(null);
 
-    const [, saveMenu] = props.ajax.usePost(`/project/${projectId}/menus`);
-    const [, updateMenusOrder] = props.ajax.usePut(`/project/${projectId}/menusOrder`);
-    const [, updateMenu] = props.ajax.usePut(`/project/${projectId}/menus/:id`);
-    const [, deleteMenu] = props.ajax.useDel(`/project/${projectId}/menus/:id`);
-    const [, fetchMenus] = props.ajax.useGet(`/project/${projectId}/menus`);
-    const [pageLoading, fetchPage] = props.ajax.useGet(`/project/${projectId}/menus/:menuId/page`);
+    const {run: saveMenu} = props.ajax.usePost(`/project/${projectId}/menus`);
+    const {run: updateMenusOrder} = props.ajax.usePut(`/project/${projectId}/menusOrder`);
+    const {run: updateMenu} = props.ajax.usePut(`/project/${projectId}/menus/:id`);
+    const {run: deleteMenu} = props.ajax.useDel(`/project/${projectId}/menus/:id`);
+    const {run: fetchMenus} = props.ajax.useGet(`/project/${projectId}/menus`);
+    const {loading: pageLoading, run: fetchPage} = props.ajax.useGet(`/project/${projectId}/menus/:menuId/page`);
 
     useEffect(() => {
         const allKeys = [];
@@ -66,6 +66,7 @@ export default config({
         if (!openKeys?.length) {
             setOpenKeys(allKeys);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [menus]);
 
     // 处理菜单选中、展开等状态
@@ -87,6 +88,7 @@ export default config({
 
         const queryStr = Object.entries(queryObj).map(([key, value]) => `${key}=${value}`).join('&');
         props.history.replace(`${pathname}?${queryStr}`);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [menuData, currentMenuKey]);
 
     // 菜单选中改变，渲染页面
@@ -100,6 +102,7 @@ export default config({
             const {config} = page;
             dragPageAction.initDesignPage({pageConfig: config ? JSON.parse(config) : null});
         })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [menuData, currentMenuKey]);
 
     function handleClick(e, node) {
@@ -350,7 +353,7 @@ export default config({
             }
             if (childrenNode) {
                 return (
-                    <SubMenu key={key} title={title}>
+                    <SubMenu key={key || title} title={title}>
                         {childrenNode}
                     </SubMenu>
                 );
@@ -365,7 +368,7 @@ export default config({
     return (
         <Pane
             header={
-                <div className="styles.header">
+                <div className={styles.header}>
                     <div>
                         <AppstoreOutlined/>
                         <span style={{margin: '0 4px'}}>菜单</span>
@@ -388,7 +391,7 @@ export default config({
                     <div>
                         <Tooltip placement="top" title={isAllExpanded ? '收起所有' : '展开所有'}>
                             <div
-                                className="styles.tool"
+                                className={styles.tool}
                                 onClick={() => {
                                     const nextKeys = isAllExpanded ? [] : allKeys;
                                     setOpenKeys(nextKeys);
@@ -402,7 +405,7 @@ export default config({
                 </div>
             }
         >
-            <div className="styles.root">
+            <div className={styles.root}>
                 <Menu
                     onClick={({key}) => dragPageAction.setCurrentMenuKey(key)}
                     style={{width: '100%'}}

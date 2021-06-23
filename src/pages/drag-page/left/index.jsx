@@ -105,7 +105,7 @@ export default config({
             const active = showSide && key === activeSideKey;
 
             return (
-                <Tooltip placement="right" title={title}>
+                <Tooltip key={key} placement="right" title={title}>
                     <div
                         className={[
                             styles.toolItem,
@@ -144,6 +144,7 @@ export default config({
                     const {key, component} = item;
                     return (
                         <div
+                            key={key}
                             id={key}
                             style={{
                                 display: showSide && key === activeSideKey ? 'flex' : 'none',

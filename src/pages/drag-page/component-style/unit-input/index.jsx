@@ -93,7 +93,7 @@ function UnitInput(props) {
 
     return (
         <Input
-            autocomplete="off"
+            autoComplete="off"
             onChange={onChange}
             {...others}
             onKeyDown={handleKeyDown}

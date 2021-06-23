@@ -35,7 +35,7 @@ export default config({
         action: {dragPage: dragPageAction},
     } = props;
     const [form] = Form.useForm();
-    const [, save] = props.ajax.usePost(`/teams/${teamId}/project/${projectId}/setting`);
+    const {run: save} = props.ajax.usePost(`/teams/${teamId}/project/${projectId}/setting`);
 
     async function handleChange(changedValues, allValues) {
         const {
@@ -65,6 +65,7 @@ export default config({
     };
     useEffect(() => {
         form.setFieldsValue(fieldsValue);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [Object.values(fieldsValue)]);
 
     // TODO 提供 iphoneX PC 等预设

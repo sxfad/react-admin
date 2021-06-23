@@ -130,6 +130,7 @@ export default function Background(props) {
         } else {
             form.setFieldsValue({__border: 'separate'});
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
 
     return (

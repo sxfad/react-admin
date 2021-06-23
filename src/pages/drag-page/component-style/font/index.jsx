@@ -34,6 +34,7 @@ export default function Font(props) {
         // 先重置，否则会有字段不清空情况
         form.resetFields();
         form.setFieldsValue(value);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
     return (
         <div className={styles.root}>

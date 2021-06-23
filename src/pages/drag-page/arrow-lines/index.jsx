@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import classNames from 'classnames';
 import config from 'src/commons/config-hoc';
 import LinkPoint from 'src/pages/drag-page/link-point';
 import styles from './style.less';
@@ -105,12 +104,14 @@ export default config({
         } else {
             dragPageAction.setArrowLines([]);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [showArrowLines, refreshArrowLines]);
 
     // 选中节点更改，清空line
     useEffect(() => {
         dragPageAction.setArrowLines([]);
         dragPageAction.setShowArrowLines(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedNodeId]);
 
     // 设计页面滚动，刷新位置
@@ -126,6 +127,7 @@ export default config({
         return () => {
             iframeDocument.body.removeEventListener('scroll', handleScroll);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [iframeDocument]);
 
 

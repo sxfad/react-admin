@@ -8,7 +8,6 @@ import {
     getDraggingNodeInfo,
 } from 'src/pages/drag-page/util';
 import {throttle} from 'lodash';
-import classNames from 'classnames';
 
 import styles from './style.less';
 
