@@ -1,31 +1,26 @@
-import {getModelName} from '@ra-lib/admin/es/commons/util';
+import models from './models';
+import handleSuccess from 'src/commons/handle-success';
+import handleError from 'src/commons/handle-error';
+import {storage, createStoreByModels} from '@ra-lib/admin';
 
-/**
- * 使用 require.context 自动引入所有model文件
- * */
-const result = {};
-
-// src/models目录下，不支持子文件夹
-const req = require.context('./', false, /\.js$/);
-req.keys().forEach(key => {
-    if ([
-        './index.js',
-        './models.js',
-    ].includes(key)) return;
-    const model = req(key);
-    const name = getModelName(key);
-    result[name] = model.default;
+const result = createStoreByModels(models, {
+    // middlewares: [
+    //     thunk,
+    // ],
+    // enhancers: [], // 与 middlewares 进行compose运算的方法： const enhancer = compose(applyMiddleware(...middlewares), ...enhancers);
+    // reducers: {todos}, // 额外的reducers
+    // localStorage: window.localStorage,
+    // sessionStorage: window.sessionStorage,
+    // serialize: JSON.stringify,
+    // deserialize: JSON.parse,
+    localStorage: storage.local,
+    sessionStorage: storage.session,
+    serialize: data => data,
+    deserialize: data => data,
+    onError: handleError,
+    onSuccess: handleSuccess,
 });
 
-// src/pages目录下，支持子文件夹
-const reqPages = require.context('../pages', true, /\.js$/);
-reqPages.keys().forEach(key => {
-    if (!key.endsWith('model.js')) return;
-
-    const model = reqPages(key);
-    const name = getModelName(key);
-
-    result[name] = model.default;
-});
-
-export default result;
+export const store = result.store;
+export const connect = result.connect;
+export const actions = result.actions;

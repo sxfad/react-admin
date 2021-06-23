@@ -6,9 +6,9 @@ import {
     convertToTree,
     sort,
     findNextNode,
-    config,
-    WITH_SYSTEMS,
 } from '@ra-lib/admin';
+import config from 'src/commons/config-hoc';
+import {WITH_SYSTEMS} from 'src/config';
 import MenuEdit from './MenuEdit';
 import ActionEdit from './ActionEdit';
 import theme from 'src/theme.less';

@@ -5,8 +5,8 @@ import {
     filterTree,
     Table,
     renderTableCheckbox,
-    config,
 } from '@ra-lib/admin';
+import config from 'src/commons/config-hoc';
 import options from 'src/options';
 
 const menuTargetOptions = options.menuTarget;

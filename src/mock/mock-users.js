@@ -1,5 +1,5 @@
 import moment from 'moment';
-import executeSql, {initDB} from './web-sql';
+import executeSql, {initDB} from 'src/mock/web-sql';
 
 export default {
     // 重置数据库
@@ -14,7 +14,7 @@ export default {
             password,
         } = JSON.parse(config.data);
 
-        const result = await executeSql('select * from users where account=? and password=? and enabled=1', [userName, password]);
+        const result = await executeSql('select * from users where account=? and password=?', [userName, password]);
         if (!result?.length) return [400, {message: '用户名或密码错误'}];
 
         const user = result[0];
@@ -83,19 +83,16 @@ export default {
     },
     // 保存
     'post /users': async config => {
-        let {
+        const {
             account,
             name,
             password,
             email,
             mobile,
-            enabled,
             roleIds,
         } = JSON.parse(config.data);
-        enabled = enabled ? 1 : 0;
-
-        const args = [account, name, password, mobile, email, enabled, moment().format('YYYY-MM-DD HH:mm:ss'), moment().format('YYYY-MM-DD HH:mm:ss')];
-        const result = await executeSql('INSERT INTO users (account, name, password, mobile, email, enabled, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', args, true);
+        const args = [account, name, password, mobile, email, true];
+        const result = await executeSql('INSERT INTO users (account, name, password, mobile, email, enable) VALUES (?, ?, ?, ?, ?, ?)', args, true);
         const {insertId: userId} = result;
 
         if (roleIds?.length) {
@@ -108,20 +105,18 @@ export default {
     },
     // 修改
     'put /users': async config => {
-        let {
+        const {
             id,
             account,
             name,
             password,
             email,
             mobile,
-            enabled,
             roleIds,
         } = JSON.parse(config.data);
-        enabled = enabled ? 1 : 0;
-        const args = [account, name, password, mobile, email, enabled, moment().format('YYYY-MM-DD HH:mm:ss'), id];
+        const args = [account, name, password, mobile, email, moment().format('YYYY-MM-DD HH:mm:ss'), id];
 
-        await executeSql('UPDATE users SET account=?, name=?, password=?, mobile=?, email=?, enabled=?, updatedAt=? WHERE id=?', args);
+        await executeSql('UPDATE users SET account=?, name=?, password=?, mobile=?, email=?, updatedAt=? WHERE id=?', args);
         await executeSql('DELETE FROM user_roles WHERE userId=?', [id]);
 
         if (roleIds?.length) {

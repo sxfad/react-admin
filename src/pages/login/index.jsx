@@ -2,7 +2,9 @@ import React, {useState, useRef, useEffect} from 'react';
 import {Helmet} from 'react-helmet';
 import {Button, Form} from 'antd';
 import {LockOutlined, UserOutlined, FileImageOutlined, MessageOutlined} from '@ant-design/icons';
-import {FormItem, toHome, setLoginUser, config} from '@ra-lib/admin';
+import {FormItem, setLoginUser} from '@ra-lib/admin';
+import config from 'src/commons/config-hoc';
+import {toHome} from 'src/commons';
 import {Logo} from 'src/components';
 import styles from './style.less';
 

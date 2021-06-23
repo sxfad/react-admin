@@ -6,9 +6,9 @@ import {
     Content,
     useHeight,
     useDebounceValidator,
-    config,
-    WITH_SYSTEMS,
 } from '@ra-lib/admin';
+import config from 'src/commons/config-hoc';
+import {WITH_SYSTEMS} from 'src/config';
 import options from 'src/options';
 import styles from './style.less';
 

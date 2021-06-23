@@ -1,4 +1,8 @@
-import {getLoginUser, isLoginPage, ajax} from '@ra-lib/admin';
+import ajax from 'src/commons/ajax';
+import {
+    getLoginUser,
+    isLoginPage,
+} from '@ra-lib/admin';
 
 /**
  * 获取菜单
@@ -42,7 +46,7 @@ export async function getCollectedMenus() {
 
     return data
         .filter(item => item.type === 1)
-        .map(item => ({ ...item, isCollectedMenu: true }));
+        .map(item => ({...item, isCollectedMenu: true}));
 }
 
 /**

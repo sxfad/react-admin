@@ -8,9 +8,9 @@ import {
     Pagination,
     Operator,
     ToolBar,
-    config,
-    IS_MOBILE,
 } from '@ra-lib/admin';
+import config from 'src/commons/config-hoc';
+import {IS_MOBILE} from 'src/config';
 import options from 'src/options';
 import EditModal from './EditModal';
 

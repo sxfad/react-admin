@@ -4,12 +4,11 @@ import {
     ModalContent,
     FormItem,
     Content,
-    config,
     useDebounceValidator,
-    IS_MOBILE,
-    WITH_SYSTEMS,
     useOptions,
 } from '@ra-lib/admin';
+import config from 'src/commons/config-hoc';
+import {IS_MOBILE, WITH_SYSTEMS} from 'src/config';
 import MenuTableSelect from 'src/pages/menus/MenuTableSelect';
 import options from 'src/options';
 

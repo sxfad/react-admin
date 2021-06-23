@@ -1,5 +1,6 @@
 import {Tag} from 'antd';
-import {ajax, wrapperOptions} from '@ra-lib/admin';
+import ajax from 'src/commons/ajax';
+import {wrapperOptions} from '@ra-lib/admin';
 
 /**
  * 项目中可能用到的一些枚举类数据

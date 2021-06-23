@@ -1,5 +1,6 @@
 import {Form} from 'antd';
-import {ModalContent, FormItem, config} from '@ra-lib/admin';
+import {ModalContent, FormItem} from '@ra-lib/admin';
+import config from 'src/commons/config-hoc';
 
 export default config({
     modal: {

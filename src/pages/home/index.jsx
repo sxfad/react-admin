@@ -1,6 +1,7 @@
 // import {Redirect} from 'react-router-dom';
 import {Button} from 'antd';
-import {PageContent, config} from '@ra-lib/admin';
+import {PageContent} from '@ra-lib/admin';
+import config from 'src/commons/config-hoc';
 import styles from './style.less';
 
 export default config({

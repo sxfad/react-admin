@@ -7,7 +7,6 @@ export default `
     (
         id        INTEGER PRIMARY KEY,
         parentId  INTEGER                             null,
-        enabled    tinyint(1)                          not null, -- comment '是否可用',
         title     varchar(50)                         null,     -- comment '菜单标题或者权限码标题',
         icon      varchar(50)                         null,     -- comment '菜单图标',
         basePath  varchar(200)                        null,     -- comment '基础路径',
@@ -35,25 +34,11 @@ export default `
             unique (id)
     );
 
-    create table if not exists user_menus
-    (
-        id        INTEGER PRIMARY KEY,
-        userId    INTEGER                             not null,
-        menuId    INTEGER                             not null,
-        createdAt timestamp default CURRENT_TIMESTAMP not null,
-        updatedAt timestamp default CURRENT_TIMESTAMP not null,
-        constraint role_menus_id_uindex
-            unique (id)
-    );
-
     create table if not exists roles
     (
         id        INTEGER PRIMARY KEY,
         name      varchar(50)                         not null, -- comment '角色名称',
-        enabled    tinyint(1)                          not null, -- comment '是否可用',
         remark    varchar(200)                        null,     -- comment '角色备注',
-        type      tinyint(1)                          not null, -- comment '角色类型，1 超级管理员 2 子系统管理员 3 用户自定义角色',
-        systemId  INTEGER,                                      -- comment '归属系统id（菜单顶级id）',
         createdAt timestamp default CURRENT_TIMESTAMP not null, -- comment '创建时间',
         updatedAt timestamp default CURRENT_TIMESTAMP null,     -- comment '更新时间',
         constraint roles_id_uindex
@@ -79,7 +64,7 @@ export default `
         password  varchar(20)                         null,     -- comment '密码',
         mobile    varchar(20)                         null,     -- comment '电话',
         email     varchar(50)                         null,     -- comment '邮箱',
-        enabled    tinyint(1)                          not null, -- comment '是否可用',
+        enable    tinyint(1)                          not null, -- comment '是否可用',
         createdAt timestamp default CURRENT_TIMESTAMP not null, -- comment '创建时间',
         updatedAt timestamp default CURRENT_TIMESTAMP not null,
         constraint users_account_uindex
@@ -90,18 +75,26 @@ export default `
 `;
 
 export const initRolesSql = `
-    INSERT INTO roles (id, name, remark, enabled, type, createdAt, updatedAt)
-    VALUES (1, '超级管理员', '拥有系统所有权限', 1, 1, '${now}', '${now}');
-    INSERT INTO roles (id, name, remark, enabled, type, systemId, createdAt, updatedAt)
-    VALUES (2, '系统管理员', '拥有当前系统所有权限', 1, 2, 1, '${now}', '${now}');
+    INSERT INTO roles (id, name, remark, createdAt, updatedAt)
+    VALUES (1, '管理员', '管理员拥有系统所有权限', '${now}', '${now}');
 `;
 
 export const initRoleMenusSql = `
+    INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
+    VALUES (1, 1, 1, '${now}', '${now}');
+    INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
+    VALUES (2, 1, 2, '${now}', '${now}');
+    INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
+    VALUES (3, 1, 3, '${now}', '${now}');
+    INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
+    VALUES (4, 1, 4, '${now}', '${now}');
+    INSERT INTO role_menus (id, roleId, menuId, createdAt, updatedAt)
+    VALUES (5, 1, 5, '${now}', '${now}');
 `;
 
 export const initUsersSql = `
-    INSERT INTO users (id, account, name, password, mobile, email, enabled, createdAt, updatedAt)
-    VALUES (1, 'admin', '超级管理员', '123456', '18888888888', 'email@qq.com', 1, '${now}', '${now}');
+    INSERT INTO users (id, account, name, password, mobile, email, enable, createdAt, updatedAt)
+    VALUES (1, 'admin', '管理员', '123456', '18888888888', 'email@qq.com', 1, '${now}', '${now}');
 `;
 
 export const initUserRolesSql = `
@@ -110,18 +103,18 @@ export const initUserRolesSql = `
 `;
 
 export const initMenuSql = `
-    INSERT INTO menus (id, parentId, enabled, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
-    VALUES (1, null, 1, '系统管理', null, null, null, 'menu', 0, 1, null, null, null, '${now}', '${now}');
-    INSERT INTO menus (id, parentId, enabled, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
-    VALUES (2, 1, 1, '用户管理', null, null, '/users', 'menu', 0, 1, null, null, null, '${now}', '${now}');
-    INSERT INTO menus (id, parentId, enabled, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
-    VALUES (3, 1, 1, '角色管理', null, null, '/roles', 'menu', 0, 1, null, null, null, '${now}', '${now}');
-    INSERT INTO menus (id, parentId, enabled, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
-    VALUES (4, 1, 1, '菜单管理', null, null, '/menus', 'menu', 0, 1, null, null, null, '${now}', '${now}');
-    INSERT INTO menus (id, parentId, enabled, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
-    VALUES (5, 2, 1, '添加用户', null, null, null, null, 0, 2, 'ADD_USER', null, null, '${now}', '${now}');
-    INSERT INTO menus (id, parentId, enabled, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
-    VALUES (6, 2, 1, '删除用户', null, null, null, null, 0, 2, 'UPDATE_USER', null, null, '${now}', '${now}');
+    INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
+    VALUES (1, null, '系统管理', null, null, null, 'menu', 0, 1, null, null, null, '${now}', '${now}');
+    INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
+    VALUES (2, 1, '用户管理', null, null, '/users', 'menu', 0, 1, null, null, null, '${now}', '${now}');
+    INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
+    VALUES (3, 1, '角色管理', null, null, '/roles', 'menu', 0, 1, null, null, null, '${now}', '${now}');
+    INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
+    VALUES (4, 1, '菜单管理', null, null, '/menus', 'menu', 0, 1, null, null, null, '${now}', '${now}');
+    INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
+    VALUES (5, 2, '添加用户', null, null, null, null, 0, 2, 'ADD_USER', null, null, '${now}', '${now}');
+    INSERT INTO menus (id, parentId, title, icon, basePath, path, target, \`order\`, type, code, name, entry, createdAt, updatedAt)
+    VALUES (6, 2, '删除用户', null, null, null, null, 0, 2, 'UPDATE_USER', null, null, '${now}', '${now}');
 `;
 
 export const initDataSql = {

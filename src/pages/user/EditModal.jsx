@@ -6,9 +6,9 @@ import {
     Content,
     validateRules,
     useDebounceValidator,
-    config,
-    IS_MOBILE,
 } from '@ra-lib/admin';
+import config from 'src/commons/config-hoc';
+import {IS_MOBILE} from 'src/config';
 import RoleSelectTable from 'src/pages/role/RoleSelectTable';
 
 export default config({

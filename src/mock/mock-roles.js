@@ -1,5 +1,5 @@
 import moment from 'moment';
-import executeSql from './web-sql';
+import executeSql from 'src/mock/web-sql';
 
 export default {
     // 获取列表
@@ -10,27 +10,13 @@ export default {
             name = '',
         } = config.params;
 
-        const where = `where roles.name like '%${name}%'`;
-
-        async function addSystem(list) {
-            const menus = await executeSql(`
-                select *
-                from menus
-                where id in (${list.map(item => item.systemId).filter(systemId => !!systemId)})
-            `);
-            list.forEach(role => {
-                const system = menus.find(menu => menu.id === role.systemId);
-                role.systemName = system?.title;
-            });
-        }
+        const where = `where name like '%${name}%'`;
 
         if (!pageSize && !pageNum) {
             const list = await executeSql(`
                 select *
-                from roles
-                where enabled = 1
+                from roles ${where}
                 order by updatedAt desc`);
-            await addSystem(list);
 
             return [200, list];
         }
@@ -40,8 +26,6 @@ export default {
             from roles ${where}
             order by updatedAt desc
             limit ? offset ?`, [pageSize, (pageNum - 1) * pageSize]);
-
-        await addSystem(list);
 
         const countResult = await executeSql(`
             select count(*)
@@ -71,33 +55,21 @@ export default {
     'get /roleByName': async config => {
         const {
             name,
-            systemId,
         } = config.params;
 
-        // 系统内不可重复
-        if (systemId) {
-            const result = await executeSql('select * from roles where name = ? and systemId=?', [name, systemId]);
-            return [200, result[0]];
-        }
 
         const result = await executeSql('select * from roles where name = ?', [name]);
         return [200, result[0]];
-
     },
     // 添加
     'post /roles': async config => {
-        let {
+        const {
             name,
             remark = '',
-            enabled,
             menuIds,
-            systemId = null,
-            type = 3,
         } = JSON.parse(config.data);
-        enabled = enabled ? 1 : 0;
-
-        const args = [name, remark, enabled, systemId, type, moment().format('YYYY-MM-DD HH:mm:ss'), moment().format('YYYY-MM-DD HH:mm:ss')];
-        const result = await executeSql('INSERT INTO roles (name, remark, enabled, systemId, type, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)', args, true);
+        const args = [name, remark];
+        const result = await executeSql('INSERT INTO roles (name, remark) VALUES (?, ?)', args, true);
         const {insertId: roleId} = result;
 
         if (menuIds?.length) {
@@ -110,18 +82,15 @@ export default {
     },
     // 修改
     'put /roles': async config => {
-        let {
+        const {
             id,
             name,
             remark = '',
-            enabled,
             menuIds,
-            systemId,
         } = JSON.parse(config.data);
-        enabled = enabled ? 1 : 0;
-        const args = [name, remark, enabled, systemId, moment().format('YYYY-MM-DD HH:mm:ss'), id];
+        const args = [name, remark, moment().format('YYYY-MM-DD HH:mm:ss'), id];
 
-        await executeSql('UPDATE roles SET name=?, remark=?, enabled=?, systemId=?, updatedAt=? WHERE id=?', args);
+        await executeSql('UPDATE roles SET name=?, remark=?, updatedAt=? WHERE id=?', args);
         await executeSql('DELETE FROM role_menus WHERE roleId=?', [id]);
 
         if (menuIds?.length) {

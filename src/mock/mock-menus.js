@@ -1,112 +1,31 @@
 import moment from 'moment';
 import {convertToTree, findGenerationNodes} from '@ra-lib/admin';
-import executeSql from './web-sql';
+import executeSql from 'src/mock/web-sql';
 
 export default {
-    // 获取系统
-    'get /systems': async (config) => {
-        const list = await executeSql(`
-            select *
-            from menus
-            where parentId is null
-               or parentId = ?
-        `, ['']);
-
-        return [200, list];
-    },
     // 获取用户菜单
-    'get /userMenus': async (config) => {
+    'get /user/menus': async (config) => {
         const {
             userId,
         } = config.params;
-        const urs = await executeSql('select * from user_roles where userId = ?', [userId]);
-
-        const userRoles = await executeSql(`select *
-                                            from roles
-                                            where id in (${urs.map(item => item.roleId)})`);
+        const userRoles = await executeSql('select * from user_roles where userId = ?', [userId]);
 
         if (!userRoles?.length) return [200, []];
-
-        // type === 1 为超级管理员，返回所有权限，
-        // type === 2 为子系统管理员，返回当前子系统所有权限
-
-        const isSuperAdmin = userRoles.some(item => item.type === 1);
-        const allMenus = await executeSql(`select *
-                                           from menus
-                                           where enabled = 1`);
-
-        if (isSuperAdmin) {
-            return [200, allMenus];
-        }
-
-        const adminRoles = userRoles.filter(item => item.type === 2);
-
-        const systemIds = adminRoles.map(item => item.systemId).filter(id => !!id);
-
-        const allMenusTreeData = convertToTree(allMenus);
-
-        let menus = systemIds.map(id => allMenus.find(item => item.id === id));
-
-        systemIds.forEach(systemId => {
-            const nodes = findGenerationNodes(allMenusTreeData, systemId, 'id');
-            nodes.forEach(menu => {
-                if (!menus.some(it => it.id === menu.id)) menus.push(menu);
-            });
-        });
-
-        const roleIds = userRoles.map(item => item.id);
+        const roleIds = userRoles.map(item => item.roleId).join(',');
 
         const roleMenus = await executeSql(`select *
                                             from role_menus
                                             where roleId in (${roleIds})`);
 
-        roleMenus.forEach(item => {
-            const menuId = item.menuId;
-            const menu = allMenus.find(item => item.id === menuId);
-            if (!menus.some(it => it.id === menu.id)) menus.push(menu);
-        });
+        if (!roleMenus?.length) return [200, []];
 
-        return [200, menus];
+        const menusId = roleMenus.map(item => item.menuId).join(',');
+        const menus = await executeSql(`select *
+                                        from menus
+                                        where id in (${menusId})`);
+
+        return [200, Array.from(menus)];
     },
-    // 获取用户收藏菜单
-    'get /userCollectedMenus': async config => {
-        const {
-            userId,
-        } = config.params;
-
-        const userMenus = await executeSql('select * from user_menus where userId = ?', [userId]);
-        const menuIds = userMenus.map(item => item.menuId);
-
-        const result = await executeSql(`select *
-                                         from menus
-                                         where id in (${menuIds})`);
-        return [200, result];
-    },
-    // 修改用户收藏菜单
-    'post /userCollectMenu': async config => {
-        let {userId, menuId, collected} = JSON.parse(config.data);
-        menuId = parseInt(menuId);
-
-        const menus = await executeSql('select * from menus');
-        const nodes = findGenerationNodes(convertToTree(menus), menuId);
-        const menuIds = nodes.filter(item => item.type === 1).map(item => item.id);
-        menuIds.push(menuId);
-
-        if (collected) {
-            // 子菜单全部加入
-            for (let mId of menuIds) {
-                await executeSql('insert into user_menus (userId, menuId) values (?, ?)', [userId, mId]);
-            }
-        } else {
-            // 子菜单全部取消
-            for (let mId of menuIds) {
-                await executeSql('delete from user_menus where userId=? and menuId = ?', [userId, mId]);
-            }
-        }
-
-        return [200, true];
-    },
-
     // 获取所有
     'get /menus': async config => {
         const result = await executeSql('select * from menus');
@@ -140,10 +59,9 @@ export default {
             INSERT INTO menus (${keys})
             VALUES (${holders})
         `, args, true);
-
         const {insertId: menuId} = result;
 
-        return [200, {id: menuId}];
+        return [200, menuId];
     },
     // 批量添加
     'post /branchMenus': async config => {
@@ -256,14 +174,13 @@ export default {
         await executeSql('delete  from menus where parentId=? and type=?', [parentId, 2]);
         // 插入新的action
         for (let action of actions) {
-            let {id, title, code, enabled, type = 2} = action;
-            enabled = enabled ? 1 : 0;
+            const {id, title, code, type = 2} = action;
 
-            const data = {parentId, title, code, enabled, type};
+            const data = {parentId, title, code, type};
 
             const keys = Object.keys(data);
             const values = Object.values(data);
-            const holders = values.map(() => '?');
+            const holders = ['?', '?', '?', '?'];
 
             if (id) {
                 keys.push('id');
@@ -283,7 +200,7 @@ export default {
 };
 
 function getMenuData(config, parse = JSON.parse) {
-    let {
+    const {
         target = 'menu',
         parentId = '',
         title,
@@ -295,11 +212,8 @@ function getMenuData(config, parse = JSON.parse) {
         icon = '',
         code = '',
         type = 1,
-        enabled,
     } = parse(config.data);
-    enabled = enabled ? 1 : 0;
-
-    const data = {
+    const data = Object.entries({
         target,
         parentId,
         title,
@@ -312,14 +226,12 @@ function getMenuData(config, parse = JSON.parse) {
         icon,
         code,
         type,
-        enabled,
-    };
-    const keyValues = Object.entries(data);
+    });
 
 
-    const keys = keyValues.map(([key]) => key);
-    const args = keyValues.map(([, value]) => value);
-    const holders = keyValues.map(() => '?');
+    const keys = data.map(([key]) => key);
+    const args = data.map(([, value]) => value);
+    const holders = data.map(() => '?');
 
-    return {keys, args, holders, data};
+    return {keys, args, holders};
 }

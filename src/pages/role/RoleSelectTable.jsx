@@ -4,10 +4,10 @@ import {Input} from 'antd';
 import {
     renderTableCheckbox,
     Table,
-    config,
     filterTree,
-    WITH_SYSTEMS,
 } from '@ra-lib/admin';
+import config from 'src/commons/config-hoc';
+import {WITH_SYSTEMS} from 'src/config';
 
 const WithCheckboxTable = renderTableCheckbox(Table);
 

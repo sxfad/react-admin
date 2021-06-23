@@ -8,9 +8,9 @@ import {
     Pagination,
     Operator,
     ToolBar,
-    WITH_SYSTEMS,
-    config,
 } from '@ra-lib/admin';
+import config from 'src/commons/config-hoc';
+import {WITH_SYSTEMS} from 'src/config';
 import EditModal from './EditModal';
 import styles from './style.less';
 import options from 'src/options';

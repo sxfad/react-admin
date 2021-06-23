@@ -1,5 +1,5 @@
 import createTableSql, {initDataSql} from './init-sql';
-import appPackage from 'root/package.json';
+import appPackage from '../../../package.json';
 
 const packageName = appPackage.name;
 
@@ -12,7 +12,6 @@ const tables = [
     'users',
     'role_menus',
     'user_roles',
-    'user_menus',
 ];
 
 export default async function executeSql(sql, args, fullResult) {
@@ -74,7 +73,6 @@ export async function dropAllTables() {
 export async function initTablesData() {
     for (let table of tables) {
         const sql = initDataSql[table];
-        if (!sql || !sql.trim()) continue;
         await executeSplit(sql, 'INSERT INTO');
     }
 }
