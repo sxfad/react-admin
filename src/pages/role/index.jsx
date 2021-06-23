@@ -8,7 +8,6 @@ import {
     Pagination,
     Operator,
     ToolBar,
-    IS_MOBILE,
     WITH_SYSTEMS,
     config,
 } from '@ra-lib/admin';
@@ -127,8 +126,7 @@ export default config({
                 <Button type="primary" onClick={() => setRecord(null) || setVisible(true)}>添加</Button>
             </ToolBar>
             <Table
-                fitHeight={!IS_MOBILE}
-                scroll={IS_MOBILE ? {x: 1000} : undefined}
+                fitHeight
                 dataSource={dataSource}
                 columns={columns}
                 rowKey="id"
@@ -141,8 +139,6 @@ export default config({
                 onPageSizeChange={pageSize => setPageNum(1) || setPageSize(pageSize)}
             />
             <EditModal
-                fullScreen={IS_MOBILE}
-                width={IS_MOBILE ? '100%' : '70%'}
                 visible={visible}
                 isEdit={!!record}
                 record={record}

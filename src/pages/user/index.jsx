@@ -59,6 +59,7 @@ export default config({
         {
             title: '操作',
             key: 'operator',
+            width: 250,
             render: (text, record) => {
                 const {id, name} = record;
                 const items = [
@@ -141,11 +142,10 @@ export default config({
                 serialNumber
                 pageNum={pageNum}
                 pageSize={pageSize}
-                fitHeight={!IS_MOBILE}
+                fitHeight
                 dataSource={dataSource}
                 columns={columns}
                 rowKey="id"
-                scroll={IS_MOBILE ? {x: 1000} : undefined}
             />
             <Pagination
                 total={total}
@@ -155,8 +155,6 @@ export default config({
                 onPageSizeChange={pageSize => setPageNum(1) || setPageSize(pageSize)}
             />
             <EditModal
-                fullScreen={IS_MOBILE}
-                width={IS_MOBILE ? '100%' : '70%'}
                 visible={visible}
                 record={record}
                 isEdit={!!record}

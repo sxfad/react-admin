@@ -93,7 +93,7 @@ export default config({
                 <Row gutter={8}>
                     <Col {...colLayout} style={{marginBottom: IS_MOBILE ? 16 : 0}}>
                         <Card title="基础信息">
-                            <Content fitHeight={!IS_MOBILE} otherHeight={160}>
+                            <Content fitHeight otherHeight={160}>
                                 {WITH_SYSTEMS ? (
                                     <FormItem
                                         {...layout}

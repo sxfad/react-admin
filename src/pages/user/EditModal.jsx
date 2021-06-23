@@ -83,7 +83,6 @@ export default config({
             onOk={() => form.submit()}
             cancelText="重置"
             onCancel={() => form.resetFields()}
-            fullScreen={IS_MOBILE}
             footer={disabled ? <Button onClick={onCancel}>关闭</Button> : undefined}
         >
             <Form
@@ -96,7 +95,7 @@ export default config({
                 <Row gutter={8}>
                     <Col {...colLayout} style={{marginBottom: IS_MOBILE ? 16 : 0}}>
                         <Card title="基础信息">
-                            <Content fitHeight={!IS_MOBILE} otherHeight={160}>
+                            <Content fitHeight otherHeight={160}>
                                 <FormItem
                                     {...layout}
                                     label="账号"
@@ -156,7 +155,7 @@ export default config({
                                 name="roleIds"
                             >
                                 <RoleSelectTable
-                                    fitHeight={!IS_MOBILE}
+                                    fitHeight
                                     otherHeight={200}
                                     getCheckboxProps={() => ({disabled})}
                                 />
