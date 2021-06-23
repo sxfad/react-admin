@@ -1,0 +1,31 @@
+.root {
+    height: 24px;
+    display: flex;
+    align-items: center;
+    padding-top: 4px;
+
+    & > div {
+        display: inline-block;
+    }
+
+    & > div:last-child {
+        :global {
+            .anticon {
+                display: none;
+            }
+        }
+    }
+
+    :global {
+        .anticon {
+            color: #a0d911;
+        }
+
+        .ant-tag {
+            margin: 0;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+    }
+}

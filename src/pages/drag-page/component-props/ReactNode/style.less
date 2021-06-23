@@ -1,0 +1,26 @@
+@import "../../../../theme";
+
+.root {
+    width: 100%;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #d9d9d9;
+    border-radius: @border-radius-base;
+    padding: 0 11px;
+    transition: all 0.3s;
+    cursor: pointer;
+
+    &:hover {
+        border-color: @primary-color;
+        color: @primary-color;
+    }
+
+    &.dragIn {
+        background-color: rgba(0, 255, 0, .2);
+    }
+
+    * {
+        pointer-events: none;
+    }
+}

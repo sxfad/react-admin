@@ -1,0 +1,143 @@
+@guide-color: green;
+@select-guide-color: red;
+@guide-size: 2px;
+@large-size: 15px;
+
+:global {
+    #drop-guide-line,
+    #drop-guide-bg {
+        transition: 100ms;
+    }
+
+    #drop-guide-bg:before {
+        pointer-events: none;
+        content: attr(data-component-display-name);
+        letter-spacing: 0;
+        position: absolute;
+        width: auto;
+        height: auto;
+        left: 0;
+        top: 0;
+        right: auto;
+        bottom: auto;
+        font-size: 12px;
+        padding: 0 4px;
+        transform-origin: 0 0;
+        transform: scale(.8);
+        opacity: .5;
+        background: @guide-color;
+        color: #fff;
+        word-break: keep-all;
+        z-index: 9999;
+    }
+}
+
+.largeY {
+    padding: @large-size 0;
+}
+
+.largeX {
+    padding: 0 @large-size;
+}
+
+.dragOver {
+    outline: none !important;
+}
+
+.unAccept {
+    cursor: not-allowed;
+}
+
+.guideBgActive {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 9999;
+    background: rgba(0, 255, 0, 0.05);
+    pointer-events: none;
+    outline: 1px solid @guide-color;
+    overflow: hidden;
+    font-size: 18px;
+    color: @guide-color;
+
+    &.selectTarget {
+        color: @select-guide-color;
+        border: 1px solid @select-guide-color;
+        background: rgba(255, 0, 0, 0.05);
+    }
+}
+
+.guideActive {
+    display: flex !important;
+    position: fixed;
+    pointer-events: none;
+    height: @guide-size;
+    align-items: center;
+    z-index: 9999;
+
+    &:before,
+    &:after {
+        position: absolute;
+        content: '';
+        display: block;
+        border-left: 5px solid transparent;
+        border-top: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+    }
+
+    &:before {
+        left: 0;
+        border-left: 6px solid @guide-color;
+    }
+
+    &:after {
+        right: 0;
+        border-right: 6px solid @guide-color;
+    }
+
+    span {
+        display: flex;
+        width: 100%;
+        color: @guide-color;
+
+        &:before,
+        &:after {
+            content: "";
+            flex: 1 1;
+            border-bottom: @guide-size solid @guide-color;
+            margin: auto;
+        }
+    }
+
+    &.gLeft,
+    &.gRight {
+        width: @guide-size;
+
+        &:before {
+            left: -4px;
+            top: 0;
+            border-left: 5px solid transparent;
+            border-top: 6px solid @guide-color;
+        }
+
+        &:after {
+            left: -4px;
+            bottom: 0;
+            border-right: 5px solid transparent;
+            border-bottom: 6px solid @guide-color;
+        }
+
+        span {
+            height: 100%;
+            flex-direction: column;
+            align-items: center;
+
+            &:before,
+            &:after {
+                border-left: @guide-size solid @guide-color;
+            }
+        }
+    }
+}

@@ -1,0 +1,180 @@
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .tool {
+        cursor: pointer;
+    }
+}
+
+.root {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background: #fff;
+
+    :global {
+        .ant-tree-node-content-wrapper {
+            padding: 0;
+        }
+    }
+
+    &.hasDraggingNode {
+        :global {
+            .ant-tree-title {
+                cursor: default;
+            }
+        }
+    }
+}
+
+.treeNode {
+    position: relative;
+    border-radius: 3px;
+    padding: 0 4px;
+    transition: background-color, padding .1s;
+    user-select: none;
+
+    .nodeTitle {
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+    }
+
+    :global {
+        .anticon {
+            margin-right: 4px;
+            color: #888;
+            font-size: 14px;
+        }
+    }
+
+    &.unDraggable {
+        cursor: no-drop;
+
+        &.hasDraggingNode {
+            cursor: default;
+        }
+    }
+
+    &.selected {
+        &:hover {
+            background: #d6e4ff;
+        }
+
+        background: #d6e4ff;
+    }
+
+    &:hover {
+        background: #f5f5f5;
+    }
+
+    //&::before,
+    //&::after {
+    //    display: none;
+    //}
+
+    &.unAccept {
+        background: #f6c1c1 !important;
+        cursor: no-drop !important;
+    }
+
+    &.dragIn {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background: #d6e4ff;
+
+        &.top,
+        &.bottom,
+        &.center {
+            .dragGuide {
+                position: absolute;
+                left: 0;
+                right: 0;
+                height: 2px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                pointer-events: none;
+                padding: 0 3px;
+                transition: 100ms;
+
+                &:before,
+                &:after {
+                    position: absolute;
+                    content: '';
+                    display: block;
+                    border-left: 3px solid transparent;
+                    border-top: 3px solid transparent;
+                    border-right: 3px solid transparent;
+                    border-bottom: 3px solid transparent;
+                }
+
+                &:before {
+                    left: 0;
+                    border-left: 4px solid green;
+                }
+
+                &:after {
+                    right: 0;
+                    border-right: 4px solid green;
+                }
+
+                span {
+                    display: flex;
+                    width: 100%;
+                    color: green;
+
+                    &:before,
+                    &:after {
+                        content: "";
+                        flex: 1 1;
+                        border-bottom: 2px solid green;
+                        margin: auto;
+                    }
+                }
+            }
+        }
+
+        &.top {
+            .dragGuide {
+                content: '前';
+                top: 0;
+            }
+        }
+
+        &.bottom {
+            .dragGuide {
+                content: '后';
+                bottom: 0;
+            }
+        }
+
+        &.center {
+            .dragGuide {
+                content: '内';
+                top: 50%;
+                margin-top: -1px;
+            }
+        }
+
+        //&::before {
+        //    content: '';
+        //    display: block;
+        //    height: 20px;
+        //    background: green;
+        //
+        //    &:hover {
+        //        background: blue;
+        //    }
+        //}
+    }
+}
+
+.dragging {
+    filter: blur(2px);
+    //pointer-events: none;
+}

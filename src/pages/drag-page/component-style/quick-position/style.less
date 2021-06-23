@@ -1,0 +1,27 @@
+@import "../../../../theme";
+
+.root {
+    display: flex;
+    font-size: 18px;
+    justify-content: space-between;
+    width: 100%;
+    color: #666;
+
+    &.line {
+
+    }
+
+    &.rect {
+        width: 75px;
+        flex-wrap: wrap;
+
+        & > div {
+            width: 25px;
+            height: 25px;
+        }
+    }
+
+    .isSelected {
+        color: @primary-color;
+    }
+}

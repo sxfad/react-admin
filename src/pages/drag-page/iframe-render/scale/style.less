@@ -1,0 +1,41 @@
+.root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    color: #999;
+
+    & > * {
+        margin: 4px;
+    }
+
+    .inputWrapper {
+        display: flex;
+        align-items: center;
+
+        input {
+            border: 0;
+            width: 30px;
+            padding: 0 4px 0 0;
+            background: none;
+            text-align: right;
+            color: #999;
+        }
+    }
+
+    :global {
+        .anticon {
+            font-size: 18px;
+            cursor: pointer;
+
+            &:active {
+                opacity: .5;
+            }
+
+            &[disabled] {
+                cursor: not-allowed;
+                opacity: .5;
+            }
+        }
+    }
+}

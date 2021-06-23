@@ -10,6 +10,7 @@ const WebpackBar = req('webpackbar');
 const CracoAntDesignPlugin = req('craco-antd');
 const CracoLessPlugin = req('craco-less'); // include in craco-antd
 const MiniCssExtractPlugin = req('mini-css-extract-plugin');
+const MonacoWebpackPlugin = req('monaco-editor-webpack-plugin');
 
 const packageName = require(path.join(ROOT_PATH, 'package.json')).name;
 
@@ -100,6 +101,10 @@ module.exports = {
             src: SRC_PATH,
         },
         plugins: [
+            new MonacoWebpackPlugin({
+                // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
+                languages: ['javascript', 'typescript', 'json', 'html', 'css'],
+            }),
             new WebpackBar({profile: true}),
             ...(process.env.ANALYZER === 'true' ?
                 [

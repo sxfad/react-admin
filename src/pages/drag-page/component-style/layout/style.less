@@ -1,0 +1,26 @@
+.root {
+    .innerInput {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        :global {
+            .ant-input-affix-wrapper {
+                padding-left: 0;
+            }
+
+            .ant-row.ant-form-item {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                margin-top: -20px;
+
+                input {
+                    text-align: center;
+                }
+            }
+        }
+    }
+}

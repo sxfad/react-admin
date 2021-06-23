@@ -1,0 +1,57 @@
+@import "../../../../theme";
+
+.category {
+    display: flex;
+    align-items: center;
+
+    :global {
+        .ant-btn {
+            flex: 1 1 auto;
+            margin-bottom: 8px;
+            padding-left: 7px;
+            padding-right: 7px;
+            overflow: hidden;
+
+            &:not(:first-child, :last-child) {
+                border-radius: 0;
+            }
+
+            &:first-child {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+
+            &:last-child {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+
+            &:not(:last-child, :hover) {
+                border-right-color: transparent;
+            }
+
+            &.ant-btn-primary:focus {
+                background: @primary-color;
+            }
+
+            &.ant-btn-default:focus {
+                color: rgba(0, 0, 0, 0.85);
+                border-color: #d9d9d9;
+            }
+        }
+    }
+
+    .label {
+        flex: 0;
+        text-align: right;
+        padding-top: 5px;
+        padding-right: 10px;
+        align-self: flex-start;
+    }
+
+    .wrapper {
+        flex: 1;
+        display: flex;
+        width: 1px; // 有width即可，ant-btn 空间不足会显示省略号
+    }
+}

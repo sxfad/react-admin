@@ -1,0 +1,61 @@
+@import '../../theme';
+
+:global {
+    .grid-background {
+        /* 格子背景 */
+        background-color: #e8e8e8;
+        background-image: linear-gradient(rgba(255, 255, 255, .3) 1px, transparent 0),
+        linear-gradient(90deg, rgba(255, 255, 255, .3) 1px, transparent 0),
+        linear-gradient(white 1px, transparent 0),
+        linear-gradient(90deg, white 1px, transparent 0);
+        background-size: 15px 15px, 15px 15px, 75px 75px, 75px 75px;
+    }
+
+    .sx-page-content {
+        & > .DragHolder {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: calc(100% - 16px)
+        }
+    }
+}
+
+.root {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    overflow: hidden !important;
+}
+
+.emptyBox {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.top {
+    flex: 0 0 auto;
+    border-bottom: 8px solid #f0f2f5;
+}
+
+.main {
+    flex: 1;
+    display: flex;
+}
+
+.left {
+    flex: 0 0 auto;
+}
+
+.center {
+    flex: 1;
+    padding: 8px;
+    background: #eaedf0;
+}
+
+.right {
+    flex: 0 0 auto;
+}

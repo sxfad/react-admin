@@ -1,0 +1,82 @@
+@import '../../../theme';
+
+.root {
+    position: relative;
+    display: flex;
+    height: 100%;
+}
+
+.left {
+    width: 45px;
+    display: flex;
+    flex-direction: column;
+    background: #eaedf0;
+    border-right: 1px solid #d8d8d8;
+
+    .leftTop {
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+
+        & > * {
+            cursor: pointer;
+
+            &:hover {
+                & > * {
+                    opacity: .5;
+                }
+            }
+        }
+    }
+
+    .leftTop,
+    .leftBottom {
+        & > * {
+            cursor: pointer;
+
+            &:hover {
+                & > * {
+                    opacity: .5;
+                }
+            }
+        }
+    }
+
+    .toggle {
+        border-bottom: 1px solid #d8d8d8;
+    }
+
+    .toolItem {
+        width: 100%;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        user-select: none;
+
+        &.active {
+            background: @primary-color;
+            color: #fff;
+
+            & > * {
+                opacity: 1 !important;
+            }
+        }
+    }
+
+    .leftBottom {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        padding-bottom: 16px;
+    }
+}
+
+.right {
+    flex: 0 0 auto;
+}

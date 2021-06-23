@@ -1,0 +1,38 @@
+@guide-color: green;
+[data-fix-position-relative=true] {
+    position: relative;
+}
+
+.tag {
+    display: none;
+}
+
+[data-draggable-selected=true] {
+    outline: 1px solid @guide-color !important;
+
+    &[data-before-tag=true]:before,
+    &[data-after-tag=true]:before,
+    .tag {
+        display: block;
+        pointer-events: none;
+        content: attr(data-component-display-name);
+        letter-spacing: 0;
+        position: absolute;
+        width: auto;
+        height: auto;
+        left: 0;
+        top: 0;
+        right: auto;
+        bottom: auto;
+        font-size: 12px;
+        padding: 0 4px;
+        transform-origin: 0 0;
+        transform: scale(.8);
+        opacity: .5;
+        background: @guide-color;
+        color: #fff;
+        word-break: keep-all;
+        z-index: 9999;
+    }
+}
+

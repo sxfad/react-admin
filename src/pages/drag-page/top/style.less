@@ -1,0 +1,67 @@
+@import '../../../theme';
+
+.root {
+    display: flex;
+    align-items: center;
+}
+
+.left {
+    flex: 0 0 auto;
+    padding: 0 16px;
+}
+
+.center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.right {
+    flex: 0 0 auto;
+}
+
+.divider {
+    border-left: 1px solid #d8d8d8;
+    height: 40px;
+    margin: 0 16px;
+}
+
+.toolItem {
+    display: inline-flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    width: 50px;
+    padding: 4px 0;
+    cursor: pointer;
+    user-select: none;
+
+    &.showLabel {
+        width: 80px;
+    }
+
+    .icon {
+        font-size: 18px;
+        margin-bottom: 2px;
+        text-align: center;
+    }
+
+    .label {
+        text-align: center;
+    }
+
+    &:hover {
+        opacity: .5;
+    }
+
+    &.active {
+        color: @primary-color;
+        opacity: 1;
+    }
+
+    &.disabled {
+        opacity: .5;
+        cursor: not-allowed;
+    }
+}

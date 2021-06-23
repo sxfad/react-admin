@@ -1,0 +1,32 @@
+.dragBarIcon {
+    position: absolute;
+    top: 50%;
+    margin-top: -50px;
+    right: -9px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 20px 0;
+    width: 6px;
+    height: 100px;
+    //background: #fff;
+    //border: 1px solid #d9d9d9;
+    border-left: 0;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    cursor: col-resize;
+
+    &.left {
+        right: auto;
+        left: -5px;
+    }
+
+    span {
+        display: block;
+        width: 2px;
+        height: 2px;
+        background: #bbb;
+        border-radius: 50%;
+    }
+}

@@ -1,0 +1,53 @@
+export default {
+    isContainer: false,
+    fields: [
+        {label: '可勾选', category: '选项', field: 'checkable', type: 'boolean', defaultValue: false, version: '', desc: '节点前添加 Checkbox 复选框'},
+        {label: '可拖拽', category: '选项', field: 'draggable', type: 'boolean', defaultValue: false, version: '', desc: '设置节点可拖拽（IE>8）'},
+        {label: '可选中', category: '选项', field: 'selectable', type: 'boolean', defaultValue: true, version: '', desc: '是否可选中'},
+        {label: '节点占据一行', field: 'blockNode', type: 'boolean', defaultValue: false, version: '', desc: '是否节点占据一行'},
+    ],
+};
+
+/*
+[
+    {label:'是否允许拖拽时放置在该节点',field:'allowDrop',type:'({ dropNode, dropPosition }) => boolean',version:'',desc:'是否允许拖拽时放置在该节点'},
+    {label:'是否自动展开父节点',field:'autoExpandParent',type:'boolean',defaultValue:false,version:'',desc:'是否自动展开父节点'},
+    {label:'是否节点占据一行',field:'blockNode',type:'boolean',defaultValue:false,version:'',desc:'是否节点占据一行'},
+    {label:'节点前添加 Checkbox 复选框',field:'checkable',type:'boolean',defaultValue:false,version:'',desc:'节点前添加 Checkbox 复选框'},
+    {label:'（受控）选中复选框的树节点（注意：父子节点有关联，如果传入父节点 key，则子节点自动选中；相应当子节点 key 都传入，父节点也自动选中。当设置 checkable 和 checkStrictly，它是一个有checked和halfChecked属性的对象，并且父子节点的选中与否不再关联',field:'checkedKeys',type:'radio-group',defaultValue:'[]',version:'',options:[{value:'string[]',label:'string[]'},{value:'{checked: string[], halfChecked: string[]}',label:'{checked: string[], halfChecked: string[]}'}],desc:'（受控）选中复选框的树节点（注意：父子节点有关联，如果传入父节点 key，则子节点自动选中；相应当子节点 key 都传入，父节点也自动选中。当设置 checkable 和 checkStrictly，它是一个有checked和halfChecked属性的对象，并且父子节点的选中与否不再关联'},
+    {label:'checkable 状态下节点选择完全受控（父子节点选中状态不再关联）',field:'checkStrictly',type:'boolean',defaultValue:false,version:'',desc:'checkable 状态下节点选择完全受控（父子节点选中状态不再关联）'},
+    {label:'默认选中复选框的树节点',field:'defaultCheckedKeys',type:'string[]',defaultValue:'[]',version:'',desc:'默认选中复选框的树节点'},
+    {label:'默认展开所有树节点',field:'defaultExpandAll',type:'boolean',defaultValue:false,version:'',desc:'默认展开所有树节点'},
+    {label:'默认展开指定的树节点',field:'defaultExpandedKeys',type:'string[]',defaultValue:'[]',version:'',desc:'默认展开指定的树节点'},
+    {label:'默认展开父节点',field:'defaultExpandParent',type:'boolean',defaultValue:true,version:'',desc:'默认展开父节点'},
+    {label:'默认选中的树节点',field:'defaultSelectedKeys',type:'string[]',defaultValue:'[]',version:'',desc:'默认选中的树节点'},
+    {label:'将树禁用',field:'disabled',type:'boolean',defaultValue:false,version:'',desc:'将树禁用'},
+    {label:'设置节点可拖拽（IE>8）',field:'draggable',type:'radio-group',defaultValue:'false',version:'',options:[{value:'boolean',label:'boolean'},{value:'((node: DataNode) => boolean)',label:'((node: DataNode) => boolean)'}],desc:'设置节点可拖拽（IE>8）'},
+    {label:'（受控）展开指定的树节点',field:'expandedKeys',type:'string[]',defaultValue:'[]',version:'',desc:'（受控）展开指定的树节点'},
+    {label:'按需筛选树节点（高亮），返回 true',field:'filterTreeNode',type:'function(node)',version:'',desc:'按需筛选树节点（高亮），返回 true'},
+    {label:'设置虚拟滚动容器高度，设置后内部节点不再支持横向滚动',field:'height',type:'number',version:'',desc:'设置虚拟滚动容器高度，设置后内部节点不再支持横向滚动'},
+    {label:'自定义树节点图标。',field:'icon',type:'radio-group',version:'',options:[{value:'ReactNode',label:'ReactNode'},{value:'(props) => ReactNode',label:'(props) => ReactNode'}],desc:'自定义树节点图标。'},
+    {label:'异步加载数据',field:'loadData',type:'function(node)',version:'',desc:'异步加载数据'},
+    {label:'（受控）已经加载的节点，需要配合 loadData 使用',field:'loadedKeys',type:'string[]',defaultValue:'[]',version:'',desc:'（受控）已经加载的节点，需要配合 loadData 使用'},
+    {label:'支持点选多个节点（节点本身）',field:'multiple',type:'boolean',defaultValue:false,version:'',desc:'支持点选多个节点（节点本身）'},
+    {label:'是否可选中',field:'selectable',type:'boolean',defaultValue:true,version:'',desc:'是否可选中'},
+    {label:'（受控）设置选中的树节点',field:'selectedKeys',type:'string[]',version:'',desc:'（受控）设置选中的树节点'},
+    {label:'是否展示 TreeNode title 前的图标，没有默认样式，如设置为 true，需要自行定义图标相关样式',field:'showIcon',type:'boolean',defaultValue:false,version:'',desc:'是否展示 TreeNode title 前的图标，没有默认样式，如设置为 true，需要自行定义图标相关样式'},
+    {label:'是否展示连接线',field:'showLine',type:'radio-group',defaultValue:'false',version:'',options:[{value:'boolean',label:'boolean'},{value:'{showLeafIcon: boolean}',label:'{showLeafIcon: boolean}'}],desc:'是否展示连接线'},
+    {label:'自定义树节点的展开/折叠图标',field:'switcherIcon',type:'ReactNode',version:'',desc:'自定义树节点的展开/折叠图标'},
+    {label:'自定义渲染节点',field:'titleRender',type:'(nodeData) => ReactNode',version:'4.5.0',desc:'自定义渲染节点'},
+    {label:'treeNodes 数据，如果设置则不需要手动构造 TreeNode 节点（key 在整个树范围内唯一）',field:'treeData',type:'array<{key, title, children, [disabled, selectable]}>',version:'',desc:'treeNodes 数据，如果设置则不需要手动构造 TreeNode 节点（key 在整个树范围内唯一）'},
+    {label:'设置 false 时关闭虚拟滚动',field:'virtual',type:'boolean',defaultValue:true,version:'4.1.0',desc:'设置 false 时关闭虚拟滚动'},
+    {label:'点击复选框触发',field:'onCheck',type:'function(checkedKeys, e:{checked: bool, checkedNodes, node, event, halfCheckedKeys})',version:'',desc:'点击复选框触发'},
+    {label:'dragend 触发时调用',field:'onDragEnd',type:'function({event, node})',version:'',desc:'dragend 触发时调用'},
+    {label:'dragenter 触发时调用',field:'onDragEnter',type:'function({event, node, expandedKeys})',version:'',desc:'dragenter 触发时调用'},
+    {label:'dragleave 触发时调用',field:'onDragLeave',type:'function({event, node})',version:'',desc:'dragleave 触发时调用'},
+    {label:'dragover 触发时调用',field:'onDragOver',type:'function({event, node})',version:'',desc:'dragover 触发时调用'},
+    {label:'开始拖拽时调用',field:'onDragStart',type:'function({event, node})',version:'',desc:'开始拖拽时调用'},
+    {label:'drop 触发时调用',field:'onDrop',type:'function({event, node, dragNode, dragNodesKeys})',version:'',desc:'drop 触发时调用'},
+    {label:'展开/收起节点时触发',field:'onExpand',type:'function(expandedKeys, {expanded: bool, node})',version:'',desc:'展开/收起节点时触发'},
+    {label:'节点加载完毕时触发',field:'onLoad',type:'function(loadedKeys, {event, node})',version:'',desc:'节点加载完毕时触发'},
+    {label:'响应右键点击',field:'onRightClick',type:'function({event, node})',version:'',desc:'响应右键点击'},
+    {label:'点击树节点触发',field:'onSelect',type:'function(selectedKeys, e:{selected: bool, selectedNodes, node, event})',version:'',desc:'点击树节点触发'}
+]
+* */

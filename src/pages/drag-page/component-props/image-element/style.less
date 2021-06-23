@@ -1,0 +1,29 @@
+.root {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+
+    :global {
+        .ant-upload {
+            width: 100%;
+
+            .ant-btn {
+                width: 100%;
+            }
+        }
+    }
+
+    .close {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: rgba(0, 0, 0, 0.25);
+        cursor: pointer;
+        transition: color 0.3s;
+
+        &:hover {
+            color: rgba(0, 0, 0, 0.45);
+        }
+    }
+}

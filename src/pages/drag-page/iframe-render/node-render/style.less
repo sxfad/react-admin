@@ -1,0 +1,21 @@
+@guide-color: green;
+
+[data-draggable-element="true"] {
+    outline: 1px dotted #d8d8d8;
+
+    &.dragOver {
+        outline: none !important;
+    }
+
+    &[data-draggable-dragging="true"] {
+        filter: blur(2px);
+    }
+
+    &[data-draggable-un-draggable="true"] {
+        outline: none !important;
+    }
+
+    &:hover {
+        outline: 1px dotted @guide-color;
+    }
+}

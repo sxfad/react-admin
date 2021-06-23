@@ -1,0 +1,49 @@
+@arrowLineColor: green;
+@arrowLineSize: 2px;
+@arrowLineArrowSize: 8px;
+@linkPointColor: green;
+
+.root {
+    position: fixed;
+    height: @arrowLineSize;
+    background-color: @arrowLineColor;
+
+    transform-origin: left top;
+    z-index: 999;
+    pointer-events: none;
+
+    width: @arrowLineArrowSize;
+    transition: width 200ms;
+
+    &.showEndPoint {
+        .point {
+            display: block;
+        }
+    }
+
+    &.dragging:not(&.remove) {
+        transition: none;
+    }
+
+    &.remove {
+        width: @arrowLineArrowSize !important;
+    }
+
+    &:after {
+        content: ' ';
+        position: absolute;
+        top: -@arrowLineArrowSize + @arrowLineSize/2;
+        right: -@arrowLineSize - @arrowLineArrowSize;
+        border: @arrowLineArrowSize solid transparent;
+        border-left: @arrowLineArrowSize * 1.2 solid @arrowLineColor;
+    }
+
+    .point {
+        display: none;
+        position: absolute;
+        z-index: 999;
+        top: 50%;
+        right: 0;
+        transform: translate(50%, -50%) scaleY(2);
+    }
+}

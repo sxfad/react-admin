@@ -1,0 +1,239 @@
+@lineSize: 5px;
+@size: 25px;
+@color: #d6e4ff;
+@hoverColor: #bfd4fb;
+
+.root {
+    position: relative;
+    height: 100%;
+
+    &.tip{
+        & > div:nth-child(1):after{
+            display: block;
+        }
+    }
+
+    &.large {
+        @size: 33px;
+
+        & > div {
+            &:before {
+                border-width: @size;
+            }
+
+            // top
+            &:nth-child(1) {
+                height: @size;
+
+                &:before {
+                    border-top: @size solid @color;
+                }
+
+                input {
+                    height: @size;
+                }
+
+                &:after {
+                    left: @size + 5px;
+                }
+            }
+
+            // right
+            &:nth-child(2) {
+                width: @size;
+
+                &:before {
+                    border-right: @size solid @color;
+                }
+            }
+
+            // bottom
+            &:nth-child(3) {
+                height: @size;
+
+                &:before {
+                    border-bottom: @size solid @color;
+                }
+
+                input {
+                    height: @size;
+                }
+            }
+
+            // left
+            &:nth-child(4) {
+                width: @size;
+
+                &:before {
+                    border-left: @size solid @color;
+                }
+            }
+        }
+    }
+
+    &.inner {
+        // right
+        & > div:nth-child(2) {
+            input {
+                left: auto;
+                right: 0;
+                text-align: right;
+                padding-left: 0;
+                padding-right: 3px;
+            }
+        }
+
+        // left
+        & > div:nth-child(4) {
+            input {
+                left: 0;
+                right: auto;
+                text-align: left;
+                padding-left: 3px;
+                padding-right: 0;
+            }
+        }
+    }
+
+    & > div {
+        position: absolute;
+
+        & > input {
+            position: absolute;
+            padding: 0;
+            margin: 0;
+            border: none;
+            background: none;
+            //background: green;
+            text-align: center;
+            color: #666;
+
+            &:focus {
+                box-shadow: none;
+            }
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            border-width: @size;
+            border-style: solid;
+            border-color: transparent;
+        }
+
+        // top
+        &:nth-child(1) {
+            top: 0;
+            width: 100%;
+            height: @size;
+
+            &:before {
+                border-top: @size solid @color;
+                border-bottom: 0;
+            }
+
+            &:hover::before {
+                border-top-color: @hoverColor;
+            }
+
+            input {
+                width: 100%;
+                height: @size;
+            }
+
+            &:after {
+                display: none;
+                content: attr(data-tip);
+                position: absolute;
+                left: @size + 5px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #666;
+            }
+        }
+
+        // right
+        &:nth-child(2) {
+            top: @lineSize;
+            right: 0;
+            height: calc(100% - @lineSize * 2);
+            width: @size;
+
+            &:before {
+                border-left: 0;
+                border-right: @size solid @color;
+            }
+
+            &:hover::before {
+                border-right-color: @hoverColor;
+            }
+
+            input {
+                left: 0;
+                height: 100%;
+                width: 40px;
+                text-align: left;
+                padding-left: 3px
+            }
+        }
+
+        // bottom
+        &:nth-child(3) {
+            bottom: 0;
+            width: 100%;
+            height: @size;
+
+            &:before {
+                border-bottom: @size solid @color;
+                border-top: 0;
+            }
+
+            &:hover::before {
+                border-bottom-color: @hoverColor;
+            }
+
+            input {
+                width: 100%;
+                height: @size;
+            }
+        }
+
+        // left
+        &:nth-child(4) {
+            top: @lineSize;
+            left: 0;
+            height: calc(100% - @lineSize * 2);
+            width: @size;
+
+            &:before {
+                border-left: @size solid @color;
+                border-right: 0;
+            }
+
+            &:hover::before {
+                border-left-color: @hoverColor;
+            }
+
+            input {
+                right: 0;
+                height: 100%;
+                width: 40px;
+                text-align: right;
+                padding-right: 3px
+            }
+        }
+
+        // center
+        &:nth-child(5) {
+            top: @size + @lineSize;
+            right: @size + @lineSize;
+            bottom: @size + @lineSize;
+            left: @size + @lineSize;
+        }
+    }
+
+}

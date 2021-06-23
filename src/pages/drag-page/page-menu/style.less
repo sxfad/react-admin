@@ -1,0 +1,73 @@
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .tool {
+        cursor: pointer;
+    }
+}
+
+.root {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background: #fff;
+    scroll-behavior: smooth;
+
+    &::-webkit-scrollbar {
+        width: 0 !important;
+    }
+
+    :global {
+    }
+
+    .menuTitle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: move;
+        position: relative;
+
+        &.dragHoverTop,
+        &.dragHoverBottom {
+            &:after {
+                position: absolute;
+                content: '';
+                left: 0;
+                right: 0;
+                border-top: 2px solid green;
+            }
+        }
+
+        &.dragHoverTop:after {
+            top: 0;
+        }
+
+        &.dragHoverBottom:after {
+            bottom: 0;
+        }
+
+        &:hover {
+            .tool {
+                display: flex;
+            }
+        }
+
+        .title {
+            display: inline-block;
+            padding: 0 12px;
+            cursor: pointer;
+        }
+
+        .tool {
+            display: none;
+            align-items: center;
+        }
+
+        .icon {
+            color: red;
+        }
+    }
+}
