@@ -9,17 +9,17 @@ async function getMenuData() {
     if (isLoginPage()) return [];
 
     // 获取服务端数据，并做缓存，防止多次调用接口
-    return getMenuData.__CACHE = getMenuData.__CACHE
-        || ajax.get('/authority/queryUserMenus', {userId: getLoginUser()?.id})
-            .then(res => res.map(item => ({...item, order: item.order || item.ord || item.sort})));
+    // return getMenuData.__CACHE = getMenuData.__CACHE
+    //     || ajax.get('/authority/queryUserMenus', {userId: getLoginUser()?.id})
+    //         .then(res => res.map(item => ({...item, order: item.order || item.ord || item.sort})));
 
     // 前端硬编码菜单
-    // return [
-    //     {id: 'system', title: '系统管理', order: 900, type: 1},
-    //     {id: 'user', parentId: 'system', title: '用户管理', path: '/users', order: 900, type: 1},
-    //     {id: 'role', parentId: 'system', title: '角色管理', path: '/roles', order: 900, type: 1},
-    //     {id: 'menus', parentId: 'system', title: '菜单管理', path: '/menus', order: 900, type: 1},
-    // ];
+    return [
+        {id: 'system', title: '系统管理', order: 900, type: 1},
+        {id: 'user', parentId: 'system', title: '用户管理', path: '/users', order: 900, type: 1},
+        {id: 'role', parentId: 'system', title: '角色管理', path: '/roles', order: 900, type: 1},
+        {id: 'menus', parentId: 'system', title: '菜单管理', path: '/menus', order: 900, type: 1},
+    ];
 }
 
 /**
@@ -36,8 +36,9 @@ export async function getMenus() {
  * @returns {Promise<*>}
  */
 export async function getCollectedMenus() {
-    const loginUser = getLoginUser();
-    const data = await ajax.get('/authority/queryUserCollectedMenus', { userId: loginUser?.id });
+    // const loginUser = getLoginUser();
+    // const data = await ajax.get('/authority/queryUserCollectedMenus', { userId: loginUser?.id });
+    const data = [];
 
     return data
         .filter(item => item.type === 1)
