@@ -1,5 +1,4 @@
-import Ajax, {createHooks, createHoc} from '@ra-lib/ajax';
-import {getToken} from '@ra-lib/admin';
+import {getToken, Ajax, createAjaxHoc, createAjaxHooks} from '@ra-lib/admin';
 import {AJAX_PREFIX, AJAX_TIMEOUT} from 'src/config';
 import handleError from './handle-error';
 import handleSuccess from './handle-success';
@@ -38,8 +37,8 @@ ajax.instance.interceptors.request.use(cfg => {
     return Promise.reject(error);
 });
 
-const hooks = createHooks(ajax);
-const hoc = createHoc(ajax);
+const hooks = createAjaxHooks(ajax);
+const hoc = createAjaxHoc(ajax);
 
 export default ajax;
 
