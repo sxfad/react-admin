@@ -76,6 +76,7 @@ export default config({
             const {label, category} = item;
             if (!category && label.length > maxLabel.length) maxLabel = label;
         });
+
         // 设置label宽度
         const labelWidth = getLabelWidth(maxLabel);
         const labelCol = {flex: `${labelWidth}px`};
@@ -167,7 +168,7 @@ export default config({
             }
 
             const element = (
-                <Col span={span}>
+                <Col key={field} span={span}>
                     <Form.Item
                         labelCol={labelCol}
                         wrapperCol={wrapperCol}
@@ -181,7 +182,7 @@ export default config({
             );
             if (appendField) {
                 return (
-                    <Form.Item shouldUpdate noStyle>
+                    <Form.Item key={field} shouldUpdate noStyle>
                         {({getFieldsValue}) => {
                             let isShow = showFieldByAppend(getFieldsValue(), appendField);
                             if (isShow) return element;
