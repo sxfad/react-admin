@@ -154,6 +154,7 @@ export default function Layout(props) {
                 <RectInputsWrapper tip="margin" style={{height: 180, marginBottom: 8}}>
                     {marginFields.map(item => (
                         <Form.Item
+                            key={item}
                             name={item}
                             noStyle
                             colon={false}
@@ -169,6 +170,7 @@ export default function Layout(props) {
                     <RectInputsWrapper tip="padding" inner>
                         {paddingFields.map(item => (
                             <Form.Item
+                                key={item}
                                 name={item}
                                 noStyle
                                 colon={false}

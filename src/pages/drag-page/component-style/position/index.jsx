@@ -218,6 +218,7 @@ export default function Position(props) {
                                 {directionOptions.map(item => {
                                     return (
                                         <Form.Item
+                                            key={item}
                                             name={item}
                                             noStyle
                                             colon={false}

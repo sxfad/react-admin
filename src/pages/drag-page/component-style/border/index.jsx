@@ -349,7 +349,7 @@ export default function Background(props) {
                             const {label, icon, name, placeholder} = item;
 
                             const lab = (
-                                <Tooltip placement="left" title={label}>
+                                <Tooltip key={name} placement="left" title={label}>
                                     {icon}
                                 </Tooltip>
                             );

@@ -13,7 +13,7 @@ export default config({
             pageConfig: state.dragPage.pageConfig,
         };
     },
-})(function ArrowLines(props) {
+})(function SourceCode(props) {
     const {
         showCode,
         pageConfig,

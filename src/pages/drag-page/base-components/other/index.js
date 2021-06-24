@@ -25,17 +25,4 @@ export default [
             },
         ],
     },
-    {
-        title: '全局化配置',
-        subTitle: '全局化配置 ConfigProvider',
-        children: [
-            {
-                title: '全局化配置',
-                renderPreview: true,
-                config: {
-                    componentName: 'ConfigProvider',
-                },
-            },
-        ],
-    },
 ];

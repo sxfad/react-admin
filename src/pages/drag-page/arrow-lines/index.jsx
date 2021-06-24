@@ -133,19 +133,18 @@ export default config({
 
     return (
         <div>
-            {arrowLines.map(item => {
+            {arrowLines.map((item, index) => {
                 const {
                     showEndPoint,
                     remove,
                     dragging,
-                    key,
                 } = item;
 
                 const style = getStyle(item);
 
                 return (
                     <div
-                        key={key}
+                        key={index}
                         className={{
                             [styles.root]: true,
                             [styles.showEndPoint]: showEndPoint,

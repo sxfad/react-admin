@@ -1,4 +1,4 @@
-import * as antdIcon from '@ant-design/icons';
+import * as antdIcon from '@ant-design/icons/lib/icons';
 
 export default [
     {

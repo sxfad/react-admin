@@ -46,6 +46,7 @@ const ArrayElement = props => {
             {Array.from({length}).map((_, index) => {
                 return (
                     <Element
+                        key={index}
                         style={{flex: 1, marginRight: 8}}
                         allowClear={allowClear}
                         value={value[index]}

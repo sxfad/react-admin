@@ -60,8 +60,8 @@ export default [
                 title: '栅格列',
                 renderPreview: (
                     <div style={{flex: 1, display: 'flex'}}>
-                        {Array.from({length: 6}).map(() => {
-                            return <div style={{flex: 1, margin: 4, height: 20, background: theme.primaryColor}}/>;
+                        {Array.from({length: 6}).map((item, index) => {
+                            return <div key={index} style={{flex: 1, margin: 4, height: 20, background: theme.primaryColor}}/>;
                         })}
                     </div>
                 ),
@@ -77,8 +77,8 @@ export default [
                 // 预览渲染组件配置
                 renderPreview: (
                     <div style={{flex: 1, display: 'flex'}}>
-                        {Array.from({length: item.count}).map(() => (
-                            <div style={{flex: 1, margin: 4, height: 10, background: theme.primaryColor}}/>
+                        {Array.from({length: item.count}).map((item, index) => (
+                            <div key={index} style={{flex: 1, margin: 4, height: 10, background: theme.primaryColor}}/>
                         ))}
                     </div>
                 ),

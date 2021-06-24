@@ -2,8 +2,8 @@ import React from 'react';
 import {cloneDeep} from 'lodash';
 import NodeRender from '../iframe-render/node-render/NodeRender';
 import Draggable from './Draggable';
-
 import styles from './ComponentItem.less';
+import {setNodeId} from 'src/pages/drag-page/node-util';
 
 export default function DraggableComponent(props) {
     const {data} = props;
@@ -21,6 +21,9 @@ export default function DraggableComponent(props) {
         if (!renderPreview) return null;
 
         const componentConfig = cloneDeep(config);
+
+        setNodeId(componentConfig);
+
         if (!componentConfig.props) componentConfig.props = {};
 
         if (previewProps) {

@@ -13,7 +13,7 @@ const Placement = props => {
             const type = value === placement ? 'primary' : 'default';
 
             return (
-                <Tooltip placement={placement} title={`位置：${title}`} autoAdjustOverflow={false}>
+                <Tooltip key={title || text} placement={placement} title={`位置：${title}`} autoAdjustOverflow={false}>
                     <Button
                         style={{
                             width: buttonWidth,

@@ -19,7 +19,7 @@ const StyleNavigator = props => {
                 const id = `style-${key}`;
 
                 return (
-                    <Tooltip placement="left" title={title}>
+                    <Tooltip key={key} placement="left" title={title}>
                         <div
                             onClick={() => {
                                 onClick && onClick(key);

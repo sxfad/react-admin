@@ -108,7 +108,7 @@ export default config({
             return _categories.map(item => {
                 const {category, fields} = item;
                 return (
-                    <Col span={24}>
+                    <Col key={category} span={24}>
                         <div className={styles.category}>
                             <div className={styles.label} style={{flex: `0 0 ${labelCol.flex}`}}>
                                 {category}
@@ -120,6 +120,7 @@ export default config({
 
                                     return (
                                         <Form.Item
+                                            key={field}
                                             labelCol={labelCol}
                                             wrapperCol={wrapperCol}
                                             name={field}
@@ -153,7 +154,7 @@ export default config({
             let FormElement = getElement({...option, node});
 
             const labelEle = (
-                <Tooltip placement="topRight" title={title} mouseLeaveDelay={0}>
+                <Tooltip key={field} placement="topRight" title={title} mouseLeaveDelay={0}>
                     {label}
                 </Tooltip>
             );

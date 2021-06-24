@@ -30,8 +30,8 @@ function getDragInfo(options) {
 
         // 控制样式，将相关样式通过属性控制，可以解决有些组件className被修改，样式丢失问题，比如 Tabs.Panel
         'data-draggable-element': true,
-        'data-draggable-selected': selectedNodeId === componentId,
-        'data-draggable-dragging': draggingNode?.id === componentId,
+        'data-draggable-selected': componentId && selectedNodeId === componentId,
+        'data-draggable-dragging': componentId && draggingNode?.id === componentId,
         'data-draggable-un-draggable': !draggable,
     };
 
@@ -136,6 +136,7 @@ export default function NodeRender(props) {
             if (isNode(value)) {
                 obj[key] = () => (
                     <NodeRender
+                        key={value.id}
                         {..._props}
                         config={value}
                     />
@@ -181,6 +182,7 @@ export default function NodeRender(props) {
                 componentProps[key] = value.map(item => {
                     return (
                         <NodeRender
+                            key={item.id}
                             {..._props}
                             config={item}
                         />
@@ -189,6 +191,7 @@ export default function NodeRender(props) {
             } else {
                 componentProps[key] = (
                     <NodeRender
+                        key={value.id}
                         {..._props}
                         config={value}
                     />
@@ -201,7 +204,7 @@ export default function NodeRender(props) {
         const childrenIsPreview = isPreview || !childrenDraggable;
 
         // 比较特殊，需要作为父级的直接子节点，不能使用 NodeRender
-        if (['Tabs.TabPane'].includes(item.componentName)) {
+        if (['Tabs.TabPane', 'Breadcrumb.Item', 'Breadcrumb.Separator'].includes(item.componentName)) {
             const itemConfig = getComponentConfig(item.componentName);
             let {hooks = {}, withDragProps} = itemConfig;
             const {dragClassName, dragProps} = getDragInfo({config: item, selectedNodeId, draggingNode});
@@ -231,19 +234,20 @@ export default function NodeRender(props) {
                     {item?.children?.map(it => {
                         return (
                             <NodeRender
+                                key={it.id}
                                 {..._props}
                                 config={it}
                                 isPreview={childrenIsPreview}
                             />
                         );
                     })}
-
                 </Component>
             );
         }
 
         return (
             <NodeRender
+                key={item.id}
                 {..._props}
                 config={item}
                 isPreview={childrenIsPreview}
@@ -268,6 +272,7 @@ export default function NodeRender(props) {
 
         return (
             <NodeRender
+                key={nextConfig.id}
                 {..._props}
                 config={nextConfig}
             />

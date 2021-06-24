@@ -13,7 +13,7 @@ export default config({
             pageConfig: state.dragPage.pageConfig,
         };
     },
-})(function ArrowLines(props) {
+})(function NodePath(props) {
     const {
         selectedNode,
         pageConfig,
@@ -46,7 +46,7 @@ export default config({
                 const componentDisplayName = getComponentDisplayName(node);
                 if (paths.length > SHOW_COUNT && index < paths.length - SHOW_COUNT) return '.';
                 return (
-                    <div>
+                    <div key={node.id}>
                         <Tag
                             color={selectedNode?.id === node.id ? 'cyan' : 'lime'}
                             onClick={() => {
