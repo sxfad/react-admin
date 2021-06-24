@@ -52,10 +52,11 @@ export function getLabelWidth(label) {
     if (!label?.length) return 0;
 
     // 统计汉字数，不包括标点符号
+    const fontSize = 14;
     const m = label.match(/[\u4e00-\u9fff\uf900-\ufaff]/g);
     const chineseCount = (!m ? 0 : m.length);
     const otherCount = label.length - chineseCount;
-    return (chineseCount + otherCount / 2) * 12 + 30;
+    return (chineseCount + otherCount / 2) * fontSize + 30;
 }
 
 const toggleIsWrapper = debounce((draggingNode) => {

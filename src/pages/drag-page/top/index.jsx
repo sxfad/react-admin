@@ -6,7 +6,7 @@ import {
     DeleteOutlined,
     CloudServerOutlined,
 } from '@ant-design/icons';
-import {Tooltip, Button} from 'antd';
+import {Tooltip /*Button*/} from 'antd';
 import FontIcon from 'src/pages/drag-page/font-icon';
 import config from 'src/commons/config-hoc';
 import {isMac} from '../util';
@@ -80,7 +80,7 @@ export default config({
     return (
         <div className={styles.root}>
             <div className={styles.left}>
-                <Button onClick={() => props.history.goBack()}>返回</Button>
+                {/*<Button onClick={() => props.history.goBack()}>返回</Button>*/}
             </div>
             <div className={styles.center}>
                 {tools.map((item, index) => {

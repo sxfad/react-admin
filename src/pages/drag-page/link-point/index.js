@@ -40,7 +40,7 @@ export default config({
     const propsToSet = selectedNode?.propsToSet;
 
     const startRef = useRef(null);
-    const lineRef = useRef(null);
+    // const lineRef = useRef(null);
     const pointRef = useRef(null);
     const [dragging, setDragging] = useState(false);
 
@@ -52,7 +52,7 @@ export default config({
             key: 'dragging',
         };
 
-        lineRef.ref = options;
+        // lineRef.current = options;
         dragPageAction.showDraggingArrowLine(options);
     }, 1000 / 70, {trailing: false}); // 最后一次不触发
 

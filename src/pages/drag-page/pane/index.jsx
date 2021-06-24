@@ -1,12 +1,12 @@
 import React from 'react';
-import {PageContent} from '@ra-lib/admin';
+import {Content} from '@ra-lib/admin';
 import {OTHER_HEIGHT} from 'src/pages/drag-page/util';
 import styles from './style.less';
 
 export default function Pane(props) {
     const {header, fitHeight, children} = props;
     return (
-        <PageContent
+        <Content
             fitHeight={fitHeight}
             otherHeight={OTHER_HEIGHT}
             className={styles.root}
@@ -18,6 +18,6 @@ export default function Pane(props) {
             <main>
                 {children}
             </main>
-        </PageContent>
+        </Content>
     );
 };

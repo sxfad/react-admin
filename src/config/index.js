@@ -60,13 +60,13 @@ export const CONFIG_HOC = {
     // 启用页面保持功能，无特殊需求，尽量不要开启
     keepAlive: false,
     // layout布局方式 LAYOUT_TYPE.SIDE_MENU LAYOUT_TYPE.TOP_MENU LAYOUT_TYPE.TOP_SIDE_MENU
-    layoutType: LAYOUT_TYPE.SIDE_MENU,
+    layoutType: LAYOUT_TYPE.TOP_MENU,
     // 头部是否显示
-    header: false,
+    header: true,
     // 侧边栏是否显示
-    side: true,
+    side: false,
     // Tabs是否显示
-    tab: true,
+    tab: false,
     // 持久化 Tabs记录
     persistTab: true,
     // tab左侧显示展开收起菜单按钮
@@ -78,7 +78,7 @@ export const CONFIG_HOC = {
     // 页面头部是否显示
     pageHeader: false,
     // 头部主题
-    headerTheme: 'default', // dark
+    headerTheme: 'dark', // default
     // 侧边栏主题
     sideTheme: 'dark', // dark
     // logo主题
@@ -86,7 +86,7 @@ export const CONFIG_HOC = {
     // 侧边栏展开宽度
     sideMaxWidth: 210,
     // 头部显示菜单展开收起按钮
-    headerSideToggle: true,
+    headerSideToggle: false,
     // 保持菜单展开状态
     keepMenuOpen: true,
     // 左侧菜单是否收起

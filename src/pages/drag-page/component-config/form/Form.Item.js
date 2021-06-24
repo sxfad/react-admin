@@ -3,7 +3,6 @@ import {findParentNodeByName} from 'src/pages/drag-page/node-util';
 import {getComponentConfig} from 'src/pages/drag-page/component-config';
 import {colFields, getOnKeyDown} from '../common/Col';
 import {formElementTypes} from '@ra-lib/admin';
-
 import {options as ruleOptions} from 'src/pages/drag-page/component-props/item-rules';
 
 export default {
