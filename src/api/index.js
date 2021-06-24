@@ -2,6 +2,7 @@ import ajax from 'src/commons/ajax';
 import {
     getLoginUser,
     isLoginPage,
+    formatMenus,
 } from '@ra-lib/admin';
 
 /**
@@ -32,7 +33,8 @@ async function getMenuData() {
  */
 export async function getMenus() {
     const serverMenus = await getMenuData();
-    return serverMenus.filter(item => !item.type || item.type === 1);
+    const menus = serverMenus.filter(item => !item.type || item.type === 1);
+    return formatMenus(menus);
 }
 
 /**
@@ -44,9 +46,11 @@ export async function getCollectedMenus() {
     // const data = await ajax.get('/authority/queryUserCollectedMenus', { userId: loginUser?.id });
     const data = [];
 
-    return data
+    const menus = data
         .filter(item => item.type === 1)
         .map(item => ({...item, isCollectedMenu: true}));
+
+    return formatMenus(menus);
 }
 
 /**

@@ -1,5 +1,6 @@
 import {match} from 'path-to-regexp';
-// import {getSubApps, isActiveApp} from '../qiankun';
+import {isActiveApp} from '../qiankun';
+import {getSubApps} from 'src/api';
 import {BASE_NAME, HASH_ROUTER} from '../config';
 import {getMainApp, isLoginPage} from '@ra-lib/admin';
 import pageConfigs from 'src/pages/page-configs';
@@ -60,7 +61,7 @@ export function toLogin() {
  * @returns {string|boolean}
  */
 export async function checkPath(result) {
-    // const subApps = await getSubApps();
+    const subApps = await getSubApps();
 
     const hasHome = result.some(({path}) => path === '/');
     if (!hasHome) throw Error(`必须含有首页路由，path: '/'， 如果需要其他页面做首页，可以进行 Redirect`);
@@ -69,8 +70,8 @@ export async function checkPath(result) {
         .filter(({path}) => !!path)
         .forEach(({path, filePath}) => {
             // 是否与子项目配置冲突
-            // const app = subApps.find(item => isActiveApp(item, path));
-            // if (app) throw Error(`路由地址：「${path}」 与 子项目 「${app.title || app.name}」 激活规则配置冲突，对应文件文件如下：\n${filePath}`);
+            const app = subApps.find(item => isActiveApp(item, path));
+            if (app) throw Error(`路由地址：「${path}」 与 子项目 「${app.title || app.name}」 激活规则配置冲突，对应文件文件如下：\n${filePath}`);
 
             // 自身路由配置是否冲突
             const exit = result.find(({filePath: f, path: p}) => {
