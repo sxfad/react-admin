@@ -10,7 +10,7 @@ const token = getToken();
 const ajax = new Ajax({
     baseURL: AJAX_PREFIX,
     timeout: AJAX_TIMEOUT,
-    headers: {'auth-token': token},
+    headers: {'USER-TOKEN': token},
     onError: handleError,
     onSuccess: handleSuccess,
     // withCredentials: true, // 跨域携带cookie，对应后端 Access-Control-Allow-Origin不可以为 '*'，需要指定为具体域名
