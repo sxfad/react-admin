@@ -1626,10 +1626,10 @@
   resolved "https://registry.npmjs.org/@polka/url/-/url-1.0.0-next.12.tgz#431ec342a7195622f86688bbda82e3166ce8cb28"
   integrity sha512-6RglhutqrGFMO1MNUXp95RBuYIuc8wTnMAV5MUhLmjTOy78ncwOw7RgeQ/HeymkKXRhZd0s2DNrM1rL7unk3MQ==
 
-"@ra-lib/admin@^0.0.26":
-  version "0.0.26"
-  resolved "https://registry.npmjs.org/@ra-lib/admin/-/admin-0.0.26.tgz#5c424afa14c94466a84c2c919c5b3617d8368695"
-  integrity sha512-0W912SD+KBdfzBkUfvz+PIVxy/LZH2EIVOxWTvuv6h+UbmCycCu8VQzclTKqi39qQTaxYOBZ3lDNjTZyvxQEVg==
+"@ra-lib/admin@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.npmjs.org/@ra-lib/admin/-/admin-0.0.27.tgz#a8741d234faefb7e92a8f1393d3780120b0103d2"
+  integrity sha512-Q/AgJKd0NsLCUFq+mQ+SBB/WsFeIEL+Q4rlN4ic5IgYuEW7x1wJsKTW0TTZIFYUYYxrl/LL7VIeBIWODdewc1g==
   dependencies:
     "@ra-lib/ajax" "^0.1.11"
     "@ra-lib/babel-plugin-attribute-wrapper" "^0.0.6"
@@ -10161,10 +10161,10 @@ prepend-http@^2.0.0:
   resolved "https://registry.npmjs.org/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=
 
-prettier@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.npmjs.org/prettier/-/prettier-2.3.1.tgz#76903c3f8c4449bc9ac597acefa24dc5ad4cbea6"
-  integrity sha512-p+vNbgpLjif/+D+DwAZAbndtRrR0md0MwfmOVN9N+2RgyACMT+7tfaRnT+WDPkqnuVwleyuBIG2XBxKDme3hPA==
+prettier@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.npmjs.org/prettier/-/prettier-2.2.1.tgz#795a1a78dd52f073da0cd42b21f9c91381923ff5"
+  integrity sha512-PqyhM2yCjg/oKkFPtTGUojv7gnZAoG80ttl45O6x2Ug/rMJw4wcc9k6aaf2hibP7BGVCCM33gZoGjyvt9mm16Q==
 
 pretty-bytes@^5.3.0:
   version "5.6.0"

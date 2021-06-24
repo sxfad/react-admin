@@ -59,12 +59,10 @@ const Rule = props => {
                                                     </Form.Item>
                                                 </Col>
                                                 <Col flex={0}>
-                                                    {fields.length > 1 ? (
-                                                        <MinusCircleOutlined
-                                                            className={styles.dynamicDeleteButton}
-                                                            onClick={() => remove(field.name)}
-                                                        />
-                                                    ) : null}
+                                                    <MinusCircleOutlined
+                                                        className={styles.dynamicDeleteButton}
+                                                        onClick={() => remove(field.name)}
+                                                    />
                                                 </Col>
                                             </Row>
                                         </Form.Item>

@@ -9,10 +9,7 @@ import {
     handleNodeDrop,
     getDraggingNodeInfo,
 } from 'src/pages/drag-page/util';
-
-import {
-    findNodeById,
-} from 'src/pages/drag-page/node-util';
+import {findNodeById} from 'src/pages/drag-page/node-util';
 
 /**
  * 事件委托，统一添加事件，不给每个元素添加事件，提高性能

@@ -1,9 +1,7 @@
 import {v4 as uuid} from 'uuid';
 import {cloneDeep} from 'lodash';
 import {getComponentConfig} from 'src/pages/drag-page/component-config';
-import {
-    syncObject,
-} from './util';
+import {syncObject} from './util';
 import {
     insertAfter,
     insertBefore,
@@ -100,7 +98,7 @@ const syncStorage = [
 ];
 
 export default {
-    state: initialState,
+    state: {...initialState},
     syncLocal: syncStorage,
     initDesignPage: (options) => {
         let {pageConfig, ...others} = options;

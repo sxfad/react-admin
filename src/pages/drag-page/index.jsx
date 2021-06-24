@@ -31,10 +31,13 @@ export default config({
             //     return;
             // }
 
-            console.log(fetchProject);
-            const res = {};
+            const res = null;
 
             setShowEmpty(false);
+
+            // TODO 测试数据
+            if (fetchProject) return;
+
             const {projectSetting, menus} = res;
             const options = {
                 menus: menus || [],

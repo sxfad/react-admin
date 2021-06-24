@@ -50,13 +50,12 @@ export default config({
             // 添加额外标签显示 tab，占用 before 或 after 可能跟原有元素有冲突
             const before = window.getComputedStyle(target, '::before');
             const after = window.getComputedStyle(target, '::after');
-
             if (before.content === 'none') {
                 // before 没有被占用
-                target.setAttribute('data-before-tag', true);
+                target.setAttribute('data-before-tag', 'true');
             } else if (after.content === 'none') {
                 // after 没有被占用
-                target.setAttribute('data-after-tag', true);
+                target.setAttribute('data-after-tag', 'true');
             } else {
                 // before after 都被占用了，使用额外标签
                 const tag = iframeDocument.createElement('div');
