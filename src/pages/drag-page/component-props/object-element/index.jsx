@@ -223,6 +223,7 @@ export default config({
         <div ref={rootRef}>
             <ConfigProvider autoInsertSpaceInButton={false} getPopupContainer={() => rootRef.current}>
                 <Form
+                    component={false}
                     form={form}
                     onValuesChange={(_, allValues) => handleChange(allValues)}
                     name={formName}

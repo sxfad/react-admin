@@ -110,7 +110,6 @@ const elementMap = {
         const {style} = props;
         return (
             <InputNumber
-                allowClear
                 placeholder={getPlaceholder(option, props)}
                 style={{width: '100%', ...style}}
                 {...props}

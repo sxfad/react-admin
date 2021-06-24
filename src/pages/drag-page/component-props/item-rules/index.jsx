@@ -26,7 +26,7 @@ const Rule = props => {
 
     return (
         <div>
-            <Form form={form} name="rules" onValuesChange={handleChange} autoComplete="off">
+            <Form component={false} form={form} name="rules" onValuesChange={handleChange} autoComplete="off">
                 <Form.List
                     name="rules"
                 >
