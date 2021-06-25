@@ -20,10 +20,10 @@ async function getMenuData() {
 
     // 前端硬编码菜单
     return [
-        {id: 'system', title: '系统管理', order: 900, type: 1},
-        {id: 'user', parentId: 'system', title: '用户管理', path: '/users', order: 900, type: 1},
-        {id: 'role', parentId: 'system', title: '角色管理', path: '/roles', order: 900, type: 1},
-        {id: 'menus', parentId: 'system', title: '菜单管理', path: '/menus', order: 900, type: 1},
+        // {id: 'system', title: '系统管理', order: 900, type: 1},
+        // {id: 'user', parentId: 'system', title: '用户管理', path: '/users', order: 900, type: 1},
+        // {id: 'role', parentId: 'system', title: '角色管理', path: '/roles', order: 900, type: 1},
+        // {id: 'menus', parentId: 'system', title: '菜单管理', path: '/menus', order: 900, type: 1},
     ];
 }
 

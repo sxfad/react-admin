@@ -9,6 +9,7 @@ import IframeRender from './iframe-render';
 import ArrowLines from './arrow-lines';
 import KeyMap from './KeyMap';
 import styles from './style.less';
+import 'antd/dist/antd.less';
 
 export default config({
     path: '/drag-page',

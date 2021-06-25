@@ -1,5 +1,19 @@
 export default {
+    componentType: '@ra-lib/admin',
     isContainer: false,
+    hooks: {
+        beforeToCode: ({node}) => {
+
+            const props = {
+                total: 'state.total<---->0',
+                pageNum: 'state.pageNum<---->1',
+                pageSize: 'state.pageSize<---->20',
+                onPageNumChange: 'pageNum => setPageNum(pageNum)',
+                onPageSizeChange: 'pageSize => setPageNum(1) || setPageSize(pageSize)',
+            };
+            node.props = {...node.props, ...props};
+        },
+    },
     fields: [
         {label: '每页条数', field: 'pageSize', type: 'number', version: '', desc: '每页条数'},
         {label: '跳转至某页', field: 'showQuickJumper', type: 'boolean', defaultValue: false, version: '', desc: '是否可以快速跳转至某页'},

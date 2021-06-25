@@ -13,6 +13,7 @@ import {saveCollectedMenu, getMenus, getCollectedMenus, getPermissions} from 'sr
 import theme from 'src/theme.less';
 import './App.less';
 
+
 // 设置语言
 moment.locale('zh-cn');
 

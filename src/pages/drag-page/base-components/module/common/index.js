@@ -80,6 +80,26 @@ export default [
         ],
     },
     {
+        title: '分页',
+        subTitle: '分页 Pagination',
+        children: [
+            {
+                title: '分页',
+                renderPreview: false,
+                config: {
+                    componentName: 'Pagination',
+                    props: {
+                        total: 88,
+                        pageNum: 1,
+                        pageSize: 20,
+                        onPageNumChange: pageNum => void 0,
+                        onPageSizeChange: pageSize => void 0,
+                    },
+                },
+            },
+        ],
+    },
+    {
         title: '图片验证码',
         subTitle: '图片验证码 ImageCode',
         children: [

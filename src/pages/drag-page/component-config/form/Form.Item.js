@@ -125,11 +125,18 @@ export default {
                     if (!eleNode.props) eleNode.props = {};
 
                     // 删除默认属性
+                    console.log(eleNode.props);
                     Object.entries(eleNode.props).forEach(([key, value]) => {
                         const fieldOption = getFieldOption(eleNode, key) || {};
                         const {defaultValue} = fieldOption;
 
+                        // 删除无用属性
                         if (key === 'key' || key.startsWith('_')) {
+                            Reflect.deleteProperty(eleNode.props, key);
+                        }
+
+                        // 删除无用style
+                        if (key === 'style' && JSON.stringify(value) === '{"width":"100%"}') {
                             Reflect.deleteProperty(eleNode.props, key);
                         }
 

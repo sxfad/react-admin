@@ -181,23 +181,6 @@ export default [
         ],
     },
     {
-        title: '分页',
-        subTitle: '分页 Pagination',
-        children: [
-            {
-                title: '分页',
-                renderPreview: false,
-                config: {
-                    componentName: 'Pagination',
-                    props: {
-                        showQuickJumper: true,
-                        total: 88,
-                    },
-                },
-            },
-        ],
-    },
-    {
         title: '步骤条',
         subTitle: '步骤条 Steps',
         children: [
