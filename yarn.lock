@@ -1621,34 +1621,34 @@
   resolved "https://registry.npmjs.org/@polka/url/-/url-1.0.0-next.12.tgz#431ec342a7195622f86688bbda82e3166ce8cb28"
   integrity sha512-6RglhutqrGFMO1MNUXp95RBuYIuc8wTnMAV5MUhLmjTOy78ncwOw7RgeQ/HeymkKXRhZd0s2DNrM1rL7unk3MQ==
 
-"@ra-lib/admin@^0.0.24":
-  version "0.0.24"
-  resolved "https://registry.npmjs.org/@ra-lib/admin/-/admin-0.0.24.tgz#023efb6c661fcbd719837312447702b4b31a4d0f"
-  integrity sha512-kFq+LX7xIuABu6wBP53MIcugfR/+5NE5V/pn35vlsIRppT8soISrnb6ebpID86+HeAEFZsp5vzcTWnhUGHzKXQ==
+"@ra-lib/admin@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.npmjs.org/@ra-lib/admin/-/admin-0.0.27.tgz#a8741d234faefb7e92a8f1393d3780120b0103d2"
+  integrity sha512-Q/AgJKd0NsLCUFq+mQ+SBB/WsFeIEL+Q4rlN4ic5IgYuEW7x1wJsKTW0TTZIFYUYYxrl/LL7VIeBIWODdewc1g==
   dependencies:
-    "@ra-lib/ajax" "^0.1.10"
+    "@ra-lib/ajax" "^0.1.11"
     "@ra-lib/babel-plugin-attribute-wrapper" "^0.0.6"
-    "@ra-lib/components" "^0.1.66"
+    "@ra-lib/components" "^0.1.67"
     "@ra-lib/config-loader" "^0.1.6"
     "@ra-lib/hoc" "^0.1.5"
     "@ra-lib/hooks" "^0.1.7"
-    "@ra-lib/model" "^0.1.2"
-    "@ra-lib/util" "^0.1.18"
+    "@ra-lib/model" "^0.1.3"
+    "@ra-lib/util" "^0.1.19"
 
-"@ra-lib/ajax@^0.1.10":
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/@ra-lib/ajax/-/ajax-0.1.10.tgz#50ea74c40d3fd0b0f4b8510c9310f17ef6e9b68b"
-  integrity sha512-0QgL17Alx3irlVZ0idnsYtHgQq7P7RWBWzwC51ARTCvMvKW+EoVXiP6CqSILPZW2nsehJaUwNvtxHZyWJEMrYQ==
+"@ra-lib/ajax@^0.1.11":
+  version "0.1.11"
+  resolved "https://registry.npmjs.org/@ra-lib/ajax/-/ajax-0.1.11.tgz#aecf81affcd05b3318a0fe1d239afd36c2fd548b"
+  integrity sha512-FnTA0btV32GMw8v3fmKSWlkdPiVvwsvgMPXLrnteID6LJJoOmyAxVmHgu5TO4UppZZjPa+YFfMfMz3V3cRXNlQ==
 
 "@ra-lib/babel-plugin-attribute-wrapper@^0.0.6":
   version "0.0.6"
   resolved "https://registry.npmjs.org/@ra-lib/babel-plugin-attribute-wrapper/-/babel-plugin-attribute-wrapper-0.0.6.tgz#8a357a6235ee64c84c26ea5895e038d0f8d74105"
   integrity sha512-V2ykaALjn1ToMd5i9Tp4ncyY99t2zbWg+gECkmSqErqrzmLVvH/iojPBn9l6h+zHhzW3q+T6VvBpqRmVWriLww==
 
-"@ra-lib/components@^0.1.66":
-  version "0.1.66"
-  resolved "https://registry.npmjs.org/@ra-lib/components/-/components-0.1.66.tgz#54a731e0f71d86b37c89e5c8870957236f200c93"
-  integrity sha512-WMK9sJUgjjErx1n2rl95BH6EMhuLIWUrRMVstEB+dZHQHg7ZdkzE6o/u6oBMAWM3HQASY1h1THp4yexsYt3Xsg==
+"@ra-lib/components@^0.1.67":
+  version "0.1.67"
+  resolved "https://registry.npmjs.org/@ra-lib/components/-/components-0.1.67.tgz#d625308de66c6fe9467e4f0edff1a654363f30f6"
+  integrity sha512-0ye2FKUtqhFjliztX803qjd/BZRwI/pOiZimCxnkFjDHZyHC573tkOcERKT4quaKjpc3A8JCYLB1QdNcEd3A/g==
 
 "@ra-lib/config-loader@^0.1.6":
   version "0.1.6"
@@ -1665,15 +1665,15 @@
   resolved "https://registry.npmjs.org/@ra-lib/hooks/-/hooks-0.1.7.tgz#01f872d5c8768e40eb9b8328126bd3e9a3b0aee8"
   integrity sha512-WLt1NKpRDDhrpPbJkg+/TwK4SiboF3OKvO4YHbu5LZYonz98NWcqNMACCcH0nN07RP+jokbqI6CXhg3UDAxN9Q==
 
-"@ra-lib/model@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.npmjs.org/@ra-lib/model/-/model-0.1.2.tgz#4889a0325eb82bea00fbfd9b80d5ec6f0256cb38"
-  integrity sha512-M7j+QFOfpsyB6FUGF6azjX6WuH3/96ZYxHmKFiK6Oycjom6YTXJ5ry0YOwAymSQ+J8U3BLsYjsJEMu6764BPVA==
+"@ra-lib/model@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.npmjs.org/@ra-lib/model/-/model-0.1.3.tgz#411c36a9b4e16a02f4a7cc4cedbc599bf6683d6e"
+  integrity sha512-AU41iCJF5qBGjJ6G3ufTRntgbmicwTWD185WtHi20dC9EwxlB9cxzfHkCFATAu75m+JDNGQ+2YAe/jAUxXN1mg==
 
-"@ra-lib/util@^0.1.18":
-  version "0.1.18"
-  resolved "https://registry.npmjs.org/@ra-lib/util/-/util-0.1.18.tgz#add4934614857fb4d921fc00c88c4dd486175e94"
-  integrity sha512-t9GAP9yqdEogwVVWG5rycveMRWHwl+Mdrc364tR273aJ8L9gPuz4bzMJWso6Df6PDQorv+O/ZTe5ASbCnt5CIA==
+"@ra-lib/util@^0.1.19":
+  version "0.1.19"
+  resolved "https://registry.npmjs.org/@ra-lib/util/-/util-0.1.19.tgz#b2cb2c59afdb7ffe39ee4ee28de46b51dc5498aa"
+  integrity sha512-QsUh7fIv2QQdTVOBm0rqH8ViNCKdKtK9Q63J9BXWgwQWtwnnM7ktRH7GVYrMqtoMgU8VHYIVxSLuIu3nDPRGaw==
 
 "@rollup/plugin-node-resolve@^7.1.1":
   version "7.1.3"
