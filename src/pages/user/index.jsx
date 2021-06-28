@@ -60,7 +60,7 @@ export default config({
             title: '操作',
             key: 'operator',
             width: 250,
-            render: (text, record) => {
+            render: (value, record) => {
                 const {id, name} = record;
                 const items = [
                     {

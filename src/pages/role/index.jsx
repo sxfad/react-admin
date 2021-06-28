@@ -59,7 +59,7 @@ export default config({
         {title: '备注', dataIndex: 'remark'},
         {
             title: '操作', dataIndex: 'operator', width: 100,
-            render: (text, record) => {
+            render: (value, record) => {
                 const {id, name} = record;
                 const items = [
                     {
