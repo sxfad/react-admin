@@ -74,19 +74,20 @@ export default config({
         sm: {span: 12},
     };
     return (
-        <ModalContent
-            loading={loading}
-            okText="保存"
-            onOk={() => form.submit()}
-            cancelText="重置"
-            onCancel={() => form.resetFields()}
+        <Form
+            form={form}
+            name="roleEdit"
+            onFinish={handleSubmit}
+            initialValues={{enabled: true}}
         >
-            <Form
-                form={form}
-                name="roleEdit"
-                onFinish={handleSubmit}
-                initialValues={{enabled: true}}
+            <ModalContent
+                loading={loading}
+                okText="保存"
+                okHtmlType="submit"
+                cancelText="重置"
+                onCancel={() => form.resetFields()}
             >
+
                 {isEdit ? <FormItem hidden name="id"/> : null}
 
                 <Row gutter={8}>
@@ -158,7 +159,7 @@ export default config({
                         </Card>
                     </Col>
                 </Row>
-            </Form>
-        </ModalContent>
+            </ModalContent>
+        </Form>
     );
 });
