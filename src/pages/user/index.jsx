@@ -10,7 +10,6 @@ import {
     ToolBar,
 } from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
-import {IS_MOBILE} from 'src/config';
 import options from 'src/options';
 import EditModal from './EditModal';
 
@@ -98,42 +97,35 @@ export default config({
 
     return (
         <PageContent loading={loading}>
-            <QueryBar showCollapsedBar={IS_MOBILE}>
-                {(collapsed) => {
-                    const hidden = IS_MOBILE && collapsed;
-                    return (
-                        <Form
-                            name="user"
-                            layout="inline"
-                            form={form}
-                            onFinish={values => setPageNum(1) || setConditions(values)}
-                        >
-                            <FormItem
-                                {...queryItem}
-                                label="账号"
-                                name="account"
-                            />
-                            <FormItem
-                                hidden={hidden}
-                                {...queryItem}
-                                label="姓名"
-                                name="name"
-                            />
-                            <FormItem
-                                hidden={hidden}
-                                {...queryItem}
-                                label="手机号"
-                                name="mobile"
-                            />
-                            <FormItem>
-                                <Space>
-                                    <Button type="primary" htmlType="submit">查询</Button>
-                                    <Button onClick={() => form.resetFields()}>重置</Button>
-                                </Space>
-                            </FormItem>
-                        </Form>
-                    );
-                }}
+            <QueryBar>
+                <Form
+                    name="user"
+                    layout="inline"
+                    form={form}
+                    onFinish={values => setPageNum(1) || setConditions(values)}
+                >
+                    <FormItem
+                        {...queryItem}
+                        label="账号"
+                        name="account"
+                    />
+                    <FormItem
+                        {...queryItem}
+                        label="姓名"
+                        name="name"
+                    />
+                    <FormItem
+                        {...queryItem}
+                        label="手机号"
+                        name="mobile"
+                    />
+                    <FormItem>
+                        <Space>
+                            <Button type="primary" htmlType="submit">查询</Button>
+                            <Button onClick={() => form.resetFields()}>重置</Button>
+                        </Space>
+                    </FormItem>
+                </Form>
             </QueryBar>
             <ToolBar>
                 <Button type="primary" onClick={() => setRecord(null) || setVisible(true)}>添加</Button>

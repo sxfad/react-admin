@@ -8,7 +8,6 @@ import {
     useDebounceValidator,
 } from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
-import {IS_MOBILE} from 'src/config';
 import RoleSelectTable from 'src/pages/role/RoleSelectTable';
 
 export default config({
@@ -93,7 +92,7 @@ export default config({
             >
                 {isEdit ? <FormItem hidden name="id"/> : null}
                 <Row gutter={8}>
-                    <Col {...colLayout} style={{marginBottom: IS_MOBILE ? 16 : 0}}>
+                    <Col {...colLayout}>
                         <Card title="基础信息">
                             <Content fitHeight otherHeight={160}>
                                 <FormItem
