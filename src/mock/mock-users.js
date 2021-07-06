@@ -81,7 +81,7 @@ export default {
         const result = await executeSql('select * from users where account = ?', [account]);
         return [200, result[0]];
     },
-    // 保存
+    // 保存用户
     'post /users': async config => {
         const {
             account,
@@ -103,7 +103,7 @@ export default {
 
         return [200, userId];
     },
-    // 修改
+    // 修改用户
     'put /users': async config => {
         const {
             id,
@@ -128,7 +128,7 @@ export default {
         return [200, true];
 
     },
-    // 删除
+    // 删除用户
     'delete re:/users/.+': async config => {
         const id = config.url.split('/')[2];
         await executeSql('DELETE FROM users WHERE id=?', [id]);

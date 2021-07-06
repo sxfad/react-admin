@@ -14,17 +14,17 @@ async function getMenuData() {
     if (isLoginPage()) return [];
 
     // 获取服务端数据，并做缓存，防止多次调用接口
-    // return getMenuData.__CACHE = getMenuData.__CACHE
-    //     || ajax.get('/authority/queryUserMenus', {userId: getLoginUser()?.id})
-    //         .then(res => res.map(item => ({...item, order: item.order || item.ord || item.sort})));
+    return getMenuData.__CACHE = getMenuData.__CACHE
+        || ajax.get('/userMenus', {userId: getLoginUser()?.id})
+            .then(res => res.map(item => ({...item, order: item.order || item.ord || item.sort})));
 
     // 前端硬编码菜单
-    return [
-        {id: 'system', title: '系统管理', order: 900, type: 1},
-        {id: 'user', parentId: 'system', title: '用户管理', path: '/users', order: 900, type: 1},
-        {id: 'role', parentId: 'system', title: '角色管理', path: '/roles', order: 900, type: 1},
-        {id: 'menus', parentId: 'system', title: '菜单管理', path: '/menus', order: 900, type: 1},
-    ];
+    // return [
+    //     {id: 1, title: '系统管理', order: 900, type: 1},
+    //     {id: 2, parentId: 1, title: '用户管理', path: '/users', order: 900, type: 1},
+    //     {id: 3, parentId: 1, title: '角色管理', path: '/roles', order: 900, type: 1},
+    //     {id: 4, parentId: 1, title: '菜单管理', path: '/menus', order: 900, type: 1},
+    // ];
 }
 
 /**
@@ -32,6 +32,9 @@ async function getMenuData() {
  * @returns {Promise<T[]>}
  */
 export async function getMenus() {
+    // mock时，做个延迟处理，否则菜单请求无法走mock
+    if (process.env.REACT_APP_MOCK) await new Promise(resolve => setTimeout(resolve));
+
     const serverMenus = await getMenuData();
     const menus = serverMenus.filter(item => !item.type || item.type === 1);
     return formatMenus(menus);
@@ -42,9 +45,9 @@ export async function getMenus() {
  * @returns {Promise<*>}
  */
 export async function getCollectedMenus() {
-    // const loginUser = getLoginUser();
-    // const data = await ajax.get('/authority/queryUserCollectedMenus', { userId: loginUser?.id });
-    const data = [];
+    const loginUser = getLoginUser();
+    const data = await ajax.get('/userCollectMenus', {userId: loginUser?.id});
+    // const data = [];
 
     const menus = data
         .filter(item => item.type === 1)

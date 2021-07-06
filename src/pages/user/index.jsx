@@ -39,7 +39,6 @@ export default config({
     } = props.ajax.useGet('/users', params, [conditions, pageNum, pageSize], {
         setLoading,
         formatResult: res => {
-            console.log(res);
             return {
                 dataSource: res?.list || [],
                 total: res.total || 0,

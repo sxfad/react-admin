@@ -3,8 +3,41 @@ import {convertToTree, findGenerationNodes} from '@ra-lib/admin';
 import executeSql from 'src/mock/web-sql';
 
 export default {
+    // 获取用户收藏菜单
+    'get /userCollectMenus': async (config) => {
+        const {
+            userId,
+        } = config.params;
+
+        const userCollectMenus = await executeSql('select * from user_collect_menus where userId = ?', [userId]);
+        if (!userCollectMenus?.length) return [200, []];
+        const menuIds = userCollectMenus.map(item => item.menuId);
+
+        const list = await executeSql(`select *
+                                       from menus
+                                       where id in (${menuIds})`);
+
+        return [200, list];
+    },
+    // 保存用户收藏菜单
+    'post /userCollectMenus': async (config) => {
+        const {
+            userId,
+            menuId,
+            collected,
+        } = JSON.parse(config.data);
+        const args = [userId, menuId];
+        // TODO 子级处理
+        if (collected) {
+            await executeSql('INSERT INTO user_collect_menus (userId, menuId) VALUES (?, ?)', args);
+        } else {
+            await executeSql('DELETE FROM user_collect_menus WHERE userId=? AND menuId=?', args);
+        }
+
+        return [200, true];
+    },
     // 获取用户菜单
-    'get /user/menus': async (config) => {
+    'get /userMenus': async (config) => {
         const {
             userId,
         } = config.params;

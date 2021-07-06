@@ -23,6 +23,16 @@ export default `
         constraint menus_id_uindex
             unique (id)
     );
+    create table if not exists user_collect_menus
+    (
+        id        INTEGER PRIMARY KEY,
+        userId    INTEGER                             not null,
+        menuId    INTEGER                             not null,
+        createdAt timestamp default CURRENT_TIMESTAMP not null,
+        updatedAt timestamp default CURRENT_TIMESTAMP not null,
+        constraint user_collect_menus_id_uindex
+        unique (id)
+        );
 
     create table if not exists role_menus
     (
@@ -121,10 +131,16 @@ export const initMenuSql = `
     VALUES (6, true,2, '删除用户', null, null, null, null, 0, 2, 'UPDATE_USER', null, null, '${now}', '${now}');
 `;
 
+export const initUserCollectMenusSql = `
+    INSERT INTO user_collect_menus (userId, menuId, createdAt, updatedAt)
+    VALUES (1, 2, '${now}', '${now}');
+`;
+
 export const initDataSql = {
     menus: initMenuSql,
     roles: initRolesSql,
     users: initUsersSql,
     role_menus: initRoleMenusSql,
     user_roles: initUserRolesSql,
+    user_collect_menus: initUserCollectMenusSql,
 };
