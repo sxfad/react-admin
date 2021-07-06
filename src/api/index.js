@@ -53,6 +53,9 @@ export async function getMenus() {
  * @returns {Promise<*>}
  */
 export async function getCollectedMenus() {
+    // 登录页面，不加载
+    if (isLoginPage()) return [];
+
     const loginUser = getLoginUser();
     const data = await ajax.get('/userCollectMenus', {userId: loginUser?.id});
     // const data = [];
