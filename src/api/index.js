@@ -36,7 +36,15 @@ export async function getMenus() {
     if (process.env.REACT_APP_MOCK) await new Promise(resolve => setTimeout(resolve));
 
     const serverMenus = await getMenuData();
-    const menus = serverMenus.filter(item => !item.type || item.type === 1);
+    const menus = serverMenus.filter(item => !item.type || item.type === 1)
+        .map(item => {
+            return {
+                ...item,
+                id: `${item.id}`,
+                parentId: `${item.parentId}`,
+            };
+        });
+
     return formatMenus(menus);
 }
 
