@@ -60,7 +60,7 @@ export async function getCollectedMenus() {
  * @returns {Promise<void>}
  */
 export async function saveCollectedMenu({menuId, collected}) {
-    await ajax.post('/authority/addUserCollectMenu', {userId: getLoginUser()?.id, menuId, collected});
+    await ajax.post('/userCollectMenus', {userId: getLoginUser()?.id, menuId, collected});
 }
 
 /**

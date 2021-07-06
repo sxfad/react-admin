@@ -25,7 +25,7 @@ export default config({
     const [systemOptions] = useOptions(options.system);
 
     // 获取详情 data为表单回显数据
-    props.ajax.useGet('/role/getRoleDetailById', {id: record?.id}, [], {
+    props.ajax.useGet('/roles/:id', {id: record?.id}, [], {
         setLoading,
         mountFire: isEdit, // 组件didMount时，只有编辑时才触发请求
         formatResult: res => {
@@ -37,10 +37,10 @@ export default config({
         },
     });
     // 添加请求
-    const {run: saveRole} = props.ajax.usePost('/role/addRole', null, {setLoading, successTip: '创建成功！'});
+    const {run: saveRole} = props.ajax.usePost('/roles', null, {setLoading, successTip: '创建成功！'});
     // 更新请求
-    const {run: updateRole} = props.ajax.usePost('/role/updateRoleById', null, {setLoading, successTip: '修改成功！'});
-    const {run: fetchRoleByName} = props.ajax.useGet('/role/getOneRole');
+    const {run: updateRole} = props.ajax.usePut('/roles', null, {setLoading, successTip: '修改成功！'});
+    const {run: fetchRoleByName} = props.ajax.useGet('/roleByName');
 
     async function handleSubmit(values) {
         const params = {
@@ -56,6 +56,7 @@ export default config({
         onOk();
     }
 
+    // 系统内，角色名称不可重复
     const checkName = useDebounceValidator(async (rule, value) => {
         if (!value) return;
 
@@ -113,7 +114,7 @@ export default config({
                                     name="name"
                                     required
                                     noSpace
-                                    maxLength={5}
+                                    maxLength={50}
                                     rules={[
                                         {validator: checkName},
                                     ]}

@@ -10,11 +10,11 @@ export default {
     // 用户登录
     'post /login': async (config) => {
         const {
-            userName,
+            account,
             password,
         } = JSON.parse(config.data);
 
-        const result = await executeSql('select * from users where account=? and password=?', [userName, password]);
+        const result = await executeSql('select * from users where account=? and password=?', [account, password]);
         if (!result?.length) return [400, {message: '用户名或密码错误'}];
 
         const user = result[0];
@@ -92,7 +92,7 @@ export default {
             roleIds,
         } = JSON.parse(config.data);
         const args = [account, name, password, mobile, email, true];
-        const result = await executeSql('INSERT INTO users (account, name, password, mobile, email, enable) VALUES (?, ?, ?, ?, ?, ?)', args, true);
+        const result = await executeSql('INSERT INTO users (account, name, password, mobile, email, enabled) VALUES (?, ?, ?, ?, ?, ?)', args, true);
         const {insertId: userId} = result;
 
         if (roleIds?.length) {

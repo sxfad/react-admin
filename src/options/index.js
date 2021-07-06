@@ -43,7 +43,7 @@ const options = {
     ],
     // 可以是函数，异步或同步都可以
     async system() {
-        const list = await ajax.get('/menu/queryTopMenus');
+        const list = await ajax.get('/systems');
         return list.map(item => {
             return {
                 value: item.id,

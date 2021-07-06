@@ -26,6 +26,15 @@ export default {
 
         return [200, Array.from(menus)];
     },
+    // 获取所有系统
+    'get /systems': async config => {
+        const result = await executeSql(`select *
+                                         from menus
+                                         where parentId is null
+                                            or parentId = ''`);
+
+        return [200, result];
+    },
     // 获取所有
     'get /menus': async config => {
         const result = await executeSql('select * from menus');
@@ -61,7 +70,7 @@ export default {
         `, args, true);
         const {insertId: menuId} = result;
 
-        return [200, menuId];
+        return [200, {id: menuId}];
     },
     // 批量添加
     'post /branchMenus': async config => {
@@ -174,13 +183,13 @@ export default {
         await executeSql('delete  from menus where parentId=? and type=?', [parentId, 2]);
         // 插入新的action
         for (let action of actions) {
-            const {id, title, code, type = 2} = action;
+            const {id, title, code, enabled = true, type = 2} = action;
 
-            const data = {parentId, title, code, type};
+            const data = {parentId, title, code, type, enabled: enabled ? 1 : 0};
 
             const keys = Object.keys(data);
             const values = Object.values(data);
-            const holders = ['?', '?', '?', '?'];
+            const holders = ['?', '?', '?', '?', '?'];
 
             if (id) {
                 keys.push('id');
@@ -206,12 +215,13 @@ function getMenuData(config, parse = JSON.parse) {
         title,
         basePath = '',
         path = '',
-        order = 0,
+        sort = 0,
         name = '',
         entry = '',
         icon = '',
         code = '',
         type = 1,
+        enabled = true,
     } = parse(config.data);
     const data = Object.entries({
         target,
@@ -220,14 +230,14 @@ function getMenuData(config, parse = JSON.parse) {
         basePath,
         path,
         // eslint-disable-next-line
-        ['`order`']: order, // 数据库关键字
+        sort,
         name,
         entry,
         icon,
         code,
         type,
+        enabled: enabled ? 1 : 0,
     });
-
 
     const keys = data.map(([key]) => key);
     const args = data.map(([, value]) => value);
