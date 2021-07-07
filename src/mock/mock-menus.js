@@ -4,7 +4,7 @@ import executeSql from 'src/mock/web-sql';
 
 export default {
     // 获取用户收藏菜单
-    'get /userCollectMenus': async (config) => {
+    'get /authority/queryUserCollectedMenus': async (config) => {
         const {
             userId,
         } = config.params;
@@ -20,7 +20,7 @@ export default {
         return [200, list];
     },
     // 保存用户收藏菜单
-    'post /userCollectMenus': async (config) => {
+    'post /authority/addUserCollectMenu': async (config) => {
         const {
             userId,
             menuId,
@@ -37,12 +37,11 @@ export default {
         return [200, true];
     },
     // 获取用户菜单
-    'get /userMenus': async (config) => {
+    'get /authority/queryUserMenus': async (config) => {
         const {
             userId,
         } = config.params;
         const userRoles = await executeSql('select * from user_roles where userId = ?', [userId]);
-
         if (!userRoles?.length) return [200, []];
         const roleIds = userRoles.map(item => item.roleId).join(',');
 
@@ -60,7 +59,7 @@ export default {
         return [200, Array.from(menus)];
     },
     // 获取所有系统
-    'get /systems': async config => {
+    'get /menu/queryTopMenus': async config => {
         const result = await executeSql(`select *
                                          from menus
                                          where parentId is null
@@ -69,13 +68,13 @@ export default {
         return [200, result];
     },
     // 获取所有
-    'get /menus': async config => {
+    'get /menu/queryMenus': async config => {
         const result = await executeSql('select * from menus');
 
         return [200, result];
     },
     // 根据name获取
-    'get /menuByName': async config => {
+    'get /menu/getOneMenu': async config => {
         const {
             name,
         } = config.params;
@@ -94,7 +93,7 @@ export default {
         return [200, result[0]];
     },
     // 添加
-    'post /menus': async config => {
+    'post /menu/addMenu': async config => {
         const {keys, args, holders} = getMenuData(config);
 
         const result = await executeSql(`
@@ -106,7 +105,7 @@ export default {
         return [200, {id: menuId}];
     },
     // 批量添加
-    'post /branchMenus': async config => {
+    'post /menu/addSubMenus': async config => {
         const {
             menus,
             parentId,
@@ -158,7 +157,7 @@ export default {
         return [200, menuId];
     },
     // 修改
-    'put /menus': async config => {
+    'post /menu/updateMenuById': async config => {
         const {id} = JSON.parse(config.data);
         const {keys, args} = getMenuData(config);
 
@@ -175,7 +174,7 @@ export default {
 
     },
     // 删除
-    'delete re:/menus/.+': async config => {
+    'delete re:/menu/.+': async config => {
         const id = parseInt(config.url.split('/')[2]);
         const allMenus = await executeSql('select * from menus');
         const menuTreeData = convertToTree(allMenus);
@@ -193,7 +192,7 @@ export default {
         return [200, true];
     },
     // 批量更新功能列表
-    'post /actions': async config => {
+    'post /menu/updateSubActions': async config => {
         const {actions, parentId} = JSON.parse(config.data);
         if (actions && actions.length) {
             const codes = [];

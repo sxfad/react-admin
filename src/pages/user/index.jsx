@@ -36,18 +36,18 @@ export default config({
             dataSource,
             total,
         } = {},
-    } = props.ajax.useGet('/users', params, [conditions, pageNum, pageSize], {
+    } = props.ajax.useGet('/user/queryUsersByPage', params, [conditions, pageNum, pageSize], {
         setLoading,
         formatResult: res => {
             return {
-                dataSource: res?.list || [],
-                total: res.total || 0,
+                dataSource: res?.content || [],
+                total: res.totalElements || 0,
             };
         },
     });
 
     // 删除
-    const {run: deleteRecord} = props.ajax.useDel('/users/:id', null, {setLoading, successTip: '删除成功！'});
+    const {run: deleteRecord} = props.ajax.useDel('/user/:id', null, {setLoading, successTip: '删除成功！'});
 
     const columns = [
         {title: '账号', dataIndex: 'account'},

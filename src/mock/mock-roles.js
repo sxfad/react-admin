@@ -3,7 +3,7 @@ import executeSql from 'src/mock/web-sql';
 
 export default {
     // 获取列表
-    'get /roles': async (config) => {
+    'get /role/queryRoleByPage': async (config) => {
         const {
             pageSize,
             pageNum,
@@ -38,14 +38,28 @@ export default {
         await addSystemName(list);
 
         return [200, {
-            total,
-            list,
+            totalElements: total,
+            content: list,
         }];
 
     },
+    'get /role/queryEnabledRoles': async config => {
+        const list = await executeSql(`
+            select *
+            from roles
+            where enabled = 1
+            order by updatedAt desc
+        `);
+
+        await addSystemName(list);
+
+        return [200, list];
+    },
     // 获取详情
-    'get re:/roles/.+': async config => {
-        const id = config.url.split('/')[2];
+    'get /role/getRoleDetailById': async config => {
+        const {
+            id,
+        } = config.params;
 
         const result = await executeSql('select * from roles where id = ?', [id]);
 
@@ -57,7 +71,7 @@ export default {
         return [200, result[0]];
     },
     // 根据name获取
-    'get roleByName': async config => {
+    'get /role/getOneRole': async config => {
         const {
             name,
             systemId,
@@ -67,7 +81,7 @@ export default {
         return [200, result[0]];
     },
     // 添加
-    'post /roles': async config => {
+    'post /role/addRole': async config => {
         const {
             name,
             remark = '',
@@ -75,7 +89,7 @@ export default {
             systemId,
             menuIds,
         } = JSON.parse(config.data);
-        const args = [systemId, 3, name, remark, enabled];
+        const args = [systemId, 3, name, remark, enabled ? 1 : 0];
         const result = await executeSql('INSERT INTO roles (systemId, type, name, remark, enabled) VALUES (?, ?, ?, ?, ?)', args, true);
         const {insertId: roleId} = result;
 
@@ -88,7 +102,7 @@ export default {
         return [200, roleId];
     },
     // 修改
-    'put /roles': async config => {
+    'post /role/updateRoleById': async config => {
         const {
             id,
             name,
@@ -97,7 +111,7 @@ export default {
             systemId,
             menuIds,
         } = JSON.parse(config.data);
-        const args = [enabled, systemId, name, remark, moment().format('YYYY-MM-DD HH:mm:ss'), id];
+        const args = [enabled ? 1 : 0, systemId, name, remark, moment().format('YYYY-MM-DD HH:mm:ss'), id];
 
         await executeSql('UPDATE roles SET enabled=?, systemId=?, name=?, remark=?, updatedAt=? WHERE id=?', args);
         await executeSql('DELETE FROM role_menus WHERE roleId=?', [id]);
@@ -112,7 +126,7 @@ export default {
 
     },
     // 删除
-    'delete re:/roles/.+': async config => {
+    'delete re:/role/.+': async config => {
         const id = config.url.split('/')[2];
         await executeSql('DELETE FROM roles WHERE id=?', [id]);
         await executeSql('DELETE FROM role_menus WHERE roleId=?', [id]);

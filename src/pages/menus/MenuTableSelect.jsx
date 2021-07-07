@@ -55,7 +55,7 @@ export default config()(function MenuTableSelect(props) {
     }, [menuTreeData, topId]);
 
     async function fetchMenus() {
-        const res = await props.ajax.get('/menus', {enabled: true});
+        const res = await props.ajax.get('/menu/queryMenus', {enabled: true});
 
         return (res || []).map(item => {
             return {
@@ -125,7 +125,7 @@ export default config()(function MenuTableSelect(props) {
                 />
                 <Button
                     type="text"
-                    style={{flex: 0, marginLeft: 16}}
+                    style={{flex: 0, marginLeft: 8}}
                     onClick={handleToggleExpanded}
                 >全部{expandedAll ? '收起' : '展开'}</Button>
             </div>

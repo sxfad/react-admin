@@ -25,7 +25,7 @@ export default {
     // 退出登录
     'post /logout': {},
     // 获取列表
-    'get /users': async (config) => {
+    'get /user/queryUsersByPage': async (config) => {
         const {
             pageSize = 10,
             pageNum = 1,
@@ -54,13 +54,15 @@ export default {
         const total = countResult[0]['count(*)'] || 0;
 
         return [200, {
-            total,
-            list,
+            totalElements: total,
+            content: list,
         }];
     },
     // 获取详情
-    'get re:/users/.+': async config => {
-        const id = config.url.split('/')[2];
+    'get user/getUserById': async config => {
+        const {
+            id,
+        } = config.params;
 
         const result = await executeSql('select * from users where id = ?', [id]);
 
@@ -72,7 +74,7 @@ export default {
         return [200, result[0]];
     },
     // 根据account获取
-    'get /userByAccount': async config => {
+    'get /user/getOneUser': async config => {
         const {
             account,
         } = config.params;
@@ -82,7 +84,7 @@ export default {
         return [200, result[0]];
     },
     // 保存用户
-    'post /users': async config => {
+    'post /user/addUser': async config => {
         const {
             account,
             name,
@@ -91,7 +93,7 @@ export default {
             mobile,
             roleIds,
         } = JSON.parse(config.data);
-        const args = [account, name, password, mobile, email, true];
+        const args = [account, name, password, mobile, email, 1];
         const result = await executeSql('INSERT INTO users (account, name, password, mobile, email, enabled) VALUES (?, ?, ?, ?, ?, ?)', args, true);
         const {insertId: userId} = result;
 
@@ -104,7 +106,7 @@ export default {
         return [200, userId];
     },
     // 修改用户
-    'put /users': async config => {
+    'post /user/updateUserById': async config => {
         const {
             id,
             account,
@@ -129,7 +131,7 @@ export default {
 
     },
     // 删除用户
-    'delete re:/users/.+': async config => {
+    'delete re:/user/.+': async config => {
         const id = config.url.split('/')[2];
         await executeSql('DELETE FROM users WHERE id=?', [id]);
         await executeSql('DELETE FROM user_roles WHERE userId=?', [id]);

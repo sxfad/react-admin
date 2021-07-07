@@ -49,7 +49,7 @@ export default class RoleSelectTable extends Component {
 
         try {
             this.setState({loading: true});
-            const res = await this.props.ajax.get('/roles');
+            const res = await this.props.ajax.get('/role/queryEnabledRoles');
 
             let roles = (res || []);
             if (WITH_SYSTEMS) {
@@ -116,6 +116,7 @@ export default class RoleSelectTable extends Component {
 
         this.timer = setTimeout(() => this.handleSearchValue(e.target.value), 300);
     };
+
 
     render() {
         const {

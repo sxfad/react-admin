@@ -15,7 +15,7 @@ async function getMenuData() {
 
     // 获取服务端数据，并做缓存，防止多次调用接口
     return getMenuData.__CACHE = getMenuData.__CACHE
-        || ajax.get('/userMenus', {userId: getLoginUser()?.id})
+        || ajax.get('/authority/queryUserMenus', {userId: getLoginUser()?.id})
             .then(res => res.map(item => ({...item, order: item.order || item.ord || item.sort})));
 
     // 前端硬编码菜单
@@ -57,7 +57,7 @@ export async function getCollectedMenus() {
     if (isLoginPage()) return [];
 
     const loginUser = getLoginUser();
-    const data = await ajax.get('/userCollectMenus', {userId: loginUser?.id});
+    const data = await ajax.get('/authority/queryUserCollectedMenus', {userId: loginUser?.id});
     // const data = [];
 
     const menus = data
@@ -74,7 +74,7 @@ export async function getCollectedMenus() {
  * @returns {Promise<void>}
  */
 export async function saveCollectedMenu({menuId, collected}) {
-    await ajax.post('/userCollectMenus', {userId: getLoginUser()?.id, menuId, collected});
+    await ajax.post('/authority/addUserCollectMenu', {userId: getLoginUser()?.id, menuId, collected});
 }
 
 /**
