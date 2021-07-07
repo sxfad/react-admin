@@ -19,21 +19,12 @@ async function getMenuData() {
             .then(res => res.map(item => ({...item, order: item.order || item.ord || item.sort})));
 
     // 前端硬编码菜单
-<<<<<<< HEAD
-    return [
-        // {id: 'system', title: '系统管理', order: 900, type: 1},
-        // {id: 'user', parentId: 'system', title: '用户管理', path: '/users', order: 900, type: 1},
-        // {id: 'role', parentId: 'system', title: '角色管理', path: '/roles', order: 900, type: 1},
-        // {id: 'menus', parentId: 'system', title: '菜单管理', path: '/menus', order: 900, type: 1},
-    ];
-=======
     // return [
     //     {id: 1, title: '系统管理', order: 900, type: 1},
     //     {id: 2, parentId: 1, title: '用户管理', path: '/users', order: 900, type: 1},
     //     {id: 3, parentId: 1, title: '角色管理', path: '/roles', order: 900, type: 1},
     //     {id: 4, parentId: 1, title: '菜单管理', path: '/menus', order: 900, type: 1},
     // ];
->>>>>>> master
 }
 
 /**
