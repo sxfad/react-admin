@@ -3,12 +3,35 @@ import {
     createConfigHoc,
     modal as modalHoc,
     drawer as drawerHoc,
+    getQuery,
+    getLoginUser,
 } from '@ra-lib/admin';
 import {ajaxHoc} from 'src/commons/ajax';
 import {connect as reduxConnect} from 'src/models';
 import {CONFIG_HOC, IS_MOBILE} from 'src/config';
 import {layoutHoc} from 'src/components/layout';
-import commonHoc from './common-hoc';
+import React from 'react';
+
+function commonHoc(options) {
+    const {query, loginUser} = options;
+    return WrappedComponent => {
+        const componentName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
+
+        const WithLayout = props => {
+            // 默认添加属性到props中的属性
+            const extendProps = {};
+            if (query !== false) extendProps.query = getQuery();
+            if (loginUser !== false) extendProps.loginUser = getLoginUser();
+
+            return <WrappedComponent {...extendProps} {...props}/>;
+        };
+
+        WithLayout.displayName = `WithCommon(${componentName})`;
+
+        return WithLayout;
+    };
+}
+
 
 export default function configHoc(options = {}) {
     // config 所有可用参数，以及默认值

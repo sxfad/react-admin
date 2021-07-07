@@ -10,11 +10,11 @@ export default {
     // 用户登录
     'post /login': async (config) => {
         const {
-            userName,
+            account,
             password,
         } = JSON.parse(config.data);
 
-        const result = await executeSql('select * from users where account=? and password=?', [userName, password]);
+        const result = await executeSql('select * from users where account=? and password=?', [account, password]);
         if (!result?.length) return [400, {message: '用户名或密码错误'}];
 
         const user = result[0];
@@ -81,7 +81,7 @@ export default {
         const result = await executeSql('select * from users where account = ?', [account]);
         return [200, result[0]];
     },
-    // 保存
+    // 保存用户
     'post /users': async config => {
         const {
             account,
@@ -92,7 +92,7 @@ export default {
             roleIds,
         } = JSON.parse(config.data);
         const args = [account, name, password, mobile, email, true];
-        const result = await executeSql('INSERT INTO users (account, name, password, mobile, email, enable) VALUES (?, ?, ?, ?, ?, ?)', args, true);
+        const result = await executeSql('INSERT INTO users (account, name, password, mobile, email, enabled) VALUES (?, ?, ?, ?, ?, ?)', args, true);
         const {insertId: userId} = result;
 
         if (roleIds?.length) {
@@ -103,7 +103,7 @@ export default {
 
         return [200, userId];
     },
-    // 修改
+    // 修改用户
     'put /users': async config => {
         const {
             id,
@@ -128,7 +128,7 @@ export default {
         return [200, true];
 
     },
-    // 删除
+    // 删除用户
     'delete re:/users/.+': async config => {
         const id = config.url.split('/')[2];
         await executeSql('DELETE FROM users WHERE id=?', [id]);

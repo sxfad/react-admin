@@ -12,6 +12,7 @@ const tables = [
     'users',
     'role_menus',
     'user_roles',
+    'user_collect_menus',
 ];
 
 export default async function executeSql(sql, args, fullResult) {

@@ -1,8 +1,8 @@
 import {match} from 'path-to-regexp';
 import {isActiveApp} from '../qiankun';
 import {getSubApps} from 'src/api';
-import {BASE_NAME, HASH_ROUTER} from '../config';
-import {getMainApp, isLoginPage} from '@ra-lib/admin';
+import {BASE_NAME, HASH_ROUTER, IS_SUB} from '../config';
+import {getMainApp, isLoginPage, getParentOrigin} from '@ra-lib/admin';
 import pageConfigs from 'src/pages/page-configs';
 
 /**
@@ -46,9 +46,16 @@ export function toLogin() {
     window.sessionStorage.clear();
     window.sessionStorage.setItem('last-href', window.location.href);
 
-    const mainAppToLogin = getMainApp()?.toLogin;
+    if (IS_SUB) {
+        // 微前端，跳转主应用登录
+        const mainAppToLogin = getMainApp()?.toLogin;
 
-    if (mainAppToLogin) return mainAppToLogin();
+        if (mainAppToLogin) return mainAppToLogin();
+
+        // 嵌入iframe中
+        const parentOrigin = getParentOrigin();
+        if (parentOrigin) return window.location.href = `${parentOrigin}/error-401.html`;
+    }
 
     locationHref(loginPath);
 

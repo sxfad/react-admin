@@ -3,8 +3,41 @@ import {convertToTree, findGenerationNodes} from '@ra-lib/admin';
 import executeSql from 'src/mock/web-sql';
 
 export default {
+    // 获取用户收藏菜单
+    'get /userCollectMenus': async (config) => {
+        const {
+            userId,
+        } = config.params;
+
+        const userCollectMenus = await executeSql('select * from user_collect_menus where userId = ?', [userId]);
+        if (!userCollectMenus?.length) return [200, []];
+        const menuIds = userCollectMenus.map(item => item.menuId);
+
+        const list = await executeSql(`select *
+                                       from menus
+                                       where id in (${menuIds})`);
+
+        return [200, list];
+    },
+    // 保存用户收藏菜单
+    'post /userCollectMenus': async (config) => {
+        const {
+            userId,
+            menuId,
+            collected,
+        } = JSON.parse(config.data);
+        const args = [userId, menuId];
+        // TODO 子级处理
+        if (collected) {
+            await executeSql('INSERT INTO user_collect_menus (userId, menuId) VALUES (?, ?)', args);
+        } else {
+            await executeSql('DELETE FROM user_collect_menus WHERE userId=? AND menuId=?', args);
+        }
+
+        return [200, true];
+    },
     // 获取用户菜单
-    'get /user/menus': async (config) => {
+    'get /userMenus': async (config) => {
         const {
             userId,
         } = config.params;
@@ -25,6 +58,15 @@ export default {
                                         where id in (${menusId})`);
 
         return [200, Array.from(menus)];
+    },
+    // 获取所有系统
+    'get /systems': async config => {
+        const result = await executeSql(`select *
+                                         from menus
+                                         where parentId is null
+                                            or parentId = ''`);
+
+        return [200, result];
     },
     // 获取所有
     'get /menus': async config => {
@@ -61,7 +103,7 @@ export default {
         `, args, true);
         const {insertId: menuId} = result;
 
-        return [200, menuId];
+        return [200, {id: menuId}];
     },
     // 批量添加
     'post /branchMenus': async config => {
@@ -174,13 +216,13 @@ export default {
         await executeSql('delete  from menus where parentId=? and type=?', [parentId, 2]);
         // 插入新的action
         for (let action of actions) {
-            const {id, title, code, type = 2} = action;
+            const {id, title, code, enabled = true, type = 2} = action;
 
-            const data = {parentId, title, code, type};
+            const data = {parentId, title, code, type, enabled: enabled ? 1 : 0};
 
             const keys = Object.keys(data);
             const values = Object.values(data);
-            const holders = ['?', '?', '?', '?'];
+            const holders = ['?', '?', '?', '?', '?'];
 
             if (id) {
                 keys.push('id');
@@ -206,12 +248,13 @@ function getMenuData(config, parse = JSON.parse) {
         title,
         basePath = '',
         path = '',
-        order = 0,
+        sort = 0,
         name = '',
         entry = '',
         icon = '',
         code = '',
         type = 1,
+        enabled = true,
     } = parse(config.data);
     const data = Object.entries({
         target,
@@ -220,14 +263,14 @@ function getMenuData(config, parse = JSON.parse) {
         basePath,
         path,
         // eslint-disable-next-line
-        ['`order`']: order, // 数据库关键字
+        sort,
         name,
         entry,
         icon,
         code,
         type,
+        enabled: enabled ? 1 : 0,
     });
-
 
     const keys = data.map(([key]) => key);
     const args = data.map(([, value]) => value);

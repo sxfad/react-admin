@@ -21,7 +21,7 @@ export default config({
     const [selectedMenu, setSelectedMenu] = useState(null);
     const [hasUnSaveMenu, setHasUnSaveMenu] = useState(false);
     const [hasUnSaveAction, setHasUnSaveAction] = useState(false);
-    const {loading, data: menus = [], run: fetchMenus} = props.ajax.useGet('/menu/queryMenus', null, {
+    const {loading, data: menus = [], run: fetchMenus} = props.ajax.useGet('/menus', null, {
         formatResult: res => {
             return (res || []).map((item, index, arr) => {
                 const actions = arr.filter(it => it.type === 2 && it.parentId === item.id);
@@ -29,7 +29,7 @@ export default config({
                     ...item,
                     id: '' + item.id,
                     parentId: item.parentId ? '' + item.parentId : item.parentId,
-                    order: item.ord,
+                    order: item.sort,
                     actions,
                 };
             }).filter(item => item.type === 1);

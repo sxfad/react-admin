@@ -34,12 +34,12 @@ export default config()(function MenuEdit(props) {
         return isAddSub ? '添加菜单' : '修改菜单';
     })();
 
-    const {run: deleteMenu} = props.ajax.useDel('/menu/:id', null, {setLoading});
-    const {run: saveMenu} = props.ajax.usePost('/menu/addMenu', null, {setLoading});
-    const {run: branchSaveMenu} = props.ajax.usePost('/menu/addSubMenus', null, {setLoading});
-    const {run: updateMenu} = props.ajax.usePost('/menu/updateMenuById', null, {setLoading});
-    const {run: fetchMenuByName} = props.ajax.useGet('/menu/getOneMenu');
-    const {run: saveRole} = props.ajax.usePost('/role/addRole', null, {setLoading});
+    const {run: deleteMenu} = props.ajax.useDel('/menus/:id', null, {setLoading});
+    const {run: saveMenu} = props.ajax.usePost('/menus', null, {setLoading});
+    const {run: branchSaveMenu} = props.ajax.usePost('/branchMenus', null, {setLoading});
+    const {run: updateMenu} = props.ajax.usePut('/menus', null, {setLoading});
+    const {run: fetchMenuByName} = props.ajax.useGet('/menuByName');
+    const {run: saveRole} = props.ajax.usePost('/roles', null, {setLoading});
 
     // 表单回显
     useEffect(() => {
@@ -61,7 +61,7 @@ export default config()(function MenuEdit(props) {
         const params = {
             ...values,
             type: 1, // 菜单
-            ord: values.order,
+            sort: values.order,
         };
 
         if (isAdd) {

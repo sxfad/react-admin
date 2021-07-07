@@ -18,6 +18,8 @@ export default {
                 from roles ${where}
                 order by updatedAt desc`);
 
+            await addSystemName(list);
+
             return [200, list];
         }
 
@@ -33,10 +35,13 @@ export default {
 
         const total = countResult[0]['count(*)'] || 0;
 
+        await addSystemName(list);
+
         return [200, {
             total,
             list,
         }];
+
     },
     // 获取详情
     'get re:/roles/.+': async config => {
@@ -52,13 +57,13 @@ export default {
         return [200, result[0]];
     },
     // 根据name获取
-    'get /roleByName': async config => {
+    'get roleByName': async config => {
         const {
             name,
+            systemId,
         } = config.params;
 
-
-        const result = await executeSql('select * from roles where name = ?', [name]);
+        const result = await executeSql('select * from roles where name = ? and systemId=?', [name, systemId]);
         return [200, result[0]];
     },
     // 添加
@@ -66,10 +71,12 @@ export default {
         const {
             name,
             remark = '',
+            enabled,
+            systemId,
             menuIds,
         } = JSON.parse(config.data);
-        const args = [name, remark];
-        const result = await executeSql('INSERT INTO roles (name, remark) VALUES (?, ?)', args, true);
+        const args = [systemId, 3, name, remark, enabled];
+        const result = await executeSql('INSERT INTO roles (systemId, type, name, remark, enabled) VALUES (?, ?, ?, ?, ?)', args, true);
         const {insertId: roleId} = result;
 
         if (menuIds?.length) {
@@ -86,11 +93,13 @@ export default {
             id,
             name,
             remark = '',
+            enabled,
+            systemId,
             menuIds,
         } = JSON.parse(config.data);
-        const args = [name, remark, moment().format('YYYY-MM-DD HH:mm:ss'), id];
+        const args = [enabled, systemId, name, remark, moment().format('YYYY-MM-DD HH:mm:ss'), id];
 
-        await executeSql('UPDATE roles SET name=?, remark=?, updatedAt=? WHERE id=?', args);
+        await executeSql('UPDATE roles SET enabled=?, systemId=?, name=?, remark=?, updatedAt=? WHERE id=?', args);
         await executeSql('DELETE FROM role_menus WHERE roleId=?', [id]);
 
         if (menuIds?.length) {
@@ -110,3 +119,22 @@ export default {
         return [200, true];
     },
 };
+
+
+async function addSystemName(list) {
+    const systemIds = list.map(item => item.systemId).filter(item => !!item);
+    if (systemIds && systemIds.length) {
+        const systems = await executeSql(`
+            select *
+            from menus
+            where id in (${systemIds})
+        `);
+        list.forEach(item => {
+            const {systemId} = item;
+            if (systemId) {
+                const system = systems.find(sys => sys.id === systemId);
+                if (system) item.systemName = system.title;
+            }
+        });
+    }
+}

@@ -10,7 +10,6 @@ import {
     ToolBar,
 } from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
-import {IS_MOBILE} from 'src/config';
 import options from 'src/options';
 import EditModal from './EditModal';
 
@@ -37,18 +36,18 @@ export default config({
             dataSource,
             total,
         } = {},
-    } = props.ajax.useGet('/user/queryUsersByPage', params, [conditions, pageNum, pageSize], {
+    } = props.ajax.useGet('/users', params, [conditions, pageNum, pageSize], {
         setLoading,
         formatResult: res => {
             return {
-                dataSource: res?.content || [],
-                total: res.totalElements || 0,
+                dataSource: res?.list || [],
+                total: res.total || 0,
             };
         },
     });
 
     // 删除
-    const {run: deleteRecord} = props.ajax.useDel('/user/:id', null, {setLoading, successTip: '删除成功！'});
+    const {run: deleteRecord} = props.ajax.useDel('/users/:id', null, {setLoading, successTip: '删除成功！'});
 
     const columns = [
         {title: '账号', dataIndex: 'account'},
@@ -60,7 +59,7 @@ export default config({
             title: '操作',
             key: 'operator',
             width: 250,
-            render: (text, record) => {
+            render: (value, record) => {
                 const {id, name} = record;
                 const items = [
                     {
@@ -98,42 +97,35 @@ export default config({
 
     return (
         <PageContent loading={loading}>
-            <QueryBar showCollapsedBar={IS_MOBILE}>
-                {(collapsed) => {
-                    const hidden = IS_MOBILE && collapsed;
-                    return (
-                        <Form
-                            name="user"
-                            layout="inline"
-                            form={form}
-                            onFinish={values => setPageNum(1) || setConditions(values)}
-                        >
-                            <FormItem
-                                {...queryItem}
-                                label="账号"
-                                name="account"
-                            />
-                            <FormItem
-                                hidden={hidden}
-                                {...queryItem}
-                                label="姓名"
-                                name="name"
-                            />
-                            <FormItem
-                                hidden={hidden}
-                                {...queryItem}
-                                label="手机号"
-                                name="mobile"
-                            />
-                            <FormItem>
-                                <Space>
-                                    <Button type="primary" htmlType="submit">查询</Button>
-                                    <Button onClick={() => form.resetFields()}>重置</Button>
-                                </Space>
-                            </FormItem>
-                        </Form>
-                    );
-                }}
+            <QueryBar>
+                <Form
+                    name="user"
+                    layout="inline"
+                    form={form}
+                    onFinish={values => setPageNum(1) || setConditions(values)}
+                >
+                    <FormItem
+                        {...queryItem}
+                        label="账号"
+                        name="account"
+                    />
+                    <FormItem
+                        {...queryItem}
+                        label="姓名"
+                        name="name"
+                    />
+                    <FormItem
+                        {...queryItem}
+                        label="手机号"
+                        name="mobile"
+                    />
+                    <FormItem>
+                        <Space>
+                            <Button type="primary" htmlType="submit">查询</Button>
+                            <Button onClick={() => form.resetFields()}>重置</Button>
+                        </Space>
+                    </FormItem>
+                </Form>
             </QueryBar>
             <ToolBar>
                 <Button type="primary" onClick={() => setRecord(null) || setVisible(true)}>添加</Button>
