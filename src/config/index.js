@@ -62,11 +62,11 @@ export const CONFIG_HOC = {
     // layout布局方式 LAYOUT_TYPE.SIDE_MENU LAYOUT_TYPE.TOP_MENU LAYOUT_TYPE.TOP_SIDE_MENU
     layoutType: LAYOUT_TYPE.SIDE_MENU,
     // 头部是否显示
-    header: false,
+    header: true,
     // 侧边栏是否显示
     side: true,
     // Tabs是否显示
-    tab: true,
+    tab: false,
     // 持久化 Tabs记录
     persistTab: true,
     // tab左侧显示展开收起菜单按钮
