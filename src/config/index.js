@@ -25,7 +25,7 @@ export const CONFIG_ENV = process.env.REACT_APP_CONFIG_ENV;
 // config-hoc 配置存储key
 export const CONFIG_HOC_STORAGE_KEY = 'CONFIG_HOC_STORAGE_KEY';
 // 是否有系统概念，顶级菜单将作为系统，角色有系统概念，默认添加子系统管理员角色
-export const WITH_SYSTEMS = getConfigValue('WITH_SYSTEMS', true);
+export const WITH_SYSTEMS = getConfigValue('WITH_SYSTEMS', false);
 // 应用名称
 export const APP_NAME = getConfigValue('APP_NAME', 'React Admin');
 // 页面路由前缀

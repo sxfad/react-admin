@@ -11,9 +11,7 @@ import {WITH_SYSTEMS} from 'src/config';
 
 const WithCheckboxTable = renderTableCheckbox(Table);
 
-@config({
-    ajax: true,
-})
+@config()
 export default class RoleSelectTable extends Component {
     static propTypes = {
         value: PropTypes.array,     // 选中的节点
