@@ -16,7 +16,7 @@ async function getMenuData() {
     // 获取服务端数据，并做缓存，防止多次调用接口
     return getMenuData.__CACHE = getMenuData.__CACHE
         || ajax.get('/authority/queryUserMenus', {userId: getLoginUser()?.id})
-            .then(res => res.map(item => ({...item, order: item.order || item.ord || item.sort})));
+            .then(res => res.map(item => ({...item, order: item.order ?? item.ord ?? item.sort})));
 
     // 前端硬编码菜单
     // return [
