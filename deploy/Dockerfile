@@ -4,7 +4,7 @@ RUN rm -rf /etc/nginx/conf.d/* \
     && rm -rf /usr/share/nginx/html/*
 
 ADD build/ /usr/share/nginx/html
-ADD nginx.conf /etc/nginx/conf.d/
+ADD nginx.test.conf /etc/nginx/conf.d/
 
 RUN chmod 775 -R /usr/share/nginx/html \
     && export LC_ALL=en_US.UTF-8 \
