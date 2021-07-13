@@ -13,7 +13,8 @@ const getConfigValue = (key, defaultValue, parse = value => value) => gc(envConf
  * 配置优先级 命令行 > 环境文件 > 默认
  * 当前文件为默认配置，会被环境配置、命令行参数覆盖
  * */
-
+// 应用名称
+export const APP_NAME = getConfigValue('APP_NAME', 'React Admin');
 // ajax 请求前缀
 export const AJAX_PREFIX = getConfigValue('AJAX_PREFIX', window.__POWERED_BY_QIANKUN__ ? `${window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__}api` : '/api');
 // ajax 超时时间
@@ -26,8 +27,6 @@ export const CONFIG_ENV = process.env.REACT_APP_CONFIG_ENV;
 export const CONFIG_HOC_STORAGE_KEY = 'CONFIG_HOC_STORAGE_KEY';
 // 是否有系统概念，顶级菜单将作为系统，角色有系统概念，默认添加子系统管理员角色
 export const WITH_SYSTEMS = getConfigValue('WITH_SYSTEMS', false);
-// 应用名称
-export const APP_NAME = getConfigValue('APP_NAME', 'React Admin');
 // 页面路由前缀
 export const BASE_NAME = getConfigValue('BASE_NAME', window.__POWERED_BY_QIANKUN__ ? `/${appPackage.name}` : '');
 // 是否使用hash路由
