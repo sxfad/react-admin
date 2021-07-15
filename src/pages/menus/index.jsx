@@ -29,7 +29,7 @@ export default config({
                     ...item,
                     id: '' + item.id,
                     parentId: item.parentId ? '' + item.parentId : item.parentId,
-                    order: item.sort,
+                    order: item.order ?? item.sort ?? item.ord,
                     actions,
                 };
             }).filter(item => item.type === 1);

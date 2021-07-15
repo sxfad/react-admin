@@ -44,13 +44,14 @@ export default config()(function MenuEdit(props) {
     // 表单回显
     useEffect(() => {
         form.resetFields();
-        let initialValues = selectedMenu;
+        let initialValues = {...selectedMenu, order: selectedMenu?.ord};
         if (isAddTop) initialValues = {target: 'qiankun'};
         if (isAddSub) initialValues = {
             target: 'menu',
             parentId: selectedMenu.id,
             systemId: selectedMenu.systemId,
         };
+
 
         form.setFieldsValue(initialValues);
     }, [form, isAdd, isAddTop, isAddSub, selectedMenu]);
@@ -62,6 +63,7 @@ export default config()(function MenuEdit(props) {
             ...values,
             type: 1, // 菜单
             sort: values.order,
+            ord: values.order,
         };
 
         if (isAdd) {
@@ -171,6 +173,19 @@ export default config()(function MenuEdit(props) {
                         />
                         <FormItem
                             {...layout}
+                            type="number"
+                            label="排序"
+                            name="order"
+                            tooltip="降序，越大越靠前"
+                        />
+                        <FormItem
+                            {...layout}
+                            label="路径"
+                            name="path"
+                            tooltip="菜单路径或第三方网站地址"
+                        />
+                        <FormItem
+                            {...layout}
                             type="switch"
                             label="启用"
                             name="enabled"
@@ -225,19 +240,6 @@ export default config()(function MenuEdit(props) {
                                 );
                             }}
                         </FormItem>
-                        <FormItem
-                            {...layout}
-                            label="路径"
-                            name="path"
-                            tooltip="菜单路径或第三方网站地址"
-                        />
-                        <FormItem
-                            {...layout}
-                            type="number"
-                            label="排序"
-                            name="order"
-                            tooltip="降序，越大越靠前"
-                        />
                     </>
                 ) : (
                     <FormItem
