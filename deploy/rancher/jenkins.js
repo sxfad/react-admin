@@ -6,7 +6,7 @@ const appName = require(path.join(__dirname, '..', '..', 'package.json')).name;
 
 const BASE_URL = 'http://wang_sb:wang2018@172.16.175.93:8080/jenkins';
 const JOB_NAME = appName;
-const GIT_URL = 'git@192.168.120.68:root/cost-front.git';
+const GIT_URL = 'git@github.com:sxfad/react-admin.git';
 const BRANCH = 'master';
 const NAME_SPACE = 'front-center';
 
