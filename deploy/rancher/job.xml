@@ -29,6 +29,8 @@
     <builders>
         <hudson.tasks.Shell>
             <command>
+                # 进入前端目录
+                cd .
                 # 安装依赖
                 yarn
 

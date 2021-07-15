@@ -9,6 +9,7 @@ const JOB_NAME = appName;
 const GIT_URL = 'https://gitee.com/sxfad/react-admin.git';
 const BRANCH = 'master';
 const NAME_SPACE = 'front-center';
+const FRONT_FOLDER = '.';
 
 const jenkins = require('jenkins')({
     baseUrl: BASE_URL,
@@ -27,6 +28,7 @@ const jenkins = require('jenkins')({
             gitUrl: GIT_URL,
             branch: BRANCH,
             nameSpace: NAME_SPACE,
+            fontFolder: FRONT_FOLDER,
         });
         console.log('create job', JOB_NAME);
     }
@@ -88,6 +90,7 @@ function getConfigXml(options = {}) {
         gitUrl,
         branch = 'master',
         nameSpace = 'front-center',
+        fontFolder = '.',
     } = options;
 
     if (!gitUrl) throw Error('git 地址不能为空！');
@@ -97,7 +100,8 @@ function getConfigXml(options = {}) {
     return xmlTemplate
         .replace('<url>https://gitee.com/sxfad/react-admin.git</url>', `<url>${gitUrl}</url>`)
         .replace('<name>*/master</name>', `<name>*/${branch}</name>`)
-        .replace('/NAMESPACE_NAME/front-center', `/NAMESPACE_NAME/${nameSpace}`);
+        .replace('/NAMESPACE_NAME/front-center', `/NAMESPACE_NAME/${nameSpace}`)
+        .replace('cd .', `cd ${fontFolder}`);
 }
 
 async function createJob(options) {
