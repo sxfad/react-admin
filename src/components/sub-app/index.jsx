@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import {getCurrentActiveSubApp} from 'src/qiankun';
 import {isActiveApp, getContainerId} from '@ra-lib/admin';
-import {getSubApps} from 'src/api';
+import {system} from 'src/api';
 import config from 'src/commons/config-hoc';
 
 export default config()(function SubApp() {
@@ -9,7 +9,7 @@ export default config()(function SubApp() {
     const [activeAppNames, setActiveAppNames] = useState([]);
     useEffect(() => {
         (async () => {
-            const apps = await getSubApps();
+            const apps = await system.getSubApps();
             setApps(apps);
         })();
     }, []);

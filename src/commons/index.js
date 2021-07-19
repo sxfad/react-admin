@@ -1,6 +1,6 @@
 import {match} from 'path-to-regexp';
 import {isActiveApp} from '../qiankun';
-import {getSubApps} from 'src/api';
+import {system} from 'src/api';
 import {BASE_NAME, HASH_ROUTER, IS_SUB} from '../config';
 import {getMainApp, isLoginPage, getParentOrigin} from '@ra-lib/admin';
 import pageConfigs from 'src/pages/page-configs';
@@ -31,6 +31,8 @@ export function toHome() {
     if (isLoginPage(lastHref)) lastHref = '/';
 
     locationHref(lastHref);
+
+    if (HASH_ROUTER) window.location.reload();
 }
 
 /**
@@ -59,6 +61,8 @@ export function toLogin() {
 
     locationHref(loginPath);
 
+    if (HASH_ROUTER) window.location.reload();
+
     return null;
 }
 
@@ -68,7 +72,7 @@ export function toLogin() {
  * @returns {string|boolean}
  */
 export async function checkPath(result) {
-    const subApps = await getSubApps();
+    const subApps = await system.getSubApps();
 
     const hasHome = result.some(({path}) => path === '/');
     if (!hasHome) throw Error(`必须含有首页路由，path: '/'， 如果需要其他页面做首页，可以进行 Redirect`);

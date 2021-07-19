@@ -7,7 +7,7 @@ import {
 import {SubError} from './components';
 import {getContainerId, PageContent} from '@ra-lib/admin';
 import {CONFIG_HOC} from './config';
-import {getSubApps} from 'src/api';
+import {system} from 'src/api';
 import App from './App';
 
 /**
@@ -17,7 +17,7 @@ import App from './App';
  */
 export async function getCurrentActiveSubApp(pathname = window.location.pathname) {
     const name = `${pathname.split('/')[1]}`;
-    const subApps = await getSubApps();
+    const subApps = await system.getSubApps();
 
     return subApps.find(item => item.name === name);
 }
@@ -37,14 +37,14 @@ export function isActiveApp(app, pathname = window.location.pathname) {
  * @param name
  */
 export async function getAppByName(name) {
-    const apps = await getSubApps();
+    const apps = await system.getSubApps();
 
     return apps.find(item => item.name === name);
 }
 
 export default async function() {
     // 获取子应用
-    const subApps = await getSubApps();
+    const subApps = await system.getSubApps();
 
     // 注册子应用
     registerMicroApps(subApps, {
