@@ -4,9 +4,6 @@ import {PageContent} from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
 import styles from './style.less';
 
-const a = 123;
-console.log(a);
-
 export default config({
     path: '/',
     title: '首页',
