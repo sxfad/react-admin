@@ -9,7 +9,7 @@ import {ComponentProvider, Loading, getLoginUser, setLoginUser} from '@ra-lib/ad
 import AppRouter from './router/AppRouter';
 import {APP_NAME, CONFIG_HOC, IS_MOBILE} from './config';
 import {store} from './models';
-import {system} from 'src/api';
+import api from 'src/api';
 import theme from 'src/theme.less';
 import './App.less';
 
@@ -28,9 +28,9 @@ export default function App(props) {
     const [collectedMenus, setCollectedMenus] = useState(CONFIG_HOC.showCollectedMenus ? [] : null);
 
     async function handleMenuCollect(menu, collected) {
-        await system.saveCollectedMenu({menuId: menu.id, collected});
+        await api.saveCollectedMenu({menuId: menu.id, collected});
 
-        const collectedMenus = await system.getCollectedMenus();
+        const collectedMenus = await api.getCollectedMenus();
         setCollectedMenus(collectedMenus);
     }
 
@@ -38,7 +38,7 @@ export default function App(props) {
         (async () => {
             if (!CONFIG_HOC.showCollectedMenus) return;
 
-            const collectedMenus = await system.getCollectedMenus();
+            const collectedMenus = await api.getCollectedMenus();
             setCollectedMenus(collectedMenus);
         })();
     }, []);
@@ -51,10 +51,10 @@ export default function App(props) {
 
                 // 用户存在，获取菜单
                 if (loginUser) {
-                    const menus = await system.getMenus();
+                    const menus = await api.getMenus();
                     setMenus(menus);
 
-                    loginUser.permissions = await system.getPermissions();
+                    loginUser.permissions = await api.getPermissions();
                     setLoginUser(loginUser);
                 }
                 setLoading(false);
