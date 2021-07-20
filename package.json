@@ -11,7 +11,9 @@
         "build:prev": "cross-env REACT_APP_PREVIEW=true REACT_APP_MOCK=true REACT_APP_HASH_ROUTER=true REACT_APP_BASE_NAME=/react-admin/build/ PUBLIC_URL=/react-admin/build/ BUILD_PATH=docs/build yarn build",
         "rancher": "node deploy/rancher/jenkins.js",
         "test": "craco test",
-        "docs": "docsify serve -p 3301"
+        "docs": "docsify serve -p 3301",
+        "lint": "lint-staged",
+        "prepare": "husky install"
     },
     "dependencies": {
         "@ahooksjs/use-url-state": "^2.5.7",
@@ -23,7 +25,7 @@
         "@babel/plugin-proposal-optional-chaining": "^7.13.12",
         "@craco/craco": "^6.1.1",
         "@loadable/component": "^5.14.1",
-        "@ra-lib/admin": "^0.0.45",
+        "@ra-lib/admin": "^0.0.47",
         "@testing-library/jest-dom": "^5.11.4",
         "@testing-library/react": "^11.1.0",
         "@testing-library/user-event": "^12.1.10",
@@ -50,8 +52,10 @@
         "eslint-plugin-react": "^7.20.3",
         "eslint-plugin-react-hooks": "^4.0.8",
         "eslint-plugin-testing-library": "^3.9.0",
+        "husky": "^7.0.1",
         "jenkins": "^0.28.1",
         "json5": "^2.2.0",
+        "lint-staged": "^11.0.1",
         "lodash": "^4.17.21",
         "mockjs": "^1.1.0",
         "moment": "^2.29.1",
@@ -115,5 +119,8 @@
             "not op_mini all",
             "ie 11"
         ]
+    },
+    "lint-staged": {
+        "**/*.{js,jsx,ts,tsx}": "eslint --max-warnings 0 --fix"
     }
 }
