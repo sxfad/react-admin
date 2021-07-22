@@ -6,7 +6,7 @@ const appName = require(path.join(__dirname, '..', '..', 'package.json')).name;
 
 const BASE_URL = 'http://wang_sb:wang2018@172.16.175.93:8080/jenkins';
 const JOB_NAME = appName;
-const GIT_URL = 'https://gitee.com/sxfad/react-admin.git';
+const GIT_URL = getGitUrl(); // 'https://gitee.com/sxfad/react-admin.git';
 const BRANCH = 'master';
 const NAME_SPACE = 'front-center';
 const FRONT_FOLDER = '.';
@@ -19,7 +19,6 @@ const jenkins = require('jenkins')({
 
 
 (async () => {
-
     // 不存在，创建任务
     const exist = await jenkins.job.exists(JOB_NAME);
     if (!exist) {
@@ -42,6 +41,11 @@ const jenkins = require('jenkins')({
     showLog(JOB_NAME, buildNumber);
 })();
 
+/**
+ * 获取构建序号
+ * @param queueNumber
+ * @returns {Promise<unknown>}
+ */
 async function getBuildNumber(queueNumber) {
     return new Promise((resolve, reject) => {
         const si = setInterval(async () => {
@@ -52,7 +56,7 @@ async function getBuildNumber(queueNumber) {
                 resolve(res.executable.number);
                 clearInterval(si);
             }
-        }, 1000);
+        }, 2000);
 
         setTimeout(() => {
             clearInterval(si);
@@ -61,7 +65,11 @@ async function getBuildNumber(queueNumber) {
     });
 }
 
-
+/**
+ * 显示日志
+ * @param jobName
+ * @param buildNumber
+ */
 function showLog(jobName, buildNumber) {
     const log = jenkins.build.logStream(jobName, buildNumber);
 
@@ -85,6 +93,11 @@ function showLog(jobName, buildNumber) {
 //     return res;
 // }
 
+/**
+ * 获取任务配置文件
+ * @param options
+ * @returns {*}
+ */
 function getConfigXml(options = {}) {
     const {
         gitUrl,
@@ -104,10 +117,28 @@ function getConfigXml(options = {}) {
         .replace('cd .', `cd ${fontFolder}`);
 }
 
+/**
+ * 创建任务
+ * @param options
+ * @returns {Promise<jobName>}
+ */
 async function createJob(options) {
     const {jobName, ...others} = options;
 
     const xml = getConfigXml(others);
 
     return jenkins.job.create(jobName, xml);
+}
+
+/**
+ * 获取当前项目的git仓库地址
+ * @returns {*}
+ */
+function getGitUrl() {
+    const gitConfigPath = path.join(__dirname, '..', '..', '.git', 'config');
+    const configContent = fs.readFileSync(gitConfigPath, 'UTF-8');
+
+    const arr = configContent.split('\n\t');
+    const url = arr.find(item => item.startsWith('url = '));
+    return url.replace('url = ', '');
 }

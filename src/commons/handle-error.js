@@ -8,9 +8,9 @@ const ERROR_FORBIDDEN = '您无权访问！';
 function getErrorTip(error, tip) {
     if (tip && tip !== true) return tip;
 
-    // ajax返回的错误信息
+    // http 状态码相关
     if (error?.response) {
-        const {status, data} = error.response;
+        const {status} = error.response;
 
         if (status === 401) return toLogin();
 
@@ -19,14 +19,14 @@ function getErrorTip(error, tip) {
         if (status === 404) return ERROR_NOT_FOUND;
 
         if (status >= 500) return ERROR_SERVER;
-
-        // 后端自定义信息
-        if (data && typeof data === 'string') return data;
-        if (data?.message) return data.message;
-        if (data?.msg) return data.msg;
     }
 
-    if (error?.message) return error.message;
+    // 后端自定义信息
+    const data = error?.response?.data || error;
+
+    if (data && typeof data === 'string') return data;
+    if (data?.message) return data.message;
+    if (data?.msg) return data.msg;
 
     return '未知错误';
 }
