@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useMemo, useState} from 'react';
 import {Button, Form, Space} from 'antd';
 import {
     PageContent,
@@ -26,19 +26,23 @@ export default config({
     const [visible, setVisible] = useState(false);
     const [form] = Form.useForm();
 
-    const params = {
-        ...conditions,
-        pageNum,
-        pageSize,
-    };
+    const params = useMemo(() => {
+        return {
+            ...conditions,
+            pageNum,
+            pageSize,
+        };
+    }, [conditions, pageNum, pageSize]);
 
+    // 使用现有查询条件，重新发起请求
+    const refreshSearch = () => setConditions(form.getFieldsValue());
     // 获取列表
     const {
         data: {
             dataSource,
             total,
         } = {},
-    } = props.ajax.useGet('/role/queryRoleByPage', params, [conditions, pageNum, pageSize], {
+    } = props.ajax.useGet('/role/queryRoleByPage', params, [params], {
         setLoading,
         // mountFire: false, // 初始化不查询
         formatResult: res => {
@@ -90,7 +94,7 @@ export default config({
         await deleteRole(id);
 
         // 触发查询
-        setConditions({...conditions});
+        refreshSearch();
     }
 
     const layout = {
@@ -104,6 +108,7 @@ export default config({
                     name="role"
                     layout="inline"
                     form={form}
+                    initialValues={conditions}
                     onFinish={values => {
                         setPageNum(1);
                         setConditions(values);
@@ -142,7 +147,7 @@ export default config({
                 visible={visible}
                 isEdit={!!record}
                 record={record}
-                onOk={() => setVisible(false) || setConditions({...conditions})}
+                onOk={() => setVisible(false) || refreshSearch()}
                 onCancel={() => setVisible(false)}
             />
         </PageContent>

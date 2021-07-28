@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useMemo} from 'react';
 import {Button, Form, Space} from 'antd';
 import {
     PageContent,
@@ -19,16 +19,21 @@ export default config({
     const [loading, setLoading] = useState(false);
     const [pageNum, setPageNum] = useState(1);
     const [pageSize, setPageSize] = useState(20);
-    const [conditions, setConditions] = useState({});
+    const [conditions, setConditions] = useState({position: '01'});
     const [visible, setVisible] = useState(false);
     const [record, setRecord] = useState(null);
     const [form] = Form.useForm();
 
-    const params = {
-        ...conditions,
-        pageNum,
-        pageSize,
-    };
+    const params = useMemo(() => {
+        return {
+            ...conditions,
+            pageNum,
+            pageSize,
+        };
+    }, [conditions, pageNum, pageSize]);
+
+    // 使用现有查询条件，重新发起请求
+    const refreshSearch = () => setConditions(form.getFieldsValue());
 
     // 获取列表
     const {
@@ -36,7 +41,7 @@ export default config({
             dataSource,
             total,
         } = {},
-    } = props.ajax.useGet('/user/queryUsersByPage', params, [conditions, pageNum, pageSize], {
+    } = props.ajax.useGet('/user/queryUsersByPage', params, [params], {
         setLoading,
         formatResult: res => {
             return {
@@ -88,7 +93,7 @@ export default config({
     async function handleDelete(id) {
         await deleteRecord(id);
         // 触发列表更新
-        setConditions({...conditions});
+        refreshSearch();
     }
 
     const queryItem = {
@@ -102,6 +107,7 @@ export default config({
                     name="user"
                     layout="inline"
                     form={form}
+                    initialValues={conditions}
                     onFinish={values => setPageNum(1) || setConditions(values)}
                 >
                     <FormItem
@@ -118,6 +124,16 @@ export default config({
                         {...queryItem}
                         label="手机号"
                         name="mobile"
+                    />
+                    <FormItem
+                        {...queryItem}
+                        label="职位"
+                        name="position"
+                        allowClear
+                        options={[
+                            {value: '01', label: '前端开发'},
+                            {value: '02', label: '后端开发'},
+                        ]}
                     />
                     <FormItem>
                         <Space>
@@ -150,7 +166,7 @@ export default config({
                 visible={visible}
                 record={record}
                 isEdit={!!record}
-                onOk={() => setVisible(false) || setConditions({...conditions})}
+                onOk={() => setVisible(false) || refreshSearch()}
                 onCancel={() => setVisible(false)}
             />
         </PageContent>
