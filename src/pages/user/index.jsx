@@ -46,7 +46,7 @@ export default config({
         formatResult: res => {
             return {
                 dataSource: res?.content || [],
-                total: res.totalElements || 0,
+                total: res?.totalElements || 0,
             };
         },
     });
