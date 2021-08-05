@@ -20,4 +20,16 @@ module.exports = function(app) {
             },
         },
     ));
+
+    app.use(proxy('/portal',
+        {
+            target: 'http://p-test.vbill.cn/', // 测试门户
+            pathRewrite: {
+                '^/portal': '',
+            },
+            changeOrigin: true,
+            secure: false, // 是否验证证书
+            ws: true, // 启用websocket
+        },
+    ));
 };

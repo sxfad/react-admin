@@ -1678,6 +1678,11 @@
   resolved "https://registry.npmjs.org/@ra-lib/model/-/model-0.1.5.tgz#9ea614f629127fc3d037ddbd5e48ab79791172fe"
   integrity sha512-2TwKyD6VS23pGEgqIaYFnzn7PV50od3Cb4bgcmi8swLYTm/MmKQh/uG4ZN7V+p5QzhMg4wR88gU0wAKi29BXXw==
 
+"@ra-lib/rancher-deploy@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.npmjs.org/@ra-lib/rancher-deploy/-/rancher-deploy-1.0.4.tgz#dddfa1fa2c149b338a47b6f66d10f411ce89146f"
+  integrity sha512-cc+0kNHmYFf3aRVgMqocXm1NUCa00HN+Hymzug8YEwFk4JjtnfV1f95lXywXTrXxrcB3BVvoJ8ku+rAW0VOllw==
+
 "@ra-lib/util@^0.1.20":
   version "0.1.20"
   resolved "https://registry.npmjs.org/@ra-lib/util/-/util-0.1.20.tgz#b6ceaf5342eae584d778c05a2c5d51bcafb410cc"
