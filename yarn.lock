@@ -7235,13 +7235,6 @@ istanbul-reports@^3.0.2:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
 
-jenkins@^0.28.1:
-  version "0.28.1"
-  resolved "https://registry.npmjs.org/jenkins/-/jenkins-0.28.1.tgz#f7951798ee5d2bb501a831979b6b5ecc1a922a64"
-  integrity sha512-gcC4QUrP4VzdqOMHoVzh36XlJprxJkI2HGLQSY7w84KoCTVNDcR/8O00tYyXp9vrZOx4wl5zCXLVKMgH2IoyJQ==
-  dependencies:
-    papi "^0.29.0"
-
 jest-changed-files@^26.6.2:
   version "26.6.2"
   resolved "https://registry.npmjs.org/jest-changed-files/-/jest-changed-files-26.6.2.tgz#f6198479e1cc66f22f9ae1e22acaa0b429c042d0"
@@ -9192,11 +9185,6 @@ pako@~1.0.5:
   version "1.0.11"
   resolved "https://registry.npmjs.org/pako/-/pako-1.0.11.tgz#6c9599d340d54dfd3946380252a35705a6b992bf"
   integrity sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==
-
-papi@^0.29.0:
-  version "0.29.1"
-  resolved "https://registry.npmjs.org/papi/-/papi-0.29.1.tgz#7373e2c527f5117d61fd2a0e6c6b1dd72bf7f180"
-  integrity sha512-Y9ipSMfWuuVFO3zY9PlxOmEg+bQ7CeJ28sa9/a0veYNynLf9fwjR3+3fld5otEy7okUaEOUuCHVH62MyTmACXQ==
 
 parallel-transform@^1.1.0:
   version "1.2.0"

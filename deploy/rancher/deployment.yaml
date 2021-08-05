@@ -1,0 +1,42 @@
+# 配合jenkins使用 http://172.16.175.93:8080/jenkins/job/front-center/configure
+# 注意：rancher 要手动创建命名空间
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: JOB_BASE_NAME
+    namespace: NAMESPACE_NAME
+    labels:
+        app: JOB_BASE_NAME
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: JOB_BASE_NAME
+    template:
+        metadata:
+            labels:
+                app: JOB_BASE_NAME
+        spec:
+            imagePullSecrets:
+                -   name: bh-harbor
+            containers:
+                -   image: bh-harbor.suixingpay.com/zhaikun/JOB_BASE_NAME:BUILD_ID
+                    imagePullPolicy: IfNotPresent
+                    name: JOB_BASE_NAME
+                    ports:
+                        -   containerPort: 80
+                            name: web
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: JOB_BASE_NAME
+    namespace: NAMESPACE_NAME
+spec:
+    selector:
+        app: JOB_BASE_NAME
+    type: NodePort
+    ports:
+        -   port: 80
+            protocol: TCP
+            targetPort: 80
