@@ -1678,10 +1678,12 @@
   resolved "https://registry.npmjs.org/@ra-lib/model/-/model-0.1.5.tgz#9ea614f629127fc3d037ddbd5e48ab79791172fe"
   integrity sha512-2TwKyD6VS23pGEgqIaYFnzn7PV50od3Cb4bgcmi8swLYTm/MmKQh/uG4ZN7V+p5QzhMg4wR88gU0wAKi29BXXw==
 
-"@ra-lib/rancher-deploy@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.npmjs.org/@ra-lib/rancher-deploy/-/rancher-deploy-1.0.4.tgz#dddfa1fa2c149b338a47b6f66d10f411ce89146f"
-  integrity sha512-cc+0kNHmYFf3aRVgMqocXm1NUCa00HN+Hymzug8YEwFk4JjtnfV1f95lXywXTrXxrcB3BVvoJ8ku+rAW0VOllw==
+"@ra-lib/rancher-deploy@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.npmjs.org/@ra-lib/rancher-deploy/-/rancher-deploy-1.0.6.tgz#949a2453e7d6dd17ec4db01cf05872c5b9efa051"
+  integrity sha512-0KZjG5NAqoabohT+UZRxxmrbikqXdd0hHwqd4hQ9rIkcTFYSkfQg1JMUwcuMqXSGqSGWTOukeH/VXXCXix2ddA==
+  dependencies:
+    jenkins "^0.28.1"
 
 "@ra-lib/util@^0.1.20":
   version "0.1.20"
@@ -7235,6 +7237,13 @@ istanbul-reports@^3.0.2:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
 
+jenkins@^0.28.1:
+  version "0.28.1"
+  resolved "https://registry.npmjs.org/jenkins/-/jenkins-0.28.1.tgz#f7951798ee5d2bb501a831979b6b5ecc1a922a64"
+  integrity sha512-gcC4QUrP4VzdqOMHoVzh36XlJprxJkI2HGLQSY7w84KoCTVNDcR/8O00tYyXp9vrZOx4wl5zCXLVKMgH2IoyJQ==
+  dependencies:
+    papi "^0.29.0"
+
 jest-changed-files@^26.6.2:
   version "26.6.2"
   resolved "https://registry.npmjs.org/jest-changed-files/-/jest-changed-files-26.6.2.tgz#f6198479e1cc66f22f9ae1e22acaa0b429c042d0"
@@ -9185,6 +9194,11 @@ pako@~1.0.5:
   version "1.0.11"
   resolved "https://registry.npmjs.org/pako/-/pako-1.0.11.tgz#6c9599d340d54dfd3946380252a35705a6b992bf"
   integrity sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==
+
+papi@^0.29.0:
+  version "0.29.1"
+  resolved "https://registry.npmjs.org/papi/-/papi-0.29.1.tgz#7373e2c527f5117d61fd2a0e6c6b1dd72bf7f180"
+  integrity sha512-Y9ipSMfWuuVFO3zY9PlxOmEg+bQ7CeJ28sa9/a0veYNynLf9fwjR3+3fld5otEy7okUaEOUuCHVH62MyTmACXQ==
 
 parallel-transform@^1.1.0:
   version "1.2.0"
