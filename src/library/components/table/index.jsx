@@ -76,7 +76,7 @@ export default class TableComponent extends Component {
 
     setTableBodyHeight = () => {
         this.tableBody = this.wrapper.querySelector('.ant-table-body');
-        this.tableTBody = this.wrapper.querySelector('.ant-table-tbody');
+        // this.tableTBody = this.wrapper.querySelector('.ant-table-tbody');
         this.tablePlaceholder = this.wrapper.querySelector('.ant-table-placeholder');
         this.tableHead = this.wrapper.querySelector('.ant-table-header');
 
@@ -108,7 +108,7 @@ export default class TableComponent extends Component {
 
         if (dataSource?.length) {
             this.tableBody.style.height = `${tableBodyHeight}px`;
-            this.tableTBody.style.height = `${tableBodyHeight}px`;
+            // this.tableTBody.style.height = `${tableBodyHeight}px`;
         } else {
             this.tablePlaceholder.style.height = `${tableBodyHeight}px`;
         }
