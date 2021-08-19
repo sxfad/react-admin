@@ -21,6 +21,8 @@ yarn
 
 ## 开发启动
 
+如果您是第一次使用，想快速预览效果，可以是用mock方式启动：`REACT_APP_MOCK=true yarn start`
+
 ```
 # 正常启动开发模式
 yarn start 
@@ -30,6 +32,9 @@ PORT=3001 yarn start
 
 # HTTPS 方式启动
 HTTPS=true yarn start
+
+# 开启本地mock
+REACT_APP_MOCK=true yarn start
 ```
 
 ## 开发代理
@@ -87,6 +92,14 @@ yarn build:time
         <h1 className={styles.title}></h1>
     </div>
     ```
-
-- 复杂的样式处理，推荐使用 [classnames](https://github.com/JedWatson/classnames)
+- 项目中添加了[classnames](https://github.com/JedWatson/classnames)扩展，可以直接按照[classnames](https://github.com/JedWatson/classnames)方式在className中编写样式；
+    ```jsx
+        import styles from './style.module.less';
+    
+        const isActive = true;
+  
+        <div className={[styles.root, isActive && styles.active]}>
+            <h1 className={styles.title}></h1>
+        </div>
+    ```
 - 主题变量修改 theme.less [antd 样式变量](https://ant.design/docs/react/customize-theme-cn)
