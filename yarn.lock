@@ -1678,10 +1678,10 @@
   resolved "https://registry.npmjs.org/@ra-lib/model/-/model-0.1.7.tgz#36f0eb2e4141d1ae471f704de34602ca62ce4849"
   integrity sha512-RZ/PN5BckCc/bRPQ+aRTAbnTmGPXL8OdkLN7CIY7SL4KnjAsxnxyLxIy5lVDuj7jI2nquVqvPBMbTu4pF2DzPQ==
 
-"@ra-lib/rancher-deploy@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.npmjs.org/@ra-lib/rancher-deploy/-/rancher-deploy-1.0.6.tgz#949a2453e7d6dd17ec4db01cf05872c5b9efa051"
-  integrity sha512-0KZjG5NAqoabohT+UZRxxmrbikqXdd0hHwqd4hQ9rIkcTFYSkfQg1JMUwcuMqXSGqSGWTOukeH/VXXCXix2ddA==
+"@ra-lib/rancher-deploy@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.npmjs.org/@ra-lib/rancher-deploy/-/rancher-deploy-1.0.7.tgz#8cd961d4899943e99f7d3733e63e90b75b989739"
+  integrity sha512-YpEnK9pdKOOQjYnnxPQT/U5xi4ffN7M8epHTVSVr6bvMznNE9d/PCB1KhFU1PVLfPWLSmp0xNwwKyQOH/cpuyw==
   dependencies:
     jenkins "^0.28.1"
 
