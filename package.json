@@ -25,7 +25,7 @@
         "@babel/plugin-proposal-optional-chaining": "^7.13.12",
         "@craco/craco": "^6.1.1",
         "@loadable/component": "^5.14.1",
-        "@ra-lib/admin": "^0.0.62",
+        "@ra-lib/admin": "^0.0.66",
         "@ra-lib/rancher-deploy": "^1.0.6",
         "@testing-library/jest-dom": "^5.11.4",
         "@testing-library/react": "^11.1.0",
