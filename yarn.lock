@@ -1629,10 +1629,10 @@
   resolved "https://registry.npmjs.org/@polka/url/-/url-1.0.0-next.12.tgz#431ec342a7195622f86688bbda82e3166ce8cb28"
   integrity sha512-6RglhutqrGFMO1MNUXp95RBuYIuc8wTnMAV5MUhLmjTOy78ncwOw7RgeQ/HeymkKXRhZd0s2DNrM1rL7unk3MQ==
 
-"@ra-lib/admin@^0.0.66":
-  version "0.0.66"
-  resolved "https://registry.npmjs.org/@ra-lib/admin/-/admin-0.0.66.tgz#8c81b8cd9832c98bd51724cf8c6f1f7a42f8ae4c"
-  integrity sha512-haW5nL00Fh//xlvSPUX0xuzRhpuqEKxwJaKwxAwybIABqa05dAvdbCFdpTk/1iJO5nKQ5KSOBWaSiZRaJk4r6Q==
+"@ra-lib/admin@^0.0.67":
+  version "0.0.67"
+  resolved "https://registry.nlark.com/@ra-lib/admin/download/@ra-lib/admin-0.0.67.tgz?cache=0&sync_timestamp=1629444020710&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40ra-lib%2Fadmin%2Fdownload%2F%40ra-lib%2Fadmin-0.0.67.tgz#588a9cf8f3b7b0de8211e54f48589b935674c5d9"
+  integrity sha1-WIqc+PO3sN6CEeVPSFibk1Z0xdk=
   dependencies:
     "@ra-lib/ajax" "^0.1.22"
     "@ra-lib/babel-plugin-attribute-wrapper" "^0.0.8"
