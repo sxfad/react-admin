@@ -48,6 +48,8 @@ export default async function() {
 
     // 注册子应用
     registerMicroApps(subApps, {
+
+        // 显示loading提示
         beforeLoad: (app) => {
             const {title = '子应用', name} = app;
 

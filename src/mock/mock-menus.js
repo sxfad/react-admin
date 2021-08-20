@@ -43,7 +43,22 @@ export default {
         } = config.params;
         const userRoles = await executeSql('select * from user_roles where userId = ?', [userId]);
         if (!userRoles?.length) return [200, []];
+
         const roleIds = userRoles.map(item => item.roleId).join(',');
+
+        const roles = await executeSql(`select *
+                                        from roles
+                                        where id in (${roleIds})`);
+
+        // 是超级管理员，返回所有菜单数据
+        if (roles && roles.some(item => item.type === 1)) {
+            const menus = await executeSql(`select *
+                                            from menus`);
+
+            return [200, Array.from(menus)];
+        }
+
+        console.log(roles);
 
         const roleMenus = await executeSql(`select *
                                             from role_menus
