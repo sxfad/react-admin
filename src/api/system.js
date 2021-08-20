@@ -104,7 +104,7 @@ export default {
         const props = {
             mainApp: {
                 loginUser: loginUser,
-                token: loginUser.token,
+                token: loginUser?.token,
             },
         };
         let result = [];
