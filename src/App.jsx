@@ -84,7 +84,9 @@ export default function App(props) {
                             onMenuCollect={handleMenuCollect}
                         />
                     )}
-                    <Generator/>
+                    {process.env.NODE_ENV === 'development' ? (
+                        <Generator/>
+                    ) : null}
                 </ComponentProvider>
             </ConfigProvider>
         </Provider>
