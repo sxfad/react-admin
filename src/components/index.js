@@ -7,3 +7,4 @@ export {default as AdminLayout} from './layout';
 export {default as Permission} from './permission';
 export {default as SubApp} from './sub-app';
 export {default as SubError} from './sub-app/SubError';
+export {default as Generator} from './generator';

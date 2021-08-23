@@ -1,0 +1,30 @@
+@import 'src/theme';
+
+.root {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #666;
+    font-size: 20px;
+    transition: .3s;
+    color: #fff;
+
+    &:hover {
+        box-shadow: 0 0 10px @primary-color;
+    }
+}
+
+.modal {
+    width: 100vw !important;
+    max-width: 100vw;
+    margin: 0;
+    padding: 0;
+    top: 0;
+}

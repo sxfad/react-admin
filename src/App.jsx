@@ -7,6 +7,7 @@ import moment from 'moment';
 import 'moment/locale/zh-cn'; // 解决antd日期相关组件国际化问题
 import {ComponentProvider, Loading, getLoginUser, setLoginUser} from '@ra-lib/admin';
 import AppRouter from './router/AppRouter';
+import {Generator} from 'src/components';
 import {APP_NAME, CONFIG_HOC, IS_MOBILE} from './config';
 import {store} from './models';
 import api from 'src/api';
@@ -83,6 +84,7 @@ export default function App(props) {
                             onMenuCollect={handleMenuCollect}
                         />
                     )}
+                    <Generator/>
                 </ComponentProvider>
             </ConfigProvider>
         </Provider>

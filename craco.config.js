@@ -10,6 +10,7 @@ const WebpackBar = req('webpackbar');
 const CracoAntDesignPlugin = req('craco-antd');
 const CracoLessPlugin = req('craco-less'); // include in craco-antd
 const MiniCssExtractPlugin = req('mini-css-extract-plugin');
+const generator = req('@ra-lib/generator');
 
 const packageName = require(path.join(ROOT_PATH, 'package.json')).name;
 
@@ -82,6 +83,10 @@ module.exports = {
     devServer: (devServerConfig, {env, paths, proxy, allowedHost}) => {
         if (!devServerConfig.headers) devServerConfig.headers = {};
         devServerConfig.headers['Access-Control-Allow-Origin'] = '*';
+
+        devServerConfig.before = function(app) {
+            generator(app);
+        };
         return devServerConfig;
     },
     webpack: {
