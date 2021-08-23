@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useCallback, useState} from 'react';
 import {Card, Row, Col, Form} from 'antd';
 import {
     ModalContent,
@@ -42,7 +42,7 @@ export default config({
     const {run: updateRole} = props.ajax.usePost('/role/updateRoleById', null, {setLoading, successTip: '修改成功！'});
     const {run: fetchRoleByName} = props.ajax.useGet('/role/getOneRole');
 
-    async function handleSubmit(values) {
+    const handleSubmit = useCallback(async values => {
         const params = {
             ...values,
         };
@@ -54,7 +54,7 @@ export default config({
         }
 
         onOk();
-    }
+    }, [isEdit, updateRole, saveRole, onOk]);
 
     // 系统内，角色名称不可重复
     const checkName = useDebounceValidator(async (rule, value) => {

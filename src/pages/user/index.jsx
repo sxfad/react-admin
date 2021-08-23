@@ -1,4 +1,4 @@
-import {useState, useMemo} from 'react';
+import {useState, useMemo, useCallback} from 'react';
 import {Button, Form, Space} from 'antd';
 import {
     PageContent,
@@ -33,7 +33,9 @@ export default config({
     }, [conditions, pageNum, pageSize]);
 
     // 使用现有查询条件，重新发起请求
-    const refreshSearch = () => setConditions(form.getFieldsValue());
+    const refreshSearch = useCallback(() => {
+        setConditions(form.getFieldsValue());
+    }, [form]);
 
     // 获取列表
     const {
@@ -90,11 +92,11 @@ export default config({
         },
     ];
 
-    async function handleDelete(id) {
+    const handleDelete = useCallback(async id => {
         await deleteRecord(id);
         // 触发列表更新
         refreshSearch();
-    }
+    }, [deleteRecord, refreshSearch]);
 
     const queryItem = {
         style: {width: 200},

@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useCallback, useMemo, useState} from 'react';
 import {Form, Row, Col, Card, Button} from 'antd';
 import {
     ModalContent,
@@ -26,8 +26,12 @@ export default config({
     const [form] = Form.useForm();
     const isDetail = record?.isDetail;
 
+    const params = useMemo(() => {
+        return {id: record?.id};
+    }, [record]);
+
     // 编辑时，查询详情数据
-    props.ajax.useGet('/user/getUserById', {id: record?.id}, [], {
+    props.ajax.useGet('/user/getUserById', params, [params], {
         mountFire: isEdit,
         setLoading,
         formatResult: res => {
@@ -39,7 +43,7 @@ export default config({
     const {run: update} = props.ajax.usePost('/user/updateUserById', null, {setLoading, successTip: '修改成功！'});
     const {run: fetchUserByAccount} = props.ajax.useGet('/user/getOneUser');
 
-    async function handleSubmit(values) {
+    const handleSubmit = useCallback(async (values) => {
         const roleIds = values.roleIds?.filter(id => !`${id}`.startsWith('systemId'));
         const params = {
             ...values,
@@ -53,7 +57,7 @@ export default config({
         }
 
         onOk();
-    }
+    }, [isEdit, update, save, onOk]);
 
     const checkAccount = useDebounceValidator(async (rule, value) => {
         if (!value) return;
