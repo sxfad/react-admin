@@ -150,16 +150,6 @@ module.exports = {
     },
     babel: {
         plugins: [
-            '@babel/plugin-proposal-export-default-from',
-            '@babel/plugin-proposal-optional-chaining',
-            '@babel/plugin-proposal-nullish-coalescing-operator',
-            [
-                '@babel/plugin-proposal-decorators',
-                {
-                    'legacy': true,
-                },
-            ],
-            '@babel/plugin-syntax-jsx',
             ['@ra-lib/babel-plugin-attribute-wrapper',
                 { // className={xxx} 转 className={_method(xxx)}
                     packageName: 'classnames',
@@ -195,6 +185,16 @@ module.exports = {
             //     },
             //     'wrapper',
             // ],
+            '@babel/plugin-proposal-export-default-from',
+            '@babel/plugin-proposal-optional-chaining',
+            '@babel/plugin-proposal-nullish-coalescing-operator',
+            [
+                '@babel/plugin-proposal-decorators',
+                {
+                    'legacy': true,
+                },
+            ],
+            '@babel/plugin-syntax-jsx',
         ],
     },
 };
