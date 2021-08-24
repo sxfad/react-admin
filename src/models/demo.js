@@ -43,8 +43,8 @@ export default {
      * 默认 true，全部处理，可以单独指定哪些需要自动处理
      */
     errorTip: {
-        async: false, // 异步提示
-        sync: false, // 同步提示
+        async: true, // 异步提示
+        sync: true, // 同步提示
         getUser: '获取用户失败了吧！！！', // getUser提示 优先级最高
     },
 
