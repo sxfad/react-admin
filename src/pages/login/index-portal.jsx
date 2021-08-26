@@ -2,27 +2,32 @@ import React, {useState, useEffect} from 'react';
 import {Helmet} from 'react-helmet';
 import {Button, Form} from 'antd';
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
-import {FormItem, setLoginUser} from '@ra-lib/admin';
+import {FormItem, setLoginUser, queryStringify} from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
 import {toHome} from 'src/commons';
 import {Logo} from 'src/components';
 import styles from './style.less';
 
+const formValues = {
+    account: 'P101282',
+    password: '0000',
+};
+
+const queryString = queryStringify({
+    phoneCode: '0000',
+    captchaCode: '0000',
+    captchaId: '578721818865569792',
+    srandNumFlagId: 1,
+    isPhone: false,
+    isCheck: true,
+});
+
 export default config({
-    path: '/portal/login',
+    path: '/login/portal',
     auth: false,
     layout: false,
 })(function Login(props) {
-    const p = {
-        phoneCode: '0000',
-        captchaCode: '0000',
-        captchaId: '578721818865569792',
-        srandNumFlagId: 1,
-        isPhone: false,
-        isCheck: true,
-    };
-    const queryString = Object.entries(p).map(([key, value]) => `${key}=${value}`).join('&');
-    const login = props.ajax.usePost('/api/login/login?' + queryString, null, {baseURL: 'portal', errorTip: false});
+    const login = props.ajax.usePost('/login/login?' + queryString, null, {baseURL: '/portal', errorTip: false});
 
     const [message, setMessage] = useState();
     const [isMount, setIsMount] = useState(false);
@@ -58,10 +63,7 @@ export default config({
     useEffect(() => {
         // 开发时默认填入数据
         if (process.env.NODE_ENV === 'development' || process.env.REACT_APP_PREVIEW) {
-            form.setFieldsValue({
-                account: 'P101282',
-                password: '0000',
-            });
+            form.setFieldsValue(formValues);
         }
 
         setTimeout(() => setIsMount(true), 300);

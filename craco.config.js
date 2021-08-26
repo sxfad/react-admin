@@ -84,7 +84,8 @@ module.exports = {
         if (!devServerConfig.headers) devServerConfig.headers = {};
         devServerConfig.headers['Access-Control-Allow-Origin'] = '*';
 
-        devServerConfig.before = function(app) {
+        // 不能使用before,会使proxy失效
+        devServerConfig.setup = function(app) {
             generator(app);
         };
         return devServerConfig;

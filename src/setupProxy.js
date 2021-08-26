@@ -24,7 +24,7 @@ module.exports = function(app) {
         {
             target: 'http://p-test.vbill.cn/', // 测试门户
             pathRewrite: {
-                '^/portal': '',
+                '^/portal': '/api',
             },
             changeOrigin: true,
             secure: false, // 是否验证证书
