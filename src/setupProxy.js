@@ -22,9 +22,9 @@ module.exports = function(app) {
 
     app.use(proxy('/portal',
         {
-            target: 'http://p-test.vbill.cn/', // 测试门户
+            target: 'http://172.16.143.44:32328', // 测试门户后端
             pathRewrite: {
-                '^/portal': '/api',
+                '^/portal': '',
             },
             changeOrigin: true,
             secure: false, // 是否验证证书

@@ -3,16 +3,24 @@ import {AJAX_PREFIX, AJAX_TIMEOUT} from 'src/config';
 import handleError from './handle-error';
 import handleSuccess from './handle-success';
 
-const token = getToken();
-
 // 创建Ajax实例，设置默认值
 const ajax = new Ajax({
     baseURL: AJAX_PREFIX,
     timeout: AJAX_TIMEOUT,
-    headers: {'USER-TOKEN': token},
     onError: handleError,
     onSuccess: handleSuccess,
     // withCredentials: true, // 跨域携带cookie，对应后端 Access-Control-Allow-Origin不可以为 '*'，需要指定为具体域名
+});
+
+// 请求拦截
+ajax.instance.interceptors.request.use(cfg => {
+    if (!cfg.headers) cfg.headers = {};
+    // 这里每次请求都会动态获取，放到创建实例中，只加载一次，有时候会出问题。
+    cfg.headers['auth-token'] = getToken();
+    return cfg;
+}, error => {
+    // Do something with request error
+    return Promise.reject(error);
 });
 
 // 响应拦截
@@ -25,15 +33,6 @@ ajax.instance.interceptors.response.use(res => {
     return res;
 }, error => {
     // Do something with response error
-    return Promise.reject(error);
-});
-
-// 请求拦截
-ajax.instance.interceptors.request.use(cfg => {
-    // Do something before request is sent
-    return cfg;
-}, error => {
-    // Do something with request error
     return Promise.reject(error);
 });
 

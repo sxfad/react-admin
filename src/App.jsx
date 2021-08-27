@@ -5,7 +5,7 @@ import {Provider} from 'react-redux';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn'; // 解决antd日期相关组件国际化问题
-import {ComponentProvider, Loading, getLoginUser, setLoginUser} from '@ra-lib/admin';
+import {ComponentProvider, Loading, getLoginUser, setLoginUser, isLoginPage} from '@ra-lib/admin';
 import AppRouter from './router/AppRouter';
 import {Generator} from 'src/components';
 import {APP_NAME, CONFIG_HOC, IS_MOBILE} from './config';
@@ -46,11 +46,21 @@ export default function App(props) {
 
     // 一些初始化工作
     useEffect(() => {
+        if (isLoginPage()) return setLoading(false);
+
+        // 用户收藏菜单
+        (async () => {
+            if (!CONFIG_HOC.showCollectedMenus) return;
+
+            const collectedMenus = await api.getCollectedMenus();
+            setCollectedMenus(collectedMenus);
+        })();
+
+        // 获取用户菜单、权限等
         (async () => {
             try {
                 const loginUser = getLoginUser();
 
-                // 用户存在，获取菜单
                 if (loginUser) {
                     const menus = await api.getMenus();
                     setMenus(menus);
