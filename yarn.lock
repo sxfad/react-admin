@@ -1663,10 +1663,10 @@
   resolved "https://registry.npmjs.org/@ra-lib/config-loader/-/config-loader-0.1.6.tgz#5a3a75cf5625712dcbd51660c85158e8168d969b"
   integrity sha512-IvWujA3SSqmwHuJSk2R8Wna/fHL+P75JH8o4qxCA2LKPWX94b6Gykr+NUJPmfbREPqkSqNkN9x4dIiJf7TyiRQ==
 
-"@ra-lib/generator@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.npmjs.org/@ra-lib/generator/-/generator-0.0.3.tgz#7b8f6080b3e3fa3dceb20351ea135cf811caff6a"
-  integrity sha512-D6Y5+8W25DYibew0y/XzezEbXby1Xx4qyYNSKme74xbxIrD6US3N5PGEJ2DwlxozBzaZmL4UqP3mZ3n/fknkrQ==
+"@ra-lib/generator@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.npmjs.org/@ra-lib/generator/-/generator-0.0.7.tgz#57a3636b27ecdbdcf9838ccec4126c85ed4c886e"
+  integrity sha512-dZSinDI80xcvWpBjTNfTMBVbEmMwaSLI/AbcTv839G+n6CpHtYsJJ5nEmTxZMS70d/IS588vwgjZzsTzneJBcA==
   dependencies:
     axios "^0.21.1"
     body-parser "^1.19.0"
