@@ -68,20 +68,20 @@ export default function App(props) {
                     loginUser.permissions = await api.getPermissions();
                     setLoginUser(loginUser);
                 }
+            } finally {
                 setLoading(false);
-            } catch (e) {
-                setLoading(false);
-                throw e;
             }
         })();
     }, []);
 
+    // 加载中不渲染实际内容
+    if (loading) return <Loading progress={false} spin/>;
+
+    // 加载完成后渲染，确保能拿到permissions等数据
     return (
         <Provider store={store}>
             <ConfigProvider locale={zhCN} prefixCls={theme.antPrefix}>
                 <Helmet title={APP_NAME}/>
-                {loading ? (<Loading progress={false} spin/>) : null}
-
                 <ComponentProvider
                     prefixCls={theme.raLibPrefix}
                     layoutPageOtherHeight={CONFIG_HOC.pageOtherHeight}
