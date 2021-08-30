@@ -35,39 +35,30 @@ export default function App(props) {
         setCollectedMenus(collectedMenus);
     }
 
-    useEffect(() => {
-        (async () => {
-            if (!CONFIG_HOC.showCollectedMenus) return;
-
-            const collectedMenus = await api.getCollectedMenus();
-            setCollectedMenus(collectedMenus);
-        })();
-    }, []);
-
     // 一些初始化工作
     useEffect(() => {
         if (isLoginPage()) return setLoading(false);
-
-        // 用户收藏菜单
-        (async () => {
-            if (!CONFIG_HOC.showCollectedMenus) return;
-
-            const collectedMenus = await api.getCollectedMenus();
-            setCollectedMenus(collectedMenus);
-        })();
 
         // 获取用户菜单、权限等
         (async () => {
             try {
                 const loginUser = getLoginUser();
+                if (!loginUser) return;
 
-                if (loginUser) {
-                    const menus = await api.getMenus();
-                    setMenus(menus);
-
-                    loginUser.permissions = await api.getPermissions();
-                    setLoginUser(loginUser);
+                // 用户收藏菜单
+                if (CONFIG_HOC.showCollectedMenus) {
+                    const collectedMenus = await api.getCollectedMenus();
+                    setCollectedMenus(collectedMenus);
                 }
+
+
+                // 获取用户菜单、权限等
+                const menus = await api.getMenus();
+                setMenus(menus);
+
+                loginUser.permissions = await api.getPermissions();
+                setLoginUser(loginUser);
+
             } finally {
                 setLoading(false);
             }
