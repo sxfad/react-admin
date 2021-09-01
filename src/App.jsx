@@ -5,7 +5,7 @@ import {Provider} from 'react-redux';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn'; // 解决antd日期相关组件国际化问题
-import {ComponentProvider, Loading, getLoginUser, setLoginUser, isLoginPage} from '@ra-lib/admin';
+import {ComponentProvider, Loading, getLoginUser, setLoginUser, /*queryParse,*/ isLoginPage} from '@ra-lib/admin';
 import AppRouter from './router/AppRouter';
 import {Generator} from 'src/components';
 import {APP_NAME, CONFIG_HOC, IS_MOBILE} from './config';
@@ -37,20 +37,31 @@ export default function App(props) {
 
     // 一些初始化工作
     useEffect(() => {
+        // 登录页面不请求
         if (isLoginPage()) return setLoading(false);
 
         // 获取用户菜单、权限等
         (async () => {
             try {
-                const loginUser = getLoginUser();
-                if (!loginUser) return;
+                let loginUser = getLoginUser();
+                if (!loginUser) {
+                    // 嵌入iframe等方式，没有经过登录页面，没有设置loginUser，需要请求loginUser
+                    // 发请求，获取loginUser
+                    // loginUser = await api.getLoginUser();
+                    //
+                    // const {token} = queryParse();
+                    // if (token) loginUser.token = token;
+                    //
+                    // setLoginUser(loginUser);
+
+                    return setLoading(false);
+                }
 
                 // 用户收藏菜单
                 if (CONFIG_HOC.showCollectedMenus) {
                     const collectedMenus = await api.getCollectedMenus();
                     setCollectedMenus(collectedMenus);
                 }
-
 
                 // 获取用户菜单、权限等
                 const menus = await api.getMenus();
