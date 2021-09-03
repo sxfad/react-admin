@@ -6,7 +6,6 @@ import {Footer} from 'src/components';
 
 const Router = HASH_ROUTER ? HashRouter : BrowserRouter;
 const baseName = HASH_ROUTER ? '' : BASE_NAME;
-
 export default function AppRouter(props) {
     const {
         menus,
@@ -33,7 +32,6 @@ export default function AppRouter(props) {
                 <Switch>
                     {routes.map(item => {
                         const {path, component} = item;
-
                         return (
                             <Route
                                 key={path}
