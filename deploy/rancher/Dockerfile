@@ -3,7 +3,8 @@ FROM bh-harbor.suixingpay.com/zhaikun/nginx:alpine
 RUN rm -rf /etc/nginx/conf.d/* \
     && rm -rf /usr/share/nginx/html/*
 
-ADD build/ /usr/share/nginx/html
+RUN mkdir react-admin
+ADD build/ /usr/share/nginx/html/react-admin
 ADD nginx.conf /etc/nginx/conf.d/
 
 RUN chmod 775 -R /usr/share/nginx/html \
