@@ -21,6 +21,12 @@ const result = createStoreByModels(models, {
     onSuccess: handleSuccess,
 });
 
-export const store = result.store;
 export const connect = result.connect;
+
+/**
+ * 导出 storage actions 给非组件环境使用
+ const demoState = store.getState()?.demo
+ const demoAction = actions.demo
+ */
+export const store = result.store;
 export const actions = result.actions;
