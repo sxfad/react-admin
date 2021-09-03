@@ -46,8 +46,8 @@ export default config({
             ...values,
         };
 
-        // alert('TODO 登录');
-        // login.run = async () => ({id: 1, name: '测试', token: 'test'});
+        alert('TODO 登录');
+        login.run = async () => ({id: 1, name: '测试', token: 'test'});
 
         login.run(params, {errorTip: false})
             .then(res => {
