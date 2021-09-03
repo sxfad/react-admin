@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "cross-env PORT=3000 NODE_ENV=development craco start",
         "start": "nodemon -w craco.config.js -w ./src/theme.less -w ./src/setupProxy.js --exec \"yarn dev\"",
-        "build": "PUBLIC_URL=/react-admin REACT_APP_BASE_NAME=/react-admin BUILD_PATH=build/react-admin craco build",
+        "build": "PUBLIC_URL=/react-admin REACT_APP_BASE_NAME=/react-admin craco build",
         "build:analyzer": "cross-env ANALYZER=true yarn build",
         "build:time": "cross-env ANALYZER_TIME=true yarn build",
         "build:prev": "cross-env REACT_APP_PREVIEW=true REACT_APP_MOCK=true REACT_APP_HASH_ROUTER=true REACT_APP_BASE_NAME=/react-admin/build/ PUBLIC_URL=/react-admin/build/ BUILD_PATH=docs/build yarn build",
