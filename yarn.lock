@@ -1629,14 +1629,14 @@
   resolved "https://registry.npmjs.org/@polka/url/-/url-1.0.0-next.12.tgz#431ec342a7195622f86688bbda82e3166ce8cb28"
   integrity sha512-6RglhutqrGFMO1MNUXp95RBuYIuc8wTnMAV5MUhLmjTOy78ncwOw7RgeQ/HeymkKXRhZd0s2DNrM1rL7unk3MQ==
 
-"@ra-lib/admin@^0.0.82":
-  version "0.0.82"
-  resolved "https://registry.npmjs.org/@ra-lib/admin/-/admin-0.0.82.tgz#9718eb0668312f148e5a4855ac9dc5060c8422da"
-  integrity sha512-k1YtlKWvHInWhI/gjheRbbIWBt3uoDrFzO0B7Z7JPvzdV6FoNste6/LPE8mMjBlIb4WUTX6H85HmzN6teyW/RQ==
+"@ra-lib/admin@^0.0.89":
+  version "0.0.89"
+  resolved "https://registry.npmjs.org/@ra-lib/admin/-/admin-0.0.89.tgz#1e468ca8a12e46f2eaf8bfd6c10de4c12eebfbde"
+  integrity sha512-FvZTVyJ6CRZGm8GGGEThWhVi+Bnqk/QENvOg04vaHubJFo9ta2v6mhX2DS9OqGgPqQ4duZdT86cruqsL8unukA==
   dependencies:
     "@ra-lib/ajax" "^0.1.23"
-    "@ra-lib/babel-plugin-attribute-wrapper" "^0.0.12"
-    "@ra-lib/components" "^0.1.74"
+    "@ra-lib/babel-plugin-attribute-wrapper" "^0.0.17"
+    "@ra-lib/components" "^0.1.78"
     "@ra-lib/config-loader" "^0.1.6"
     "@ra-lib/hoc" "^0.1.6"
     "@ra-lib/hooks" "^0.1.8"
@@ -1648,15 +1648,15 @@
   resolved "https://registry.npmjs.org/@ra-lib/ajax/-/ajax-0.1.23.tgz#2d9e8aa86d1c5ebb650b0b6ee3995b8b8e3b6f4e"
   integrity sha512-h9LB/i/35adg0W5dA1LrtYk9xx5ky+SV+PqRsm13RQw7k//3DZKp+AYS5KIFMegyoB5jThd/1A0u9HCrce5U5w==
 
-"@ra-lib/babel-plugin-attribute-wrapper@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.npmjs.org/@ra-lib/babel-plugin-attribute-wrapper/-/babel-plugin-attribute-wrapper-0.0.12.tgz#d92ecfc24cb8bf6cb40e06c16b6f36691617e66a"
-  integrity sha512-yg8jPqSTYw9AROWYkSRPoFwMQDibs0MKMISCaCWrFr3lPQlU57YksTTsi/PIEZ7mcr12x9mVB9hYP5chs5l5ww==
+"@ra-lib/babel-plugin-attribute-wrapper@^0.0.17":
+  version "0.0.17"
+  resolved "https://registry.npmjs.org/@ra-lib/babel-plugin-attribute-wrapper/-/babel-plugin-attribute-wrapper-0.0.17.tgz#f50143453540057d16301451aea9077bed55449a"
+  integrity sha512-0qGGi0d9//EO9j02Gm59w8K+GyP580lluNfYo81GuRuNXnckiI3NejEGKpIyZGHLrY4VsSaxeZRVpn6+GbkoYg==
 
-"@ra-lib/components@^0.1.74":
-  version "0.1.74"
-  resolved "https://registry.npmjs.org/@ra-lib/components/-/components-0.1.74.tgz#dc0201e22aa7076aa3a1be9fec392222cdc005ce"
-  integrity sha512-nGSAZ5BUBnFixYh1yUKLhJGYA6VGRwD0PVYr023fjxsZHcTe9OaVD4t3YkW92RKOgdbkCjork+3l23X9xaxXkw==
+"@ra-lib/components@^0.1.78":
+  version "0.1.78"
+  resolved "https://registry.npmjs.org/@ra-lib/components/-/components-0.1.78.tgz#8964e8285f427e6d82fe96edb6fc31e4c99652ff"
+  integrity sha512-mwVID7Z7qhy3l31Au84mVL3yhwsMSlzqjaeSAqK18ZM985FDnd5Pe5cOZiDnvMPkSXMwmhVon1nvW0RhTifkmw==
 
 "@ra-lib/config-loader@^0.1.6":
   version "0.1.6"
