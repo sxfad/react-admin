@@ -22,10 +22,10 @@ import qiankun from './qiankun';
 
 
 // 开启mock，这个判断不要修改，否则会把mock相关js打入生产包，很大
-if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_MOCK) {
+// if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_MOCK) {
     require('./mock/index');
     console.warn('mock is enabled!!!');
-}
+// }
 
 function getRootDom(props) {
     const rootId = '#root';
