@@ -13,7 +13,8 @@
         "test": "craco test",
         "docs": "docsify serve -p 3301",
         "lint": "lint-staged",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "prepare2": "cd .. && husky install tas-front/.husky"
     },
     "dependencies": {
         "@ahooksjs/use-url-state": "^2.5.7",
@@ -122,6 +123,7 @@
         ]
     },
     "lint-staged": {
+        "gitDir": ".",
         "src/**/*.{js,jsx,ts,tsx}": "eslint --max-warnings 0 --fix"
     }
 }
