@@ -1663,10 +1663,10 @@
   resolved "https://registry.npmjs.org/@ra-lib/config-loader/-/config-loader-0.1.6.tgz#5a3a75cf5625712dcbd51660c85158e8168d969b"
   integrity sha512-IvWujA3SSqmwHuJSk2R8Wna/fHL+P75JH8o4qxCA2LKPWX94b6Gykr+NUJPmfbREPqkSqNkN9x4dIiJf7TyiRQ==
 
-"@ra-lib/generator@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@ra-lib/generator/-/generator-0.0.7.tgz#57a3636b27ecdbdcf9838ccec4126c85ed4c886e"
-  integrity sha512-dZSinDI80xcvWpBjTNfTMBVbEmMwaSLI/AbcTv839G+n6CpHtYsJJ5nEmTxZMS70d/IS588vwgjZzsTzneJBcA==
+"@ra-lib/generator@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.npmjs.org/@ra-lib/generator/-/generator-0.0.8.tgz#e7a03201ff120fa6623fba9d988159f3d1819377"
+  integrity sha512-eX98re3qlxhLpk+3Df6V7fYUT1UquGp327/P57G63IqMFMPCMzyQhCJdeOAiHiDq/ZjlEtGawNVTg8dRSSBwow==
   dependencies:
     axios "^0.21.1"
     body-parser "^1.19.0"
@@ -1694,10 +1694,10 @@
   resolved "https://registry.npmjs.org/@ra-lib/model/-/model-0.1.9.tgz#e5476b4c4a77a47809968d20baab29e97caf372c"
   integrity sha512-jTSpLIMXnEU4xNxDZ75BBz8ZeTv2nG4WPgftdClfYFXOpEaftSFJ2ZS/EurpusKNxh36iWQ8Iv7DNbFPBnEwrw==
 
-"@ra-lib/rancher-deploy@^1.0.7":
-  version "1.0.7"
-  resolved "https://registry.npmjs.org/@ra-lib/rancher-deploy/-/rancher-deploy-1.0.7.tgz#8cd961d4899943e99f7d3733e63e90b75b989739"
-  integrity sha512-YpEnK9pdKOOQjYnnxPQT/U5xi4ffN7M8epHTVSVr6bvMznNE9d/PCB1KhFU1PVLfPWLSmp0xNwwKyQOH/cpuyw==
+"@ra-lib/rancher-deploy@^1.0.14":
+  version "1.0.14"
+  resolved "https://registry.npmjs.org/@ra-lib/rancher-deploy/-/rancher-deploy-1.0.14.tgz#189d8f326b4f3bd5536b3322f3c44de721b1cebb"
+  integrity sha512-JCqTJ8sSg8IbpW3GyzTVXmPw5jXarpL7gpOEauuSsHZDb7qg7iBYohsiZNx8PBwgXgfj5H2uxs+P+fd62IEGrg==
   dependencies:
     jenkins "^0.28.1"
 
