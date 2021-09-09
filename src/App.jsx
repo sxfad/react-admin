@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {ConfigProvider} from 'antd';
 import {Helmet} from 'react-helmet';
 import {Provider} from 'react-redux';
@@ -27,13 +27,12 @@ export default function App(props) {
     const [loading, setLoading] = useState(true);
     const [menus, setMenus] = useState([]);
     const [collectedMenus, setCollectedMenus] = useState(CONFIG_HOC.showCollectedMenus ? [] : null);
-
-    async function handleMenuCollect(menu, collected) {
+    const handleMenuCollect = useCallback(async (menu, collected) => {
         await api.saveCollectedMenu({menuId: menu.id, collected});
 
         const collectedMenus = await api.getCollectedMenus();
         setCollectedMenus(collectedMenus);
-    }
+    }, []);
 
     // 一些初始化工作
     useEffect(() => {
@@ -63,10 +62,11 @@ export default function App(props) {
                     setCollectedMenus(collectedMenus);
                 }
 
-                // 获取用户菜单、权限等
+                // 获取用户菜单
                 const menus = await api.getMenus();
                 setMenus(menus);
 
+                // 获取用户权限
                 loginUser.permissions = await api.getPermissions();
                 setLoginUser(loginUser);
 
