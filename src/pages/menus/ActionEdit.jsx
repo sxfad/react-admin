@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useCallback} from 'react';
 import {Button, Empty, Form, Space} from 'antd';
 import {MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
 import {FormItem, Content} from '@ra-lib/admin';
@@ -11,14 +11,14 @@ export default config()(function ActionEdit(props) {
     const [loading, setLoading] = useState(false);
     const {run: save} = props.ajax.usePost('/menu/updateSubActions', null, {setLoading, successTip: '功能保存成功！'});
 
-    async function handleSubmit(values) {
+    const handleSubmit = useCallback(async (values) => {
         const {actions} = values;
         const parentId = selectedMenu?.id;
 
         await save({actions, parentId});
 
         onSubmit && onSubmit(actions);
-    }
+    }, [onSubmit, selectedMenu, save]);
 
     useEffect(() => {
         form.resetFields();

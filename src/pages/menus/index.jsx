@@ -1,4 +1,4 @@
-import {useEffect, useState, useMemo} from 'react';
+import {useEffect, useState, useMemo, useCallback} from 'react';
 import {Menu, Button, Space, Empty} from 'antd';
 import {
     PageContent,
@@ -36,21 +36,21 @@ export default config({
         },
     });
 
-    async function checkUnSave(showTip = true) {
+    const checkUnSave = useCallback(async (showTip = true) => {
         if (showTip && hasUnSaveMenu) await confirm('菜单有未保存数据，是否放弃？');
         setHasUnSaveMenu(false);
 
         if (showTip && hasUnSaveAction) await confirm('功能列表有未保存数据，是否放弃？');
         setHasUnSaveAction(false);
-    }
+    }, [hasUnSaveMenu, hasUnSaveAction]);
 
-    async function handleClick({key}, showTip = true) {
+    const handleClick = useCallback(async ({key}, showTip = true) => {
         await checkUnSave(showTip);
 
         const menuData = menus.find(item => item.id === key);
         setSelectedMenu(menuData);
         setIsAdd(false);
-    }
+    }, [checkUnSave, menus]);
 
     const [menuItems, menuTreeData] = useMemo(() => {
         const menuTreeData = convertToTree(sort(menus, (a, b) => b.order - a.order));
@@ -94,10 +94,9 @@ export default config({
         (async () => {
             await fetchMenus();
         })();
-        // eslint-disable-next-line
-    }, []);
+    }, [fetchMenus]);
 
-    async function handleMenuSubmit(data) {
+    const handleMenuSubmit = useCallback(async (data) => {
         setHasUnSaveMenu(false);
         const {isAdd, isDelete, isUpdate, id} = data;
 
@@ -121,13 +120,13 @@ export default config({
                 setIsAdd(true);
             }
         }
-    }
+    }, [fetchMenus, handleClick, menuTreeData, selectedMenu]);
 
-    async function handleActionSubmit() {
+    const handleActionSubmit = useCallback(async () => {
         setHasUnSaveAction(false);
 
         await fetchMenus();
-    }
+    }, [fetchMenus]);
 
     return (
         <PageContent loading={loading} fitHeight className={styles.menuRoot}>

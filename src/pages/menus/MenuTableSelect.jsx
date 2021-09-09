@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useCallback} from 'react';
 import {Input, Button} from 'antd';
 import {
     convertToTree,
@@ -54,7 +54,7 @@ export default config()(function MenuTableSelect(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [menuTreeData, topId]);
 
-    async function fetchMenus() {
+    const fetchMenus = useCallback(async () => {
         const res = await props.ajax.get('/menu/queryMenus', {enabled: true});
 
         return (res || []).map(item => {
@@ -62,9 +62,10 @@ export default config()(function MenuTableSelect(props) {
                 ...item,
             };
         });
-    }
+    }, [props.ajax]);
 
-    async function handleSearch() {
+
+    const handleSearch = useCallback(async () => {
         setLoading(true);
 
         try {
@@ -85,9 +86,9 @@ export default config()(function MenuTableSelect(props) {
             setLoading(false);
             throw e;
         }
-    }
+    }, [fetchMenus, menus]);
 
-    function handleSearchValue(value) {
+    const handleSearchValue = useCallback(() => {
         const dataSource = filterTree(menuTreeData, node => {
             let {title, path, name, code} = node;
 
@@ -99,19 +100,20 @@ export default config()(function MenuTableSelect(props) {
         setDataSource(dataSource);
         setExpandedAll(true);
         setExpandedRowKeys(allMenuKeys);
-    }
+    }, [allMenuKeys, menuTreeData, value]);
 
-    function handleSearchChange(e) {
+
+    const handleSearchChange = useCallback((e) => {
         if (timerRef.current) clearTimeout(timerRef.current);
 
         timerRef.current = setTimeout(() => handleSearchValue(e.target.value), 3000);
-    }
+    }, [handleSearchValue]);
 
-    function handleToggleExpanded() {
+    const handleToggleExpanded = useCallback(() => {
         const expandedRowKeys = !expandedAll ? allMenuKeys : [];
         setExpandedAll(!expandedAll);
         setExpandedRowKeys(expandedRowKeys);
-    }
+    }, [allMenuKeys, expandedAll]);
 
     return (
         <>

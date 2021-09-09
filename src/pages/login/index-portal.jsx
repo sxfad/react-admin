@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {Helmet} from 'react-helmet';
 import {Button, Form} from 'antd';
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
@@ -33,7 +33,7 @@ export default config({
     const [isMount, setIsMount] = useState(false);
     const [form] = Form.useForm();
 
-    function handleSubmit(values) {
+    const handleSubmit = useCallback((values) => {
         if (login.loading) return;
 
         const {account, password} = values;
@@ -58,7 +58,8 @@ export default config({
                 console.error(err);
                 setMessage(err.response?.data?.message || '用户名或密码错误');
             });
-    }
+
+    }, [login]);
 
     useEffect(() => {
         // 开发时默认填入数据

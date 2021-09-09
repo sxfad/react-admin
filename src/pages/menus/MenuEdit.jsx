@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef} from 'react';
+import {useState, useEffect, useRef, useCallback} from 'react';
 import {Button, Form, Modal, Space, Tabs, Popconfirm} from 'antd';
 import json5 from 'json5';
 import {
@@ -56,7 +56,7 @@ export default config()(function MenuEdit(props) {
         form.setFieldsValue(initialValues);
     }, [form, isAdd, isAddTop, isAddSub, selectedMenu]);
 
-    async function handleSubmit(values) {
+    const handleSubmit = useCallback(async (values) => {
         if (loading) return;
 
         const params = {
@@ -104,7 +104,8 @@ export default config()(function MenuEdit(props) {
             await updateMenu(params);
             onSubmit && onSubmit({...params, isUpdate: true});
         }
-    }
+
+    }, [addTabKey, branchSaveMenu, isAdd, isAddSub, isAddTop, loading, onSubmit, saveMenu, saveRole, updateMenu]);
 
 
     const checkName = useDebounceValidator(async (rule, value) => {
@@ -119,12 +120,12 @@ export default config()(function MenuEdit(props) {
         if (!isAdd && menuId !== id && menu.name === value) throw Error('注册名称不能重复！');
     });
 
-    async function handleDelete() {
+    const handleDelete = useCallback(async () => {
         const id = selectedMenu?.id;
         await deleteMenu({id});
 
         onSubmit && onSubmit({id, isDelete: true});
-    }
+    }, [deleteMenu, onSubmit, selectedMenu?.id]);
 
     const layout = {
         labelCol: {flex: '100px'},
