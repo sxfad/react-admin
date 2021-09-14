@@ -132,6 +132,21 @@ module.exports = {
                 include: SRC_PATH,
             });
 
+            webpackConfig.module.rules.push({
+                test: /\.tsx?$/,
+                // ts-loader是官方提供的处理tsx的文件
+                use: {
+                    loader: 'ts-loader',
+                    options: {
+                        compilerOptions: {
+                            noEmit: false,
+                        },
+                    },
+                },
+                exclude: /node_modules/,
+                include: SRC_PATH,
+            });
+
             if (process.env.ANALYZER_TIME === 'true') {
                 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 
