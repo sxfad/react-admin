@@ -31,6 +31,3 @@ yarn-error.log*
 /src/ra-lib
 /src/pages/local
 /server
-
-# react-app
-react-app-env.d.ts
