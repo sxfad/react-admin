@@ -56,4 +56,3 @@ export const usePut = hooks.usePut;
 export const useDel = hooks.useDel;
 export const usePatch = hooks.usePatch;
 export const useDownload = hooks.useDownload;
-

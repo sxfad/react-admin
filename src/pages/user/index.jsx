@@ -19,7 +19,7 @@ export default config({
     const [loading, setLoading] = useState(false);
     const [pageNum, setPageNum] = useState(1);
     const [pageSize, setPageSize] = useState(20);
-    const [conditions, setConditions] = useState({position: '01'});
+    const [conditions, setConditions] = useState({});
     const [visible, setVisible] = useState(false);
     const [record, setRecord] = useState(null);
     const [form] = Form.useForm();
@@ -109,7 +109,7 @@ export default config({
                     name="user"
                     layout="inline"
                     form={form}
-                    initialValues={conditions}
+                    initialValues={{position: '01'}}
                     onFinish={values => setPageNum(1) || setConditions(values)}
                 >
                     <FormItem

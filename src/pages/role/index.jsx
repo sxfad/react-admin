@@ -108,7 +108,6 @@ export default config({
                     name="role"
                     layout="inline"
                     form={form}
-                    initialValues={conditions}
                     onFinish={values => {
                         setPageNum(1);
                         setConditions(values);
