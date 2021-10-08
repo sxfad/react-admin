@@ -160,7 +160,7 @@ module.exports = {
             ],
             ['@ra-lib/babel-plugin-attribute-wrapper',
                 { // 三元运算_method(xxx) ? <div> : null
-                    importName: 'hasPermission',
+                    importName: 'hasPermission', // import {hasPermission} from packageName
                     packageName: '@ra-lib/admin',
                     attributeName: 'r-code',
                     conditional: true,
