@@ -28,7 +28,7 @@ ajax.instance.interceptors.response.use(res => {
     // Do something before response
 
     // 后端自定义失败，前端直接抛出，走handleError逻辑
-    // if ('code' in res.data && res.data.code !== 0) return Promise.reject(res.data);
+    // if (typeof res.data === 'object' && 'code' in res.data && res.data.code !== 0) return Promise.reject(res.data);
 
     return res;
 }, error => {
