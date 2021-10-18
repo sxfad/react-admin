@@ -1,4 +1,4 @@
-import {notification} from 'antd';
+import {notification, Modal} from 'antd';
 import {toLogin} from './index';
 
 const ERROR_SERVER = '系统开小差了，请稍后再试或联系管理员！';
@@ -31,12 +31,34 @@ function getErrorTip(error, tip) {
     return '未知错误';
 }
 
-export default function handleError({error, tip}) {
+export default function handleError({error, tip, options = {}}) {
     const description = getErrorTip(error, tip);
-    if (!description) return;
+    const {errorModal} = options;
+
+    if (!description && !errorModal) return;
 
     // 避免卡顿
     setTimeout(() => {
+        if (errorModal) {
+            if (errorModal === true) {
+                return Modal.error({
+                    title: '温馨提示',
+                    content: description,
+                });
+            }
+            if (typeof errorModal === 'object') {
+                return Modal.error({
+                    title: '温馨提示',
+                    content: description,
+                    ...errorModal,
+                });
+            }
+
+            return Modal.error({
+                title: '温馨提示',
+                content: description,
+            });
+        }
         notification.error({
             message: '失败',
             description,
