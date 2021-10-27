@@ -1629,34 +1629,34 @@
   resolved "https://registry.npmjs.org/@polka/url/-/url-1.0.0-next.12.tgz#431ec342a7195622f86688bbda82e3166ce8cb28"
   integrity sha512-6RglhutqrGFMO1MNUXp95RBuYIuc8wTnMAV5MUhLmjTOy78ncwOw7RgeQ/HeymkKXRhZd0s2DNrM1rL7unk3MQ==
 
-"@ra-lib/admin@^0.0.103":
-  version "0.0.103"
-  resolved "https://registry.npmjs.org/@ra-lib/admin/-/admin-0.0.103.tgz#4bdd5ce91820701bc083faf4adeb25f061f0e7a1"
-  integrity sha512-VwYCWX4O2lm542tkbuNLVWmMaAv6rVeKpN2Q2zmsEV8n/suo13F7f2o+/EZ2D47zcGjcrvA5YK9PX1S4enM/bg==
+"@ra-lib/admin@^0.1.10":
+  version "0.1.10"
+  resolved "https://registry.npmjs.org/@ra-lib/admin/-/admin-0.1.10.tgz#68c48db9848aa1c7dfd83227bdb8e00c17741526"
+  integrity sha512-LYNX8+/XENynAWsvH9p0zd+z41pFIWgg3dbTfTX0gYTvdeaZS9jUGtg+5rLnci7LANbwZd/fiDCL5nlx83PQVA==
   dependencies:
-    "@ra-lib/ajax" "^0.1.24"
+    "@ra-lib/ajax" "^0.1.28"
     "@ra-lib/babel-plugin-attribute-wrapper" "^0.0.17"
-    "@ra-lib/components" "^0.1.85"
+    "@ra-lib/components" "^0.1.88"
     "@ra-lib/config-loader" "^0.1.6"
     "@ra-lib/hoc" "^0.1.6"
     "@ra-lib/hooks" "^0.1.8"
-    "@ra-lib/model" "^0.1.9"
+    "@ra-lib/model" "^0.1.10"
     "@ra-lib/util" "^0.1.21"
 
-"@ra-lib/ajax@^0.1.24":
-  version "0.1.24"
-  resolved "https://registry.npmjs.org/@ra-lib/ajax/-/ajax-0.1.24.tgz#6feb278b1ba79c8ec814010def49e8888588c0fe"
-  integrity sha512-5bZp6K4gnkQvgqTGKjK+cnsnlyVhq3krZnPyb4ZqeNuIjTr9AC+OQHfH53N73zzXU0QszLz1KsGKOJhMamI62A==
+"@ra-lib/ajax@^0.1.28":
+  version "0.1.28"
+  resolved "https://registry.npmjs.org/@ra-lib/ajax/-/ajax-0.1.28.tgz#8f78b0723c7d653757fb82e30df06f971c51bce3"
+  integrity sha512-l9/MbqH318tzYx/ZaEEiQvN13SflpgRwoREZ/hoxZRc7fSd9RX80CrQw2/m69MWyExjTHkgzSbMkBfskrk1x5Q==
 
 "@ra-lib/babel-plugin-attribute-wrapper@^0.0.17":
   version "0.0.17"
   resolved "https://registry.npmjs.org/@ra-lib/babel-plugin-attribute-wrapper/-/babel-plugin-attribute-wrapper-0.0.17.tgz#f50143453540057d16301451aea9077bed55449a"
   integrity sha512-0qGGi0d9//EO9j02Gm59w8K+GyP580lluNfYo81GuRuNXnckiI3NejEGKpIyZGHLrY4VsSaxeZRVpn6+GbkoYg==
 
-"@ra-lib/components@^0.1.85":
-  version "0.1.85"
-  resolved "https://registry.npmjs.org/@ra-lib/components/-/components-0.1.85.tgz#8fb5932100855f731569a929c18d96338c637071"
-  integrity sha512-J1Cjx8xI+wCOv13YK8o63rJ1W7Dab0hWwYC5Cc83uXGC3BS4J+fB3TrYiYfFvQa7dB6T5BPZsxGG7P0Gg5BJLQ==
+"@ra-lib/components@^0.1.88":
+  version "0.1.88"
+  resolved "https://registry.npmjs.org/@ra-lib/components/-/components-0.1.88.tgz#480979959f7994665814099f4fd092ef6c08d26a"
+  integrity sha512-r0D+3Bhs8HX3vHgUNebFoOVt2m0YEplTuqyICX/G1fxVzsa8ku7YyIxqRanmzs1rHLBpKJ/XY6OVF/a+aw5nkg==
 
 "@ra-lib/config-loader@^0.1.6":
   version "0.1.6"
@@ -1689,10 +1689,10 @@
   resolved "https://registry.npmjs.org/@ra-lib/hooks/-/hooks-0.1.8.tgz#d386ecd6ef297d0ea501f5570967bf9f1f55d935"
   integrity sha512-ue67jnIxzc+0/e7dV+UUvGJirYjgnMjC8IDLv58HKDAyCYm/nDBrSjWrgwqJBA9HLCZRpQg2EtIVeZUHt060zg==
 
-"@ra-lib/model@^0.1.9":
-  version "0.1.9"
-  resolved "https://registry.npmjs.org/@ra-lib/model/-/model-0.1.9.tgz#e5476b4c4a77a47809968d20baab29e97caf372c"
-  integrity sha512-jTSpLIMXnEU4xNxDZ75BBz8ZeTv2nG4WPgftdClfYFXOpEaftSFJ2ZS/EurpusKNxh36iWQ8Iv7DNbFPBnEwrw==
+"@ra-lib/model@^0.1.10":
+  version "0.1.10"
+  resolved "https://registry.npmjs.org/@ra-lib/model/-/model-0.1.10.tgz#54dcecd39e68b4118e170210b16e573f9b1f001a"
+  integrity sha512-tycQoHU+62sZFwCCpnbixcfjQC+LbCV6gSlhja0Y3O/bvvXBUqNKlgFPmQ7lyw5IIkKamC5OSxTiPlZIadEuHQ==
 
 "@ra-lib/rancher-deploy@^1.0.14":
   version "1.0.14"
