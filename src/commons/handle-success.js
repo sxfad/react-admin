@@ -29,7 +29,7 @@ export default function handleSuccess({data, tip, options = {}}) {
         }
         notification.success({
             message: '成功',
-            tip: tip,
+            description: tip,
             duration: 2,
         });
     });
