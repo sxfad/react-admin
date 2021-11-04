@@ -3,10 +3,6 @@
 @ant-prefix: ~'@{packageName}';
 @ra-lib-prefix: ~'@{packageName}';
 
-:export {
-    antPrefix: @ant-prefix;
-    raLibPrefix: @ra-lib-prefix;
-}
 
 // 自定义变量
 //@page-content-margin: 0;
@@ -31,3 +27,9 @@
 // 字体颜色
 @text-color: fade(#000, 65%);
 @body-background: #f0f2f5;
+
+:export {
+    antPrefix: @ant-prefix;
+    raLibPrefix: @ra-lib-prefix;
+    primaryColor: @primary-color;
+}

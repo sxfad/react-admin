@@ -13,14 +13,19 @@ const getConfigValue = (key, defaultValue, parse = value => value) => gc(envConf
  * 配置优先级 命令行 > 环境文件 > 默认
  * 当前文件为默认配置，会被环境配置、命令行参数覆盖
  * */
-// 应用名称
-export const APP_NAME = getConfigValue('APP_NAME', 'React Admin');
-// ajax 请求前缀
-export const AJAX_PREFIX = getConfigValue('AJAX_PREFIX', window.__POWERED_BY_QIANKUN__ ? `${window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__}api` : '/api');
-// ajax 超时时间
-export const AJAX_TIMEOUT = getConfigValue('AJAX_TIMEOUT', 1000 * 60, Number);
 // 运行环境
 export const NODE_ENV = process.env.NODE_ENV;
+
+// 应用名称
+export const APP_NAME = getConfigValue('APP_NAME', 'React Admin');
+
+// ajax 请求前缀
+const useLocalStorage = NODE_ENV === 'development' || window.location.hostname === '172.16.143.44';
+export const AJAX_PREFIX = useLocalStorage ? (window.localStorage.getItem('AJAX_PREFIX') || '/api') : getConfigValue('AJAX_PREFIX', window.__POWERED_BY_QIANKUN__ ? `${window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__}api` : '/api');
+
+// ajax 超时时间
+export const AJAX_TIMEOUT = getConfigValue('AJAX_TIMEOUT', 1000 * 60, Number);
+
 // 配置环境
 export const CONFIG_ENV = process.env.REACT_APP_CONFIG_ENV;
 // config-hoc 配置存储key
