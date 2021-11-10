@@ -5,7 +5,7 @@ import {Provider} from 'react-redux';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn'; // 解决antd日期相关组件国际化问题
-import {ComponentProvider, Loading, getLoginUser, setLoginUser, getToken, isLoginPage} from '@ra-lib/admin';
+import {ComponentProvider, Loading, getLoginUser, setLoginUser, /*queryParse,*/ isLoginPage} from '@ra-lib/admin';
 import AppRouter from './router/AppRouter';
 import {Generator} from 'src/components';
 import {APP_NAME, CONFIG_HOC, IS_MOBILE} from './config';
@@ -47,18 +47,13 @@ export default function App(props) {
                     // 嵌入iframe等方式，没有经过登录页面，没有设置loginUser，需要请求loginUser
                     // 发请求，获取loginUser
                     // loginUser = await api.getLoginUser();
-                    // 从jwt各式的token中解析出用户信息
-                    const token = getToken();
-                    if (token) {
-                        const user = JSON.parse(window.atob(token.split('.')[1]));
-                        loginUser = {
-                            ...user,
-                            token,
-                            id: user.userId,
-                            name: user.loginName,
-                        };
-                        setLoginUser(loginUser);
-                    }
+                    //
+                    // const {token} = queryParse();
+                    // if (token) loginUser.token = token;
+                    //
+                    // setLoginUser(loginUser);
+
+                    return setLoading(false);
                 }
 
                 // 用户收藏菜单
