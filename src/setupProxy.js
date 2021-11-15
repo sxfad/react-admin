@@ -61,8 +61,8 @@ function modifyTestNg() {
     const startIndex = ngConfig.indexOf('# 代理ajax请求');
 
     const nextNgConfig = `
-${ngConfig.substring(0, startIndex)}${locations}
+${ngConfig.substring(0, startIndex)}${locations.trim()}
 }
     `;
-    fs.writeFileSync(ngConfigPath, nextNgConfig, 'UTF-8');
+    fs.writeFileSync(ngConfigPath, nextNgConfig.trim(), 'UTF-8');
 }
