@@ -1,12 +1,18 @@
 import * as development from './config.development';
 import * as production from './config.production';
 import appPackage from '../../package.json';
-import {storage, getConfigValue as gc, LAYOUT_TYPE} from '@ra-lib/admin';
+import {storage, getConfigValue, LAYOUT_TYPE} from '@ra-lib/admin';
 
 const allEnvConfig = {development, production};
 const env = process.env.REACT_APP_CONFIG_ENV || process.env.NODE_ENV;
 const envConfig = allEnvConfig[env] || {};
-const getConfigValue = (key, defaultValue, parse = value => value) => gc(envConfig, key, defaultValue, parse);
+const isQianKun = window.__POWERED_BY_QIANKUN__;
+const isQianKunPublicPath = window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__;
+const appName = appPackage.name;
+const isIframe = window.self !== window.top;
+
+// 从 命令行、环境配置文件中获取配置信息
+const c = (key, defaultValue, parse = value => value) => getConfigValue(envConfig, key, defaultValue, parse);
 
 /**
  * 所有配置均可通过命令行参数传递，需要添加 REACT_APP_ 前缀，比如：REACT_APP_CONFIG_ENV=test yarn build
@@ -15,35 +21,34 @@ const getConfigValue = (key, defaultValue, parse = value => value) => gc(envConf
  * */
 // 运行环境
 export const NODE_ENV = process.env.NODE_ENV;
-
 // 应用名称
-export const APP_NAME = getConfigValue('APP_NAME', 'React Admin');
-
+export const APP_NAME = c('APP_NAME', 'React Admin');
 // ajax 请求前缀
+// 开发环境 或者 测试环境使用 localStorage中存储的前缀
 const useLocalStorage = NODE_ENV === 'development' || window.location.hostname === '172.16.143.44';
-export const AJAX_PREFIX = useLocalStorage ? (window.localStorage.getItem('AJAX_PREFIX') || '/api') : getConfigValue('AJAX_PREFIX', window.__POWERED_BY_QIANKUN__ ? `${window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__}api` : '/api');
-
+export const AJAX_PREFIX = useLocalStorage ?
+    (window.localStorage.getItem('AJAX_PREFIX') || '/api')
+    : c('AJAX_PREFIX', isQianKun ? `${isQianKunPublicPath}api` : '/api');
 // ajax 超时时间
-export const AJAX_TIMEOUT = getConfigValue('AJAX_TIMEOUT', 1000 * 60, Number);
-
+export const AJAX_TIMEOUT = c('AJAX_TIMEOUT', 1000 * 60, Number);
 // 配置环境
 export const CONFIG_ENV = process.env.REACT_APP_CONFIG_ENV;
 // config-hoc 配置存储key
 export const CONFIG_HOC_STORAGE_KEY = 'CONFIG_HOC_STORAGE_KEY';
 // 是否有系统概念，顶级菜单将作为系统，角色有系统概念，默认添加子系统管理员角色
-export const WITH_SYSTEMS = getConfigValue('WITH_SYSTEMS', false);
+export const WITH_SYSTEMS = c('WITH_SYSTEMS', false);
 // 页面路由前缀
-export const BASE_NAME = getConfigValue('BASE_NAME', window.__POWERED_BY_QIANKUN__ ? `/${appPackage.name}` : '');
+export const BASE_NAME = c('BASE_NAME', isQianKun ? `/${appName}` : '');
 // 是否使用hash路由
-export const HASH_ROUTER = getConfigValue('HASH_ROUTER', false);
+export const HASH_ROUTER = c('HASH_ROUTER', false);
 // 静态文件前缀
-export const PUBLIC_URL = getConfigValue('PUBLIC_URL', '');
+export const PUBLIC_URL = c('PUBLIC_URL', '');
 // 是否是开发环境
-export const IS_DEV = getConfigValue('IS_DEV', NODE_ENV === 'development');
+export const IS_DEV = c('IS_DEV', NODE_ENV === 'development');
 // 是否作为乾坤子项目，或者嵌入在iframe中
-export const IS_SUB = getConfigValue('IS_SUB', window.__POWERED_BY_QIANKUN__ || window.self !== window.top);
+export const IS_SUB = c('IS_SUB', isQianKun || isIframe);
 // 是否是手机布局
-export const IS_MOBILE = getConfigValue('IS_MOBILE', window.document.body.clientWidth <= 575);
+export const IS_MOBILE = c('IS_MOBILE', window.document.body.clientWidth <= 575);
 
 const mobileConfig = IS_MOBILE ? {
     layoutType: LAYOUT_TYPE.SIDE_MENU,
@@ -98,7 +103,7 @@ export const CONFIG_HOC = {
     // 是否显示搜索菜单
     searchMenu: true,
     // 是否显示我的收藏菜单
-    showCollectedMenus: true,
+    showCollectedMenus: false,
     // PageContent组件 fitHeight 时，计算高度所用到的额外高度值，如果页面显示统一的footer，这里设置footer的高度
     pageOtherHeight: 0, // 默认footer高度 26
 

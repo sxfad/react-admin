@@ -8,6 +8,7 @@ export default function MyError404() {
 
     const {pathname} = window.location;
 
+    // 检测是否是子应用
     useEffect(() => {
         (async () => {
             const subApp = await getCurrentActiveSubApp();

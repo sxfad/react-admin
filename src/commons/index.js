@@ -50,9 +50,8 @@ export function toLogin() {
 
     if (IS_SUB) {
         // 微前端，跳转主应用登录
-        const mainAppToLogin = getMainApp()?.toLogin;
-
-        if (mainAppToLogin) return mainAppToLogin();
+        const mainToLogin = getMainApp()?.toLogin;
+        if (mainToLogin) return mainToLogin();
 
         // 嵌入iframe中
         const parentOrigin = getParentOrigin();

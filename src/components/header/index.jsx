@@ -19,6 +19,7 @@ export default config({
 
     async function handleLogout() {
         // await props.ajax.post('/logout');
+        alert('TODO 退出登录接口！');
         toLogin();
     }
 

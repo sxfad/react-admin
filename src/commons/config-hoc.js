@@ -12,6 +12,7 @@ import {CONFIG_HOC, IS_MOBILE} from 'src/config';
 import {layoutHoc} from 'src/components/layout';
 import React from 'react';
 
+// 公共高阶组件，注入一些常用数据，比如 query loginUser等
 function commonHoc(options) {
     const {query, loginUser} = options;
     return WrappedComponent => {
@@ -72,17 +73,29 @@ export default function configHoc(options = {}) {
         drawer,
         ...others
     } = options;
+
     // config 传递 参数校验
     if (modal && drawer) throw Error('[config hoc] modal and drawer config can not be used together!');
 
     const hoc = [];
 
+    // 公共高阶组件
     hoc.push(commonHoc(options));
+
+    // 弹框高阶组件
     if (modal) hoc.push(modalHoc(modal, IS_MOBILE));
+
+    // 抽屉高阶组件
     if (drawer) hoc.push(drawerHoc(drawer));
+
+    // redux 连接高阶组件
     if (connect === true) hoc.push(reduxConnect());
     if (typeof connect === 'function') hoc.push(reduxConnect(connect));
+
+    // ajax高阶组件
     if (ajax) hoc.push(ajaxHoc());
+
+    // 路由高阶组件
     if (router) hoc.push(withRouter);
 
     // 放到最后，一些函数式配置，可以获取到更多的props数据

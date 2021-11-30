@@ -3,8 +3,7 @@ import {Modal, Button} from 'antd';
 import {CodeOutlined} from '@ant-design/icons';
 import s from './style.less';
 
-export default function Generator(props) {
-
+export default function Generator() {
     const [visible, setVisible] = useState(false);
     return (
         <>

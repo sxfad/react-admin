@@ -1,34 +1,35 @@
 import {notification, Modal} from 'antd';
 
-export default function handleSuccess({data, tip, options = {}}) {
+const TIP_TITLE = '温馨提示';
+const TIP = '成功';
+
+export default function handleSuccess({tip, options = {}}) {
     const {successModal} = options;
 
     if (!tip && !successModal) return;
 
     // 避免卡顿
     setTimeout(() => {
+
+        // 弹框方式显示提示
         if (successModal) {
-            if (successModal === true) {
-                return Modal.success({
-                    title: '温馨提示',
-                    content: tip,
-                });
-            }
+            // 详细配置
             if (typeof successModal === 'object') {
                 return Modal.success({
-                    title: '温馨提示',
+                    title: TIP_TITLE,
                     content: tip,
                     ...successModal,
                 });
             }
 
             return Modal.success({
-                title: '温馨提示',
+                title: TIP_TITLE,
                 content: successModal,
             });
         }
+
         notification.success({
-            message: '成功',
+            message: TIP,
             description: tip,
             duration: 2,
         });
