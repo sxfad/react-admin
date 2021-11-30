@@ -8,11 +8,13 @@ import {toHome} from 'src/commons';
 import {Logo} from 'src/components';
 import styles from './style.less';
 
+// 开发模式下，默认填充的账号密码
 const formValues = {
     account: 'P101282',
     password: '0000',
 };
 
+// 登录接口所需的其他参数
 const queryString = queryStringify({
     phoneCode: '0000',
     captchaCode: '0000',
@@ -23,7 +25,7 @@ const queryString = queryStringify({
 });
 
 export default config({
-    path: '/login/portal',
+    path: '/p/login',
     auth: false,
     layout: false,
 })(function Login(props) {
