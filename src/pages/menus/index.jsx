@@ -12,7 +12,7 @@ import {WITH_SYSTEMS} from 'src/config';
 import MenuEdit from './MenuEdit';
 import ActionEdit from './ActionEdit';
 import theme from 'src/theme.less';
-import styles from './style.less';
+import s from './style.less';
 
 export default config({
     path: '/menus',
@@ -129,9 +129,9 @@ export default config({
     }, [fetchMenus]);
 
     return (
-        <PageContent loading={loading} fitHeight className={styles.menuRoot}>
-            <div className={styles.menu}>
-                <Space className={styles.menuTop}>
+        <PageContent loading={loading} fitHeight className={s.menuRoot}>
+            <div className={s.menu}>
+                <Space className={s.menuTop}>
                     <Button
                         type="primary"
                         onClick={async () => {
@@ -153,7 +153,7 @@ export default config({
                         添加子级
                     </Button>
                 </Space>
-                <div className={styles.menuContent}>
+                <div className={s.menuContent}>
                     {menus?.length ? (
                         <Menu
                             mode="inline"

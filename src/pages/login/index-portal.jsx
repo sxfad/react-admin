@@ -6,7 +6,7 @@ import {FormItem, setLoginUser, queryStringify} from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
 import {toHome} from 'src/commons';
 import {Logo} from 'src/components';
-import styles from './style.less';
+import s from './style.less';
 
 // 开发模式下，默认填充的账号密码
 const formValues = {
@@ -72,22 +72,22 @@ export default config({
         setTimeout(() => setIsMount(true), 300);
     }, [form]);
 
-    const formItemClass = [styles.formItem, {[styles.active]: isMount}];
+    const formItemClass = [s.formItem, {[s.active]: isMount}];
 
     return (
-        <div className={styles.root}>
+        <div className={s.root}>
             <Helmet title="欢迎登录"/>
-            <div className={styles.logo}>
+            <div className={s.logo}>
                 <Logo/>
             </div>
-            <div className={styles.box}>
+            <div className={s.box}>
                 <Form
                     form={form}
                     name="login"
                     onFinish={handleSubmit}
                 >
                     <div className={formItemClass}>
-                        <h1 className={styles.header}>欢迎登录</h1>
+                        <h1 className={s.header}>欢迎登录</h1>
                     </div>
                     <div className={formItemClass}>
                         <FormItem
@@ -96,7 +96,7 @@ export default config({
                             autoFocus
                             prefix={<UserOutlined/>}
                             placeholder="请输入用户名"
-                            required
+                            rules={[{required: true, message: '请输入用户名！'}]}
                         />
                     </div>
                     <div className={formItemClass}>
@@ -105,14 +105,14 @@ export default config({
                             name="password"
                             prefix={<LockOutlined/>}
                             placeholder="请输入密码"
-                            required
+                            rules={[{required: true, message: '请输入密码！'}]}
                         />
                     </div>
                     <div className={formItemClass}>
                         <FormItem noStyle shouldUpdate style={{marginBottom: 0}}>
                             {() => (
                                 <Button
-                                    className={styles.submitBtn}
+                                    className={s.submitBtn}
                                     loading={login.loading}
                                     type="primary"
                                     htmlType="submit"
@@ -129,7 +129,7 @@ export default config({
                         </FormItem>
                     </div>
                 </Form>
-                <div className={styles.errorTip}>{message}</div>
+                <div className={s.errorTip}>{message}</div>
             </div>
         </div>
     );

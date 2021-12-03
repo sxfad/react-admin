@@ -12,8 +12,8 @@ import {
 import config from 'src/commons/config-hoc';
 import {WITH_SYSTEMS} from 'src/config';
 import EditModal from './EditModal';
-import styles from './style.less';
 import options from 'src/options';
+import s from './style.less';
 
 export default config({
     path: '/roles',
@@ -102,7 +102,7 @@ export default config({
     };
 
     return (
-        <PageContent fitHeight className={styles.root} loading={loading}>
+        <PageContent fitHeight className={s.root} loading={loading}>
             <QueryBar>
                 <Form
                     name="role"

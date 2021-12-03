@@ -25,8 +25,8 @@ export const NODE_ENV = process.env.NODE_ENV;
 export const APP_NAME = c('APP_NAME', 'React Admin');
 // ajax 请求前缀
 // 开发环境 或者 测试环境使用 localStorage中存储的前缀
-const useLocalStorage = NODE_ENV === 'development' || window.location.hostname === '172.16.143.44';
-export const AJAX_PREFIX = useLocalStorage ?
+export const SHOW_PROXY = NODE_ENV === 'development' || window.location.hostname === '172.16.143.44';
+export const AJAX_PREFIX = SHOW_PROXY ?
     (window.localStorage.getItem('AJAX_PREFIX') || '/api')
     : c('AJAX_PREFIX', isQianKun ? `${isQianKunPublicPath}api` : '/api');
 // ajax 超时时间
