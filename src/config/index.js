@@ -4,8 +4,8 @@ import appPackage from '../../package.json';
 import {storage, getConfigValue, LAYOUT_TYPE} from '@ra-lib/admin';
 
 const allEnvConfig = {development, production};
-const env = process.env.REACT_APP_CONFIG_ENV || process.env.NODE_ENV;
-const envConfig = allEnvConfig[env] || {};
+const configEnv = process.env.REACT_APP_CONFIG_ENV || process.env.NODE_ENV;
+const envConfig = allEnvConfig[configEnv] || {};
 const isQianKun = window.__POWERED_BY_QIANKUN__;
 const isQianKunPublicPath = window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__;
 const appName = appPackage.name;
