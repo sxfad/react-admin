@@ -5,11 +5,12 @@ import {Provider} from 'react-redux';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn'; // 解决antd日期相关组件国际化问题
-import {ComponentProvider, Loading, getLoginUser, setLoginUser, /*queryParse,*/ isLoginPage} from '@ra-lib/admin';
-import AppRouter from './router/AppRouter';
+import {ComponentProvider, Loading, getLoginUser, setLoginUser /*queryParse,*/} from '@ra-lib/admin';
 import {Generator} from 'src/components';
-import {APP_NAME, CONFIG_HOC, IS_MOBILE} from './config';
-import {store} from './models';
+import {isNoAuthPage} from 'src/commons';
+import AppRouter from './router/AppRouter';
+import {APP_NAME, CONFIG_HOC, IS_MOBILE} from 'src/config';
+import {store} from 'src/models';
 import api from 'src/api';
 import theme from 'src/theme.less';
 import './App.less';
@@ -36,8 +37,8 @@ export default function App(props) {
 
     // 一些初始化工作
     useEffect(() => {
-        // 登录页面不请求
-        if (isLoginPage()) return setLoading(false);
+        // 不需要登录的页面不请求
+        if (isNoAuthPage()) return setLoading(false);
 
         // 获取用户菜单、权限等
         (async () => {

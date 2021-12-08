@@ -5,6 +5,7 @@ import {
     formatMenus,
     getContainerId,
 } from '@ra-lib/admin';
+import {isNoAuthPage} from 'src/commons';
 import {IS_SUB} from 'src/config';
 
 export default {
@@ -13,8 +14,8 @@ export default {
      * @returns {Promise<*[]|*>}
      */
     async getMenuData() {
-        // 登录页面，不加载
-        if (isLoginPage()) return [];
+        // 非登录页面，不加载菜单
+        if (isNoAuthPage()) return [];
 
         // 作为子应用，不加载
         if (IS_SUB) return [];

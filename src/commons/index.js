@@ -27,8 +27,10 @@ export function toHome() {
     // 跳转页面，优先跳转上次登出页面
     let lastHref = window.sessionStorage.getItem('last-href') || '/';
 
-    // 如果上次是登录页面，直接跳转首页
-    if (isLoginPage(lastHref)) lastHref = '/';
+    const url = new URL('https://example.com');
+
+    // 上次是非登录页面，直接跳转首页
+    if (isNoAuthPage(url.pathname)) lastHref = '/';
 
     locationHref(lastHref);
 
@@ -114,4 +116,32 @@ export function getCurrentPageConfig() {
     const config = pageConfigs.find(({path}) => path && match(path, {decode: decodeURIComponent})(pathname));
 
     return config || {};
+}
+
+/**
+ * 加载js文件
+ * @param url
+ * @returns {Promise<unknown>}
+ */
+export function loadScript(url) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.onload = resolve;
+        script.src = url;
+        script.onerror = reject;
+        document.head.appendChild(script);
+    });
+}
+
+/**
+ * 不需要登录的页面配置
+ * @param pathname
+ * @returns {boolean}
+ */
+export function isNoAuthPage(pathname) {
+    return [
+        '/login',               // 登录
+        '/register',            // 注册
+        '/password-retrieval', // 找回密码
+    ].includes(pathname || window.location.pathname);
 }
