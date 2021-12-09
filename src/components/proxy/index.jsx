@@ -50,10 +50,10 @@ export default function Proxy(props) {
                 </div>
 
                 <span style={{marginLeft: 4, marginRight: 4}}>
-                        <span style={{color: theme.primaryColor}}>
-                            {proxyConfig.find(item => selectedKeys?.includes(item.baseUrl))?.name}
-                        </span>
+                    <span style={{color: theme.primaryColor}}>
+                        {proxyConfig.find(item => selectedKeys?.includes(item.baseUrl))?.name}
                     </span>
+                </span>
                 <DownOutlined/>
             </div>
         </Dropdown>
