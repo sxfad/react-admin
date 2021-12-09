@@ -54,6 +54,7 @@ export default function Proxy(props) {
                         {proxyConfig.find(item => selectedKeys?.includes(item.baseUrl))?.name}
                     </span>
                 </span>
+
                 <DownOutlined/>
             </div>
         </Dropdown>
