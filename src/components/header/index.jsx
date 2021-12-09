@@ -35,15 +35,11 @@ export default config({
 
     const {avatar, name = ''} = loginUser;
 
-    const width = IS_MOBILE ? 'auto' : '400px';
     return (
         <Space
             className={styles.root}
             size={16}
             style={{
-                // 两个宽度要同时设置，否则会被挤！！！
-                flex: `0 0 ${width}`,
-                width,
                 paddingRight: IS_MOBILE ? 0 : 12,
             }}
         >

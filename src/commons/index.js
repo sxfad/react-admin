@@ -1,7 +1,7 @@
 import {match} from 'path-to-regexp';
 import {isActiveApp} from '../qiankun';
 import api from 'src/api';
-import {BASE_NAME, HASH_ROUTER, IS_SUB} from '../config';
+import {BASE_NAME, HASH_ROUTER, IS_SUB, NO_AUTH_ROUTES} from '../config';
 import {getMainApp, isLoginPage, getParentOrigin} from '@ra-lib/admin';
 import pageConfigs from 'src/pages/page-configs';
 
@@ -25,9 +25,9 @@ export function locationHref(href) {
  */
 export function toHome() {
     // 跳转页面，优先跳转上次登出页面
-    let lastHref = window.sessionStorage.getItem('last-href') || '/';
+    let lastHref = window.sessionStorage.getItem('last-href') || window.location.origin;
 
-    const url = new URL('https://example.com');
+    const url = new URL(lastHref);
 
     // 上次是非登录页面，直接跳转首页
     if (isNoAuthPage(url.pathname)) lastHref = '/';
@@ -139,9 +139,5 @@ export function loadScript(url) {
  * @returns {boolean}
  */
 export function isNoAuthPage(pathname) {
-    return [
-        '/login',               // 登录
-        '/register',            // 注册
-        '/password-retrieval', // 找回密码
-    ].includes(pathname || window.location.pathname);
+    return NO_AUTH_ROUTES.includes(pathname || window.location.pathname);
 }

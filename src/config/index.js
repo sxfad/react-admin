@@ -19,6 +19,14 @@ const c = (key, defaultValue, parse = value => value) => getConfigValue(envConfi
  * 配置优先级 命令行 > 环境文件 > 默认
  * 当前文件为默认配置，会被环境配置、命令行参数覆盖
  * */
+
+// 不需要登录的页面路由白名单
+export const NO_AUTH_ROUTES = [
+    '/login',               // 登录
+    '/register',            // 注册
+    '/password-retrieval',  // 找回密码
+];
+
 // 运行环境
 export const NODE_ENV = process.env.NODE_ENV;
 // 应用名称

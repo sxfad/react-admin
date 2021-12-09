@@ -35,7 +35,7 @@ export default function Proxy(props) {
 
     return (
         <Dropdown overlay={serverMenu}>
-            <div className={className}>
+            <div className={className} style={{width: 120}}>
                 <div style={{
                     width: 24,
                     height: 24,
