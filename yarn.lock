@@ -1629,34 +1629,34 @@
   resolved "https://registry.npmjs.org/@polka/url/-/url-1.0.0-next.12.tgz#431ec342a7195622f86688bbda82e3166ce8cb28"
   integrity sha512-6RglhutqrGFMO1MNUXp95RBuYIuc8wTnMAV5MUhLmjTOy78ncwOw7RgeQ/HeymkKXRhZd0s2DNrM1rL7unk3MQ==
 
-"@ra-lib/admin@^0.1.21":
-  version "0.1.21"
-  resolved "https://registry.npmjs.org/@ra-lib/admin/-/admin-0.1.21.tgz#3025012b0460f2aada05ea0787b78dfb95217f53"
-  integrity sha512-ME9QMnQZv6P5TLzemS67HpDHTnulvofSF5vLMT3KVWs2V7Jgcu2Jac3nR/KH3yp7Q0KfS/ubrp+EuzW6dyxQGA==
+"@ra-lib/admin@^0.1.24":
+  version "0.1.24"
+  resolved "https://registry.npmjs.org/@ra-lib/admin/-/admin-0.1.24.tgz#4525756416528bda79be5f7d0ce4b610014ba6c5"
+  integrity sha512-04FBiP5xc5nHUzi3wuoX5A4IUBwl2c0u9T9q6z61VaLebZ1i13qDIpqZUTPHNTwAdkeVBi0SJTM0l60sSc+D+Q==
   dependencies:
-    "@ra-lib/ajax" "0.1.31"
+    "@ra-lib/ajax" "0.1.32"
     "@ra-lib/babel-plugin-attribute-wrapper" "^0.0.18"
-    "@ra-lib/components" "0.1.92"
+    "@ra-lib/components" "0.1.94"
     "@ra-lib/config-loader" "0.1.8"
     "@ra-lib/hoc" "^0.1.7"
     "@ra-lib/hooks" "0.1.10"
     "@ra-lib/model" "^0.1.11"
     "@ra-lib/util" "0.1.23"
 
-"@ra-lib/ajax@0.1.31":
-  version "0.1.31"
-  resolved "https://registry.npmjs.org/@ra-lib/ajax/-/ajax-0.1.31.tgz#ceea4be1b983906dd6d9d80778a4bc6755baaa41"
-  integrity sha512-JI/tN/5cGpxCZCNpfQH+1BoVtVdRk9YN/C2/WLFu8VlrBrGmrg2J6mTEXggdEP5IaGc+G8ExwKDpU3jTUdg+gA==
+"@ra-lib/ajax@0.1.32":
+  version "0.1.32"
+  resolved "https://registry.npmjs.org/@ra-lib/ajax/-/ajax-0.1.32.tgz#196d0057701e7172bfedc80327324eab88ea3497"
+  integrity sha512-LPJYBQoxB5xtH24vu0L0dldrVwjLDQlUMco2bIlH4h2hHD0uGvDcAPw2SPdqiBb4jxGNb8NTtvJsI9KgzHtObQ==
 
 "@ra-lib/babel-plugin-attribute-wrapper@^0.0.18":
   version "0.0.18"
   resolved "https://registry.npmjs.org/@ra-lib/babel-plugin-attribute-wrapper/-/babel-plugin-attribute-wrapper-0.0.18.tgz#fa7981d63fdfbac971dada19d3d18ea598b64d69"
   integrity sha512-ELq1/b0wcaRMQ3hYaZfdglrtBDe83NbxWwQjtr18/9R+27gjo2SDnZZfiin9Aijv1JcNHjPk+VuRL7Z2QCyQ2w==
 
-"@ra-lib/components@0.1.92":
-  version "0.1.92"
-  resolved "https://registry.npmjs.org/@ra-lib/components/-/components-0.1.92.tgz#21ac5b9a48ba17960e1cef667faf43adfc2d7b38"
-  integrity sha512-FQOT1hdiPlrenKXVK5kA+aSdeff7SigxXPYXooBMAJiFc5fprsZpjxWgrt4JUZPAU29tmnU39C0HW1LLjwzlVQ==
+"@ra-lib/components@0.1.94":
+  version "0.1.94"
+  resolved "https://registry.npmjs.org/@ra-lib/components/-/components-0.1.94.tgz#ad1b9fa26cdcde7cb8d9b97f886da873257727e5"
+  integrity sha512-2Ku+WCO4xpT98szSNQtW4EVF6JuvavywltgUWQac/efQIqenpF76wQQH8mXQOcsSOjmvEzwN2FV+La+y8ukt6g==
 
 "@ra-lib/config-loader@0.1.8":
   version "0.1.8"

@@ -77,9 +77,6 @@ export default function App(props) {
         })();
     }, []);
 
-    // 加载中不渲染实际内容
-    if (loading) return <Loading progress={false} spin/>;
-
     // 加载完成后渲染，确保能拿到permissions等数据
     return (
         <Provider store={store}>
@@ -90,7 +87,7 @@ export default function App(props) {
                     layoutPageOtherHeight={CONFIG_HOC.pageOtherHeight}
                     isMobile={IS_MOBILE}
                 >
-                    {children ? children : (
+                    {loading ? (<Loading progress={false} spin/>) : children ? children : (
                         <AppRouter
                             menus={menus}
                             collectedMenus={collectedMenus}
