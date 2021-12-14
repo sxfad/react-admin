@@ -58,7 +58,6 @@ export default function App(props) {
                 }
 
                 // 用户收藏菜单 使用then catch 防止报错后续接口阻断
-
                 // 用户收藏菜单
                 if (CONFIG_HOC.showCollectedMenus) {
                     await api.getCollectedMenus().then(setCollectedMenus).catch(console.error);
