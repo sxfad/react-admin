@@ -57,19 +57,21 @@ export default function App(props) {
                     return setLoading(false);
                 }
 
+                // 用户收藏菜单 使用then catch 防止报错后续接口阻断
+
                 // 用户收藏菜单
                 if (CONFIG_HOC.showCollectedMenus) {
-                    const collectedMenus = await api.getCollectedMenus();
-                    setCollectedMenus(collectedMenus);
+                    await api.getCollectedMenus().then(setCollectedMenus).catch(console.error);
                 }
 
                 // 获取用户菜单
-                const menus = await api.getMenus();
-                setMenus(menus);
+                await api.getMenus().then(setMenus).catch(console.error);
 
                 // 获取用户权限
-                loginUser.permissions = await api.getPermissions();
-                setLoginUser(loginUser);
+                await api.getPermissions().then(res => {
+                    loginUser.permissions = res;
+                    setLoginUser(loginUser);
+                }).catch(console.error);
 
             } finally {
                 setLoading(false);
