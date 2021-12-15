@@ -3,6 +3,7 @@ import { Button, Form, Space } from 'antd';
 import { PageContent, QueryBar, FormItem, Table, Pagination, Operator, ToolBar } from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
 import options from 'src/options';
+
 import EditModal from './EditModal';
 
 export default config({
