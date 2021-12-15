@@ -66,6 +66,7 @@
         "nprogress": "^0.2.0",
         "path-to-regexp": "^6.2.0",
         "postcss-less": "^4.0.1",
+        "prettier": "^2.5.1",
         "prop-types": "^15.7.2",
         "qiankun": "^2.4.2",
         "qs": "^6.10.1",
@@ -126,6 +127,10 @@
     },
     "lint-staged": {
         "gitDir": ".",
-        "src/**/*.{js,jsx,ts,tsx}": "eslint --max-warnings 0 --fix"
+        "src/**/*.{js,jsx,ts,tsx}": [
+            "eslint --max-warnings 0 --fix",
+            "prettier --write",
+            "git add"
+        ]
     }
 }

@@ -99,3 +99,10 @@ yarn build:time
         </div>
     ```
 - 主题变量修改 theme.less [antd 样式变量](https://ant.design/docs/react/customize-theme-cn)
+
+## 代码规范
+
+代码规范使用 [prettier](https://prettier.io/) [参考知乎这片文章](https://zhuanlan.zhihu.com/p/81764012)
+
+团队多人开发，无论使用webstorm还是vscode，都使用prettier（配置文件：.prettierrc.js）进行代码格式化，
+
