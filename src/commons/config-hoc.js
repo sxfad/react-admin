@@ -1,30 +1,24 @@
-import {withRouter} from 'react-router-dom';
-import {
-    createConfigHoc,
-    modal as modalHoc,
-    drawer as drawerHoc,
-    getQuery,
-    getLoginUser,
-} from '@ra-lib/admin';
-import {ajaxHoc} from 'src/commons/ajax';
-import {connect as reduxConnect} from 'src/models';
-import {CONFIG_HOC, IS_MOBILE} from 'src/config';
-import {layoutHoc} from 'src/components/layout';
+import { withRouter } from 'react-router-dom';
+import { createConfigHoc, modal as modalHoc, drawer as drawerHoc, getQuery, getLoginUser } from '@ra-lib/admin';
+import { ajaxHoc } from 'src/commons/ajax';
+import { connect as reduxConnect } from 'src/models';
+import { CONFIG_HOC, IS_MOBILE } from 'src/config';
+import { layoutHoc } from 'src/components/layout';
 import React from 'react';
 
 // 公共高阶组件，注入一些常用数据，比如 query loginUser等
 function commonHoc(options) {
-    const {query, loginUser} = options;
-    return WrappedComponent => {
+    const { query, loginUser } = options;
+    return (WrappedComponent) => {
         const componentName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
 
-        const WithLayout = props => {
+        const WithLayout = (props) => {
             // 默认添加属性到props中的属性
             const extendProps = {};
             if (query !== false) extendProps.query = getQuery();
             if (loginUser !== false) extendProps.loginUser = getLoginUser();
 
-            return <WrappedComponent {...extendProps} {...props}/>;
+            return <WrappedComponent {...extendProps} {...props} />;
         };
 
         WithLayout.displayName = `WithCommon(${componentName})`;
@@ -32,7 +26,6 @@ function commonHoc(options) {
         return WithLayout;
     };
 }
-
 
 export default function configHoc(options = {}) {
     // config 所有可用参数，以及默认值
@@ -106,5 +99,5 @@ export default function configHoc(options = {}) {
         onConstructor: () => void 0,
         onDidMount: () => void 0,
         onUnmount: () => void 0,
-    })({...options, ...others});
-};
+    })({ ...options, ...others });
+}

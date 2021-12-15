@@ -1,4 +1,4 @@
-import createTableSql, {initDataSql} from './init-sql';
+import createTableSql, { initDataSql } from './init-sql';
 import appPackage from '../../../package.json';
 
 const packageName = appPackage.name;
@@ -6,14 +6,7 @@ const packageName = appPackage.name;
 const db = openDatabase(packageName, '1.0', packageName + '测试数据库', 2 * 1024 * 1024);
 let CACHE_INI_DB;
 
-const tables = [
-    'menus',
-    'roles',
-    'users',
-    'role_menus',
-    'user_roles',
-    'user_collect_menus',
-];
+const tables = ['menus', 'roles', 'users', 'role_menus', 'user_roles', 'user_collect_menus'];
 
 export default async function executeSql(sql, args, fullResult) {
     CACHE_INI_DB = CACHE_INI_DB || initDB();
@@ -21,12 +14,13 @@ export default async function executeSql(sql, args, fullResult) {
     await CACHE_INI_DB;
 
     return new Promise((resolve, reject) => {
-        db.transaction(function(tx) {
+        db.transaction(function (tx) {
             tx.executeSql(
                 sql,
                 args,
                 (transaction, resultSet) => resolve(fullResult ? resultSet : Array.from(resultSet.rows)),
-                (transaction, error) => reject(error));
+                (transaction, error) => reject(error),
+            );
         });
     });
 }
@@ -45,26 +39,25 @@ export async function initDB(init) {
 
 export async function usersHasData() {
     return new Promise((resolve, reject) => {
-        db.transaction(
-            function(tx) {
-                tx.executeSql(
-                    'select * from users',
-                    null,
-                    (transaction, resultSet) => {
-                        resultSet.rows.length ? resolve(true) : resolve(false);
-                    },
-                    (transaction, error) => {
-                        resolve(false);
-                    });
-            },
-        );
+        db.transaction(function (tx) {
+            tx.executeSql(
+                'select * from users',
+                null,
+                (transaction, resultSet) => {
+                    resultSet.rows.length ? resolve(true) : resolve(false);
+                },
+                (transaction, error) => {
+                    resolve(false);
+                },
+            );
+        });
     });
 }
 
 // 删除所有数据库表
 export async function dropAllTables() {
-    tables.forEach(table => {
-        db.transaction(function(tx) {
+    tables.forEach((table) => {
+        db.transaction(function (tx) {
             tx.executeSql(`drop table ${table}`);
         });
     });
@@ -81,17 +74,18 @@ export async function initTablesData() {
 async function executeSplit(sql, keyWord) {
     const arr = sql
         .split(keyWord)
-        .filter(item => !!item.trim())
-        .map(item => keyWord + item);
+        .filter((item) => !!item.trim())
+        .map((item) => keyWord + item);
 
     for (let sql of arr) {
         await new Promise((resolve, reject) => {
-            db.transaction(function(tx) {
+            db.transaction(function (tx) {
                 tx.executeSql(
                     sql,
                     null,
                     (transaction, resultSet) => resolve(resultSet),
-                    (transaction, error) => reject(error));
+                    (transaction, error) => reject(error),
+                );
             });
         });
     }

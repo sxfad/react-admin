@@ -1,11 +1,11 @@
-import React, {useState, useRef, useEffect, useCallback} from 'react';
-import {Helmet} from 'react-helmet';
-import {Button, Form} from 'antd';
-import {LockOutlined, UserOutlined, FileImageOutlined, MessageOutlined} from '@ant-design/icons';
-import {FormItem, setLoginUser} from '@ra-lib/admin';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet';
+import { Button, Form } from 'antd';
+import { LockOutlined, UserOutlined, FileImageOutlined, MessageOutlined } from '@ant-design/icons';
+import { FormItem, setLoginUser } from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
-import {toHome} from 'src/commons';
-import {Logo} from 'src/components';
+import { toHome } from 'src/commons';
+import { Logo } from 'src/components';
 import s from './style.less';
 
 // 开发模式下，自动填充表单数据
@@ -45,37 +45,39 @@ export default config({
         return true;
     }, []);
 
-    const handleSubmit = useCallback((values) => {
+    const handleSubmit = useCallback(
+        (values) => {
+            if (login.loading) return;
 
-        if (login.loading) return;
+            const params = {
+                ...values,
+            };
 
-        const params = {
-            ...values,
-        };
+            alert('TODO 登录');
+            login.run = async () => ({ id: 1, name: '测试', token: 'test' });
 
-        alert('TODO 登录');
-        login.run = async () => ({id: 1, name: '测试', token: 'test'});
-
-        login.run(params, {errorTip: false})
-            .then(res => {
-                const {id, name, token, ...others} = res;
-                setLoginUser({
-                    id,     // 必须字段
-                    name,   // 必须字段
-                    token,
-                    ...others,
-                    // 其他字段按需添加
+            login
+                .run(params, { errorTip: false })
+                .then((res) => {
+                    const { id, name, token, ...others } = res;
+                    setLoginUser({
+                        id, // 必须字段
+                        name, // 必须字段
+                        token,
+                        ...others,
+                        // 其他字段按需添加
+                    });
+                    toHome();
+                })
+                .catch((err) => {
+                    console.error(err);
+                    setMessage(err.response?.data?.message || '用户名或密码错误');
+                    // 可以刷新图片验证码
+                    imageCodeRef.current.refresh();
                 });
-                toHome();
-            })
-            .catch((err) => {
-                console.error(err);
-                setMessage(err.response?.data?.message || '用户名或密码错误');
-                // 可以刷新图片验证码
-                imageCodeRef.current.refresh();
-            });
-    }, [login]);
-
+        },
+        [login],
+    );
 
     useEffect(() => {
         // 开发时默认填入数据
@@ -86,20 +88,16 @@ export default config({
         setTimeout(() => setIsMount(true), 300);
     }, [form]);
 
-    const formItemClass = [s.formItem, {[s.active]: isMount}];
+    const formItemClass = [s.formItem, { [s.active]: isMount }];
 
     return (
         <div className={s.root}>
-            <Helmet title="欢迎登录"/>
+            <Helmet title="欢迎登录" />
             <div className={s.logo}>
-                <Logo/>
+                <Logo />
             </div>
             <div className={s.box}>
-                <Form
-                    form={form}
-                    name="login"
-                    onFinish={handleSubmit}
-                >
+                <Form form={form} name="login" onFinish={handleSubmit}>
                     <div className={formItemClass}>
                         <h1 className={s.header}>欢迎登录</h1>
                     </div>
@@ -108,44 +106,44 @@ export default config({
                             name="account"
                             allowClear
                             autoFocus
-                            prefix={<UserOutlined/>}
+                            prefix={<UserOutlined />}
                             placeholder="请输入用户名"
-                            rules={[{required: true, message: '请输入用户名！'}]}
+                            rules={[{ required: true, message: '请输入用户名！' }]}
                         />
                     </div>
                     <div className={formItemClass}>
                         <FormItem
                             type="password"
                             name="password"
-                            prefix={<LockOutlined/>}
+                            prefix={<LockOutlined />}
                             placeholder="请输入密码"
-                            rules={[{required: true, message: '请输入密码！'}]}
+                            rules={[{ required: true, message: '请输入密码！' }]}
                         />
                     </div>
                     <div className={formItemClass}>
                         <FormItem
                             type="image-code"
                             name="imageCode"
-                            prefix={<FileImageOutlined/>}
+                            prefix={<FileImageOutlined />}
                             placeholder="请输入图片验证码"
                             src={handleFetchImageCode}
                             ref={imageCodeRef}
-                            rules={[{required: true, message: '请输入图片验证码！'}]}
+                            rules={[{ required: true, message: '请输入图片验证码！' }]}
                         />
                     </div>
                     <div className={formItemClass}>
                         <FormItem
                             type="message-code"
                             name="messageCode"
-                            prefix={<MessageOutlined/>}
+                            prefix={<MessageOutlined />}
                             placeholder="请输入短信验证码"
                             onSend={handleSendMessage}
                             buttonType="text"
-                            rules={[{required: true, message: '请输入短信验证码！'}]}
+                            rules={[{ required: true, message: '请输入短信验证码！' }]}
                         />
                     </div>
                     <div className={formItemClass}>
-                        <FormItem noStyle shouldUpdate style={{marginBottom: 0}}>
+                        <FormItem noStyle shouldUpdate style={{ marginBottom: 0 }}>
                             {() => (
                                 <Button
                                     className={s.submitBtn}
@@ -154,9 +152,9 @@ export default config({
                                     htmlType="submit"
                                     disabled={
                                         // 用户没有操作过，或者没有setFieldsValue
-                                        !form.isFieldsTouched(true)
+                                        !form.isFieldsTouched(true) ||
                                         // 表单中存在错误
-                                        || form.getFieldsError().filter(({errors}) => errors.length).length
+                                        form.getFieldsError().filter(({ errors }) => errors.length).length
                                     }
                                 >
                                     登录
@@ -170,4 +168,3 @@ export default config({
         </div>
     );
 });
-

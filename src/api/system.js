@@ -1,12 +1,7 @@
 import ajax from 'src/commons/ajax';
-import {
-    getLoginUser,
-    isLoginPage,
-    formatMenus,
-    getContainerId,
-} from '@ra-lib/admin';
-import {isNoAuthPage} from 'src/commons';
-import {IS_SUB} from 'src/config';
+import { getLoginUser, isLoginPage, formatMenus, getContainerId } from '@ra-lib/admin';
+import { isNoAuthPage } from 'src/commons';
+import { IS_SUB } from 'src/config';
 
 export default {
     /**
@@ -21,10 +16,12 @@ export default {
         if (IS_SUB) return [];
 
         // 获取服务端数据，并做缓存，防止多次调用接口
-        return this.getMenuData.__CACHE = this.getMenuData.__CACHE
-            || ajax.get('/authority/queryUserMenus', {userId: getLoginUser()?.id})
-                .then(res => res.map(item => ({...item, order: item.order ?? item.ord ?? item.sort})))
-                .catch(() => []);
+        return (this.getMenuData.__CACHE =
+            this.getMenuData.__CACHE ||
+            ajax
+                .get('/authority/queryUserMenus', { userId: getLoginUser()?.id })
+                .then((res) => res.map((item) => ({ ...item, order: item.order ?? item.ord ?? item.sort })))
+                .catch(() => []));
 
         // 前端硬编码菜单
         // return [
@@ -40,11 +37,12 @@ export default {
      */
     async getMenus() {
         // mock时，做个延迟处理，否则菜单请求无法走mock
-        if (process.env.REACT_APP_MOCK) await new Promise(resolve => setTimeout(resolve));
+        if (process.env.REACT_APP_MOCK) await new Promise((resolve) => setTimeout(resolve));
 
         const serverMenus = await this.getMenuData();
-        const menus = serverMenus.filter(item => !item.type || item.type === 1)
-            .map(item => {
+        const menus = serverMenus
+            .filter((item) => !item.type || item.type === 1)
+            .map((item) => {
                 return {
                     ...item,
                     id: `${item.id}`,
@@ -66,12 +64,10 @@ export default {
         if (IS_SUB) return [];
 
         const loginUser = getLoginUser();
-        const data = await ajax.get('/authority/queryUserCollectedMenus', {userId: loginUser?.id});
+        const data = await ajax.get('/authority/queryUserCollectedMenus', { userId: loginUser?.id });
         // const data = [];
 
-        const menus = data
-            .filter(item => item.type === 1)
-            .map(item => ({...item, isCollectedMenu: true}));
+        const menus = data.filter((item) => item.type === 1).map((item) => ({ ...item, isCollectedMenu: true }));
 
         return formatMenus(menus);
     },
@@ -81,8 +77,8 @@ export default {
      * @param collected
      * @returns {Promise<void>}
      */
-    async saveCollectedMenu({menuId, collected}) {
-        await ajax.post('/authority/addUserCollectMenu', {userId: getLoginUser()?.id, menuId, collected});
+    async saveCollectedMenu({ menuId, collected }) {
+        await ajax.post('/authority/addUserCollectMenu', { userId: getLoginUser()?.id, menuId, collected });
     },
     /**
      * 获取用户权限码
@@ -90,8 +86,7 @@ export default {
      */
     async getPermissions() {
         const serverMenus = await this.getMenuData();
-        return serverMenus.filter(item => item.type === 2)
-            .map(item => item.code);
+        return serverMenus.filter((item) => item.type === 2).map((item) => item.code);
     },
     /**
      * 获取子应用配置
@@ -99,7 +94,7 @@ export default {
      */
     async getSubApps() {
         // 从菜单数据中获取需要注册的乾坤子项目
-        const menuTreeData = await this.getMenus() || [];
+        const menuTreeData = (await this.getMenus()) || [];
 
         // 传递给子应用的数据
         const loginUser = getLoginUser();
@@ -110,24 +105,25 @@ export default {
             },
         };
         let result = [];
-        const loop = nodes => nodes.forEach(node => {
-            const {_target, children} = node;
-            if (_target === 'qiankun') {
-                const {title, name, entry} = node;
-                const container = `#${getContainerId(name)}`;
-                const activeRule = `/${name}`;
+        const loop = (nodes) =>
+            nodes.forEach((node) => {
+                const { _target, children } = node;
+                if (_target === 'qiankun') {
+                    const { title, name, entry } = node;
+                    const container = `#${getContainerId(name)}`;
+                    const activeRule = `/${name}`;
 
-                result.push({
-                    title,
-                    name,
-                    entry,
-                    container,
-                    activeRule,
-                    props,
-                });
-            }
-            if (children?.length) loop(children);
-        });
+                    result.push({
+                        title,
+                        name,
+                        entry,
+                        container,
+                        activeRule,
+                        props,
+                    });
+                }
+                if (children?.length) loop(children);
+            });
         loop(menuTreeData);
 
         return result;

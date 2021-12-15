@@ -1,8 +1,8 @@
-import {match} from 'path-to-regexp';
-import {isActiveApp} from '../qiankun';
+import { match } from 'path-to-regexp';
+import { isActiveApp } from '../qiankun';
 import api from 'src/api';
-import {BASE_NAME, HASH_ROUTER, IS_SUB, NO_AUTH_ROUTES} from '../config';
-import {getMainApp, isLoginPage, getParentOrigin} from '@ra-lib/admin';
+import { BASE_NAME, HASH_ROUTER, IS_SUB, NO_AUTH_ROUTES } from '../config';
+import { getMainApp, isLoginPage, getParentOrigin } from '@ra-lib/admin';
 import pageConfigs from 'src/pages/page-configs';
 
 /**
@@ -11,13 +11,13 @@ import pageConfigs from 'src/pages/page-configs';
  * @returns {string|*}
  */
 export function locationHref(href) {
-    if (href?.startsWith('http')) return window.location.href = href;
+    if (href?.startsWith('http')) return (window.location.href = href);
 
     if (href && BASE_NAME && href.startsWith(BASE_NAME)) href = href.replace(BASE_NAME, '');
 
     const hash = HASH_ROUTER ? '#' : '';
 
-    return window.location.href = `${BASE_NAME}${hash}${href}`;
+    return (window.location.href = `${BASE_NAME}${hash}${href}`);
 }
 
 /**
@@ -57,7 +57,7 @@ export function toLogin() {
 
         // 嵌入iframe中
         const parentOrigin = getParentOrigin();
-        if (parentOrigin) return window.location.href = `${parentOrigin}/error-401.html`;
+        if (parentOrigin) return (window.location.href = `${parentOrigin}/error-401.html`);
     }
 
     locationHref(loginPath);
@@ -75,29 +75,35 @@ export function toLogin() {
 export async function checkPath(result) {
     const subApps = await api.getSubApps();
 
-    const hasHome = result.some(({path}) => path === '/');
+    const hasHome = result.some(({ path }) => path === '/');
     if (!hasHome) throw Error(`必须含有首页路由，path: '/'， 如果需要其他页面做首页，可以进行 Redirect`);
 
     result
-        .filter(({path}) => !!path)
-        .forEach(({path, filePath}) => {
+        .filter(({ path }) => !!path)
+        .forEach(({ path, filePath }) => {
             // 是否与子项目配置冲突
-            const app = subApps.find(item => isActiveApp(item, path));
-            if (app) throw Error(`路由地址：「${path}」 与 子项目 「${app.title || app.name}」 激活规则配置冲突，对应文件文件如下：\n${filePath}`);
+            const app = subApps.find((item) => isActiveApp(item, path));
+            if (app)
+                throw Error(
+                    `路由地址：「${path}」 与 子项目 「${
+                        app.title || app.name
+                    }」 激活规则配置冲突，对应文件文件如下：\n${filePath}`,
+                );
 
             // 自身路由配置是否冲突
-            const exit = result.find(({filePath: f, path: p}) => {
+            const exit = result.find(({ filePath: f, path: p }) => {
                 if (f === filePath) return false;
 
                 if (!p || !path) return false;
 
                 if (p === path) return true;
 
-                return match(path, {decode: decodeURIComponent})(p)
-                    || match(p, {decode: decodeURIComponent})(path);
-
+                return match(path, { decode: decodeURIComponent })(p) || match(p, { decode: decodeURIComponent })(path);
             });
-            if (exit) throw Error(`路由地址：「${path}」 与 「${exit.path}」 配置冲突，对应文件文件如下：\n${filePath}\n${exit.filePath}`);
+            if (exit)
+                throw Error(
+                    `路由地址：「${path}」 与 「${exit.path}」 配置冲突，对应文件文件如下：\n${filePath}\n${exit.filePath}`,
+                );
         });
 }
 
@@ -106,14 +112,14 @@ export async function checkPath(result) {
  * @returns {{}|*}
  */
 export function getCurrentPageConfig() {
-    let {pathname, hash} = window.location;
+    let { pathname, hash } = window.location;
     if (HASH_ROUTER) {
         pathname = hash.replace('#', '').split('?')[0];
     } else if (BASE_NAME) {
         pathname = pathname.replace(BASE_NAME, '');
     }
 
-    const config = pageConfigs.find(({path}) => path && match(path, {decode: decodeURIComponent})(pathname));
+    const config = pageConfigs.find(({ path }) => path && match(path, { decode: decodeURIComponent })(pathname));
 
     return config || {};
 }

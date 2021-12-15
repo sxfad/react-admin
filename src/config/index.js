@@ -1,9 +1,9 @@
 import * as development from './config.development';
 import * as production from './config.production';
 import appPackage from '../../package.json';
-import {storage, getConfigValue, LAYOUT_TYPE} from '@ra-lib/admin';
+import { storage, getConfigValue, LAYOUT_TYPE } from '@ra-lib/admin';
 
-const allEnvConfig = {development, production};
+const allEnvConfig = { development, production };
 const configEnv = process.env.REACT_APP_CONFIG_ENV || process.env.NODE_ENV;
 const envConfig = allEnvConfig[configEnv] || {};
 const isQianKun = window.__POWERED_BY_QIANKUN__;
@@ -12,7 +12,7 @@ const appName = appPackage.name;
 const isIframe = window.self !== window.top;
 
 // 从 命令行、环境配置文件中获取配置信息
-const c = (key, defaultValue, parse = value => value) => getConfigValue(envConfig, key, defaultValue, parse);
+const c = (key, defaultValue, parse = (value) => value) => getConfigValue(envConfig, key, defaultValue, parse);
 
 /**
  * 所有配置均可通过命令行参数传递，需要添加 REACT_APP_ 前缀，比如：REACT_APP_CONFIG_ENV=test yarn build
@@ -22,9 +22,9 @@ const c = (key, defaultValue, parse = value => value) => getConfigValue(envConfi
 
 // 不需要登录的页面路由白名单
 export const NO_AUTH_ROUTES = [
-    '/login',               // 登录
-    '/register',            // 注册
-    '/password-retrieval',  // 找回密码
+    '/login', // 登录
+    '/register', // 注册
+    '/password-retrieval', // 找回密码
 ];
 
 // 运行环境
@@ -34,8 +34,8 @@ export const APP_NAME = c('APP_NAME', 'React Admin');
 // ajax 请求前缀
 // 开发环境 或者 测试环境使用 localStorage中存储的前缀
 export const SHOW_PROXY = NODE_ENV === 'development' || window.location.hostname === '172.16.143.44';
-export const AJAX_PREFIX = SHOW_PROXY ?
-    (window.localStorage.getItem('AJAX_PREFIX') || '/api')
+export const AJAX_PREFIX = SHOW_PROXY
+    ? window.localStorage.getItem('AJAX_PREFIX') || '/api'
     : c('AJAX_PREFIX', isQianKun ? `${isQianKunPublicPath}api` : '/api');
 // ajax 超时时间
 export const AJAX_TIMEOUT = c('AJAX_TIMEOUT', 1000 * 60, Number);
@@ -58,13 +58,15 @@ export const IS_SUB = c('IS_SUB', isQianKun || isIframe);
 // 是否是手机布局
 export const IS_MOBILE = c('IS_MOBILE', window.document.body.clientWidth <= 575);
 
-const mobileConfig = IS_MOBILE ? {
-    layoutType: LAYOUT_TYPE.SIDE_MENU,
-    header: true,
-    side: false,
-    tab: false,
-    headerTheme: 'dark',
-} : {};
+const mobileConfig = IS_MOBILE
+    ? {
+          layoutType: LAYOUT_TYPE.SIDE_MENU,
+          header: true,
+          side: false,
+          tab: false,
+          headerTheme: 'dark',
+      }
+    : {};
 
 // config-hoc 高阶组件、布局默认配置
 export const CONFIG_HOC = {

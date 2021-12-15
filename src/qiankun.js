@@ -1,12 +1,8 @@
 import ReactDOM from 'react-dom';
-import {
-    addGlobalUncaughtErrorHandler,
-    registerMicroApps,
-    start,
-} from 'qiankun';
-import {SubError} from './components';
-import {getContainerId, PageContent} from '@ra-lib/admin';
-import {CONFIG_HOC} from './config';
+import { addGlobalUncaughtErrorHandler, registerMicroApps, start } from 'qiankun';
+import { SubError } from './components';
+import { getContainerId, PageContent } from '@ra-lib/admin';
+import { CONFIG_HOC } from './config';
 import api from 'src/api';
 import App from './App';
 
@@ -19,7 +15,7 @@ export async function getCurrentActiveSubApp(pathname = window.location.pathname
     const name = `${pathname.split('/')[1]}`;
     const subApps = await api.getSubApps();
 
-    return subApps.find(item => item.name === name);
+    return subApps.find((item) => item.name === name);
 }
 
 /**
@@ -39,24 +35,23 @@ export function isActiveApp(app, pathname = window.location.pathname) {
 export async function getAppByName(name) {
     const apps = await api.getSubApps();
 
-    return apps.find(item => item.name === name);
+    return apps.find((item) => item.name === name);
 }
 
-export default async function() {
+export default async function () {
     // 获取子应用
     const subApps = await api.getSubApps();
 
     // 注册子应用
     registerMicroApps(subApps, {
-
         // 显示loading提示
         beforeLoad: (app) => {
-            const {title = '子应用', name} = app;
+            const { title = '子应用', name } = app;
 
             // 要通过App包裹，否则缺少必要环境
             ReactDOM.render(
                 <App>
-                    <PageContent loading fitHeight loadingTip={`${title}加载中...`}/>
+                    <PageContent loading fitHeight loadingTip={`${title}加载中...`} />
                 </App>,
                 document.getElementById(getContainerId(name)),
             );
@@ -72,13 +67,13 @@ export default async function() {
     });
 
     // 全局错误处理
-    addGlobalUncaughtErrorHandler(event => {
+    addGlobalUncaughtErrorHandler((event) => {
         // 子应用加载失败
         if (event?.message?.includes('died in status LOADING_SOURCE_CODE')) {
             const name = event.error.appOrParcelName;
             ReactDOM.render(
                 <App>
-                    <SubError error={event} name={name}/>
+                    <SubError error={event} name={name} />
                 </App>,
                 document.getElementById(getContainerId(name)),
             );

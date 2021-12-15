@@ -1,6 +1,6 @@
-import {useState, useEffect} from 'react';
-import {getCurrentActiveSubApp} from 'src/qiankun';
-import {isActiveApp, getContainerId} from '@ra-lib/admin';
+import { useState, useEffect } from 'react';
+import { getCurrentActiveSubApp } from 'src/qiankun';
+import { isActiveApp, getContainerId } from '@ra-lib/admin';
 import api from 'src/api';
 import config from 'src/commons/config-hoc';
 
@@ -24,8 +24,8 @@ export default config()(function SubApp() {
         })();
     }, [pathname, activeAppNames]);
 
-    return apps.map(app => {
-        const {name} = app;
+    return apps.map((app) => {
+        const { name } = app;
         const isActive = isActiveApp(app);
         const style = {
             display: isActive ? 'block' : 'none',
@@ -33,8 +33,6 @@ export default config()(function SubApp() {
 
         if (!activeAppNames.includes(name)) return null;
 
-        return (
-            <div key={name} id={getContainerId(name)} style={style}/>
-        );
+        return <div key={name} id={getContainerId(name)} style={style} />;
     });
 });

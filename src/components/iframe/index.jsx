@@ -1,8 +1,8 @@
-import {Result} from 'antd';
-import {getToken, queryStringify, PageContent} from '@ra-lib/admin';
+import { Result } from 'antd';
+import { getToken, queryStringify, PageContent } from '@ra-lib/admin';
 
 export default function IFrame(props) {
-    let {src} = props?.match?.params || {};
+    let { src } = props?.match?.params || {};
 
     src = window.decodeURIComponent(src);
 
@@ -46,13 +46,9 @@ export default function IFrame(props) {
                         justifyContent: 'center',
                     }}
                 >
-                    <Result
-                        status="error"
-                        title="页面加载失败"
-                        subTitle={`传递正确的 src，当前获取到「${src}」`}
-                    />
+                    <Result status="error" title="页面加载失败" subTitle={`传递正确的 src，当前获取到「${src}」`} />
                 </div>
             )}
         </PageContent>
     );
-};
+}

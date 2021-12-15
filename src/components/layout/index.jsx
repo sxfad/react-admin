@@ -1,8 +1,8 @@
-import {useEffect, useState} from 'react';
-import {getQuery, isLogin, Layout as RALayout, KeepPageAlive} from '@ra-lib/admin';
-import {APP_NAME, CONFIG_HOC, HASH_ROUTER, IS_SUB} from 'src/config';
-import {toLogin, getCurrentPageConfig} from 'src/commons';
-import {Header} from 'src/components';
+import { useEffect, useState } from 'react';
+import { getQuery, isLogin, Layout as RALayout, KeepPageAlive } from '@ra-lib/admin';
+import { APP_NAME, CONFIG_HOC, HASH_ROUTER, IS_SUB } from 'src/config';
+import { toLogin, getCurrentPageConfig } from 'src/commons';
+import { Header } from 'src/components';
 import logo from 'src/components/logo/logo.png';
 
 /**
@@ -11,7 +11,7 @@ import logo from 'src/components/logo/logo.png';
 function getOptions(options) {
     // 根据 config 高阶组件配置信息，进行Layout布局调整
     const currentPageConfig = options || getCurrentPageConfig();
-    const {title: queryTitle} = getQuery();
+    const { title: queryTitle } = getQuery();
     let {
         auth,
         layout,
@@ -36,7 +36,7 @@ function getOptions(options) {
         sideTheme,
         sideMaxWidth,
         logoTheme,
-    } = {...CONFIG_HOC, ...currentPageConfig};
+    } = { ...CONFIG_HOC, ...currentPageConfig };
 
     pageTitle = queryTitle || pageTitle;
 
@@ -76,18 +76,11 @@ function getOptions(options) {
 
 // 如果其他组件有需求，可以通过layoutRef获取到Layout中一系列方法、数据，
 // 注意 layoutRef.current可能不存在
-export const layoutRef = {current: null};
+export const layoutRef = { current: null };
 
 export default function Layout(props) {
-    const {
-        menus,
-        collectedMenus,
-        onMenuCollect,
-    } = props;
-    const {
-        auth,
-        ...nextState
-    } = getOptions();
+    const { menus, collectedMenus, onMenuCollect } = props;
+    const { auth, ...nextState } = getOptions();
 
     if (auth && !isLogin()) toLogin();
 
@@ -114,22 +107,14 @@ export default function Layout(props) {
     ]);
 
     // 未使用 Layout 中任何功能，直接不渲染Layout
-    let withoutLayout = [
-        nextState.showHeader,
-        nextState.showSide,
-        nextState.showTab,
-        nextState.showPageHeader,
-    ].every(item => !item);
+    let withoutLayout = [nextState.showHeader, nextState.showSide, nextState.showTab, nextState.showPageHeader].every(
+        (item) => !item,
+    );
 
     if (IS_SUB) withoutLayout = true;
 
     if (window.location.pathname !== '/layout/setting' && withoutLayout) {
-        if (CONFIG_HOC.keepAlive) return (
-            <KeepPageAlive
-                hashRouter={HASH_ROUTER}
-                {...props}
-            />
-        );
+        if (CONFIG_HOC.keepAlive) return <KeepPageAlive hashRouter={HASH_ROUTER} {...props} />;
 
         return null;
     }
@@ -137,35 +122,34 @@ export default function Layout(props) {
     return (
         <RALayout
             className="no-print"
-            ref={current => layoutRef.current = {...current, refresh: () => setRefresh({})}}
+            ref={(current) => (layoutRef.current = { ...current, refresh: () => setRefresh({}) })}
             logo={logo}
             title={APP_NAME}
             menus={menus}
             collectedMenus={collectedMenus}
             onMenuCollect={onMenuCollect}
-            headerExtra={<Header/>}
+            headerExtra={<Header />}
             keepPageAlive={CONFIG_HOC.keepAlive}
             hashRouter={HASH_ROUTER}
             {...nextState}
             {...props}
         />
     );
-};
+}
 
 // 处理函数配置
 export function layoutHoc() {
-    return WrappedComponent => {
+    return (WrappedComponent) => {
         const componentName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
 
-        const WithLayout = props => {
+        const WithLayout = (props) => {
             let nextState = getOptions();
 
-            nextState = Object.entries(nextState)
-                .reduce((prev, curr) => {
-                    const [key, value] = curr;
-                    if (typeof value === 'function') prev[key] = value(props);
-                    return prev;
-                }, {});
+            nextState = Object.entries(nextState).reduce((prev, curr) => {
+                const [key, value] = curr;
+                if (typeof value === 'function') prev[key] = value(props);
+                return prev;
+            }, {});
 
             if (Object.keys(nextState).length && props.active !== false) {
                 // Warning: Cannot update a component (`ForwardRef`) while rendering a different component (`withLayout(Connect(WithAjax(WithConfig(UserEdit))))`).
@@ -174,7 +158,7 @@ export function layoutHoc() {
                 });
             }
 
-            return <WrappedComponent {...props}/>;
+            return <WrappedComponent {...props} />;
         };
 
         WithLayout.displayName = `WithLayout(${componentName})`;

@@ -1,4 +1,4 @@
-import {wrapperOptions} from '@ra-lib/admin';
+import { wrapperOptions } from '@ra-lib/admin';
 
 /**
  * 使用 require.context 自动引入所有model文件
@@ -7,10 +7,8 @@ const result = {};
 
 // src/models目录下，不支持子文件夹
 const req = require.context('./', false, /\.js$/);
-req.keys().forEach(key => {
-    if ([
-        './index.js',
-    ].includes(key)) return;
+req.keys().forEach((key) => {
+    if (['./index.js'].includes(key)) return;
 
     const model = req(key);
 

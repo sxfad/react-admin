@@ -1,16 +1,16 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {ConfigProvider} from 'antd';
-import {Helmet} from 'react-helmet';
-import {Provider} from 'react-redux';
+import React, { useState, useEffect, useCallback } from 'react';
+import { ConfigProvider } from 'antd';
+import { Helmet } from 'react-helmet';
+import { Provider } from 'react-redux';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn'; // 解决antd日期相关组件国际化问题
-import {ComponentProvider, Loading, getLoginUser, setLoginUser /*queryParse,*/} from '@ra-lib/admin';
-import {Generator} from 'src/components';
-import {isNoAuthPage} from 'src/commons';
+import { ComponentProvider, Loading, getLoginUser, setLoginUser /*queryParse,*/ } from '@ra-lib/admin';
+import { Generator } from 'src/components';
+import { isNoAuthPage } from 'src/commons';
 import AppRouter from './router/AppRouter';
-import {APP_NAME, CONFIG_HOC, IS_MOBILE} from 'src/config';
-import {store} from 'src/models';
+import { APP_NAME, CONFIG_HOC, IS_MOBILE } from 'src/config';
+import { store } from 'src/models';
 import api from 'src/api';
 import theme from 'src/theme.less';
 import './App.less';
@@ -24,12 +24,12 @@ ConfigProvider.config({
 });
 
 export default function App(props) {
-    const {children} = props;
+    const { children } = props;
     const [loading, setLoading] = useState(true);
     const [menus, setMenus] = useState([]);
     const [collectedMenus, setCollectedMenus] = useState(CONFIG_HOC.showCollectedMenus ? [] : null);
     const handleMenuCollect = useCallback(async (menu, collected) => {
-        await api.saveCollectedMenu({menuId: menu.id, collected});
+        await api.saveCollectedMenu({ menuId: menu.id, collected });
 
         const collectedMenus = await api.getCollectedMenus();
         setCollectedMenus(collectedMenus);
@@ -67,11 +67,13 @@ export default function App(props) {
                 await api.getMenus().then(setMenus).catch(console.error);
 
                 // 获取用户权限
-                await api.getPermissions().then(res => {
-                    loginUser.permissions = res;
-                    setLoginUser(loginUser);
-                }).catch(console.error);
-
+                await api
+                    .getPermissions()
+                    .then((res) => {
+                        loginUser.permissions = res;
+                        setLoginUser(loginUser);
+                    })
+                    .catch(console.error);
             } finally {
                 setLoading(false);
             }
@@ -82,25 +84,22 @@ export default function App(props) {
     return (
         <Provider store={store}>
             <ConfigProvider locale={zhCN} prefixCls={theme.antPrefix}>
-                <Helmet title={APP_NAME}/>
+                <Helmet title={APP_NAME} />
                 <ComponentProvider
                     prefixCls={theme.raLibPrefix}
                     layoutPageOtherHeight={CONFIG_HOC.pageOtherHeight}
                     isMobile={IS_MOBILE}
                 >
-                    {loading ? (<Loading progress={false} spin/>) : children ? children : (
-                        <AppRouter
-                            menus={menus}
-                            collectedMenus={collectedMenus}
-                            onMenuCollect={handleMenuCollect}
-                        />
+                    {loading ? (
+                        <Loading progress={false} spin />
+                    ) : children ? (
+                        children
+                    ) : (
+                        <AppRouter menus={menus} collectedMenus={collectedMenus} onMenuCollect={handleMenuCollect} />
                     )}
-                    {process.env.NODE_ENV === 'development' ? (
-                        <Generator/>
-                    ) : null}
+                    {process.env.NODE_ENV === 'development' ? <Generator /> : null}
                 </ComponentProvider>
             </ConfigProvider>
         </Provider>
     );
 }
-

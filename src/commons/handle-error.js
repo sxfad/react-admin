@@ -1,5 +1,5 @@
-import {notification, Modal} from 'antd';
-import {toLogin} from './index';
+import { notification, Modal } from 'antd';
+import { toLogin } from './index';
 
 const ERROR_SERVER = '系统开小差了，请稍后再试或联系管理员！';
 const ERROR_NOT_FOUND = '您访问的资源不存在！';
@@ -13,7 +13,7 @@ function getErrorTip(error, tip) {
 
     // http 状态码相关
     if (error?.response) {
-        const {status} = error.response;
+        const { status } = error.response;
 
         if (status === 401) return toLogin();
         if (status === 403) return ERROR_FORBIDDEN;
@@ -31,9 +31,9 @@ function getErrorTip(error, tip) {
     return ERROR_UNKNOWN;
 }
 
-export default function handleError({error, tip, options = {}}) {
+export default function handleError({ error, tip, options = {} }) {
     const description = getErrorTip(error, tip);
-    const {errorModal} = options;
+    const { errorModal } = options;
 
     if (!description && !errorModal) return;
 

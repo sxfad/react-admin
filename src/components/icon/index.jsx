@@ -1,4 +1,4 @@
-import {createFromIconfontCN} from '@ant-design/icons';
+import { createFromIconfontCN } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 
 /**

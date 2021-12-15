@@ -27,12 +27,7 @@ export default {
      * 1. true 所有当前model state 都同步
      * 2. [path, path, ...] 指定jsonpath同步，详见：https://lodash.com/docs/4.17.15#get
      */
-    syncLocal: [
-        'syncObj.bar.a.aaaa[1]',
-        'syncObj.foo',
-        'name',
-        'user',
-    ],
+    syncLocal: ['syncObj.bar.a.aaaa[1]', 'syncObj.foo', 'name', 'user'],
     /**
      * 配置同 syncLocal，同步到sessionStorage中
      */
@@ -82,7 +77,8 @@ export default {
      * `${modelName}JumpToFuture`
      * `${modelName}ClearHistory`
      * */
-    undoable: { // https://github.com/omnidan/redux-undo
+    undoable: {
+        // https://github.com/omnidan/redux-undo
         include: ['setName'],
         exclude: ['setOptions'], // include exclude 同时存在，include将覆盖exclude
         limit: 5,
@@ -105,11 +101,11 @@ export default {
      */
     setName(name, state) {
         console.log('同步方法获取的参数', name, state);
-        return {name};
+        return { name };
     },
-    setOptions: options => {
+    setOptions: (options) => {
         console.log('setOptions 方法被调用');
-        return {options};
+        return { options };
     },
 
     /**
@@ -125,15 +121,15 @@ export default {
         console.log('getUser state', state);
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                Math.random() > 0.5 ? resolve({user: {name: 123, age: 23}}) : reject(new Error('获取用户失败！'))
-            }, 2000)
-        })
+                Math.random() > 0.5 ? resolve({ user: { name: 123, age: 23 } }) : reject(new Error('获取用户失败！'));
+            }, 2000);
+        });
     },
     testAsync: async (time) => {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                resolve({asyncResult: `${time}秒执行结果`});
-            }, time)
-        })
+                resolve({ asyncResult: `${time}秒执行结果` });
+            }, time);
+        });
     },
 };

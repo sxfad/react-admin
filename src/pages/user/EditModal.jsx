@@ -1,18 +1,12 @@
-import {useCallback, useMemo, useState} from 'react';
-import {Form, Row, Col, Card, Button} from 'antd';
-import {
-    ModalContent,
-    FormItem,
-    Content,
-    validateRules,
-    useDebounceValidator,
-} from '@ra-lib/admin';
+import { useCallback, useMemo, useState } from 'react';
+import { Form, Row, Col, Card, Button } from 'antd';
+import { ModalContent, FormItem, Content, validateRules, useDebounceValidator } from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
 import RoleSelectTable from 'src/pages/role/RoleSelectTable';
 
 export default config({
     modal: {
-        title: props => {
+        title: (props) => {
             if (props?.record?.isDetail) return '查看用户';
 
             return props.isEdit ? '编辑用户' : '创建用户';
@@ -21,48 +15,51 @@ export default config({
         top: 50,
     },
 })(function Edit(props) {
-    const {record, isEdit, onOk, onCancel} = props;
+    const { record, isEdit, onOk, onCancel } = props;
     const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
     const isDetail = record?.isDetail;
 
     const params = useMemo(() => {
-        return {id: record?.id};
+        return { id: record?.id };
     }, [record]);
 
     // 编辑时，查询详情数据
     props.ajax.useGet('/user/getUserById', params, [params], {
         mountFire: isEdit,
         setLoading,
-        formatResult: res => {
+        formatResult: (res) => {
             if (!res) return;
             form.setFieldsValue(res);
         },
     });
-    const {run: save} = props.ajax.usePost('/user/addUser', null, {setLoading, successTip: '创建成功！'});
-    const {run: update} = props.ajax.usePost('/user/updateUserById', null, {setLoading, successTip: '修改成功！'});
-    const {run: fetchUserByAccount} = props.ajax.useGet('/user/getOneUser');
+    const { run: save } = props.ajax.usePost('/user/addUser', null, { setLoading, successTip: '创建成功！' });
+    const { run: update } = props.ajax.usePost('/user/updateUserById', null, { setLoading, successTip: '修改成功！' });
+    const { run: fetchUserByAccount } = props.ajax.useGet('/user/getOneUser');
 
-    const handleSubmit = useCallback(async (values) => {
-        const roleIds = values.roleIds?.filter(id => !`${id}`.startsWith('systemId'));
-        const params = {
-            ...values,
-            roleIds,
-        };
+    const handleSubmit = useCallback(
+        async (values) => {
+            const roleIds = values.roleIds?.filter((id) => !`${id}`.startsWith('systemId'));
+            const params = {
+                ...values,
+                roleIds,
+            };
 
-        if (isEdit) {
-            await update(params);
-        } else {
-            await save(params);
-        }
+            if (isEdit) {
+                await update(params);
+            } else {
+                await save(params);
+            }
 
-        onOk();
-    }, [isEdit, update, save, onOk]);
+            onOk();
+        },
+        [isEdit, update, save, onOk],
+    );
 
     const checkAccount = useDebounceValidator(async (rule, value) => {
         if (!value) return;
 
-        const user = await fetchUserByAccount({account: value});
+        const user = await fetchUserByAccount({ account: value });
         if (!user) return;
 
         const id = form.getFieldValue('id');
@@ -72,20 +69,15 @@ export default config({
 
     const disabled = isDetail;
     const layout = {
-        labelCol: {flex: '100px'},
+        labelCol: { flex: '100px' },
         disabled,
     };
     const colLayout = {
-        xs: {span: 24},
-        sm: {span: 12},
+        xs: { span: 24 },
+        sm: { span: 12 },
     };
     return (
-        <Form
-            form={form}
-            name="roleEdit"
-            onFinish={handleSubmit}
-            initialValues={{enabled: true}}
-        >
+        <Form form={form} name="roleEdit" onFinish={handleSubmit} initialValues={{ enabled: true }}>
             <ModalContent
                 loading={loading}
                 okText="保存"
@@ -94,7 +86,7 @@ export default config({
                 onCancel={() => form.resetFields()}
                 footer={disabled ? <Button onClick={onCancel}>关闭</Button> : undefined}
             >
-                {isEdit ? <FormItem hidden name="id"/> : null}
+                {isEdit ? <FormItem hidden name="id" /> : null}
                 <Row gutter={8}>
                     <Col {...colLayout}>
                         <Card title="基础信息">
@@ -105,17 +97,9 @@ export default config({
                                     name="account"
                                     required
                                     noSpace
-                                    rules={[
-                                        {validator: checkAccount},
-                                    ]}
+                                    rules={[{ validator: checkAccount }]}
                                 />
-                                <FormItem
-                                    {...layout}
-                                    label="密码"
-                                    name="password"
-                                    required
-                                    noSpace
-                                />
+                                <FormItem {...layout} label="密码" name="password" required noSpace />
                                 <FormItem
                                     {...layout}
                                     type={'switch'}
@@ -125,13 +109,7 @@ export default config({
                                     unCheckedChildren="禁"
                                     required
                                 />
-                                <FormItem
-                                    {...layout}
-                                    label="姓名"
-                                    name="name"
-                                    required
-                                    noSpace
-                                />
+                                <FormItem {...layout} label="姓名" name="name" required noSpace />
                                 <FormItem
                                     {...layout}
                                     label="邮箱"
@@ -152,16 +130,9 @@ export default config({
                         </Card>
                     </Col>
                     <Col {...colLayout}>
-                        <Card title="角色配置" bodyStyle={{padding: 0}}>
-                            <FormItem
-                                {...layout}
-                                name="roleIds"
-                            >
-                                <RoleSelectTable
-                                    fitHeight
-                                    otherHeight={200}
-                                    getCheckboxProps={() => ({disabled})}
-                                />
+                        <Card title="角色配置" bodyStyle={{ padding: 0 }}>
+                            <FormItem {...layout} name="roleIds">
+                                <RoleSelectTable fitHeight otherHeight={200} getCheckboxProps={() => ({ disabled })} />
                             </FormItem>
                         </Card>
                     </Col>

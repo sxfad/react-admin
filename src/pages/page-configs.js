@@ -10,4 +10,3 @@ export default [
         // ... 其他config高级组件参数
     },
 ];
-

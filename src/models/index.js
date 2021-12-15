@@ -1,7 +1,7 @@
 import models from './models';
 import handleSuccess from 'src/commons/handle-success';
 import handleError from 'src/commons/handle-error';
-import {storage, createStoreByModels} from '@ra-lib/admin';
+import { storage, createStoreByModels } from '@ra-lib/admin';
 
 const result = createStoreByModels(models, {
     // middlewares: [
@@ -15,8 +15,8 @@ const result = createStoreByModels(models, {
     // deserialize: JSON.parse,
     localStorage: storage.local,
     sessionStorage: storage.session,
-    serialize: data => data,
-    deserialize: data => data,
+    serialize: (data) => data,
+    deserialize: (data) => data,
     onError: handleError,
     onSuccess: handleSuccess,
 });
