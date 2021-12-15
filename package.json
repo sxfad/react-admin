@@ -129,8 +129,7 @@
         "gitDir": ".",
         "src/**/*.{js,jsx,ts,tsx}": [
             "eslint --max-warnings 0 --fix",
-            "prettier --write",
-            "git add"
+            "prettier --write"
         ]
     }
 }

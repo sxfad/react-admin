@@ -1,20 +1,12 @@
-import {useState, useMemo, useCallback} from 'react';
-import {Button, Form, Space} from 'antd';
-import {
-    PageContent,
-    QueryBar,
-    FormItem,
-    Table,
-    Pagination,
-    Operator,
-    ToolBar,
-} from '@ra-lib/admin';
+import { useState, useMemo, useCallback } from 'react';
+import { Button, Form, Space } from 'antd';
+import { PageContent, QueryBar, FormItem, Table, Pagination, Operator, ToolBar } from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
 import options from 'src/options';
 import EditModal from './EditModal';
 
 export default config({
-    path: '/users',
+    path: '/users11',
 })(function User(props) {
     const [loading, setLoading] = useState(false);
     const [pageNum, setPageNum] = useState(1);
@@ -38,14 +30,9 @@ export default config({
     }, [form]);
 
     // 获取列表
-    const {
-        data: {
-            dataSource,
-            total,
-        } = {},
-    } = props.ajax.useGet('/user/queryUsersByPage', params, [params], {
+    const { data: { dataSource, total } = {} } = props.ajax.useGet('/user/queryUsersByPage', params, [params], {
         setLoading,
-        formatResult: res => {
+        formatResult: (res) => {
             return {
                 dataSource: res?.content || [],
                 total: res?.totalElements || 0,
@@ -54,24 +41,24 @@ export default config({
     });
 
     // 删除
-    const {run: deleteRecord} = props.ajax.useDel('/user/:id', null, {setLoading, successTip: '删除成功！'});
+    const { run: deleteRecord } = props.ajax.useDel('/user/:id', null, { setLoading, successTip: '删除成功！' });
 
     const columns = [
-        {title: '账号', dataIndex: 'account'},
-        {title: '姓名', dataIndex: 'name'},
-        {title: '启用', dataIndex: 'enabled', render: value => options.enabled.getTag(!!value)},
-        {title: '手机号', dataIndex: 'mobile'},
-        {title: '邮箱', dataIndex: 'email'},
+        { title: '账号', dataIndex: 'account' },
+        { title: '姓名', dataIndex: 'name' },
+        { title: '启用', dataIndex: 'enabled', render: (value) => options.enabled.getTag(!!value) },
+        { title: '手机号', dataIndex: 'mobile' },
+        { title: '邮箱', dataIndex: 'email' },
         {
             title: '操作',
             key: 'operator',
             width: 250,
             render: (value, record) => {
-                const {id, name} = record;
+                const { id, name } = record;
                 const items = [
                     {
                         label: '查看',
-                        onClick: () => setRecord({...record, isDetail: true}) || setVisible(true),
+                        onClick: () => setRecord({ ...record, isDetail: true }) || setVisible(true),
                     },
                     {
                         label: '修改',
@@ -87,19 +74,22 @@ export default config({
                     },
                 ];
 
-                return (<Operator items={items}/>);
+                return <Operator items={items} />;
             },
         },
     ];
 
-    const handleDelete = useCallback(async id => {
-        await deleteRecord(id);
-        // 触发列表更新
-        refreshSearch();
-    }, [deleteRecord, refreshSearch]);
+    const handleDelete = useCallback(
+        async (id) => {
+            await deleteRecord(id);
+            // 触发列表更新
+            refreshSearch();
+        },
+        [deleteRecord, refreshSearch],
+    );
 
     const queryItem = {
-        style: {width: 200},
+        style: { width: 200 },
     };
 
     return (
@@ -109,44 +99,36 @@ export default config({
                     name="user"
                     layout="inline"
                     form={form}
-                    initialValues={{position: '01'}}
-                    onFinish={values => setPageNum(1) || setConditions(values)}
+                    initialValues={{ position: '01' }}
+                    onFinish={(values) => setPageNum(1) || setConditions(values)}
                 >
-                    <FormItem
-                        {...queryItem}
-                        label="账号"
-                        name="account"
-                    />
-                    <FormItem
-                        {...queryItem}
-                        label="姓名"
-                        name="name"
-                    />
-                    <FormItem
-                        {...queryItem}
-                        label="手机号"
-                        name="mobile"
-                    />
+                    <FormItem {...queryItem} label="账号" name="account" />
+                    <FormItem {...queryItem} label="姓名" name="name" />
+                    <FormItem {...queryItem} label="手机号" name="mobile" />
                     <FormItem
                         {...queryItem}
                         label="职位"
                         name="position"
                         allowClear
                         options={[
-                            {value: '01', label: '前端开发'},
-                            {value: '02', label: '后端开发'},
+                            { value: '01', label: '前端开发' },
+                            { value: '02', label: '后端开发' },
                         ]}
                     />
                     <FormItem>
                         <Space>
-                            <Button type="primary" htmlType="submit">查询</Button>
+                            <Button type="primary" htmlType="submit">
+                                查询
+                            </Button>
                             <Button onClick={() => form.resetFields()}>重置</Button>
                         </Space>
                     </FormItem>
                 </Form>
             </QueryBar>
             <ToolBar>
-                <Button type="primary" onClick={() => setRecord(null) || setVisible(true)}>添加</Button>
+                <Button type="primary" onClick={() => setRecord(null) || setVisible(true)}>
+                    添加
+                </Button>
             </ToolBar>
             <Table
                 serialNumber
@@ -162,7 +144,7 @@ export default config({
                 pageNum={pageNum}
                 pageSize={pageSize}
                 onPageNumChange={setPageNum}
-                onPageSizeChange={pageSize => setPageNum(1) || setPageSize(pageSize)}
+                onPageSizeChange={(pageSize) => setPageNum(1) || setPageSize(pageSize)}
             />
             <EditModal
                 visible={visible}
