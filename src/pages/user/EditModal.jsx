@@ -2,7 +2,6 @@ import { useCallback, useMemo, useState } from 'react';
 import { Form, Row, Col, Card, Button } from 'antd';
 import { ModalContent, FormItem, Content, validateRules, useDebounceValidator } from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
-
 import RoleSelectTable from 'src/pages/role/RoleSelectTable';
 
 export default config({
