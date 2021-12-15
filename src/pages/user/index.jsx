@@ -6,7 +6,7 @@ import options from 'src/options';
 import EditModal from './EditModal';
 
 export default config({
-    path: '/users11',
+    path: '/users',
 })(function User(props) {
     const [loading, setLoading] = useState(false);
     const [pageNum, setPageNum] = useState(1);
