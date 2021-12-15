@@ -13,7 +13,7 @@
         "rancher": "BUILD_COMMAND=build:test rancher-deploy",
         "test": "craco test",
         "docs": "docsify serve -p 3301",
-        "lint": "lint-staged",
+        "lint": "lint-staged --allow-empty",
         "prepare": "husky install",
         "prepare2": "cd .. && husky install front/.husky"
     },
