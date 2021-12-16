@@ -104,5 +104,9 @@ yarn build:time
 
 代码规范使用 [prettier](https://prettier.io/) [参考知乎这片文章](https://zhuanlan.zhihu.com/p/81764012)
 
-团队多人开发，无论使用webstorm还是vscode，都使用prettier（配置文件：.prettierrc.js）进行代码格式化，
+团队多人开发，无论使用webstorm还是vscode，都使用prettier（配置文件：.prettierrc.js）进行代码格式化。
+
+IDE格式化快捷键可以配置成prettier
+
+git commit 时会根据prettier进行代码格式化，确保提交到仓库的代码都符合规范
 
