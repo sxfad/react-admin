@@ -1,9 +1,9 @@
 import * as development from './config.development';
 import * as production from './config.production';
 import appPackage from '../../package.json';
-import { storage, getConfigValue, LAYOUT_TYPE } from '@ra-lib/admin';
+import {storage, getConfigValue, LAYOUT_TYPE} from '@ra-lib/admin';
 
-const allEnvConfig = { development, production };
+const allEnvConfig = {development, production};
 const configEnv = process.env.REACT_APP_CONFIG_ENV || process.env.NODE_ENV;
 const envConfig = allEnvConfig[configEnv] || {};
 const isQianKun = window.__POWERED_BY_QIANKUN__;
@@ -27,8 +27,10 @@ export const NO_AUTH_ROUTES = [
     '/password-retrieval', // 找回密码
 ];
 
-// 运行环境
+// node环境
 export const NODE_ENV = process.env.NODE_ENV;
+// 实际运行环境，测试、预发布等环境时 NODE_ENV 也为 production，无法区分
+export const RUN_ENV = process.env.REACT_APP_RUN_ENV;
 // 应用名称
 export const APP_NAME = c('APP_NAME', 'React Admin');
 // ajax 请求前缀
@@ -52,7 +54,14 @@ export const HASH_ROUTER = c('HASH_ROUTER', false);
 // 静态文件前缀
 export const PUBLIC_URL = c('PUBLIC_URL', '');
 // 是否是开发环境
-export const IS_DEV = c('IS_DEV', NODE_ENV === 'development');
+export const IS_DEV = c('RUN_ENV', RUN_ENV === 'development', (value) => value === 'development');
+// 是否是生产环境
+export const IS_PROD = c('RUN_ENV', RUN_ENV === 'production', (value) => value === 'production');
+// 是否是测试环境
+export const IS_TEST = c('RUN_ENV', RUN_ENV === 'test', (value) => value === 'test');
+// 是否是预览
+export const IS_PREVIEW = c('RUN_ENV', RUN_ENV === 'preview', (value) => value === 'preview');
+
 // 是否作为乾坤子项目，或者嵌入在iframe中
 export const IS_SUB = c('IS_SUB', isQianKun || isIframe);
 // 是否是手机布局

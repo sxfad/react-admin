@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Helmet } from 'react-helmet';
-import { Button, Form } from 'antd';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { FormItem, setLoginUser } from '@ra-lib/admin';
+import React, {useState, useEffect, useCallback} from 'react';
+import {Helmet} from 'react-helmet';
+import {Button, Form} from 'antd';
+import {LockOutlined, UserOutlined} from '@ant-design/icons';
+import {FormItem, setLoginUser} from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
-import { toHome } from 'src/commons';
-import { Logo, Proxy } from 'src/components';
+import {toHome} from 'src/commons';
+import {Logo, Proxy} from 'src/components';
+import {IS_DEV, IS_TEST, IS_PREVIEW} from 'src/config';
 import s from './style.less';
 
 // 开发模式 默认填充的用户名密码
@@ -34,12 +35,12 @@ export default config({
             };
 
             alert('TODO 登录');
-            login.run = async () => ({ id: 1, name: '测试', token: 'test' });
+            login.run = async () => ({id: 1, name: '测试', token: 'test'});
 
             login
-                .run(params, { errorTip: false })
+                .run(params, {errorTip: false})
                 .then((res) => {
-                    const { id, name, token, ...others } = res;
+                    const {id, name, token, ...others} = res;
                     setLoginUser({
                         id, // 必须字段
                         name, // 必须字段
@@ -59,14 +60,14 @@ export default config({
 
     useEffect(() => {
         // 开发时默认填入数据
-        if (process.env.NODE_ENV === 'development' || process.env.REACT_APP_PREVIEW) {
+        if (IS_DEV || IS_TEST || IS_PREVIEW) {
             form.setFieldsValue(formValues);
         }
 
         setTimeout(() => setIsMount(true), 300);
     }, [form]);
 
-    const formItemClass = [s.formItem, { [s.active]: isMount }];
+    const formItemClass = [s.formItem, {[s.active]: isMount}];
 
     return (
         <div className={s.root}>
@@ -87,7 +88,7 @@ export default config({
                             autoFocus
                             prefix={<UserOutlined />}
                             placeholder="请输入用户名"
-                            rules={[{ required: true, message: '请输入用户名！' }]}
+                            rules={[{required: true, message: '请输入用户名！'}]}
                         />
                     </div>
                     <div className={formItemClass}>
@@ -96,11 +97,11 @@ export default config({
                             name="password"
                             prefix={<LockOutlined />}
                             placeholder="请输入密码"
-                            rules={[{ required: true, message: '请输入密码！' }]}
+                            rules={[{required: true, message: '请输入密码！'}]}
                         />
                     </div>
                     <div className={formItemClass}>
-                        <FormItem noStyle shouldUpdate style={{ marginBottom: 0 }}>
+                        <FormItem noStyle shouldUpdate style={{marginBottom: 0}}>
                             {() => (
                                 <Button
                                     className={s.submitBtn}
@@ -111,7 +112,7 @@ export default config({
                                         // 用户没有操作过，或者没有setFieldsValue
                                         !form.isFieldsTouched(true) ||
                                         // 表单中存在错误
-                                        form.getFieldsError().filter(({ errors }) => errors.length).length
+                                        form.getFieldsError().filter(({errors}) => errors.length).length
                                     }
                                 >
                                     登录
