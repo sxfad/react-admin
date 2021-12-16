@@ -59,6 +59,7 @@ export default config({
     );
 
     useEffect(() => {
+        console.log(IS_DEV, IS_TEST, IS_PREVIEW);
         // 开发时默认填入数据
         if (IS_DEV || IS_TEST || IS_PREVIEW) {
             form.setFieldsValue(formValues);

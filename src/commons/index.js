@@ -1,8 +1,8 @@
-import { match } from 'path-to-regexp';
-import { isActiveApp } from '../qiankun';
+import {match} from 'path-to-regexp';
+import {isActiveApp} from '../qiankun';
 import api from 'src/api';
-import { BASE_NAME, HASH_ROUTER, IS_SUB, NO_AUTH_ROUTES } from '../config';
-import { getMainApp, isLoginPage, getParentOrigin } from '@ra-lib/admin';
+import {BASE_NAME, HASH_ROUTER, IS_SUB, NO_AUTH_ROUTES} from '../config';
+import {getMainApp, isLoginPage, getParentOrigin} from '@ra-lib/admin';
 import pageConfigs from 'src/pages/page-configs';
 
 /**
@@ -34,7 +34,11 @@ export function toHome() {
 
     locationHref(lastHref);
 
-    if (HASH_ROUTER) window.location.reload();
+    if (HASH_ROUTER) {
+        setTimeout(() => {
+            window.location.reload();
+        });
+    }
 }
 
 /**
@@ -75,12 +79,12 @@ export function toLogin() {
 export async function checkPath(result) {
     const subApps = await api.getSubApps();
 
-    const hasHome = result.some(({ path }) => path === '/');
+    const hasHome = result.some(({path}) => path === '/');
     if (!hasHome) throw Error(`必须含有首页路由，path: '/'， 如果需要其他页面做首页，可以进行 Redirect`);
 
     result
-        .filter(({ path }) => !!path)
-        .forEach(({ path, filePath }) => {
+        .filter(({path}) => !!path)
+        .forEach(({path, filePath}) => {
             // 是否与子项目配置冲突
             const app = subApps.find((item) => isActiveApp(item, path));
             if (app)
@@ -91,14 +95,14 @@ export async function checkPath(result) {
                 );
 
             // 自身路由配置是否冲突
-            const exit = result.find(({ filePath: f, path: p }) => {
+            const exit = result.find(({filePath: f, path: p}) => {
                 if (f === filePath) return false;
 
                 if (!p || !path) return false;
 
                 if (p === path) return true;
 
-                return match(path, { decode: decodeURIComponent })(p) || match(p, { decode: decodeURIComponent })(path);
+                return match(path, {decode: decodeURIComponent})(p) || match(p, {decode: decodeURIComponent})(path);
             });
             if (exit)
                 throw Error(
@@ -112,14 +116,14 @@ export async function checkPath(result) {
  * @returns {{}|*}
  */
 export function getCurrentPageConfig() {
-    let { pathname, hash } = window.location;
+    let {pathname, hash} = window.location;
     if (HASH_ROUTER) {
         pathname = hash.replace('#', '').split('?')[0];
     } else if (BASE_NAME) {
         pathname = pathname.replace(BASE_NAME, '');
     }
 
-    const config = pageConfigs.find(({ path }) => path && match(path, { decode: decodeURIComponent })(pathname));
+    const config = pageConfigs.find(({path}) => path && match(path, {decode: decodeURIComponent})(pathname));
 
     return config || {};
 }
