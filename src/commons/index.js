@@ -25,20 +25,16 @@ export function locationHref(href) {
  */
 export function toHome() {
     // 跳转页面，优先跳转上次登出页面
-    let lastHref = window.sessionStorage.getItem('last-href') || window.location.origin;
+    let lastHref = window.sessionStorage.getItem('last-href') || '/';
 
-    const url = new URL(lastHref);
+    const url = lastHref.startsWith('http') ? new URL(lastHref) : {pathname: '/'};
 
     // 上次是非登录页面，直接跳转首页
     if (isNoAuthPage(url.pathname)) lastHref = '/';
 
     locationHref(lastHref);
 
-    if (HASH_ROUTER) {
-        setTimeout(() => {
-            window.location.reload();
-        });
-    }
+    if (HASH_ROUTER) window.location.reload();
 }
 
 /**
