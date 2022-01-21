@@ -1,24 +1,28 @@
-import { useState } from 'react';
-import { Space, Dropdown, Menu, Avatar } from 'antd';
-import { DownOutlined, LockOutlined, LogoutOutlined } from '@ant-design/icons';
-import { getColor, FullScreen } from '@ra-lib/admin';
-import { IS_MOBILE } from 'src/config';
+import {useState} from 'react';
+import {Space, Dropdown, Menu, Avatar} from 'antd';
+import {DownOutlined, LockOutlined, LogoutOutlined} from '@ant-design/icons';
+import {getColor, FullScreen} from '@ra-lib/admin';
+import {IS_MOBILE} from 'src/config';
 import config from 'src/commons/config-hoc';
-import { toLogin } from 'src/commons';
+import {toLogin} from 'src/commons';
 import PasswordModal from './PasswordModal';
 import styles from './style.less';
-import { Proxy } from 'src/components';
+import {Proxy} from 'src/components';
 
 export default config({
     router: true,
 })(function Header(props) {
-    const { loginUser = {} } = props;
+    const {loginUser = {}} = props;
     const [passwordVisible, setPasswordVisible] = useState(false);
 
     async function handleLogout() {
-        // await props.ajax.post('/logout');
-        alert('TODO 退出登录接口！');
-        toLogin();
+        try {
+            // await props.ajax.post('/logout', null, {errorTip: false});
+            alert('TODO 退出登录接口！');
+        } finally {
+            // 无论退出成功失败，都跳转登录页面
+            toLogin();
+        }
     }
 
     const menu = (
@@ -33,7 +37,7 @@ export default config({
         </Menu>
     );
 
-    const { avatar, name = '' } = loginUser;
+    const {avatar, name = ''} = loginUser;
 
     return (
         <Space
@@ -58,7 +62,7 @@ export default config({
                     {avatar ? (
                         <Avatar size="small" className={styles.avatar} src={avatar} />
                     ) : (
-                        <Avatar size="small" className={styles.avatar} style={{ backgroundColor: getColor(name) }}>
+                        <Avatar size="small" className={styles.avatar} style={{backgroundColor: getColor(name)}}>
                             {(name[0] || '').toUpperCase()}
                         </Avatar>
                     )}
