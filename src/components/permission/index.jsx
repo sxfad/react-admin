@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { hasPermission } from '@ra-lib/admin';
+import {hasPermission} from '@ra-lib/admin';
 
 /**
  * 根据hasPermission 和code 来判断children是否显示
@@ -17,7 +17,7 @@ Permission.defaultProps = {
 };
 
 export default function Permission(props) {
-    let { code, useDisabled, children } = props;
+    let {code, useDisabled, children} = props;
 
     if (!useDisabled) {
         return hasPermission(code) ? children : null;
@@ -26,9 +26,9 @@ export default function Permission(props) {
     children = Array.isArray(children) ? children : [children];
 
     return children.map((item) => {
-        const { key, ref } = item;
+        const {key, ref} = item;
         return React.cloneElement(item, {
-            disabled: !this.hasPermission(code),
+            disabled: !hasPermission(code),
             key,
             ref,
         });
