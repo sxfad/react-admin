@@ -4,7 +4,7 @@ import executeSql from 'src/mock/web-sql';
 export default {
     // 获取列表
     'get /role/queryRoleByPage': async (config) => {
-        const { pageSize, pageNum, name = '' } = config.params;
+        const {pageSize, pageNum, name = ''} = config.params;
 
         const where = `where name like '%${name}%'`;
 
@@ -21,10 +21,10 @@ export default {
 
         const list = await executeSql(
             `
-            select *
-            from roles ${where}
-            order by updatedAt desc
-            limit ? offset ?`,
+                select *
+                from roles ${where}
+                order by updatedAt desc
+                limit ? offset ?`,
             [pageSize, (pageNum - 1) * pageSize],
         );
 
@@ -58,7 +58,7 @@ export default {
     },
     // 获取详情
     'get /role/getRoleDetailById': async (config) => {
-        const { id } = config.params;
+        const {id} = config.params;
 
         const result = await executeSql('select * from roles where id = ?', [id]);
 
@@ -71,21 +71,21 @@ export default {
     },
     // 根据name获取
     'get /role/getOneRole': async (config) => {
-        const { name, systemId } = config.params;
+        const {name, systemId} = config.params;
 
         const result = await executeSql('select * from roles where name = ? and systemId=?', [name, systemId]);
         return [200, result[0]];
     },
     // 添加
     'post /role/addRole': async (config) => {
-        const { name, remark = '', enabled, systemId, menuIds } = JSON.parse(config.data);
+        const {name, remark = '', enabled, systemId, menuIds} = JSON.parse(config.data);
         const args = [systemId, 3, name, remark, enabled ? 1 : 0];
         const result = await executeSql(
             'INSERT INTO roles (systemId, type, name, remark, enabled) VALUES (?, ?, ?, ?, ?)',
             args,
             true,
         );
-        const { insertId: roleId } = result;
+        const {insertId: roleId} = result;
 
         if (menuIds?.length) {
             for (let menuId of menuIds) {
@@ -97,7 +97,7 @@ export default {
     },
     // 修改
     'post /role/updateRoleById': async (config) => {
-        const { id, name, remark = '', enabled, systemId, menuIds } = JSON.parse(config.data);
+        const {id, name, remark = '', enabled, systemId, menuIds} = JSON.parse(config.data);
         const args = [enabled ? 1 : 0, systemId, name, remark, moment().format('YYYY-MM-DD HH:mm:ss'), id];
 
         await executeSql('UPDATE roles SET enabled=?, systemId=?, name=?, remark=?, updatedAt=? WHERE id=?', args);
@@ -121,7 +121,7 @@ export default {
 };
 
 async function addSystemName(list) {
-    const systemIds = list.map((item) => item.systemId).filter((item) => !!item);
+    const systemIds = list.map((item) => item.systemId).filter((item) => !!item && item !== 'undefined');
     if (systemIds && systemIds.length) {
         const systems = await executeSql(`
             select *
@@ -129,7 +129,7 @@ async function addSystemName(list) {
             where id in (${systemIds})
         `);
         list.forEach((item) => {
-            const { systemId } = item;
+            const {systemId} = item;
             if (systemId) {
                 const system = systems.find((sys) => sys.id === systemId);
                 if (system) item.systemName = system.title;

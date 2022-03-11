@@ -1,11 +1,10 @@
-import { useCallback, useMemo, useState } from 'react';
-import { Button, Form, Space } from 'antd';
-import { PageContent, QueryBar, FormItem, Table, Pagination, Operator, ToolBar } from '@ra-lib/admin';
+import {useCallback, useState, useEffect} from 'react';
+import {Button, Form, Space} from 'antd';
+import {PageContent, QueryBar, FormItem, Table, Pagination, Operator, ToolBar} from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
-import { WITH_SYSTEMS } from 'src/config';
+import {WITH_SYSTEMS} from 'src/config';
 import EditModal from './EditModal';
 import options from 'src/options';
-import s from './style.less';
 
 export default config({
     path: '/roles',
@@ -13,47 +12,22 @@ export default config({
     const [loading, setLoading] = useState(false);
     const [pageNum, setPageNum] = useState(1);
     const [pageSize, setPageSize] = useState(20);
-    const [conditions, setConditions] = useState({});
+    const [dataSource, setDataSource] = useState([]);
+    const [total, setTotal] = useState(0);
     const [record, setRecord] = useState(null);
     const [visible, setVisible] = useState(false);
     const [form] = Form.useForm();
 
-    const params = useMemo(() => {
-        return {
-            ...conditions,
-            pageNum,
-            pageSize,
-        };
-    }, [conditions, pageNum, pageSize]);
-
-    // 使用现有查询条件，重新发起请求
-    const refreshSearch = useCallback(() => setConditions(form.getFieldsValue()), [form]);
-    // 获取列表
-    const { data: { dataSource, total } = {} } = props.ajax.useGet('/role/queryRoleByPage', params, [params], {
-        setLoading,
-        // mountFire: false, // 初始化不查询
-        formatResult: (res) => {
-            return {
-                // 只有自定义角色显示
-                dataSource: (res?.content || []).filter((item) => item.type === 3),
-                total: res?.totalElements || 0,
-            };
-        },
-    });
-
-    // 删除
-    const { run: deleteRole } = props.ajax.useDel('/role/:id', null, { setLoading, successTip: '删除成功！' });
-
     let columns = [
-        { title: '角色名称', dataIndex: 'name' },
-        { title: '启用', dataIndex: 'enabled', render: (value) => options.enabled.getTag(!!value) },
-        { title: '备注', dataIndex: 'remark' },
+        {title: '角色名称', dataIndex: 'name'},
+        {title: '启用', dataIndex: 'enabled', render: (value) => options.enabled.getTag(!!value)},
+        {title: '备注', dataIndex: 'remark'},
         {
             title: '操作',
             dataIndex: 'operator',
             width: 100,
             render: (value, record) => {
-                const { id, name } = record;
+                const {id, name} = record;
                 const items = [
                     {
                         label: '编辑',
@@ -73,33 +47,58 @@ export default config({
         },
     ];
     if (WITH_SYSTEMS) {
-        columns = [{ title: '归属系统', dataIndex: 'systemName' }, ...columns];
+        columns = [{title: '归属系统', dataIndex: 'systemName'}, ...columns];
     }
 
-    const handleDelete = useCallback(
-        async (id) => {
-            await deleteRole(id);
-
-            // 触发查询
-            refreshSearch();
+    // 查询
+    const handleSearch = useCallback(
+        async (options = {}) => {
+            const values = await form.validateFields();
+            const params = {
+                ...values,
+                pageNum: options.pageNum || pageNum,
+                pageSize: options.pageSize || pageSize,
+            };
+            const res = await props.ajax.get('/role/queryRoleByPage', params, {setLoading});
+            const dataSource = (res?.content || []).filter((item) => item.type === 3);
+            const total = res?.totalElements || 0;
+            setDataSource(dataSource);
+            setTotal(total);
         },
-        [deleteRole, refreshSearch],
+        [form, pageNum, pageSize, props.ajax],
     );
 
+    // 删除
+    const handleDelete = useCallback(
+        async (id) => {
+            await props.ajax.del(`/role/${id}`, null, {setLoading, successTip: '删除成功！'});
+            await handleSearch();
+        },
+        [handleSearch, props.ajax],
+    );
+
+    // 初始化查询
+    useEffect(() => {
+        (async () => {
+            await handleSearch({pageNum: 1});
+        })();
+        // eslint-disable-next-line
+    }, []);
+
     const layout = {
-        wrapperCol: { style: { width: 200 } },
+        wrapperCol: {style: {width: 200}},
     };
 
     return (
-        <PageContent fitHeight className={s.root} loading={loading}>
+        <PageContent loading={loading}>
             <QueryBar>
                 <Form
                     name="role"
                     layout="inline"
                     form={form}
-                    onFinish={(values) => {
+                    onFinish={async () => {
                         setPageNum(1);
-                        setConditions(values);
+                        await handleSearch({pageNum: 1});
                     }}
                 >
                     <FormItem {...layout} label="角色名称" name="name" />
@@ -114,7 +113,13 @@ export default config({
                 </Form>
             </QueryBar>
             <ToolBar>
-                <Button type="primary" onClick={() => setRecord(null) || setVisible(true)}>
+                <Button
+                    type="primary"
+                    onClick={() => {
+                        setRecord(null);
+                        setVisible(true);
+                    }}
+                >
                     添加
                 </Button>
             </ToolBar>
@@ -123,14 +128,24 @@ export default config({
                 total={total}
                 pageNum={pageNum}
                 pageSize={pageSize}
-                onPageNumChange={setPageNum}
-                onPageSizeChange={(pageSize) => setPageNum(1) || setPageSize(pageSize)}
+                onPageNumChange={async (pageNum) => {
+                    setPageNum(pageNum);
+                    await handleSearch({pageNum});
+                }}
+                onPageSizeChange={async (pageSize) => {
+                    setPageNum(1);
+                    setPageSize(pageSize);
+                    await handleSearch({pageNum: 1, pageSize});
+                }}
             />
             <EditModal
                 visible={visible}
                 isEdit={!!record}
                 record={record}
-                onOk={() => setVisible(false) || refreshSearch()}
+                onOk={async () => {
+                    setVisible(false);
+                    await handleSearch();
+                }}
                 onCancel={() => setVisible(false)}
             />
         </PageContent>
