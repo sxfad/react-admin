@@ -61,7 +61,7 @@
         "lint-staged": "^11.0.1",
         "lodash": "^4.17.21",
         "mockjs": "^1.1.0",
-        "moment": "^2.29.1",
+        "moment": "^2.29.2",
         "nodemon": "^2.0.7",
         "nprogress": "^0.2.0",
         "path-to-regexp": "^6.2.0",
